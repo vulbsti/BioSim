@@ -9,7 +9,11 @@
     "dev": "vite --host 0.0.0.0 --port 3016",
     "build": "vite build",
     "build:vercel": "vite build",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "test:physiology": "tsx --test tests/physiology.test.ts",
+    "test:browser": "playwright test",
+    "audit:brain": "tsx scripts/audit-brain-vessels.ts",
+    "test": "npm run test:physiology && npm run test:browser"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",
@@ -38,6 +42,7 @@
     "@cloudflare/vite-plugin": "1.37.1",
     "@cloudflare/workers-types": "4.20260515.1",
     "@openai/sites-vite-plugin": "0.2.0",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
@@ -49,6 +54,7 @@
     "oxlint": "1.76.0",
     "oxlint-tsgolint": "7.0.2001",
     "tailwindcss": "4.2.1",
+    "tsx": "^4.23.13",
     "typescript": "5.9.3",
     "vite": "8.0.13",
     "wrangler": "4.92.0"

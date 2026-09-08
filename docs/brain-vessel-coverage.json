@@ -1,0 +1,1807 @@
+{
+  "source": "BodyParts3D atlas.json",
+  "scope": "Arterial / venous meshes intersecting the source brain bounding box, plus named carotid / vertebral, cerebral, communicating, and cerebellar vessels. Bounding-box overlap is a candidate rule, not proof of intracranial anatomy.",
+  "vessels": [
+    {
+      "id": "FJ1654",
+      "name": "Right anterior cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-aca"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1654M",
+      "name": "Left anterior cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-aca"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1655",
+      "name": "Anterior communicating artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "acom"
+      ],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1656",
+      "name": "anterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "unresolved",
+      "nodes": [
+        "L-cerebellum",
+        "R-cerebellum"
+      ],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "No unambiguous association in the current schematic; requires anatomical review."
+    },
+    {
+      "id": "FJ1656M",
+      "name": "Anterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "unresolved",
+      "nodes": [
+        "L-cerebellum",
+        "R-cerebellum"
+      ],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "No unambiguous association in the current schematic; requires anatomical review."
+    },
+    {
+      "id": "FJ1657",
+      "name": "Right anterior spinal artery",
+      "system": "arterial",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "No unambiguous association in the current schematic; requires anatomical review."
+    },
+    {
+      "id": "FJ1657M",
+      "name": "Left anterior spinal artery",
+      "system": "arterial",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "No unambiguous association in the current schematic; requires anatomical review."
+    },
+    {
+      "id": "FJ1658",
+      "name": "Right anterior choroidal artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1658M",
+      "name": "Left anterior choroidal artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1659",
+      "name": "Right anterior temporal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1659M",
+      "name": "Left anterior temporal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1660",
+      "name": "Insular part of right middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-mca"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1660M",
+      "name": "Insular part of left middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-mca"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1661",
+      "name": "Anterior temporal branch of right lateral occipital artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-visual"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1661M",
+      "name": "Anterior temporal branch of left lateral occipital artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-visual"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1662",
+      "name": "Anterolateral central branch of right middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1662M",
+      "name": "Anterolateral central branch of left middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1663",
+      "name": "Anterolateral central branch of right middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1663M",
+      "name": "Anterolateral central branch of left middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1664",
+      "name": "artery of central sulcus",
+      "system": "arterial",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "No unambiguous association in the current schematic; requires anatomical review."
+    },
+    {
+      "id": "FJ1664M",
+      "name": "Artery of central sulcus",
+      "system": "arterial",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "No unambiguous association in the current schematic; requires anatomical review."
+    },
+    {
+      "id": "FJ1665",
+      "name": "artery of central sulcus",
+      "system": "arterial",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "No unambiguous association in the current schematic; requires anatomical review."
+    },
+    {
+      "id": "FJ1665M",
+      "name": "Artery of central sulcus",
+      "system": "arterial",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "No unambiguous association in the current schematic; requires anatomical review."
+    },
+    {
+      "id": "FJ1666",
+      "name": "Artery of right postcentral sulcus",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1666M",
+      "name": "Artery of left postcentral sulcus",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1667",
+      "name": "Right anterior parietal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1667M",
+      "name": "Left anterior parietal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1668",
+      "name": "Artery of right precentral sulcus",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1668M",
+      "name": "Artery of left precentral sulcus",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1669",
+      "name": "Artery of right precentral sulcus",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1669M",
+      "name": "Artery of left precentral sulcus",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1670",
+      "name": "Artery of right precentral sulcus",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1670M",
+      "name": "Artery of left precentral sulcus",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1671",
+      "name": "Precuneal branch of right pericallosal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-frontal"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1671M",
+      "name": "Precuneal branch of left pericallosal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-frontal"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1672",
+      "name": "Basilar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "basilar"
+      ],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1673",
+      "name": "Branch of right middle cerebral artery to right angular gyrus",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1673M",
+      "name": "Branch of left middle cerebral artery to left angular gyrus",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1674",
+      "name": "Branch of right anterior choroidal artery to posterior limb of right internal capsule",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1674M",
+      "name": "Branch of left anterior choroidal artery to posterior limb of left internal capsule",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1675",
+      "name": "Right thalamogeniculate artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1675M",
+      "name": "Left thalamogeniculate artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1676",
+      "name": "Right callosomarginal artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-frontal"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1676M",
+      "name": "Left callosomarginal artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-frontal"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1677",
+      "name": "Right splenial artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-visual"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1677M",
+      "name": "Left splenial artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-visual"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1678",
+      "name": "Right splenial artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-visual"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1678M",
+      "name": "Left splenial artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-visual"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1679",
+      "name": "Hypothalamic branch of right posterior communicating artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1679M",
+      "name": "Hypothalamic branch of left posterior communicating artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1680",
+      "name": "Middle temporal branch of right lateral occipital artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-visual"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1680M",
+      "name": "Middle temporal branch of left lateral occipital artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-visual"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1681",
+      "name": "Intermediomedial branch of right callosomarginal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-frontal"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1681M",
+      "name": "Intermediomedial branch of left callosomarginal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-frontal"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1682",
+      "name": "Right internal carotid artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-ica"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1682M",
+      "name": "Left internal carotid artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-ica"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1683",
+      "name": "Lateral branch of right superior cerebellar artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1683M",
+      "name": "Lateral branch of left superior cerebellar artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1684",
+      "name": "Lateral branch of right pontine artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1684M",
+      "name": "Lateral branch of left pontine artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1685",
+      "name": "Right lateral frontobasal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1685M",
+      "name": "Left lateral frontobasal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1686",
+      "name": "Right lateral frontobasal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1686M",
+      "name": "Left lateral frontobasal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1687",
+      "name": "Right lateral occipital artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-visual"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1687M",
+      "name": "Left lateral occipital artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-visual"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1688",
+      "name": "Medial branch of right superior cerebellar artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1688M",
+      "name": "Medial branch of left superior cerebellar artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1689",
+      "name": "Medial branch of right pontine artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1689M",
+      "name": "Medial branch of left pontine artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1690",
+      "name": "Right medial frontobasal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-frontal"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1690M",
+      "name": "Left medial frontobasal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-frontal"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1691",
+      "name": "Right medial occipital artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-visual"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1691M",
+      "name": "Left medial occipital artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-visual"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1692",
+      "name": "Sphenoid part of right middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-mca"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1692M",
+      "name": "Sphenoid part of left middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-mca"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1693",
+      "name": "Middle temporal branch of right middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1693M",
+      "name": "Middle temporal branch of left middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1694",
+      "name": "Insular part of right middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-mca"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1694M",
+      "name": "Insular part of left middle cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-mca"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1695",
+      "name": "Right ophthalmic artery",
+      "system": "arterial",
+      "status": "adjacent circulation",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Orbital or extracranial supply is adjacent to the brain and not included in the cerebral tissue beds."
+    },
+    {
+      "id": "FJ1695M",
+      "name": "Left ophthalmic artery",
+      "system": "arterial",
+      "status": "adjacent circulation",
+      "nodes": [],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Orbital or extracranial supply is adjacent to the brain and not included in the cerebral tissue beds."
+    },
+    {
+      "id": "FJ1696",
+      "name": "Paracentral branch of right callosomarginal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1696M",
+      "name": "Paracentral branch of left callosomarginal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1697",
+      "name": "Paracentral branch of right callosomarginal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1697M",
+      "name": "Paracentral branch of left callosomarginal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1698",
+      "name": "Paracentral branch of right callosomarginal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1698M",
+      "name": "Paracentral branch of left callosomarginal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1699",
+      "name": "Right pericallosal artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-frontal"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1699M",
+      "name": "Left pericallosal artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-frontal"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1700",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1700M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1701",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1701M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1702",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1702M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1703",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1703M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1704",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1704M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1705",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1705M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1706",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1706M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1707",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1707M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1708",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1708M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1709",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1709M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1710",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1710M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1711",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1711M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1712",
+      "name": "Right polar temporal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1712M",
+      "name": "Left polar temporal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1713",
+      "name": "Right posterior communicating artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-pcom"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1713M",
+      "name": "Left posterior communicating artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-pcom"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1714",
+      "name": "Postcommunicating part of right posterior cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-pca"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1714M",
+      "name": "Postcommunicating part of left posterior cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-pca"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1715",
+      "name": "Right posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1715M",
+      "name": "Left posterior inferior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1716",
+      "name": "Right posterior parietal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1716M",
+      "name": "Left posterior parietal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1717",
+      "name": "Posterior temporal branch of right middle cerebral artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1717M",
+      "name": "Posterior temporal branch of left middle cerebral artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1718",
+      "name": "Trunk of inferior terminal branch of right middle cerebral artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1718M",
+      "name": "Trunk of inferior terminal branch of left middle cerebral artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1719",
+      "name": "set of posterior temporal branches of lateral occipital artery",
+      "system": "arterial",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "No unambiguous association in the current schematic; requires anatomical review."
+    },
+    {
+      "id": "FJ1719M",
+      "name": "Set of posterior temporal branches of lateral occipital artery",
+      "system": "arterial",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "No unambiguous association in the current schematic; requires anatomical review."
+    },
+    {
+      "id": "FJ1720",
+      "name": "Right thalamoperforating artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1720M",
+      "name": "Left thalamoperforating artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1721",
+      "name": "Posteromedial central branch of right posterior cerebral artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1721M",
+      "name": "Posteromedial central branch of left posterior cerebral artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1722",
+      "name": "Posteromedial branch of right callosomarginal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-frontal"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1722M",
+      "name": "Posteromedial branch of left callosomarginal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-frontal"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1723",
+      "name": "Precommunicating part of right posterior cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-pca"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1723M",
+      "name": "Precommunicating part of left posterior cerebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-pca"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1724",
+      "name": "Right prefrontal artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-lateral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1724M",
+      "name": "Left prefrontal artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-lateral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1725",
+      "name": "Right vertebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-vertebral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1725M",
+      "name": "Left vertebral artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-vertebral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1726",
+      "name": "Right superior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1726M",
+      "name": "Left superior cerebellar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ1727",
+      "name": "Right posterior medial choroidal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-deep"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1727M",
+      "name": "Left posterior medial choroidal artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-deep"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1728",
+      "name": "Superior vermian branch of medial branch of right superior cerebellar artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-cerebellum"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1728M",
+      "name": "Superior vermian branch of medial branch of left superior cerebellar artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-cerebellum"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1729",
+      "name": "Temporo-occipital branch of right middle cerebral artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-visual"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1729M",
+      "name": "Temporo-occipital branch of left middle cerebral artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-visual"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "FJ1844",
+      "name": "Basilar artery",
+      "system": "arterial",
+      "status": "exact-name link",
+      "nodes": [
+        "basilar"
+      ],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    }
+  ],
+  "counts": {
+    "exact-name link": 79,
+    "grouped territory": 60,
+    "unresolved": 10,
+    "adjacent circulation": 2
+  },
+  "missingVenousGeometry": true
+}

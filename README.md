@@ -1,8 +1,16 @@
 # Human Atlas
 
-An interactive 3D anatomy explorer built with React, Three.js, and shadcn/ui. Take the BodyParts3D adult male reference apart into **2,234 individually selectable meshes**, explore **15 anatomical systems**, and search **3,432 named concepts**.
+A connected physiology lab and interactive 3D anatomy explorer built with React, Three.js, and shadcn/ui. Take the BodyParts3D adult male reference apart into **2,234 individually selectable meshes**, explore **15 anatomical systems**, and search **3,432 named concepts**.
 
 **[Explore the live demo](https://human-atlas-seven.vercel.app)**
+
+## Physiology lab
+
+The local app opens in a new simulation workspace. Run timed experiments with meals, water, inspired air, exercise, temperature, and sensory inputs. Follow organ flow, gas exchange, digestive enzyme activity, and 31 relative endocrine signals. Five substances travel through 23 explicit blood, tissue, and lymph-transit compartments; inspect local inventories, oxygen-limited metabolism, and source-to-destination flux receipts in the Transport view. Inspect a connected cerebral flow schematic and open matching structures in the original 3D anatomy viewer.
+
+Pause, accelerate, or advance the simulation; schedule inputs; fork a comparison; export a run and load it later to resume. The engine runs in a Web Worker at fixed one-second steps. No service, API key, or account is required.
+
+**This is an exploratory model, not a completed or biologically validated whole-human simulation.** Hormones currently use relative activities, distal vessels are grouped, and several mechanisms remain proxies. Read [the model equations, exact coverage, limitations, and remaining work](docs/PHYSIOLOGY_MODEL.md). The linked public demo predates these local changes until they are deployed.
 
 ## Explore
 
@@ -28,6 +36,9 @@ Open http://localhost:3016. To build the static site, run `npm run build`; the o
 
 ```sh
 npm run check
+npm run test:physiology
+npx playwright install chromium
+npm run test:browser
 node scripts/validate-atlas.mjs
 node scripts/validate-interactions.mjs
 npm run build

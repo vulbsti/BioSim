@@ -1,0 +1,10 @@
+import {useMemo,useState} from 'react';
+import type {Atlas} from '../anatomy';
+import {auditBrainVessels,type VesselCoverage} from './brain-coverage';
+
+export default function BrainCoverage({atlas,onAnatomy,onSelect}:{atlas:Atlas;onAnatomy:(name:string)=>void;onSelect:(id:string)=>void}){
+  const audit=useMemo(()=>auditBrainVessels(atlas),[atlas]),[filter,setFilter]=useState(''),[status,setStatus]=useState('all');
+  const rows=audit.vessels.filter(v=>(status==='all'||v.status===status)&&v.name.toLowerCase().includes(filter.toLowerCase()));
+  const statuses=Object.keys(audit.counts) as VesselCoverage['status'][];
+  return <details className="brain-coverage"><summary>Source vessel coverage <span>{audit.vessels.length} source candidates accounted for</span></summary><div className="coverage-body"><p>{audit.scope}</p><button className="anatomy-link" onClick={()=>onAnatomy('@brain-vessels')}>Inspect all {audit.vessels.length} source vessel candidates in 3D ↗</button><div className="coverage-counts">{statuses.map(key=><span key={key}><b>{audit.counts[key]}</b>{key}</span>)}</div><p>Label links and grouped territories do not mean that each vessel has its own solved flow or verified parent connection.{audit.missingVenousGeometry?' No venous meshes met this candidate rule; the displayed intracranial venous network is schematic.':''}</p><div className="coverage-filters"><input aria-label="Find a source brain vessel" placeholder="Search source vessels…" value={filter} onChange={e=>setFilter(e.target.value)}/><select aria-label="Vessel coverage status" value={status} onChange={e=>setStatus(e.target.value)}><option value="all">All coverage states</option>{statuses.map(key=><option key={key}>{key}</option>)}</select></div><div className="coverage-list">{rows.map(v=><article key={v.id}><div><button onClick={()=>onAnatomy(v.name)}>{v.name} ↗</button><small>{v.id} · {v.status}</small><p>{v.basis} {v.sideEvidence}.</p></div>{v.nodes.length===1&&<button className="coverage-locate" onClick={()=>onSelect(v.nodes[0])}>Locate</button>}</article>)}{!rows.length&&<p>No source vessels match this filter.</p>}</div></div></details>;
+}

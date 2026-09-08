@@ -1,0 +1,724 @@
+{
+  "source": "https://lifesciencedb.jp/bp3d/",
+  "manifestURL": "https://lifesciencedb.jp/bp3d/get-info.cgi?version=4.3&cmd=concept-objfiles-list",
+  "manifestSHA256": "c3d16c891016da13447de2fc3241d05d92e8f9dc460e363233c03f420b935d4f",
+  "archiveSHA256": "5ece218e6b1a48a24d5e763463f9ff0fa86505f9bbeedcc101f8fa50a763c74a",
+  "coordinateTransform": "[x_mm/1000, z_mm/1000 + 0.0781112, -y_mm/1000 - 0.1] (same transform as base atlas)",
+  "geometryChanges": "Coincident vertices welded; area-weighted normals recalculated; normals quantized to int16. Source positions and triangles retained, excluding degenerate faces.",
+  "records": [
+    {
+      "id": "FJ3670",
+      "name": "Isthmus of thyroid gland",
+      "conceptId": "FMA49178",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ3670_BP21406_FMA49178_Isthmus of thyroid gland.obj",
+      "sourceSHA256": "798a3b54f78eb3cc20f118b914202855e003b252a7e479f022fe1c2d6b9b14c0",
+      "triangles": 1746,
+      "bounds": [
+        [
+          -0.0050544000000000006,
+          1.4486611999999999,
+          0.0030040000000000067
+        ],
+        [
+          0.00383879,
+          1.4666911999999999,
+          0.012556999999999999
+        ]
+      ]
+    },
+    {
+      "id": "FJ3671",
+      "name": "Left lobe of thyroid gland",
+      "conceptId": "FMA13369",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ3671_BP21433_FMA13369_Left lobe of thyroid gland.obj",
+      "sourceSHA256": "2a137c718b0f7f6150978730c78f9003db6dce5324e31ba5cb368d6ce7f57c58",
+      "triangles": 4741,
+      "bounds": [
+        [
+          0.0031918700000000003,
+          1.4488612,
+          -0.008533900000000011
+        ],
+        [
+          0.0199241,
+          1.4983312,
+          0.01071599999999999
+        ]
+      ]
+    },
+    {
+      "id": "FJ3672",
+      "name": "Right lobe of thyroid gland",
+      "conceptId": "FMA13368",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ3672_BP19828_FMA13368_Right lobe of thyroid gland.obj",
+      "sourceSHA256": "579d28267ec22b2536878fe2c78947f812d60e3ce3b9e5621f1faab7ce6f63f2",
+      "triangles": 5061,
+      "bounds": [
+        [
+          -0.021273800000000002,
+          1.4483911999999999,
+          -0.008516099999999999
+        ],
+        [
+          -0.00439002,
+          1.4978711999999998,
+          0.011552999999999994
+        ]
+      ]
+    },
+    {
+      "id": "FJ3673",
+      "name": "Left inferior parathyroid gland",
+      "conceptId": "FMA55563",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ3673_BP21598_FMA55563_Left inferior parathyroid gland.obj",
+      "sourceSHA256": "28856a004c1398a05a667947cc0df0f01f2d02319b9fe0ad53fe4ffa7b49417a",
+      "triangles": 160,
+      "bounds": [
+        [
+          0.0113072,
+          1.4652211999999998,
+          -0.008212200000000003
+        ],
+        [
+          0.0161371,
+          1.4721712,
+          -0.003463899999999992
+        ]
+      ]
+    },
+    {
+      "id": "FJ3674",
+      "name": "Left superior parathyroid gland",
+      "conceptId": "FMA55561",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ3674_BP23783_FMA55561_Left superior parathyroid gland.obj",
+      "sourceSHA256": "8c0fa01bc501ccca78d11bf3c4572160d96d1f284c171c64deb2992a1ea445fd",
+      "triangles": 142,
+      "bounds": [
+        [
+          0.0135716,
+          1.4828212,
+          -0.007702899999999999
+        ],
+        [
+          0.0185631,
+          1.4896012,
+          -0.002340999999999996
+        ]
+      ]
+    },
+    {
+      "id": "FJ3675",
+      "name": "Right inferior parathyroid gland",
+      "conceptId": "FMA55562",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ3675_BP23812_FMA55562_Right inferior parathyroid gland.obj",
+      "sourceSHA256": "f8c9b50c20f355868e1b522ddb38cf8f25779afd40fc7505012361964ea1bc00",
+      "triangles": 146,
+      "bounds": [
+        [
+          -0.0176085,
+          1.4642512,
+          -0.008463800000000007
+        ],
+        [
+          -0.0126178,
+          1.4708911999999998,
+          -0.004256800000000005
+        ]
+      ]
+    },
+    {
+      "id": "FJ3676",
+      "name": "Right superior parathyroid gland",
+      "conceptId": "FMA55560",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ3676_BP23811_FMA55560_Right superior parathyroid gland.obj",
+      "sourceSHA256": "aa3bd725d5702aeaab656f42c0d3c423b609628c00680a4be113c01e3d9c8d1a",
+      "triangles": 136,
+      "bounds": [
+        [
+          -0.0196652,
+          1.4837912,
+          -0.008305499999999993
+        ],
+        [
+          -0.0144224,
+          1.4906312,
+          -0.002173100000000011
+        ]
+      ]
+    },
+    {
+      "id": "FJ4654",
+      "name": "Right great cerebral vein",
+      "conceptId": "FMA50994",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4654_BP28758_FMA50994_Right great cerebral vein.obj",
+      "sourceSHA256": "5995f3d7f9726596d3c06cc684e91da0ee61a2db36798333ef64d8970b73c5cb",
+      "triangles": 490,
+      "bounds": [
+        [
+          -0.00253132,
+          1.6155612,
+          -0.0581746
+        ],
+        [
+          0.00157919,
+          1.6217111999999998,
+          -0.039678200000000004
+        ]
+      ]
+    },
+    {
+      "id": "FJ4679",
+      "name": "Inferior cerebral vein",
+      "conceptId": "FMA50986",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4679_BP28953_FMA50986_Inferior cerebral vein.obj",
+      "sourceSHA256": "b945302c6661a6b917fcd644692dcaad8b781cd9f2c5622a88c9a8b2c8dd53bf",
+      "triangles": 1660,
+      "bounds": [
+        [
+          -0.0638547,
+          1.5903312,
+          -0.05389990000000001
+        ],
+        [
+          -0.020022099999999998,
+          1.6108412,
+          0.0057859999999999995
+        ]
+      ]
+    },
+    {
+      "id": "FJ4680",
+      "name": "Right anterior cerebral vein",
+      "conceptId": "FMA51307",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4680_BP28708_FMA51307_Right anterior cerebral vein.obj",
+      "sourceSHA256": "54f102c8658b41c3680fb4b44eef5f228e3dd565feb41686a5de5fbbed1be893",
+      "triangles": 418,
+      "bounds": [
+        [
+          -0.0068075,
+          1.6174711999999998,
+          0.0071279999999999955
+        ],
+        [
+          -0.00143728,
+          1.6237612000000001,
+          0.05302000000000001
+        ]
+      ]
+    },
+    {
+      "id": "FJ4681",
+      "name": "Right anterior cerebral vein",
+      "conceptId": "FMA51307",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4681_BP28708_FMA51307_Right anterior cerebral vein.obj",
+      "sourceSHA256": "19e1e122b7f2ee9f29f0c9f1f12f4f190a99c2eaaababf46d5ded007ad4f9c2b",
+      "triangles": 74,
+      "bounds": [
+        [
+          -0.0025296900000000002,
+          1.6344611999999998,
+          0.058691999999999994
+        ],
+        [
+          -0.0019265600000000001,
+          1.6395112,
+          0.06540000000000001
+        ]
+      ]
+    },
+    {
+      "id": "FJ4682",
+      "name": "Right anterior cerebral vein",
+      "conceptId": "FMA51307",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4682_BP28708_FMA51307_Right anterior cerebral vein.obj",
+      "sourceSHA256": "577a2e9d4193143654652c0a4ba701f084f904e6dffed3aa74017f72d397f5bd",
+      "triangles": 226,
+      "bounds": [
+        [
+          -0.00261406,
+          1.6291912,
+          0.048954
+        ],
+        [
+          -0.00183906,
+          1.6350712,
+          0.06670300000000001
+        ]
+      ]
+    },
+    {
+      "id": "FJ4683",
+      "name": "Right anterior cerebral vein",
+      "conceptId": "FMA51307",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4683_BP28708_FMA51307_Right anterior cerebral vein.obj",
+      "sourceSHA256": "e786265473287a2ca143af0621bcd56b9bfe6ac4eb0206fa8c94689d703c8249",
+      "triangles": 246,
+      "bounds": [
+        [
+          -0.00278184,
+          1.6216911999999999,
+          0.03637299999999999
+        ],
+        [
+          -0.00172969,
+          1.6411212,
+          0.053633000000000014
+        ]
+      ]
+    },
+    {
+      "id": "FJ4684",
+      "name": "Right anterior cerebral vein",
+      "conceptId": "FMA51307",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4684_BP28708_FMA51307_Right anterior cerebral vein.obj",
+      "sourceSHA256": "ca8723dba7021ad8012aafb9da304b41ae8dc8bb691e753ae503fc522fb364ac",
+      "triangles": 274,
+      "bounds": [
+        [
+          -0.00299582,
+          1.6185512,
+          0.02559
+        ],
+        [
+          -0.00156697,
+          1.6437412,
+          0.04153599999999999
+        ]
+      ]
+    },
+    {
+      "id": "FJ4685",
+      "name": "Right anterior cerebral vein",
+      "conceptId": "FMA51307",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4685_BP28708_FMA51307_Right anterior cerebral vein.obj",
+      "sourceSHA256": "438a28350ddc7b6ccec776a00ced785e9559ca3c7523e0bf6b90a4be933e8557",
+      "triangles": 200,
+      "bounds": [
+        [
+          -0.00473319,
+          1.6179211999999998,
+          0.015361999999999987
+        ],
+        [
+          -0.00335911,
+          1.6342112,
+          0.03209200000000001
+        ]
+      ]
+    },
+    {
+      "id": "FJ4686",
+      "name": "Inferior cerebral vein",
+      "conceptId": "FMA50986",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4686_BP28953_FMA50986_Inferior cerebral vein.obj",
+      "sourceSHA256": "35b89facc0bd0c52f6c1ede2d9b050e981a044608d9333f46be577b18843368a",
+      "triangles": 456,
+      "bounds": [
+        [
+          -0.06848749999999999,
+          1.6086112,
+          -0.03834080000000001
+        ],
+        [
+          -0.0604741,
+          1.6258112,
+          -0.010193700000000014
+        ]
+      ]
+    },
+    {
+      "id": "FJ4690",
+      "name": "Right internal cerebral vein",
+      "conceptId": "FMA51004",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4690_BP28702_FMA51004_Right internal cerebral vein.obj",
+      "sourceSHA256": "c4e3fb792aba5eeef4ca47168665dd1df2ea1ce207607e9e4c3109af51068ed6",
+      "triangles": 442,
+      "bounds": [
+        [
+          -0.00419238,
+          1.6168812,
+          -0.04237960000000001
+        ],
+        [
+          -1.17573e-05,
+          1.6404311999999999,
+          -0.0030839000000000005
+        ]
+      ]
+    },
+    {
+      "id": "FJ4694",
+      "name": "Superior cerebral vein",
+      "conceptId": "FMA50978",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4694_BP28835_FMA50978_Superior cerebral vein.obj",
+      "sourceSHA256": "4bab7fb9546b61838dc6502353febb41c0a0c1412d76658faf4188918a6ad711",
+      "triangles": 1004,
+      "bounds": [
+        [
+          -0.0640534,
+          1.6186012,
+          -0.09521308
+        ],
+        [
+          -0.0108034,
+          1.6812112,
+          0.069388
+        ]
+      ]
+    },
+    {
+      "id": "FJ4696",
+      "name": "Superior cerebral vein",
+      "conceptId": "FMA50978",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4696_BP28835_FMA50978_Superior cerebral vein.obj",
+      "sourceSHA256": "9c0ae162e5c13191090685ca12cd0a863e7d69c3470ca89fe521dd88bbff5a79",
+      "triangles": 3770,
+      "bounds": [
+        [
+          -0.00247344,
+          1.6023112,
+          -0.10340874
+        ],
+        [
+          -0.0008265630000000001,
+          1.6994512,
+          0.06457299999999999
+        ]
+      ]
+    },
+    {
+      "id": "FJ4697",
+      "name": "Superior cerebral vein",
+      "conceptId": "FMA50978",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4697_BP28835_FMA50978_Superior cerebral vein.obj",
+      "sourceSHA256": "9735e5a44ed4b0b2d9cdc96daf344cc8e3ed115ef16aaa337f6059d2a8b97f5d",
+      "triangles": 3372,
+      "bounds": [
+        [
+          -0.0025706699999999997,
+          1.6254811999999998,
+          -0.10770838
+        ],
+        [
+          -0.000797966,
+          1.7071112,
+          0.068658
+        ]
+      ]
+    },
+    {
+      "id": "FJ4705",
+      "name": "Straight sinus",
+      "conceptId": "FMA50769",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4705_BP28864_FMA50769_Straight sinus.obj",
+      "sourceSHA256": "04bcac80a2cec50ff262706aa2e023c918248ed38729169eeb6ebfdd8ced80a7",
+      "triangles": 1304,
+      "bounds": [
+        [
+          -0.00332152,
+          1.5882912,
+          -0.09557650000000001
+        ],
+        [
+          0.00140977,
+          1.6202211999999998,
+          -0.05358330000000001
+        ]
+      ]
+    },
+    {
+      "id": "FJ4707",
+      "name": "Anterior intercavernous sinus",
+      "conceptId": "FMA50774",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4707_BP28778_FMA50774_Anterior intercavernous sinus.obj",
+      "sourceSHA256": "8ea2cb70f9e434635edf4ab122a84b126cc63431f327defd8817c2eba9429710",
+      "triangles": 420,
+      "bounds": [
+        [
+          -0.0108487,
+          1.6045312,
+          0.005409999999999998
+        ],
+        [
+          0.009536619999999999,
+          1.6090812,
+          0.010394999999999988
+        ]
+      ]
+    },
+    {
+      "id": "FJ4716",
+      "name": "Inferior sagittal sinus",
+      "conceptId": "FMA50768",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4716_BP28870_FMA50768_Inferior sagittal sinus.obj",
+      "sourceSHA256": "7e6bd0df793f5299280b643670872c2a2c8e3eedc5119f0c16d4f9144adcf329",
+      "triangles": 2346,
+      "bounds": [
+        [
+          -0.00284528,
+          1.6165812,
+          -0.058522300000000006
+        ],
+        [
+          0.00154778,
+          1.6776711999999998,
+          0.03622499999999998
+        ]
+      ]
+    },
+    {
+      "id": "FJ4979",
+      "name": "Posterior intercavernous sinus",
+      "conceptId": "FMA50775",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4979_BP28733_FMA50775_Posterior intercavernous sinus.obj",
+      "sourceSHA256": "7f9e7f671caa4a0e4204ab56f33ef826e76f5cb4241130fda57f2364cc796080",
+      "triangles": 556,
+      "bounds": [
+        [
+          -0.0122952,
+          1.6035612,
+          -0.0035785000000000122
+        ],
+        [
+          0.0109891,
+          1.6099611999999999,
+          0.006355999999999987
+        ]
+      ]
+    },
+    {
+      "id": "FJ4988",
+      "name": "Right deep middle cerebral vein",
+      "conceptId": "FMA51311",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ4988_BP28726_FMA51311_Right deep middle cerebral vein.obj",
+      "sourceSHA256": "dfadf3ad71320928e42f9668630306b29996e348d58e31a0dc3dfa96c12f904b",
+      "triangles": 862,
+      "bounds": [
+        [
+          -0.0385693,
+          1.6203012,
+          0.004088999999999995
+        ],
+        [
+          -0.00668654,
+          1.6423512,
+          0.011388999999999996
+        ]
+      ]
+    },
+    {
+      "id": "FJ5005",
+      "name": "Right sigmoid sinus",
+      "conceptId": "FMA51293",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ5005_BP28740_FMA51293_Right sigmoid sinus.obj",
+      "sourceSHA256": "e0403467a02cf26a1e4780469b3adb4fbaf5c05d32e8f5196a8abeab28a15c1c",
+      "triangles": 1962,
+      "bounds": [
+        [
+          -0.0638006,
+          1.5712712,
+          -0.058696700000000004
+        ],
+        [
+          -0.027809200000000003,
+          1.6011612,
+          -0.025219300000000014
+        ]
+      ]
+    },
+    {
+      "id": "FJ5064",
+      "name": "Right cavernous sinus",
+      "conceptId": "FMA51402",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ5064_BP28741_FMA51402_Right cavernous sinus.obj",
+      "sourceSHA256": "cb6a73c25e3c4f536536f5b6df774fea7ae372b7aa4d9aa1ba8e36176baa5d6c",
+      "triangles": 1646,
+      "bounds": [
+        [
+          -0.022128799999999997,
+          1.5922311999999998,
+          -0.008986500000000008
+        ],
+        [
+          -0.0113979,
+          1.6073912,
+          0.014510999999999996
+        ]
+      ]
+    },
+    {
+      "id": "FJ5098",
+      "name": "Right inferior petrosal sinus",
+      "conceptId": "FMA51291",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ5098_BP28734_FMA51291_Right inferior petrosal sinus.obj",
+      "sourceSHA256": "4c7dd5a6e5e71fce51483f8d6e0c67617bb0f8bd6e9b58ad122c8e6bce5f7cdd",
+      "triangles": 600,
+      "bounds": [
+        [
+          -0.030368,
+          1.5712412,
+          -0.029036199999999998
+        ],
+        [
+          -0.0130889,
+          1.5941712,
+          -0.002129800000000001
+        ]
+      ]
+    },
+    {
+      "id": "FJ5194",
+      "name": "Right superficial middle cerebral vein",
+      "conceptId": "FMA50984",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ5194_BP28746_FMA50984_Right superficial middle cerebral vein.obj",
+      "sourceSHA256": "16a61e62ac380eb5614c95f93c63daf0794249ea6da6a2e42dd2267dc53b6d9e",
+      "triangles": 3166,
+      "bounds": [
+        [
+          -0.0711685,
+          1.6031511999999999,
+          -0.0785469
+        ],
+        [
+          -0.018698,
+          1.6520612000000001,
+          0.029417
+        ]
+      ]
+    },
+    {
+      "id": "FJ5195",
+      "name": "Right superficial middle cerebral vein",
+      "conceptId": "FMA50984",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ5195_BP28746_FMA50984_Right superficial middle cerebral vein.obj",
+      "sourceSHA256": "56bc9285293f5adadc9ea339887030be753f8a23a44a99054c4258ee313545d2",
+      "triangles": 488,
+      "bounds": [
+        [
+          -0.055119,
+          1.6314312,
+          0.016856999999999997
+        ],
+        [
+          -0.0476,
+          1.6545012000000001,
+          0.043198000000000014
+        ]
+      ]
+    },
+    {
+      "id": "FJ5196",
+      "name": "Right superficial middle cerebral vein",
+      "conceptId": "FMA50984",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ5196_BP28746_FMA50984_Right superficial middle cerebral vein.obj",
+      "sourceSHA256": "3a52dc278456e8566643de7c6a093638f0f2165e6f5f6c995993bea20f0847f8",
+      "triangles": 418,
+      "bounds": [
+        [
+          -0.06339840000000001,
+          1.6235912,
+          -0.004599999999999993
+        ],
+        [
+          -0.051054800000000004,
+          1.6304812,
+          0.019656999999999994
+        ]
+      ]
+    },
+    {
+      "id": "FJ5207",
+      "name": "Right superior petrosal sinus",
+      "conceptId": "FMA51289",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ5207_BP28760_FMA51289_Right superior petrosal sinus.obj",
+      "sourceSHA256": "cbff2a521bd7da14531aa86088acda4f81efd531e3f344ca2038c267d5978d03",
+      "triangles": 1386,
+      "bounds": [
+        [
+          -0.062757,
+          1.5918412,
+          -0.053804700000000004
+        ],
+        [
+          -0.01561,
+          1.6006012,
+          -0.005470799999999998
+        ]
+      ]
+    },
+    {
+      "id": "FJ5222",
+      "name": "Right transverse sinus",
+      "conceptId": "FMA50764",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ5222_BP28771_FMA50764_Right transverse sinus.obj",
+      "sourceSHA256": "3dcc2aa4f3f2144305eb9f8996156e41047f8cce5701f9e90bb6454604eb9091",
+      "triangles": 2882,
+      "bounds": [
+        [
+          -0.0622549,
+          1.5866312,
+          -0.10000890066000001
+        ],
+        [
+          -0.0131167,
+          1.6021812,
+          -0.053436500000000005
+        ]
+      ]
+    },
+    {
+      "id": "FJ5232",
+      "name": "Superior sagittal sinus",
+      "conceptId": "FMA50767",
+      "compatibilityVersion": "4.3",
+      "sourceFile": "FJ5232_BP28876_FMA50767_Superior sagittal sinus.obj",
+      "sourceSHA256": "114b6efd5cca364b24a9d18d6349dcb0b6f47ec6868fc62d9592e7a5679b6dde",
+      "triangles": 12762,
+      "bounds": [
+        [
+          -0.00557243,
+          1.5878012,
+          -0.11167460000000001
+        ],
+        [
+          0.0037201499999999998,
+          1.7093412,
+          0.06967899999999999
+        ]
+      ]
+    }
+  ]
+}
