@@ -13,7 +13,8 @@
     "test:physiology": "tsx --test tests/physiology.test.ts",
     "test:browser": "playwright test",
     "audit:brain": "tsx scripts/audit-brain-vessels.ts",
-    "test": "npm run test:physiology && npm run test:browser"
+    "test": "npm run test:physiology && npm run test:anatomy && npm run test:browser",
+    "test:anatomy": "tsx --test tests/physical-anatomy.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",

@@ -47,7 +47,7 @@ export function tissueColor(part:Part,index:AnatomyIndex):string {
  if(s==='nervous')return '#d8b879';
  if(s==='urinary')return /kidney/.test(n)?'#a55d52':'#ddb08d';
  if(s==='digestive')return /pancrea/.test(n)?'#d2ad6d':/gallbladder|bile|biliary/.test(n)?'#718b52':/colon|rectum/.test(n)?'#bd8d7b':'#d3a18b';
- if(s==='respiratory')return '#c7b9a6';
+ if(s==='respiratory')return part.id.startsWith('BP3D3-')?'#c7878c':'#d2c6ac';
  if(s==='integumentary')return /hair|eyebrow/.test(n)?'#483a35':/lip/.test(n)?'#ad7470':'#c79e86';
  if(s==='sensory')return /lens|cornea|sclera/.test(n)?'#e7e5dd':'#b4a699';
  return SYSTEMS.find(x=>x.id===s)?.color??'#b6b5a0';
@@ -60,11 +60,12 @@ export function partOpacity(p:Part,index:AnatomyIndex,state:PhysicalViewState):n
  if(preset==='surface')return s==='integumentary'||s==='sensory'?1:0;
  if(preset==='skeleton')return s==='skeletal'||s==='connective'?1:0;
  if(preset==='muscles')return ['muscular','skeletal','connective','sensory'].includes(s)?1:0;
+ if(p.id.startsWith('BP3D3-'))return preset==='dissection'?.68:preset==='organs'?.84:0;
  if(preset==='vessels')return s==='arterial'||s==='venous'||index.groups.heart.has(p.id)?1:s==='skeletal'?state.context*.25:0;
  if(preset==='nerves')return s==='nervous'||s==='endocrine'?1:s==='skeletal'?state.context*.22:0;
  if(s==='integumentary'||s==='connective')return 0;
  if(s==='skeletal')return preset==='organs'?state.context*.3:1;
- if(s==='muscular')return preset==='dissection'?1:0;
+ if(s==='muscular')return /^diaphragm$/i.test(p.name)&&preset==='organs'?.65:preset==='dissection'?1:0;
  if(s==='nervous')return index.groups.brain.has(p.id)?1:.65;
  return 1;
 }

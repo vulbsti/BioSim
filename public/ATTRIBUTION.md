@@ -15,6 +15,33 @@ Source OBJ comments mention an older CC BY-SA 2.1 Japan license. The official cu
 
 BodyParts3D represents an adult male reference anatomy based on TARO MRI and anatomical illustration refinements. It is not a complete model of every possible human anatomical structure or variation. This interface is educational and is not a clinical tool.
 
+## Additive 4.3 reference geometry
+
+BodyParts3D, Copyright © 2008 The Database Center for Life Science, licensed under Creative Commons Attribution-ShareAlike 2.1 Japan, as carried by the Anatomography source. The archive's current CC BY 4.0 license is linked above; this additive package retains the source's share-alike terms.
+
+- Source service: https://lifesciencedb.jp/bp3d/
+- Official 4.3 concept-to-OBJ manifest: https://lifesciencedb.jp/bp3d/get-info.cgi?version=4.3&cmd=concept-objfiles-list
+- Source license: https://lifesciencedb.jp/bp3d/info_en/license/index.html
+- License terms: https://creativecommons.org/licenses/by-sa/2.1/jp/
+- Packaged derivatives: `models/expansion.json`, `expansion-4.3.bin`, `expansion-4.3.bin.gz`.
+
+34 meshes add three thyroid parts, four parathyroids, and 27 cranial veins/sinuses. Source headers identify compatibility version 4.3 and exact FMA names. Adaptations: same axis/unit/translation conversion as the base atlas; coincident vertices welded; degenerate triangles removed; normals recalculated and quantized; geometry packed into binary buffers. 55,562 triangles remain. Per-source hashes and version evidence are in `docs/anatomy-expansion-provenance.json` in the repository.
+
+## Lung surface references from 3.0
+
+BodyParts3D, Copyright © 2008 The Database Center for Life Science. STL conversion and distribution by Kevin Mattheus Moerman. Licensed under Creative Commons Attribution-ShareAlike 2.1 Japan as distributed by the source repository; these adapted lung-surface data retain that license.
+
+- Source and credits: https://github.com/Kevin-Mattheus-Moerman/BodyParts3D
+- Pinned source revision: `f0eeb6e843380cfe6b83797cf8c3e1af74de5e61`
+- License terms: https://creativecommons.org/licenses/by-sa/2.1/jp/
+- Packaged derivatives: `models/lung-surfaces.json`, `lung-surfaces.bin`, `lung-surfaces.bin.gz`.
+
+Five lobe surfaces (FMA7333, FMA7337, FMA7370, FMA7371, FMA7383) retain all 204,408 source triangles. Adaptations: same unit/axis/translation conversion, welded vertices, recalculated and quantized normals, binary packing, display colors, and illustrative breathing deformation. No registration warp was applied. These older lung surfaces are approximately aligned overlays; they do not establish exact correspondence with the 4.0 airways. Pinned URLs, hashes, bounds, and a cross-version trachea comparison are recorded in `docs/lung-surface-provenance.json`.
+
+## Viewer adaptations
+
+The physiology renderer applies tissue colors, transparency, anterior display cuts, optional section planes, and temporary illustrative heart/lung/diaphragm/digestive deformation. It also corrects display grouping for hepatovenous liver segments and cerebral ventricles, and includes the source ventricular wall in heart selection. Source identities and archived base buffers remain unchanged. Tracer paths are approximate visual guides and do not establish vessel junctions.
+
 ## Historical assets (not included in the current release)
 
 Earlier repository revisions included female reference anatomy: Kristen Browne and Heidi Schlehlein, Human Reference Atlas / HuBMAP, *3D Reference Organ Set for Female v1.5* (2023). CC BY 4.0. Geometry adapted for this viewer.

@@ -63,9 +63,11 @@ oxygen-limited oxidation → cardiac/ventilation/gas exchange → renal/water/he
   and venous schematic with Circle of Willis, solved as a steady resistive
   network (`solveBrain`, Kirchhoff conservation at interior nodes, one common
   resistance scale pinning total flow to the body's cerebral allocation).
-  `auditBrainVessels` yields **151 vascular candidates** (79 exact-name, 60
-  grouped-territory, 10 unresolved, 2 adjacent orbital); no venous meshes meet
-  the rule, so intracranial veins stay schematic.
+  `auditBrainVessels` now yields **178 vascular candidates** in the expanded
+  assembly (83 exact-name, 62 grouped-territory, 31 unresolved, 2 adjacent
+  orbital). The 27 added cranial venous meshes improve geometry coverage;
+  their individual drainage topology remains unresolved except for coarse
+  label and collector associations.
 - State, inputs, history (`app/simulation/types.ts`, `engine.ts`,
   `recording.ts`, `scenarios.ts`): `BodyState` carries stomach/gut pools,
   glycogen/fat/protein stores, plasma/interstitium/intracellular water, sodium
@@ -209,8 +211,8 @@ cerebral connectivity from name matches.
 bounding boxes. The 34/55 resistive network gives pressures/flows that
 conserve at every interior node and equal the body's cerebral allocation
 (`solveBrain` residual/scale checks), while `auditBrainVessels` preserves the
-honest gap: 79 exact-name links, 60 grouped territories, 10 unresolved, 2
-adjacent, zero venous geometry. Label association and vascular continuity are
+remaining gap: 83 exact-name links, 62 grouped territories, 31 unresolved, 2
+adjacent, including 27 cranial venous meshes in the expanded assembly. Label association and vascular continuity are
 different claims and are stored as such.
 
 **Trade-off accepted:** No autoregulation, no regional neural demand, no venous

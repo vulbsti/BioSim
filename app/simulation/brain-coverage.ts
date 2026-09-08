@@ -16,6 +16,10 @@ export function auditBrainVessels(atlas:Atlas):{scope:string;vessels:VesselCover
     const sideEvidence=directSide?'Source mesh name':side?'Source concept membership':'Laterality unresolved in source names';
     const exact=brainNodes.filter(n=>n.match.includes(name)&&(!side||!n.id.startsWith(side==='L'?'R-':'L-'))).map(n=>n.id);
     if(exact.length===1)return {id:p.id,name:p.name,system:p.system,status:'exact-name link',nodes:exact,side,sideEvidence,basis:'Exact source name matches a schematic node. This establishes a label association, not a geometric connection.'};
+    if(p.system==='venous'){
+      const node=/^(left |right )?(internal cerebral vein|great cerebral vein)$/.test(name)?'deepvein':null;
+      return {id:p.id,name:p.name,system:p.system,status:node?'grouped territory':'unresolved',nodes:node?[node]:[],side,sideEvidence,basis:node?'Named deep cerebral vein belongs to the schematic deep venous collector; individual junctions remain unresolved.':'Source venous geometry is present; its individual drainage connection is not represented in the current schematic.'};
+    }
     if(/ophthalmic|external carotid|facial|temporal superficial|superficial temporal/.test(name))return {id:p.id,name:p.name,system:p.system,status:'adjacent circulation',nodes:[],side,sideEvidence,basis:'Orbital or extracranial supply is adjacent to the brain and not included in the cerebral tissue beds.'};
     let key:string|null=null;
     if(/hypothalamic|thalamoperforating|thalamogeniculate|central branch|choroidal/.test(name))key='deep';

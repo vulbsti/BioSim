@@ -1,5 +1,5 @@
 {
-  "source": "BodyParts3D atlas.json",
+  "source": "BodyParts3D reference assembly: atlas.json + expansion.json + lung-surfaces.json",
   "scope": "Arterial / venous meshes intersecting the source brain bounding box, plus named carotid / vertebral, cerebral, communicating, and cerebellar vessels. Bounding-box overlap is a candidate rule, not proof of intracranial anatomy.",
   "vessels": [
     {
@@ -1795,13 +1795,295 @@
       "side": null,
       "sideEvidence": "Laterality unresolved in source names",
       "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ4654",
+      "name": "Right great cerebral vein",
+      "system": "venous",
+      "status": "grouped territory",
+      "nodes": [
+        "deepvein"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Named deep cerebral vein belongs to the schematic deep venous collector; individual junctions remain unresolved."
+    },
+    {
+      "id": "FJ4679",
+      "name": "Inferior cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4680",
+      "name": "Right anterior cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4681",
+      "name": "Right anterior cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4682",
+      "name": "Right anterior cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4683",
+      "name": "Right anterior cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4684",
+      "name": "Right anterior cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4685",
+      "name": "Right anterior cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4686",
+      "name": "Inferior cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4690",
+      "name": "Right internal cerebral vein",
+      "system": "venous",
+      "status": "grouped territory",
+      "nodes": [
+        "deepvein"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Named deep cerebral vein belongs to the schematic deep venous collector; individual junctions remain unresolved."
+    },
+    {
+      "id": "FJ4694",
+      "name": "Superior cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4696",
+      "name": "Superior cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4697",
+      "name": "Superior cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4705",
+      "name": "Straight sinus",
+      "system": "venous",
+      "status": "exact-name link",
+      "nodes": [
+        "straight"
+      ],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ4707",
+      "name": "Anterior intercavernous sinus",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4716",
+      "name": "Inferior sagittal sinus",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4979",
+      "name": "Posterior intercavernous sinus",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ4988",
+      "name": "Right deep middle cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ5005",
+      "name": "Right sigmoid sinus",
+      "system": "venous",
+      "status": "exact-name link",
+      "nodes": [
+        "R-jugular"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ5064",
+      "name": "Right cavernous sinus",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ5098",
+      "name": "Right inferior petrosal sinus",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ5194",
+      "name": "Right superficial middle cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ5195",
+      "name": "Right superficial middle cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ5196",
+      "name": "Right superficial middle cerebral vein",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ5207",
+      "name": "Right superior petrosal sinus",
+      "system": "venous",
+      "status": "unresolved",
+      "nodes": [],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source venous geometry is present; its individual drainage connection is not represented in the current schematic."
+    },
+    {
+      "id": "FJ5222",
+      "name": "Right transverse sinus",
+      "system": "venous",
+      "status": "exact-name link",
+      "nodes": [
+        "R-transverse"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "FJ5232",
+      "name": "Superior sagittal sinus",
+      "system": "venous",
+      "status": "exact-name link",
+      "nodes": [
+        "sagittal"
+      ],
+      "side": null,
+      "sideEvidence": "Laterality unresolved in source names",
+      "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
     }
   ],
   "counts": {
-    "exact-name link": 79,
-    "grouped territory": 60,
-    "unresolved": 10,
+    "exact-name link": 83,
+    "grouped territory": 62,
+    "unresolved": 31,
     "adjacent circulation": 2
   },
-  "missingVenousGeometry": true
+  "missingVenousGeometry": false
 }

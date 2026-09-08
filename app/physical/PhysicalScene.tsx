@@ -4,42 +4,55 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {RoomEnvironment} from 'three/examples/jsm/environments/RoomEnvironment.js';
 import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import type {Atlas,SystemId} from '../anatomy';
+import type {BodyState} from '../simulation/types';
+import {cardiacContraction,respiratoryCycle,motionRates} from './motion';
+import {createTracerRoute,type TracerRoute} from './flow-routes';
 import {decodeModelResponse} from '../model-download';
 import {PointerTap} from '../pointer-tap';
 import {createAnatomyIndex,cutawayAt,partOpacity,tissueColor,type PhysicalViewState} from './anatomy-view';
 
-interface Props {atlas:Atlas;view:PhysicalViewState;onSelect:(id:string)=>void;onProgress:(n:number)=>void;onError:(message:string)=>void}
-export default function PhysicalScene({atlas,view,onSelect,onProgress,onError}:Props){
+interface Props {atlas:Atlas;body:BodyState;motion:boolean;view:PhysicalViewState;onSelect:(id:string)=>void;onProgress:(n:number)=>void;onError:(message:string)=>void}
+export default function PhysicalScene({atlas,body,motion,view,onSelect,onProgress,onError}:Props){
  const host=useRef<HTMLDivElement>(null),latest=useRef(view),pickCallback=useRef(onSelect);
- latest.current=view;pickCallback.current=onSelect;
+ const physiology=useRef(body),animate=useRef(motion);
+ latest.current=view;pickCallback.current=onSelect;physiology.current=body;animate.current=motion;
  useEffect(()=>{
   const el=host.current!;let disposed=false,frame=0,dirty=true,ready=false,lastState:PhysicalViewState|null=null,active=true,lastFit='';
-  const abort=new AbortController(),index=createAnatomyIndex(atlas);
+  const abort=new AbortController(),index=createAnatomyIndex(atlas);onError('');onProgress(0);
   let renderer:T.WebGLRenderer;
   try{renderer=new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});}catch{onError('3D rendering is unavailable. Enable WebGL to explore the physical anatomy.');return;}
   renderer.setClearColor(0x131d24,0);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
-  renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));el.appendChild(renderer.domElement);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));el.appendChild(renderer.domElement);
   renderer.domElement.setAttribute('aria-label','Detailed 3D human anatomy. Drag to rotate, scroll to zoom, and select a structure.');renderer.domElement.setAttribute('role','img');
+  // Keep at most one frame in flight. Software GPUs otherwise accumulate seconds of
+  // queued anatomy draws and prevent input or screenshot requests from completing.
+  const gl=renderer.getContext() as WebGL2RenderingContext,canFence=typeof gl.fenceSync==='function';let gpuFence:WebGLSync|null=null,lastRender=0;
+  const debugRenderer=gl.getExtension('WEBGL_debug_renderer_info');
+  const software=!!debugRenderer&&/swiftshader|llvmpipe|softpipe|software/i.test(String(gl.getParameter(debugRenderer.UNMASKED_RENDERER_WEBGL)));
+  if(software)renderer.setPixelRatio(1);el.dataset.lighting=software?'diffuse':'standard';
   const scene=new T.Scene(),camera=new T.PerspectiveCamera(31,1,.005,30),controls=new OrbitControls(camera,renderer.domElement);
   controls.enableDamping=true;controls.dampingFactor=.09;controls.minDistance=.045;controls.maxDistance=8;controls.maxPolarAngle=Math.PI*.97;controls.addEventListener('change',()=>{dirty=true;});
-  const pmrem=new T.PMREMGenerator(renderer),room=new RoomEnvironment(),environment=pmrem.fromScene(room,.04);scene.environment=environment.texture;room.dispose();pmrem.dispose();
+  let environment:T.WebGLRenderTarget|null=null;
+  if(!software){const pmrem=new T.PMREMGenerator(renderer),room=new RoomEnvironment();environment=pmrem.fromScene(room,.04);scene.environment=environment.texture;room.dispose();pmrem.dispose();}
   scene.add(new T.HemisphereLight(0xe4efff,0x383039,.8));
   const key=new T.DirectionalLight(0xffe7d2,3.1);key.position.set(-2,3,4);scene.add(key);
   const fill=new T.DirectionalLight(0xbacde5,1);fill.position.set(3,1,2);scene.add(fill);
   const rim=new T.DirectionalLight(0xbfdadf,2.5);rim.position.set(1,2,-3);scene.add(rim);
   const width=T.MathUtils.ceilPowerOfTwo(atlas.parts.length),visualData=new Float32Array(width*4),visualTexture=new T.DataTexture(visualData,width,1,T.RGBAFormat,T.FloatType);
   visualTexture.needsUpdate=true;
-  const uniforms={partVisual:{value:visualTexture},visualWidth:{value:width},dissect:{value:1},slicePlane:{value:new T.Vector4(0,0,0,1)}};
-  const geometries:T.BufferGeometry[]=[],materials:T.Material[]=[],pickers:(T.Mesh|undefined)[]=[],batches:{mesh:T.Mesh;indices:number[];ghost:boolean}[]=[];
+  const uniforms={partVisual:{value:visualTexture},visualWidth:{value:width},dissect:{value:1},slicePlane:{value:new T.Vector4(0,0,0,1)},heartContraction:{value:0},lungInflation:{value:0},gutPhase:{value:0},gutActivity:{value:0}};
+  const geometries:T.BufferGeometry[]=[],materials:T.Material[]=[],pickers:(T.Mesh|undefined)[]=[],batches:{mesh:T.Mesh;ranges:{part:number;offset:number;count:number}[];source:Uint32Array;visible:T.BufferAttribute;ghost:boolean}[]=[];
   const bounds=atlas.parts.map(p=>new T.Box3(new T.Vector3().fromArray(p.bounds[0]),new T.Vector3().fromArray(p.bounds[1])));
   const selectedBounds=new T.Box3(),center=new T.Vector3(),size=new T.Vector3();
   const hovered=document.createElement('div');hovered.className='physical-hover';hovered.hidden=true;hovered.setAttribute('role','tooltip');el.appendChild(hovered);
   const material=(system:SystemId,ghost:boolean)=>{
-   const m=new T.MeshStandardMaterial({vertexColors:true,metalness:0,roughness:system==='skeletal'?.72:system==='muscular'?.6:.46,envMapIntensity:.32,side:T.DoubleSide,transparent:ghost,depthWrite:!ghost});
+   const common={vertexColors:true,side:T.DoubleSide,transparent:ghost,depthWrite:!ghost};
+   const m=software?new T.MeshLambertMaterial(common):new T.MeshStandardMaterial({...common,metalness:0,roughness:system==='skeletal'?.72:system==='muscular'?.6:.46,envMapIntensity:.32});
+   m.forceSinglePass=true;
    m.onBeforeCompile=shader=>{
     Object.assign(shader.uniforms,uniforms);
-    shader.vertexShader='attribute float partIndex; uniform sampler2D partVisual; uniform float visualWidth; varying vec2 partStyle; varying vec3 anatomyPosition;\n'+shader.vertexShader;
-    shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\npartStyle = texture2D(partVisual, vec2((partIndex + 0.5) / visualWidth, 0.5)).rg; anatomyPosition = position;');
+    shader.vertexShader='attribute float partIndex; uniform sampler2D partVisual; uniform float visualWidth; varying vec2 partStyle; varying vec3 anatomyPosition; attribute float motionKind; attribute vec3 motionCenter; uniform float heartContraction; uniform float lungInflation; uniform float gutPhase; uniform float gutActivity;\n'+shader.vertexShader;
+    shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\npartStyle = texture2D(partVisual, vec2((partIndex + 0.5) / visualWidth, 0.5)).rg; anatomyPosition = position; if(motionKind > 0.5 && motionKind < 1.5) transformed = motionCenter + (position-motionCenter) * (1.0-0.042*heartContraction); if(motionKind > 1.5 && motionKind < 2.5) { transformed.xz = motionCenter.xz + (position.xz-motionCenter.xz)*(1.0+lungInflation); transformed.y -= lungInflation*0.12; } if(motionKind > 2.5 && motionKind < 3.5) transformed.y -= lungInflation*0.2; if(motionKind > 3.5) transformed += normal * (0.0009 * gutActivity * sin(position.y*85.0-gutPhase));');
     shader.fragmentShader='varying vec2 partStyle; varying vec3 anatomyPosition; uniform float dissect; uniform vec4 slicePlane;\n'+shader.fragmentShader;
     const cut=system==='muscular'?'if(dissect > 0.5 && (anatomyPosition.y > 1.49 || (anatomyPosition.y > 0.84 && anatomyPosition.y < 1.49 && abs(anatomyPosition.x) < 0.19 && anatomyPosition.z > -0.065))) discard;':system==='skeletal'?'if(dissect > 0.5 && (anatomyPosition.y > 1.585 || (anatomyPosition.y > 0.93 && anatomyPosition.y < 1.45 && abs(anatomyPosition.x) < 0.18 && anatomyPosition.z > 0.025))) discard;':'';
     shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>',`#include <clipping_planes_fragment>\nif(partStyle.r < 0.005 ${ghost?'|| partStyle.r > 0.995':'|| partStyle.r < 0.995'}) discard; if(dot(vec4(anatomyPosition,1.0),slicePlane) < 0.0) discard; ${cut}`);
@@ -49,6 +62,13 @@ export default function PhysicalScene({atlas,view,onSelect,onProgress,onError}:P
    m.customProgramCacheKey=()=>`physical-${system}-${ghost}`;materials.push(m);return m;
   };
   const materialCache=new Map<string,T.Material>();
+  const routes:TracerRoute[]=[];
+  const tracerPositions=new Float32Array(4000*3),tracerColors=new Float32Array(4000*3),tracerGeometry=new T.BufferGeometry();
+  tracerGeometry.setAttribute('position',new T.BufferAttribute(tracerPositions,3));tracerGeometry.setAttribute('color',new T.BufferAttribute(tracerColors,3));tracerGeometry.setDrawRange(0,0);geometries.push(tracerGeometry);
+  const tracerMaterial=new T.PointsMaterial({size:4.5,sizeAttenuation:false,vertexColors:true,transparent:true,opacity:.85,depthTest:false,depthWrite:false});
+  tracerMaterial.onBeforeCompile=shader=>{shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>','#include <clipping_planes_fragment>\nfloat r=distance(gl_PointCoord,vec2(0.5)); if(r>0.5) discard;');};materials.push(tracerMaterial);
+  const tracers=new T.Points(tracerGeometry,tracerMaterial);tracers.frustumCulled=false;tracers.renderOrder=5;scene.add(tracers);
+  const heartCenter=new T.Vector3(.022,1.32,.036),tracerPoint=new T.Vector3();
   const load=async(ci:number)=>{
    const chunk=atlas.chunks[ci],compressed=!!chunk.gzip&&typeof DecompressionStream!=='undefined';
    const response=await fetch(compressed?chunk.gzip!:chunk.url,{signal:abort.signal}),buffer=await decodeModelResponse(response,chunk.bytes,compressed);if(disposed)return;
@@ -59,11 +79,23 @@ export default function PhysicalScene({atlas,view,onSelect,onProgress,onError}:P
     g.boundingBox=bounds[i];g.computeBoundingSphere();const picker=new T.Mesh(g);picker.material=new T.MeshBasicMaterial({side:T.DoubleSide});materials.push(picker.material);picker.updateMatrixWorld();pickers[i]=picker;geometries.push(g);
     const color=new T.Color(tissueColor(p,index)),colors=new Float32Array(p.vertexCount*3);for(let v=0;v<p.vertexCount;v++)color.toArray(colors,v*3);
     g.setAttribute('color',new T.BufferAttribute(colors,3));g.setAttribute('partIndex',new T.BufferAttribute(new Float32Array(p.vertexCount).fill(i),1));
-    const system=index.system.get(p.id)!,group=groups.get(system)??{geometries:[],indices:[]};group.geometries.push(g);group.indices.push(i);groups.set(system,group);
+    const system=index.system.get(p.id)!;
+    const motionKind=index.groups.heart.has(p.id)&&['cardiac','arterial','venous'].includes(system)?1:p.id.startsWith('BP3D3-')?2:/^diaphragm$/i.test(p.name)?3:system==='digestive'&&!index.groups.liver.has(p.id)&&!/pancrea|bile|biliary|duct/.test(p.name.toLowerCase())?4:0;
+    const motionCenter=motionKind===1?heartCenter:bounds[i].getCenter(new T.Vector3()),centers=new Float32Array(p.vertexCount*3);for(let v=0;v<p.vertexCount;v++)motionCenter.toArray(centers,v*3);
+    g.setAttribute('motionKind',new T.BufferAttribute(new Float32Array(p.vertexCount).fill(motionKind),1));g.setAttribute('motionCenter',new T.BufferAttribute(centers,3));const route=createTracerRoute(p,i,g);if(route)routes.push(route);
+    const group=groups.get(system)??{geometries:[],indices:[]};group.geometries.push(g);group.indices.push(i);groups.set(system,group);
    });
    for(const [system,group] of groups){
     const geometry=mergeGeometries(group.geometries,false);if(!geometry)throw new Error('Could not assemble source anatomy.');geometries.push(geometry);
-    for(const ghost of [false,true]){const key=`${system}-${ghost}`;if(!materialCache.has(key))materialCache.set(key,material(system,ghost));const mesh=new T.Mesh(geometry,materialCache.get(key));mesh.frustumCulled=false;scene.add(mesh);batches.push({mesh,indices:group.indices,ghost});}
+    const source=new Uint32Array(geometry.index!.array);let offset=0;
+    const ranges=group.indices.map(part=>{const count=atlas.parts[part].indexCount,range={part,offset,count};offset+=count;return range;});
+    for(const ghost of [false,true]){
+     const key=`${system}-${ghost}`;if(!materialCache.has(key))materialCache.set(key,material(system,ghost));
+     // Share vertex buffers, but submit only the indices visible in each pass.
+     const pass=new T.BufferGeometry();for(const [name,attribute] of Object.entries(geometry.attributes))pass.setAttribute(name,attribute);
+     const visible=new T.BufferAttribute(new Uint32Array(source.length),1);visible.setUsage(T.DynamicDrawUsage);pass.setIndex(visible);pass.setDrawRange(0,0);geometries.push(pass);
+     const mesh=new T.Mesh(pass,materialCache.get(key));mesh.frustumCulled=false;scene.add(mesh);batches.push({mesh,ranges,source,visible,ghost});
+    }
    }
    lastState=null;dirty=true;
   };
@@ -104,9 +136,48 @@ export default function PhysicalScene({atlas,view,onSelect,onProgress,onError}:P
   const up=(e:PointerEvent)=>{if(!tap.up(e.pointerId,e.clientX,e.clientY)||!ready)return;const i=pick(e.clientX,e.clientY);if(i>=0)pickCallback.current(atlas.parts[i].id);};
   const cancel=(e:PointerEvent)=>{tap.cancel(e.pointerId);hovered.hidden=true;};
   for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.addEventListener(name,handler);
+  const cycleReadout=document.createElement('div');cycleReadout.className='physical-cycle-readout';cycleReadout.setAttribute('aria-label','Anatomical motion phases');
+  cycleReadout.innerHTML='<div><span>HEART</span><strong></strong><i><b></b></i></div><div><span>BREATH</span><strong></strong><i><b></b></i></div>';
+  el.appendChild(cycleReadout);const phaseText=cycleReadout.querySelectorAll('strong'),phaseBars=cycleReadout.querySelectorAll('b');
+  let lastPhysiology=physiology.current,lastFrame=performance.now(),heartPhase=0,breathPhase=0,flowPhase=0,gutPhase=0,swallowUntil=-1,displayTime=0,previousMotion=animate.current,previousIntake=body.carbIn+body.proteinIn+body.fatIn+body.waterIn;
+  const updateMotion=(dt:number)=>{
+   if(previousMotion!==animate.current){previousMotion=animate.current;dirty=true;}
+   const current=physiology.current,rates=motionRates(current),intake=current.carbIn+current.proteinIn+current.fatIn+current.waterIn;
+   if(intake>previousIntake+.001)swallowUntil=displayTime+9;if(intake<previousIntake)swallowUntil=-1;previousIntake=intake;
+   if(animate.current){displayTime+=dt;heartPhase=(heartPhase+dt*rates.heartHz)%1;breathPhase=(breathPhase+dt*rates.breathHz)%1;flowPhase+=dt*rates.bloodSpeed*.24*(.6+cardiacContraction(heartPhase)*1.2);gutPhase+=dt*.85;}
+   const breathing=respiratoryCycle(breathPhase);uniforms.heartContraction.value=cardiacContraction(heartPhase);uniforms.lungInflation.value=breathing.inflation*rates.lungExcursion;uniforms.gutPhase.value=gutPhase;uniforms.gutActivity.value=rates.digesting;
+   let count=0;const v=latest.current;
+   phaseText[0].textContent=heartPhase<.36?'Systole · ejecting':'Diastole · filling';phaseText[1].textContent=breathing.inhaling?'Inhaling':'Exhaling';
+   phaseBars[0].style.transform=`scaleX(${cardiacContraction(heartPhase)})`;phaseBars[1].style.transform=`scaleX(${breathing.inflation})`;
+   cycleReadout.hidden=v.preset==='surface'||v.preset==='skeleton'||v.preset==='nerves';
+   const counts={blood:0,air:0,food:0,portal:0,mix:0};
+   for(const route of routes){
+    if(visualData[route.part*4]<.5||route.kind==='portal'&&current.digestionRates.carbs+current.digestionRates.protein<.0001||route.kind==='mix'&&rates.digesting<.01||route.kind==='food'&&displayTime>swallowUntil||route.kind==='air'&&!['dissection','organs'].includes(v.preset)&&!v.isolate)continue;
+    const number=route.kind==='blood'||route.kind==='portal'?Math.max(2,Math.min(18,Math.round(route.length*45))):route.kind==='air'?7:4;
+    for(let n=0;n<number;n++){
+     let t=(flowPhase+n/number)%1,direction=1;
+     // The same parcels retrace smoothly during expiration; there is no phase-boundary jump.
+     if(route.kind==='air'){t=(breathing.inflation*.8+n/number)%1;direction=breathing.inhaling?1:-1;}
+     if(route.kind==='food'||route.kind==='mix')t=(displayTime*(route.kind==='food'?.2:.075)+n/number)%1;
+     for(let tail=0;tail<4&&count<4000;tail++){
+      const offset=tail*.0025/Math.max(.03,route.length)*(route.kind==='air'?breathing.flow:1);
+      const at=((t-direction*offset)%1+1)%1;route.curve.getPointAt(at,tracerPoint);
+      if(uniforms.slicePlane.value.dot(new T.Vector4(tracerPoint.x,tracerPoint.y,tracerPoint.z,1))<0)continue;
+      tracerPoint.toArray(tracerPositions,count*3);const fade=1-tail*.22;
+      tracerColors[count*3]=route.color.r*fade;tracerColors[count*3+1]=route.color.g*fade;tracerColors[count*3+2]=route.color.b*fade;count++;counts[route.kind]++;
+     }
+    }
+   }
+   tracerGeometry.setDrawRange(0,count);tracerGeometry.attributes.position.needsUpdate=true;tracerGeometry.attributes.color.needsUpdate=true;
+   el.dataset.motion=animate.current?'playing':'paused';el.dataset.tracers=String(count);for(const [kind,n] of Object.entries(counts))el.dataset[kind+'Tracers']=String(n);el.dataset.heartHz=rates.heartHz.toFixed(3);el.dataset.breathHz=rates.breathHz.toFixed(3);
+  };
   const draw=()=>{
-   frame=requestAnimationFrame(draw);if(!active||disposed)return;
+   const now=performance.now();frame=requestAnimationFrame(draw);
+   if(!active||disposed||!ready){lastFrame=now;return;}
+   if(gpuFence){if(gl.clientWaitSync(gpuFence,0,0)===gl.TIMEOUT_EXPIRED)return;gl.deleteSync(gpuFence);gpuFence=null;}
    const v=latest.current;
+   if(!dirty&&v===lastState&&previousMotion===animate.current&&lastPhysiology===physiology.current&&(!animate.current||now-lastRender<1000/(software?12:30)))return;
+   const dt=previousMotion?Math.min(1,(now-lastFrame)/1000):0;lastFrame=now;lastPhysiology=physiology.current;
    if(v!==lastState){
     lastState=v;atlas.parts.forEach((p,i)=>{visualData[i*4]=partOpacity(p,index,v);visualData[i*4+1]=v.selected.includes(p.id)?1:0;});visualTexture.needsUpdate=true;
     uniforms.dissect.value=v.preset==='dissection'&&!v.isolate?1:0;
@@ -114,13 +185,18 @@ export default function PhysicalScene({atlas,view,onSelect,onProgress,onError}:P
     if(v.cut==='sagittal')uniforms.slicePlane.value.set(-1,0,0,(v.slice-.5)*.85);
     if(v.cut==='coronal')uniforms.slicePlane.value.set(0,0,-1,(v.slice-.5)*.6);
     if(v.cut==='axial')uniforms.slicePlane.value.set(0,-1,0,v.slice*1.8);
-    for(const b of batches)b.mesh.visible=b.indices.some(i=>b.ghost?visualData[i*4]>.005&&visualData[i*4]<.995:visualData[i*4]>=.995);
+    let submittedTriangles=0;
+    for(const b of batches){let count=0;const visible=b.visible.array as Uint32Array;
+     for(const r of b.ranges){const opacity=visualData[r.part*4];if(b.ghost?opacity>.005&&opacity<.995:opacity>=.995){visible.set(b.source.subarray(r.offset,r.offset+r.count),count);count+=r.count;}}
+     b.mesh.visible=count>0;b.mesh.geometry.setDrawRange(0,count);b.visible.needsUpdate=true;submittedTriangles+=count/3;
+    }
+    el.dataset.submittedTriangles=String(submittedTriangles);
     el.dataset.visibleParts=String(atlas.parts.filter((p,i)=>visualData[i*4]>.005).length);el.dataset.preset=v.preset;
     const fitKey=`${v.region}-${v.angle}-${v.reset}-${v.focus}-${v.isolate}`;if(fitKey!==lastFit){lastFit=fitKey;fit();}dirty=true;
    }
-   controls.update();if(!dirty)return;renderer.render(scene,camera);dirty=false;
+   updateMotion(dt);controls.update();if(!dirty&&!animate.current)return;renderer.render(scene,camera);lastRender=now;if(canFence){gpuFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();}dirty=false;
   };resize();draw();
-  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();intersection.disconnect();controls.dispose();for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.removeEventListener(name,handler);geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());visualTexture.dispose();environment.dispose();renderer.dispose();renderer.domElement.remove();hovered.remove();};
+  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();intersection.disconnect();controls.dispose();for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.removeEventListener(name,handler);geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());visualTexture.dispose();environment?.dispose();if(gpuFence)gl.deleteSync(gpuFence);renderer.dispose();renderer.domElement.remove();hovered.remove();cycleReadout.remove();};
  },[atlas,onProgress,onError]);
  return <div className="physical-canvas" ref={host} data-testid="physical-scene"/>;
 }

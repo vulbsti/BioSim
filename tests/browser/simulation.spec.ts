@@ -1,5 +1,6 @@
 import {test,expect} from '@playwright/test';
 import {readFile} from 'node:fs/promises';
+test.use({reducedMotion:'reduce'});
 
 test('meal, worker time, chart, hormone inspection, comparison and export are connected',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
@@ -34,7 +35,7 @@ test('brain connections, anatomy link and model disclosure work',async({page})=>
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
  await page.getByRole('tab',{name:'Brain vessels'}).click();await page.getByRole('button',{name:'Inspect L PCA',exact:true}).click();await expect(page.locator('.sim-inspector h2')).toHaveText('L PCA');
  await expect(page.locator('.brain-connections button')).toHaveCount(4);
- await page.locator('.anatomy-link').first().click();await expect(page).toHaveURL(/#anatomy/);await expect(page.locator('.structure-title').first()).toContainText(/posterior cerebral/i);
+ await page.locator('.sim-inspector .anatomy-link').first().click();await expect(page).toHaveURL(/#anatomy/);await expect(page.locator('.structure-title').first()).toContainText(/posterior cerebral/i);
  await expect(page.locator('.loading')).toHaveCount(0,{timeout:75000});await expect(page.locator('.scene canvas')).toBeVisible();
  await page.getByRole('button',{name:'Back to physiology lab',exact:false}).click();await expect(page).not.toHaveURL(/#anatomy/);
  await page.getByRole('button',{name:'Model & sources'}).click();await expect(page.getByRole('dialog')).toBeVisible();await page.keyboard.press('Escape');await expect(page.getByRole('dialog')).toHaveCount(0);expect(errors).toEqual([]);
@@ -67,8 +68,8 @@ test('transport inventory, local gradients, oxygen rates and cumulative exports 
 
 test('brain vessel coverage exposes unresolved meshes and filters by source name',async({page})=>{
  await page.goto('/');await page.getByRole('tab',{name:'Brain vessels'}).click();await page.locator('.brain-coverage summary').click();
- await expect(page.locator('.coverage-counts')).toContainText('10unresolved');
- await page.getByLabel('Vessel coverage status').selectOption('unresolved');await expect(page.locator('.coverage-list article')).toHaveCount(10);
+ await expect(page.locator('.coverage-counts')).toContainText('31unresolved');
+ await page.getByLabel('Vessel coverage status').selectOption('unresolved');await expect(page.locator('.coverage-list article')).toHaveCount(31);
  await page.getByLabel('Find a source brain vessel').fill('central sulcus');await expect(page.locator('.coverage-list article')).toHaveCount(4);
- await expect(page.getByRole('button',{name:/Inspect all 151 source vessel candidates in 3D/})).toBeVisible();
+ await expect(page.getByRole('button',{name:/Inspect all 178 source vessel candidates in 3D/})).toBeVisible();
 });
