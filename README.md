@@ -12,6 +12,12 @@ Pause, accelerate, or advance the simulation; schedule inputs; fork a comparison
 
 **This is an exploratory model, not a completed or biologically validated whole-human simulation.** Hormones currently use relative activities, distal vessels are grouped, and several mechanisms remain proxies. Read [the model equations, exact coverage, limitations, and remaining work](docs/PHYSIOLOGY_MODEL.md). The linked public demo predates these local changes until they are deployed.
 
+## Direction: whole-body biological simulation
+
+The atlas (BodyParts3D 4.0 reference: 2,234 meshes, 15 systems, 3,432 concepts) is the spatial anchor. The `simulate` branch adds an exploratory organ-and-hormone lab (23 blood/tissue/lymph pools, 5 transported species, 31 relative hormone activities, 34-node/55-path cerebral schematic, fixed 1-second Web Worker steps with conserved, receipted transfers). Long term, this grows into a molecular-resolution human simulation where every interaction — transport, reaction, secretion, clearance — is a registered, conservable, provenance-bearing ledger entry.
+
+Read [the biological simulation vision and roadmap](docs/BIOLOGICAL_SIMULATION.md) for what is done, what is still proxy, and the phase order (close organ-scale gaps → register vasculature → reaction registry with units → cellular/molecular decomposition → spatial-cell binding → calibration). Read [the model equations, exact coverage, and limitations](docs/PHYSIOLOGY_MODEL.md) before interpreting any simulated number. Numerical tests are not biological validation; nothing here is a clinical or predictive tool.
+
 ## Explore
 
 - Orbit, zoom, and select structures directly on the body.
