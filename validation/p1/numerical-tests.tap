@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: physical units convert explicitly and reject relative activities, dimensions and nonfinite input
+ok 1 - physical units convert explicitly and reject relative activities, dimensions and nonfinite input
+  ---
+  duration_ms: 1.938876
+  type: 'test'
+  ...
+# Subtest: compilation rejects unbalanced chemistry, wrong kinetics, duplicate ownership and unauthorized ports
+ok 2 - compilation rejects unbalanced chemistry, wrong kinetics, duplicate ownership and unauthorized ports
+  ---
+  duration_ms: 4.700717
+  type: 'test'
+  ...
+# Subtest: first-order clearance matches the exponential analytic solution and closes its ledger
+ok 3 - first-order clearance matches the exponential analytic solution and closes its ledger
+  ---
+  duration_ms: 85.348584
+  type: 'test'
+  ...
+# Subtest: closed mixing matches analytic two-compartment transport and equalizes concentrations
+ok 4 - closed mixing matches analytic two-compartment transport and equalizes concentrations
+  ---
+  duration_ms: 38.73566
+  type: 'test'
+  ...
+# Subtest: finite reversible receptor binding agrees with its analytic equilibrium and conserves both moieties
+ok 5 - finite reversible receptor binding agrees with its analytic equilibrium and conserves both moieties
+  ---
+  duration_ms: 442.13669
+  type: 'test'
+  ...
+# Subtest: high rates trigger internal refinement while retaining positivity and analytic agreement
+ok 6 - high rates trigger internal refinement while retaining positivity and analytic agreement
+  ---
+  duration_ms: 2.948229
+  type: 'test'
+  ...
+# Subtest: a coupled pulse shows delayed binding; receptor and clearance perturbations have causal effects
+ok 7 - a coupled pulse shows delayed binding; receptor and clearance perturbations have causal effects
+  ---
+  duration_ms: 614.067281
+  type: 'test'
+  ...
+# Subtest: chemical checkpoint resume is deterministic; invalid state and model versions are rejected before mutation
+ok 8 - chemical checkpoint resume is deterministic; invalid state and model versions are rejected before mutation
+  ---
+  duration_ms: 16.93892
+  type: 'test'
+  ...
+# Subtest: insulin no-feedback implementation reproduces independent Radau outputs and timestep refinement
+ok 9 - insulin no-feedback implementation reproduces independent Radau outputs and timestep refinement
+  ---
+  duration_ms: 652.094582
+  type: 'test'
+  ...
+# Subtest: insulin dose modifies the computed cascade and source pool invariants hold
+ok 10 - insulin dose modifies the computed cascade and source pool invariants hold
+  ---
+  duration_ms: 323.520802
+  type: 'test'
+  ...
+# Subtest: camera/playhead observations never alter trajectories and replay packages reject legacy or altered contracts
+ok 11 - camera/playhead observations never alter trajectories and replay packages reject legacy or altered contracts
+  ---
+  duration_ms: 132.525786
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2637.125726

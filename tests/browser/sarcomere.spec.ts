@@ -1,0 +1,44 @@
+import {test,expect} from '@playwright/test';
+import {readFile} from 'node:fs/promises';
+
+test('sarcomere sliding renders, picks, preserves filament length readouts and restores saved state',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/#tissue');
+ await page.getByRole('navigation',{name:'Anatomical scale'}).getByRole('button').nth(3).click();
+ const scene=page.getByTestId('tissue-scene'),canvas=scene.locator('canvas');
+ await expect(scene).toHaveAttribute('data-entities','6');await expect(scene).toHaveAttribute('data-ready','true');
+ await page.getByRole('button',{name:'Front specimen view',exact:true}).click();
+ await page.getByLabel('Sarcomere length',{exact:true}).fill('3.2');
+ await expect(page.getByLabel('H zone length',{exact:true})).toHaveText('1.20 µm');
+ await expect(scene).toHaveAttribute('data-sarcomere-length',String(3.2e-6));
+ const extended=await canvas.screenshot();
+ await page.getByLabel('Sarcomere length',{exact:true}).fill('2');
+ await expect(page.getByLabel('H zone length',{exact:true})).toHaveText('0.00 µm');
+ await expect(page.getByLabel('Half I band length',{exact:true})).toHaveText('0.20 µm');
+ await expect(page.getByLabel('A band length',{exact:true})).toHaveText('1.60 µm');
+ await expect(scene).toHaveAttribute('data-sarcomere-length',String(2e-6));
+ expect((await canvas.screenshot()).equals(extended)).toBe(false);
+ await page.getByLabel('Inspect tissue structure').selectOption('pilot-thin-left');
+ const box=await canvas.boundingBox();await canvas.click({position:{x:box!.width/2,y:box!.height/2}});
+ await expect(page.getByLabel('Inspect tissue structure')).not.toHaveValue('pilot-thin-left');
+ await page.getByLabel('Inspect tissue structure').selectOption('pilot-z-right');
+ await page.getByLabel('Tissue geometry detail').selectOption('context');await expect(scene).toHaveAttribute('data-ready','true');
+ await expect(scene).toHaveAttribute('data-sarcomere-length',String(2e-6));
+ const download=page.waitForEvent('download');await page.getByRole('button',{name:'Save tissue view',exact:true}).click();
+ const file=await download,path=(await file.path())!,recording=JSON.parse(await readFile(path,'utf8'));
+ expect(recording.sarcomereLength).toBe(2e-6);expect(recording.level).toBe('sarcomere');
+ await page.getByRole('button',{name:'Reset length',exact:true}).click();
+ await page.getByLabel('Import tissue view').setInputFiles(path);
+ await expect(page.getByLabel('Sarcomere length value')).toHaveText('2.00 µm');
+ await expect(page.getByLabel('Inspect tissue structure')).toHaveValue('pilot-z-right');
+ const before=await canvas.screenshot();await page.getByLabel('Tissue section plane').selectOption('cross');await expect(scene).toHaveAttribute('data-section','cross');expect((await canvas.screenshot()).equals(before)).toBe(false);
+ expect(errors).toEqual([]);
+});
+for(const width of [320,390])test(`sarcomere controls and four scales fit ${width}px`,async({page})=>{
+ await page.setViewportSize({width,height:844});await page.goto('/#tissue');
+ await page.getByRole('navigation',{name:'Anatomical scale'}).getByRole('button').nth(3).click();
+ await expect(page.getByTestId('tissue-scene')).toHaveAttribute('data-entities','6');
+ await page.getByLabel('Sarcomere length',{exact:true}).fill('2.1');
+ await expect(page.getByLabel('Sarcomere length value')).toHaveText('2.10 µm');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+});

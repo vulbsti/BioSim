@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "auditedOn": "2026-09-09",
+  "sourceRevision": "af3c240c4ae3beaf1ea89573aea0b6ff5d21c220",
+  "invocation": "npx tsx scripts/audit-multiscale-baseline.ts",
+  "method": "Imported live atlas assembly and simulation modules; constructed baseline state; reran cerebral candidate classification. No time integration, rendering, anatomical review or biological validation was performed for this audit. Source hashes identify working-tree inputs independently of the commit.",
+  "modelVersion": "atlas-physiology-0.2.0",
+  "geometry": {
+    "meshes": 2273,
+    "namedConcepts": 3457,
+    "triangles": 2548238,
+    "meshesByDisplaySystem": {
+      "skeletal": 296,
+      "sensory": 45,
+      "nervous": 144,
+      "connective": 40,
+      "muscular": 397,
+      "arterial": 639,
+      "endocrine": 11,
+      "venous": 422,
+      "digestive": 106,
+      "cardiac": 23,
+      "respiratory": 124,
+      "lymphatic": 3,
+      "integumentary": 5,
+      "reproductive": 12,
+      "urinary": 6
+    },
+    "curatedBrainGroupMeshes": 60,
+    "scope": "Mixed-version BodyParts3D adult male reference assembly. Display-system counts are neither anatomical completeness nor verified topology."
+  },
+  "simulation": {
+    "compartments": 23,
+    "compartmentsByKind": {
+      "blood": 13,
+      "tissue": 9,
+      "lymph": 1
+    },
+    "transportedSubstances": [
+      "glucose",
+      "aminoAcids",
+      "lipids",
+      "oxygen",
+      "carbonDioxide"
+    ],
+    "relativeEndocrineSignals": [
+      "insulin",
+      "glucagon",
+      "epinephrine",
+      "norepinephrine",
+      "crh",
+      "acth",
+      "cortisol",
+      "trh",
+      "tsh",
+      "thyroid",
+      "adh",
+      "renin",
+      "angiotensin",
+      "aldosterone",
+      "anp",
+      "gastrin",
+      "secretin",
+      "cck",
+      "glp1",
+      "ghrelin",
+      "leptin",
+      "melatonin",
+      "gh",
+      "igf1",
+      "gnrh",
+      "lh",
+      "fsh",
+      "testosterone",
+      "inhibin",
+      "pth",
+      "calcitriol"
+    ],
+    "digestiveEnzymeProxies": [
+      "amylase",
+      "protease",
+      "lipase",
+      "pepsin"
+    ]
+  },
+  "brain": {
+    "schematicNodes": 34,
+    "schematicPaths": 55,
+    "vascularCandidateMeshes": 178,
+    "candidateCounts": {
+      "exact-name link": 83,
+      "grouped territory": 62,
+      "unresolved": 31,
+      "adjacent circulation": 2
+    },
+    "scope": "Arterial / venous meshes intersecting the source brain bounding box, plus named carotid / vertebral, cerebral, communicating, and cerebellar vessels. Bounding-box overlap is a candidate rule, not proof of intracranial anatomy.",
+    "labelAssociationIsVerifiedConnectivity": false
+  },
+  "sourceHashes": {
+    "public/models/atlas.json": "c359f4bcd2cba90b7411d66d5e9fc04dc81294d46cd5c1e8b212c824f2e5bbee",
+    "public/models/expansion.json": "976e8edfd534e44650952f14fe1adc8fc0966b527bba151e115666bfb321fe97",
+    "public/models/lung-surfaces.json": "92273f4fdb3e9778ba21cff3c1e16172507d2bb4456b41be88667460680ebe53",
+    "app/atlas-loader.ts": "6646cd56fa1ad2b7bb01d08aa0c67c1e8af616a7b356d2cf735b36a7576d355b",
+    "app/physical/anatomy-view.ts": "3fde631a8becb569f140181c9563b5469b3a25e7e7c41b9c671b31b942339bb0",
+    "app/physical/motion.ts": "08ab0ecd3c8bcdfe1e6d92124e2ed9f77733f469dc2c6f2ce7003afc1bf0645d",
+    "app/physical/flow-routes.ts": "2e0b8d7cb0c14afa496572fcf3e792650cfddd5f4cbe3d2c6dd3e6de482e6b91",
+    "app/simulation/types.ts": "07e84000bd27451c027fe8bd466ccb16ad35f3fdc564ffc5413857ffe78302b8",
+    "app/simulation/transport.ts": "f4dcc339ddb989a6d98f6cb12398a3fc9ca3c86f00ed2541909db93fdb5745e6",
+    "app/simulation/endocrine.ts": "5cfa7d92d2fedc44c487081a2f89b096da64938409d5c22642087b78c69aa632",
+    "app/simulation/engine.ts": "d2a293367f02ad00a9fdbfbe7edda3e0d2a57c2e506b0586a1fcbd84c0f69e49",
+    "app/simulation/brain.ts": "e0fb53d616541f6c66b5d348d30a1277648bf5a538e3c0d58e9611ab3e2b8fcb",
+    "app/simulation/brain-coverage.ts": "e2b719b02733b71d0fdf1beb1455f62737a50356d6fea2bac94641391abb804c",
+    "scripts/audit-multiscale-baseline.ts": "fef31bf769a458ed4537d56939ffd9d466f612912eb85ce8da62a6efcf97262a"
+  }
+}

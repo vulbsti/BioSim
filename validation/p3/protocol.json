@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "lockedOn": "2026-09-13",
+  "experiment": "E04a-closed-pulsatile-insulin-pilot",
+  "status": "engineering_protocol_before_implementation",
+  "scope": "Ten well-mixed compliant blood compartments, prescribed left/right pump waveforms, portal routing, plasma insulin transport, reversible muscle interstitial exchange and explicit clearance ledgers. The archived insulin pathway observes the local interstitial input. No human waveform calibration, gas chemistry, glucose uptake, valve dynamics or microscopic flow field is claimed.",
+  "units": {"time": "s", "bloodVolume": "L", "pressure": "mmHg", "flow": "L/s whole blood", "insulinAmount": "mol", "insulinConcentration": "mol/L plasma or interstitial fluid", "hematocrit": "dimensionless, spatially constant"},
+  "conservation": {"bloodVolumeL": 5, "interstitialVolumeL": 0.5, "volumeAbsoluteToleranceL": 1e-9, "insulinAbsoluteToleranceMol": 1e-17, "insulinRelativeTolerance": 1e-8, "negativeStateTolerance": 1e-20},
+  "referenceTests": [
+    "Uniform scalar concentration transported with changing blood volume remains uniform when sources, sinks and exchange are disabled.",
+    "All passive edges use signed pressure differences and upwind source concentrations; reverse flow conserves material.",
+    "The prescribed pump waveform integrates to 5 L/min over a complete 72 bpm beat within 0.05 percent.",
+    "Closed blood volume and injected = circulating + interstitial + cleared insulin hold at every sampled time.",
+    "Zero pulse produces zero physical insulin; zero exchange prevents muscle interstitial exposure.",
+    "Removing hepatic clearance increases arterial insulin exposure for the same portal pulse.",
+    "Portal injection reaches liver before arterial peak; venous injection passes the pulmonary loop before systemic delivery.",
+    "Halving 0.01 s integration step changes sampled arterial pressure by at most 0.1 mmHg, peak insulin concentrations by at most 0.2 percent or 0.01 pM, and surface GLUT4 by at most 0.01 percentage point.",
+    "Observation, anatomical scale and replay do not change the numerical trajectory."
+  ],
+  "humanValidation": {"status": "not_evaluated", "reason": "These compartment volumes, resistances, compliances and clearance coefficients are declared synthetic engineering parameters. Anatomy references justify route names, not fitted rates or waveform agreement."},
+  "references": [
+    {"url": "https://models.physiomeproject.org/e/43/MainWindKessel.cellml/view", "use": "Primary model repository example of lumped compliant circulation. This implementation is not a transcription or reproduction of that model."},
+    {"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7824884/", "use": "Primary rat tracer experiment motivates keeping liver, kidney and muscle clearance/exposure distinct. Its measurements are not transferred as human parameters."},
+    {"path": "models/sedaghat2002/manifest.json", "use": "Pinned source kinetics used only as an open-input local observer, not a physical receptor amount ledger or human validation."}
+  ]
+}

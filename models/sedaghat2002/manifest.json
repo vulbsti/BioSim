@@ -1,0 +1,24 @@
+{
+  "id": "sedaghat2002-jsim-no-feedback-1",
+  "sourceURL": "https://www.imagwiki.nibib.nih.gov/physiome/jsim/models/webmodel/NSR/sedaghat2002insulinsignal",
+  "paperDOI": "10.1152/ajpendo.00571.2001",
+  "downloadedOn": "2026-09-10",
+  "variant": "FEEDBACK=0; retain archival parameters without fitting",
+  "sourceImplementation": "JSim model 0166; Maris Lemba 2003, BEJ revision 2010-07-14",
+  "speciesAndPreparation": "Mixed experimental preparations, including 3T3-L1 adipocytes, rat liver/endosomes and COS-7 cells. Not a human skeletal-muscle calibration.",
+  "license": "Source notice: Copyright (C) 1999-2010 University of Washington. Academic use is unrestricted. Software may be copied so long as this copyright notice is included. Full notice retained in source files.",
+  "adaptations": [
+    "No-feedback equations transcribed to TypeScript and independent Python reference",
+    "First 12 state variables converted from M to pM for numerical conditioning",
+    "Source time remains minutes; display time is seconds",
+    "Feedback variant is excluded; archived source notes it does not reproduce Figures 8/9 without further fitting",
+    "Original source synthesis/degradation and fixed extracellular insulin boundary retained; no claim of complete mass or energy conservation"
+  ],
+  "files": {
+    "source/sedaghat2002.mod": "b9bb2f4202d20f8d0b40d4d388a20f55c25ffe5f626105642fe0139a98554125",
+    "source/sedaghat2002.proj": "2a42b4ea5ae24f9ed06645075fd802b532e73a43ccc5f07c5dc520b043eba603",
+    "source/digitized-data.json": "2f67f5d1ee1a080ff88ab94b5f1942572ee7633ce4d43751db7ce22e0a24c619",
+    "parameters.json": "180648b8bb3d5dd148f4b45229eee7011b76ec1881ec74da6ac6c1dd320468a6",
+    "parameter-provenance.json": "92e2d7a1a05f47434bad286c8887d19d81db5f79b8c2a2f141a045d9fc37e654"
+  }
+}

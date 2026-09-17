@@ -1,5 +1,7 @@
 # Biological Simulation: from Human Atlas to Whole-Body Molecular Simulation
 
+**Execution update, 2026-09-09:** [MULTISCALE_EXECUTION_PLAN.md](MULTISCALE_EXECUTION_PLAN.md) supersedes the future phase order in §12 with bounded goals, Blender assets, functional neural circuits, scale-consistent state and validation throughout implementation. This document preserves the earlier design rationale; its historical inventory and deferred-work descriptions should not override the current model documentation or [fresh baseline audit](multiscale-baseline-audit.json).
+
 **Date:** 2026-09-08
 **Audience:** Engineers joining the project, reviewers
 **Companion to:** `docs/PHYSIOLOGY_MODEL.md` (authoritative on the implemented model),

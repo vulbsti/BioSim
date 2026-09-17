@@ -1,0 +1,309 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-12T18:55:25.900Z",
+  "evidence": "Executed browser checks against a fixed production build. Desktop and emulated viewport evidence; no physical-device frame-time or GPU-memory claim.",
+  "invocation": "npx playwright test --config playwright.production.config.ts --reporter=line,json > outputs/verification/p2/full-browser.log 2>&1",
+  "exitCode": 0,
+  "playwrightVersion": "1.63.0",
+  "workers": 1,
+  "server": {
+    "command": "npm run build && npx vite preview --host 127.0.0.1 --port 4317 --strictPort",
+    "url": "http://127.0.0.1:4317",
+    "reuseExistingServer": false
+  },
+  "stats": {
+    "startTime": "2026-09-12T18:51:16.527Z",
+    "duration": 175588.054,
+    "expected": 23,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "file": "molecular.spec.ts",
+      "name": "molecular lab runs local binding, changes visible state and preserves a replay package",
+      "status": "passed",
+      "durationMs": 1726,
+      "retries": 0
+    },
+    {
+      "file": "molecular.spec.ts",
+      "name": "changing receptor availability recomputes the model and invalid imports preserve the current experiment",
+      "status": "passed",
+      "durationMs": 789,
+      "retries": 0
+    },
+    {
+      "file": "molecular.spec.ts",
+      "name": "published insulin pulse drives GLUT4 and its withdrawal precedes recovery",
+      "status": "passed",
+      "durationMs": 1093,
+      "retries": 0
+    },
+    {
+      "file": "molecular.spec.ts",
+      "name": "molecular controls fit 390px and return to the physiology lab",
+      "status": "passed",
+      "durationMs": 1135,
+      "retries": 0
+    },
+    {
+      "file": "molecular.spec.ts",
+      "name": "molecular controls fit 320px and return to the physiology lab",
+      "status": "passed",
+      "durationMs": 1395,
+      "retries": 0
+    },
+    {
+      "file": "physical-anatomy.spec.ts",
+      "name": "anatomical pixels move, pause freezes them, and breathing has live air tracers",
+      "status": "passed",
+      "durationMs": 50194,
+      "retries": 0
+    },
+    {
+      "file": "physical-anatomy.spec.ts",
+      "name": "meal input starts swallowing and digestion, then portal absorption appears",
+      "status": "passed",
+      "durationMs": 45476,
+      "retries": 0
+    },
+    {
+      "file": "physical-anatomy.spec.ts",
+      "name": "reduced motion, thyroid isolation, section controls and mobile expansion work",
+      "status": "passed",
+      "durationMs": 4818,
+      "retries": 0
+    },
+    {
+      "file": "physical-anatomy.spec.ts",
+      "name": "catalogue failure produces a visible error instead of an endless loading state",
+      "status": "passed",
+      "durationMs": 412,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "meal, worker time, chart, hormone inspection, comparison and export are connected",
+      "status": "passed",
+      "durationMs": 3716,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "scheduled input can be cancelled and playback pauses",
+      "status": "passed",
+      "durationMs": 2802,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "brain connections, anatomy link and model disclosure work",
+      "status": "passed",
+      "durationMs": 28915,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "responsive controls and no page overflow at 390x844",
+      "status": "passed",
+      "durationMs": 1579,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "responsive controls and no page overflow at 320x568",
+      "status": "passed",
+      "durationMs": 1477,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "responsive controls and no page overflow at 844x390",
+      "status": "passed",
+      "durationMs": 2777,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "transport inventory, local gradients, oxygen rates and cumulative exports agree",
+      "status": "passed",
+      "durationMs": 2566,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "brain vessel coverage exposes unresolved meshes and filters by source name",
+      "status": "passed",
+      "durationMs": 613,
+      "retries": 0
+    },
+    {
+      "file": "tissue.spec.ts",
+      "name": "tissue scales and geometry detail preserve entity selection, signaling time and saved view",
+      "status": "passed",
+      "durationMs": 2603,
+      "retries": 0
+    },
+    {
+      "file": "tissue.spec.ts",
+      "name": "3D picking, exposed interiors and cross sections change rendered anatomy",
+      "status": "passed",
+      "durationMs": 3496,
+      "retries": 0
+    },
+    {
+      "file": "tissue.spec.ts",
+      "name": "signaling overlay moves through time, pauses, and rejects invalid replay without replacing the view",
+      "status": "passed",
+      "durationMs": 8306,
+      "retries": 0
+    },
+    {
+      "file": "tissue.spec.ts",
+      "name": "tissue inspection and controls fit 320px",
+      "status": "passed",
+      "durationMs": 2508,
+      "retries": 0
+    },
+    {
+      "file": "tissue.spec.ts",
+      "name": "tissue inspection and controls fit 390px",
+      "status": "passed",
+      "durationMs": 3012,
+      "retries": 0
+    },
+    {
+      "file": "tissue.spec.ts",
+      "name": "failed tissue asset produces a visible error with usable navigation",
+      "status": "passed",
+      "durationMs": 629,
+      "retries": 0
+    }
+  ],
+  "rawReport": {
+    "path": "outputs/verification/p2/browser-report.json",
+    "sha256": "efb459a4e0eb945f9e41457d66c8592bc689237db05254afe77652389b509d56"
+  },
+  "executionLog": {
+    "path": "outputs/verification/p2/full-browser.log",
+    "sha256": "e84170616ed6e037077ffbce1a32564cfe2dda7e03a06ec2c480d3d86ddd27c0"
+  },
+  "sourceHashes": {
+    "app/tissue/TissueExplorer.tsx": "33ab4709ad91001a8254f87d203891c3a7fd20f35c54b2bff240e80ff9ac0ff3",
+    "app/tissue/TissueScene.tsx": "76949ae05d286aff8068a84a5515f67915139ea74cf8abb44305e96c83438a49",
+    "app/tissue/assets.ts": "f5d6761d2288549447a40d6eb5c80ccb30010955567cd37339c9424bc664887c",
+    "app/tissue/recording.ts": "29aa6ca49c7be8cc5c9d6435daf486a9a3b74f958b2fde564a70367f87e915e0",
+    "app/tissue/tissue.css": "369381c0e662f6b0bab2d0dc9496474673beeef4fb15fbe26c57d834986822e7",
+    "app/molecular/MolecularLab.tsx": "579736e644f6374a05404e48b9114e13b0d88160445a7436ef3195b44db76775",
+    "app/molecular/MolecularScene.tsx": "32e3ea631211e9b39845d56b371a06581bf970fc79904f3851dcdd7dc36fabc8",
+    "app/molecular/ResponseChart.tsx": "fb7e6e28b9c454103203718147f5e5e35eb55bca859bc1585c2b5d907dce2763",
+    "app/molecular/experiments.ts": "ca5c9656517aa30532fe5095b0727ad11b255d920baec63ba50c0a40d6165778",
+    "app/molecular/mechanism.worker.ts": "6e2ebb9bd44b3fb01e782edc117b9a093c7440e59c5700927a03450991254554",
+    "app/molecular/molecular.css": "11a9e1162157cc39994a1193d186e5c7a3a08004785c38460eb595ce49d419b1",
+    "app/molecular/sedaghat.ts": "95b5fe339e3e6cc25e4db501a2438cbfe01a47b42b7d2b07c313666aaea2e0e6",
+    "app/globals.css": "9e0c61952b583e8b0371328977daca00b64dcdaa7677913a2162ef5dcb642bf8",
+    "app/physical/PhysicalScene.tsx": "1862b3baacc15798bdc24cde512289c6bdebf2a1da5887548a7f203e680e21ce",
+    "app/simulation/Simulator.tsx": "7448876900fb0c0f130f969829c798f820f1dab9cd390e251f50614b310564d6",
+    "app/simulation/simulation.css": "8ea55a915abaef1b5f668d2218177208ccf546d3ec544c496f523027bfb8c157",
+    "web/main.tsx": "96021bbba922b9e0953980ed32c47beebdb500dfeafc362198dd1024ee9cdd54",
+    "tests/browser/molecular.spec.ts": "f6b5f323b6b354a3e44761960ca09d1dd95a727b0a3f38db87bf875b3d587e3d",
+    "tests/browser/physical-anatomy.spec.ts": "27392f306445fa24391136043552be8503a98bcf2d9a3b85a0f7c32d6958eb6a",
+    "tests/browser/simulation.spec.ts": "5785fce4d36115df369f8b4c0ae3b42aa2618e86cb693d2f720063fb22520f9a",
+    "tests/browser/tissue.spec.ts": "447c1279063c4d0e749de7969cec8735f9f22cf1a9597999b3a84fbe024ce2e7",
+    "playwright.config.ts": "5828604dab1ece27208888787de3f322ca0643f8a952bf5b1e7d7a5b83aeb7c7",
+    "playwright.production.config.ts": "a372aad1fec320df9aa4fcbeb534b89c4a4c84c648c15d752c50ea9ea3f8ec64",
+    "public/models/multiscale/muscle-pilot/manifest.json": "4eb278a64ddc30fbd55c8a20f6476a460796f5810c621c31e6f8f6de678d20ff",
+    "scripts/capture-tissue.mjs": "56e438f975b5239a3e10739c009534bf6d2fcb4a0f023d9d10f1e8a47c2b1de9"
+  },
+  "buildAssets": {
+    "dist/index.html": "f20d095d5084969f26240860848b6a6c153335a6d12641f6f11f1a6db16076c9",
+    "dist/assets/MolecularLab-1QnOowHT.js": "a45e7562e64c173dd3a248b22815432f0ab9e546d0f683693ca1eef647ee32fe",
+    "dist/assets/MolecularLab-PBX8knRT.css": "70a72bee32a377edcbed6f55651d9341f7fb32d8d6d2a9d4bafd075787b3bcf2",
+    "dist/assets/PhysicalScene-CSSUqQNG.js": "f2d195d76960d7d7ac1711de3d7a9121f617a0aba1153e9476855d28c7d648df",
+    "dist/assets/TissueExplorer-BFU4oXR3.js": "f73c9b536a45c034f344fbb1d2d09b6dd74133ee8c842fa03a32df044da64783",
+    "dist/assets/TissueExplorer-CvibliET.css": "68c79d5f4015b5b69789f60b39ffa5bc30185a96529d6628485f0ae66994049e",
+    "dist/assets/experiments-C9SbfIfb.js": "ae8e25ea8de5d0b6a5a8c950a0b39b101c5c651a7a686afa1c631a8723778959",
+    "dist/assets/index-ArfGBzmf.css": "cdd2cc60e3370a669b6ec0ddf7dd6cad0c19aa7ef8c9e74aa42a5fd1fc086077",
+    "dist/assets/index-DmiEQKEg.js": "829cf82285a7bfce227f3d2f6e926d52659e34024272ee47ce952832ea6e5265",
+    "dist/assets/mechanism.worker-DpfYDgFd.js": "34c35bf18e3ed2e9c47173181c839cdbad157b74971347215d0677d35d8aef61",
+    "dist/assets/model-download-Bq6OtXMq.js": "2dfe60a77d687cec4ab1005037d58c41deb439adebb4605914ef68811b8ab6fc",
+    "dist/assets/page-CxipNCvf.js": "1598d6e2167eb65125868f26572dbf60447220b03134224281bbcf4f42cc1c52",
+    "dist/assets/pointer-tap-tgTb1Lq1.js": "888a0cfe8acbc86374cdf16e25dd11337f15c43e4b637652613cdc0f11437495",
+    "dist/assets/simulation.worker-BiueXn_5.js": "f0bfc99440f386f7de6b5147f7f5c9f84f9dfe703d749a948d8566d7f4d3c440"
+  },
+  "assetReceipt": {
+    "path": "validation/p2/asset-verification.json",
+    "sha256": "d8da780abaaf7a2368596103355004b6bedefd263ca5a893a64b70956081d21f"
+  },
+  "priorRuns": "Initial tissue browser run failed in three test range inputs using .5/.6, corrected to browser-accepted 0.5/0.6. All six tissue checks then passed; the final full 23-test suite passes without retries.",
+  "limitations": [
+    "Representative microstructure, not donor registration or anatomical expert validation",
+    "GLUT4 overlay observes a mixed-preparation source model; no whole-body uptake coupling",
+    "No contractile deformation or physical microscopic blood flow",
+    "Brain package and physical-device performance evidence remain open"
+  ],
+  "capture": {
+    "recordedAt": "2026-09-12T18:55:03.965Z",
+    "invocation": "node scripts/capture-tissue.mjs http://localhost:3016",
+    "baseURL": "http://localhost:3016",
+    "scope": "Actual browser recording of Blender-authored source anatomy and representative microscopic geometry. GLUT4 brightness observes the archived mixed-preparation insulin model; no simulated contraction, cell trafficking or microvascular flow is claimed.",
+    "viewport": {
+      "width": 1440,
+      "height": 1080
+    },
+    "playbackSpeed": 120,
+    "wallPlaybackSeconds": 16,
+    "finalPlayhead": "15:18",
+    "finalGLUT4": "39.3 % pool",
+    "browser": "153.0.8010.12",
+    "pageErrors": [],
+    "mobileOverflow": false,
+    "sourceScriptSHA256": "56e438f975b5239a3e10739c009534bf6d2fcb4a0f023d9d10f1e8a47c2b1de9",
+    "manifestSHA256": "4eb278a64ddc30fbd55c8a20f6476a460796f5810c621c31e6f8f6de678d20ff",
+    "videoInfo": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1440,
+          "height": 1080
+        }
+      ],
+      "format": {
+        "duration": "35.440000"
+      }
+    },
+    "conversion": {
+      "executable": "ffmpeg",
+      "arguments": [
+        "-y",
+        "-loglevel",
+        "error",
+        "-i",
+        "/home/vulbsti/proj/human_atlas/outputs/verification/p2/tissue-explorer.webm",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "fast",
+        "-crf",
+        "22",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "/home/vulbsti/proj/human_atlas/outputs/verification/p2/tissue-explorer.mp4"
+      ]
+    },
+    "artifacts": {
+      "tissue-explorer.webm": "1e7b985295c6c17a1dde6bfd085a12b16bb2eb082f6940c2b2f4a3929870ced2",
+      "tissue-explorer.mp4": "02c5d03147d78ad4bcda23c24f1f930089080f82da46d8b329b124523ae1f236",
+      "muscle-desktop.png": "111867a9996432f545b32cd65cacae0ae969e03a42d9f41b5b4aed130bf4b85a",
+      "fascicle-desktop.png": "047f4a2e99ad122d5e893ff712f5c45212a5e795a581f56ba1d5545f6d630c5e",
+      "fiber-cut-end-desktop.png": "60424527812e8afdbb589ccce4a47fc0607f401744c990339d5c752ce579be52",
+      "fiber-signaling-desktop.png": "a91fc3c1c0e0b930cf519c4f9aaa2fdc9023458b71a71ae77823faa41d83bbf4",
+      "fiber-mobile.png": "682e36b3203d18e7a215d40936752ceb7fdc45ab673f8974e6e967222e7418d2"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {inspectTissueGLB} from './lib/inspect-tissue.mjs';
+import {LEVELS,validateManifest,type TissueManifest} from '../app/tissue/assets';
+const root=new URL('../',import.meta.url),path=(p:string)=>new URL(p,root),sha=async(p:string)=>createHash('sha256').update(await readFile(path(p))).digest('hex');
+const m=JSON.parse(await readFile(path('public/models/multiscale/muscle-pilot/manifest.json'),'utf8')) as TissueManifest&{provenance:{generatorSHA256:string;specSHA256:string;sourceHashes:Record<string,string>}};validateManifest(m);
+if(await sha('scripts/blender/build-muscle-pilot.py')!==m.provenance.generatorSHA256||await sha('assets/multiscale/muscle-pilot/spec.json')!==m.provenance.specSHA256)throw new Error('Build provenance differs; regenerate the package.');
+for(const [file,hash] of Object.entries(m.provenance.sourceHashes))if(await sha(file)!==hash)throw new Error(`Source anatomy changed: ${file}`);
+const tests=execFileSync(process.execPath,['--import','tsx','--test','tests/tissue.test.ts'],{cwd:root,encoding:'utf8'});
+await mkdir(path('validation/p2'),{recursive:true});await writeFile(path('validation/p2/asset-tests.tap'),tests);
+const representations=[];
+for(const level of LEVELS)for(const lod of ['context','detail'] as const){const a=m.levels[level].representations[lod],data=await readFile(path('public'+a.url));representations.push({level,lod,path:'public'+a.url,sha256:createHash('sha256').update(data).digest('hex'),...inspectTissueGLB(data)});}
+const receipt={schemaVersion:1,recordedAt:new Date().toISOString(),invocation:'npm run verify:tissue',evidence:'Executed independent GLB byte inspection, physical identity, filament endpoint/length invariants and replay checks; not a clinical anatomical review or a functional contraction validation.',blenderVersion:m.provenance.blenderVersion,representations,tests:{count:5,exitCode:0,output:'validation/p2/asset-tests.tap'},unresolved:['Anatomical expert review','Registered muscle-to-cell placement','Brain-region package','Calcium, ATP, cross-bridge and force coupling','Physical-device GPU/frame-time and memory budgets','P1 human calibration prerequisites'],sourceHashes:Object.fromEntries(await Promise.all(['scripts/blender/build-muscle-pilot.py','scripts/lib/inspect-tissue.mjs','scripts/verify-tissue.ts','tests/tissue.test.ts','app/tissue/assets.ts','app/tissue/recording.ts','app/tissue/sarcomere.ts','assets/multiscale/muscle-pilot/spec.json','assets/multiscale/muscle-pilot/build-receipt.json','public/models/multiscale/muscle-pilot/manifest.json'].map(async p=>[p,await sha(p)])))};
+await writeFile(path('validation/p2/asset-verification.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({receipt:'validation/p2/asset-verification.json',representations:representations.map(r=>({level:r.level,lod:r.lod,triangles:r.triangles,bytes:r.bytes,spanM:r.spanM})),tests:'5 passed'},null,2));

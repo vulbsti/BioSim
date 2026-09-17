@@ -1,0 +1,16 @@
+{
+  "manifestSHA256": "ff7f0651e1b3ebb2fc4cb10c7ab32f4f98b4eec2cc59b2294ab211a4b23ca234",
+  "blenderVersion": "4.4.3",
+  "blenderFiles": {
+    "fascicle.blend": "1f623e02c3f9c341060a7c3c5e1db14566903f48e3e72847bb1a63323a1d4f9c",
+    "fiber.blend": "780ec519136f192095012145cef1bd9956a5bed6e47687300dccc3b7d3d7a36f",
+    "muscle.blend": "f2a41ab2b6b49f008dfde223361a3ba5be983499d9029f6824a37e30edd7a591",
+    "sarcomere.blend": "9a1a93dc586a29d90fb5162af7643ca14206b3c690df5ce85a45ac0ceb7e72f4"
+  },
+  "previews": {
+    "fascicle-blender.png": "35437f5f5e602cece703fba98e68c1398f8265cc2a8275407e2f740ebd9de2bc",
+    "fiber-blender.png": "9dccd161ae04f49087f086e6e4e79b6650964ad1ed55c6b2902987606f359512",
+    "muscle-blender.png": "db7ec459dfa53292a883669f94553e87a0a351f0ee903c91f0bc0f2099d05816",
+    "sarcomere-blender.png": "508bdc904f87f8efd9fd5a4721092782735a1f181236b796cdd93b913311f551"
+  }
+}

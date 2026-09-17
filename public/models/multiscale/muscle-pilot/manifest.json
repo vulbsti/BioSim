@@ -1,0 +1,940 @@
+{
+  "id": "muscle-pilot",
+  "version": "0.2.0",
+  "status": "representative_visual_prototype",
+  "metersPerAssetUnit": 1,
+  "sourceSpace": "glTF right-handed Y-up, meters; muscle translation retained separately",
+  "levels": {
+    "muscle": {
+      "representations": {
+        "context": {
+          "url": "/models/multiscale/muscle-pilot/muscle-context.glb",
+          "bytes": 75480,
+          "sha256": "2a01e8ba38b89cb57866bbf900b0d35a3f512b07331d94c7fe64daf35a7f71b3",
+          "triangles": 2704,
+          "entities": [
+            "FJ1442",
+            "FJ3365",
+            "FJ3381"
+          ]
+        },
+        "detail": {
+          "url": "/models/multiscale/muscle-pilot/muscle-detail.glb",
+          "bytes": 75492,
+          "sha256": "08e944758c6b9821b4419acc2b586cbe77165e5d57ba32743d95ab15047b0b5c",
+          "triangles": 2704,
+          "entities": [
+            "FJ1442",
+            "FJ3365",
+            "FJ3381"
+          ]
+        }
+      },
+      "localToAtlasTranslationM": [
+        -0.12184425,
+        0.6311607000000001,
+        -0.002722900000000014
+      ],
+      "spanM": 0.47023500000000007,
+      "description": "Right vastus lateralis with femur and patella context; original surface topology retained."
+    },
+    "fascicle": {
+      "representations": {
+        "context": {
+          "url": "/models/multiscale/muscle-pilot/fascicle-context.glb",
+          "bytes": 122056,
+          "sha256": "0c8b3c01d397d17819f2b510cba550dfe571548ad0732c3edf36cffae01698c8",
+          "triangles": 2928,
+          "entities": [
+            "pilot-fascicle-capillaries",
+            "pilot-fiber-00",
+            "pilot-fiber-01",
+            "pilot-fiber-02",
+            "pilot-fiber-03",
+            "pilot-fiber-04",
+            "pilot-fiber-05",
+            "pilot-fiber-06",
+            "pilot-fiber-07",
+            "pilot-fiber-08",
+            "pilot-fiber-09",
+            "pilot-fiber-10",
+            "pilot-fiber-11",
+            "pilot-fiber-12",
+            "pilot-fiber-13",
+            "pilot-fiber-14",
+            "pilot-fiber-15",
+            "pilot-fiber-16",
+            "pilot-fiber-17",
+            "pilot-fiber-18",
+            "pilot-fiber-19",
+            "pilot-fiber-20",
+            "pilot-fiber-21",
+            "pilot-fiber-22",
+            "pilot-fiber-23",
+            "pilot-fiber-24",
+            "pilot-fiber-25",
+            "pilot-fiber-26",
+            "pilot-fiber-27",
+            "pilot-fiber-28",
+            "pilot-fiber-29",
+            "pilot-fiber-30",
+            "pilot-fiber-31",
+            "pilot-fiber-32",
+            "pilot-fiber-33",
+            "pilot-fiber-34",
+            "pilot-fiber-35",
+            "pilot-fiber-36",
+            "pilot-perimysium"
+          ]
+        },
+        "detail": {
+          "url": "/models/multiscale/muscle-pilot/fascicle-detail.glb",
+          "bytes": 200940,
+          "sha256": "247914031770301411108049da08aafaf09cfbe3a04b2145a45019daeaedfa91",
+          "triangles": 5816,
+          "entities": [
+            "pilot-fascicle-capillaries",
+            "pilot-fiber-00",
+            "pilot-fiber-01",
+            "pilot-fiber-02",
+            "pilot-fiber-03",
+            "pilot-fiber-04",
+            "pilot-fiber-05",
+            "pilot-fiber-06",
+            "pilot-fiber-07",
+            "pilot-fiber-08",
+            "pilot-fiber-09",
+            "pilot-fiber-10",
+            "pilot-fiber-11",
+            "pilot-fiber-12",
+            "pilot-fiber-13",
+            "pilot-fiber-14",
+            "pilot-fiber-15",
+            "pilot-fiber-16",
+            "pilot-fiber-17",
+            "pilot-fiber-18",
+            "pilot-fiber-19",
+            "pilot-fiber-20",
+            "pilot-fiber-21",
+            "pilot-fiber-22",
+            "pilot-fiber-23",
+            "pilot-fiber-24",
+            "pilot-fiber-25",
+            "pilot-fiber-26",
+            "pilot-fiber-27",
+            "pilot-fiber-28",
+            "pilot-fiber-29",
+            "pilot-fiber-30",
+            "pilot-fiber-31",
+            "pilot-fiber-32",
+            "pilot-fiber-33",
+            "pilot-fiber-34",
+            "pilot-fiber-35",
+            "pilot-fiber-36",
+            "pilot-perimysium"
+          ]
+        }
+      },
+      "spanM": 0.00139,
+      "layout": {
+        "fiberCentersM": [
+          [
+            0.0,
+            0,
+            -0.0
+          ],
+          [
+            -2.75e-05,
+            0,
+            -4.763139720814412e-05
+          ],
+          [
+            -2.75e-05,
+            0,
+            4.763139720814412e-05
+          ],
+          [
+            2.75e-05,
+            0,
+            -4.763139720814412e-05
+          ],
+          [
+            2.75e-05,
+            0,
+            4.763139720814412e-05
+          ],
+          [
+            -5.5e-05,
+            0,
+            -0.0
+          ],
+          [
+            5.5e-05,
+            0,
+            -0.0
+          ],
+          [
+            0.0,
+            0,
+            -9.526279441628824e-05
+          ],
+          [
+            0.0,
+            0,
+            9.526279441628824e-05
+          ],
+          [
+            -8.25e-05,
+            0,
+            -4.763139720814412e-05
+          ],
+          [
+            -8.25e-05,
+            0,
+            4.763139720814412e-05
+          ],
+          [
+            8.25e-05,
+            0,
+            -4.763139720814412e-05
+          ],
+          [
+            8.25e-05,
+            0,
+            4.763139720814412e-05
+          ],
+          [
+            -5.5e-05,
+            0,
+            -9.526279441628824e-05
+          ],
+          [
+            -5.5e-05,
+            0,
+            9.526279441628824e-05
+          ],
+          [
+            5.5e-05,
+            0,
+            -9.526279441628824e-05
+          ],
+          [
+            5.5e-05,
+            0,
+            9.526279441628824e-05
+          ],
+          [
+            -0.00011,
+            0,
+            -0.0
+          ],
+          [
+            0.00011,
+            0,
+            -0.0
+          ],
+          [
+            -0.0001375,
+            0,
+            -4.763139720814412e-05
+          ],
+          [
+            -0.00011,
+            0,
+            -9.526279441628824e-05
+          ],
+          [
+            -0.0001375,
+            0,
+            4.763139720814412e-05
+          ],
+          [
+            -2.75e-05,
+            0,
+            -0.00014289419162443238
+          ],
+          [
+            -0.00011,
+            0,
+            9.526279441628824e-05
+          ],
+          [
+            2.75e-05,
+            0,
+            -0.00014289419162443238
+          ],
+          [
+            -2.75e-05,
+            0,
+            0.00014289419162443238
+          ],
+          [
+            0.00011,
+            0,
+            -9.526279441628824e-05
+          ],
+          [
+            2.75e-05,
+            0,
+            0.00014289419162443238
+          ],
+          [
+            0.0001375,
+            0,
+            -4.763139720814412e-05
+          ],
+          [
+            0.00011,
+            0,
+            9.526279441628824e-05
+          ],
+          [
+            0.0001375,
+            0,
+            4.763139720814412e-05
+          ],
+          [
+            -0.000165,
+            0,
+            -0.0
+          ],
+          [
+            -8.25e-05,
+            0,
+            -0.00014289419162443238
+          ],
+          [
+            -8.25e-05,
+            0,
+            0.00014289419162443238
+          ],
+          [
+            8.25e-05,
+            0,
+            -0.00014289419162443238
+          ],
+          [
+            8.25e-05,
+            0,
+            0.00014289419162443238
+          ],
+          [
+            0.000165,
+            0,
+            -0.0
+          ]
+        ],
+        "capillaryCentersM": [
+          [
+            0.0,
+            0,
+            -3.1754264805429416e-05
+          ],
+          [
+            -2.75e-05,
+            0,
+            -1.5877132402714708e-05
+          ],
+          [
+            0.0,
+            0,
+            3.1754264805429416e-05
+          ],
+          [
+            -2.75e-05,
+            0,
+            1.5877132402714708e-05
+          ],
+          [
+            2.75e-05,
+            0,
+            -1.5877132402714708e-05
+          ]
+        ],
+        "fiberRadiusM": 2.5e-05,
+        "capillaryRadiusM": 3.5e-06
+      },
+      "description": "37 representative fiber segments, perimysium window and capillary segments; 400 \u00b5m nominal fascicle diameter."
+    },
+    "fiber": {
+      "representations": {
+        "context": {
+          "url": "/models/multiscale/muscle-pilot/fiber-context.glb",
+          "bytes": 672704,
+          "sha256": "8c61e251054ce6666f465f18909897ea08a7bc9551bccd78ff0a9176d0afb39d",
+          "triangles": 16224,
+          "entities": [
+            "pilot-erythrocytes",
+            "pilot-fiber-capillary",
+            "pilot-glut4-sites",
+            "pilot-mitochondria",
+            "pilot-myofibrils",
+            "pilot-myonuclei",
+            "pilot-sarcolemma"
+          ]
+        },
+        "detail": {
+          "url": "/models/multiscale/muscle-pilot/fiber-detail.glb",
+          "bytes": 1250540,
+          "sha256": "e9e1b69e3fbedc2d73add7c82dc0f32902a50353592b4311e92a59dc5bf75cd6",
+          "triangles": 31696,
+          "entities": [
+            "pilot-erythrocytes",
+            "pilot-fiber-capillary",
+            "pilot-glut4-sites",
+            "pilot-mitochondria",
+            "pilot-myofibrils",
+            "pilot-myonuclei",
+            "pilot-sarcolemma"
+          ]
+        }
+      },
+      "spanM": 0.000268,
+      "description": "Representative 240 \u00b5m muscle-fiber segment: opened sarcolemma, packed striated myofibrils, nuclei, mitochondria and adjacent capillary."
+    },
+    "sarcomere": {
+      "representations": {
+        "context": {
+          "url": "/models/multiscale/muscle-pilot/sarcomere-context.glb",
+          "bytes": 639892,
+          "sha256": "e04b943e51fddc05c268ffaa35ee1e6f0f76ae0a51b1d82e57f9a9a89d095c3a",
+          "triangles": 13304,
+          "entities": [
+            "pilot-m-line",
+            "pilot-thick-filaments",
+            "pilot-thin-left",
+            "pilot-thin-right",
+            "pilot-z-left",
+            "pilot-z-right"
+          ]
+        },
+        "detail": {
+          "url": "/models/multiscale/muscle-pilot/sarcomere-detail.glb",
+          "bytes": 2298852,
+          "sha256": "5ded6527d943a221d2888794cdb10ac4d5d686ce62a3473f9399e1cef5f5029a",
+          "triangles": 47000,
+          "entities": [
+            "pilot-m-line",
+            "pilot-thick-filaments",
+            "pilot-thin-left",
+            "pilot-thin-right",
+            "pilot-z-left",
+            "pilot-z-right"
+          ]
+        }
+      },
+      "spanM": 2.5080000000000004e-06,
+      "description": "Cropped representative sarcomere lattice: fixed-length thick and thin filaments, two Z discs and an M line. Manual length-controlled kinematics, not a force or biochemical simulation."
+    }
+  },
+  "entities": [
+    {
+      "id": "FJ1442",
+      "name": "Right vastus lateralis",
+      "kind": "muscle",
+      "level": "muscle",
+      "description": "BodyParts3D 4.0 source surface; local translation only.",
+      "evidence": "source-surface",
+      "sourceConcept": "FMA38930"
+    },
+    {
+      "id": "FJ3365",
+      "name": "Right femur",
+      "kind": "bone",
+      "level": "muscle",
+      "description": "BodyParts3D 4.0 source surface; local translation only.",
+      "evidence": "source-surface",
+      "sourceConcept": "FMA24474"
+    },
+    {
+      "id": "FJ3381",
+      "name": "Right patella",
+      "kind": "bone",
+      "level": "muscle",
+      "description": "BodyParts3D 4.0 source surface; local translation only.",
+      "evidence": "source-surface",
+      "sourceConcept": "FMA24486"
+    },
+    {
+      "id": "pilot-fiber-00",
+      "name": "Muscle fiber 01",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-01",
+      "name": "Muscle fiber 02",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-02",
+      "name": "Muscle fiber 03",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-03",
+      "name": "Muscle fiber 04",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-04",
+      "name": "Muscle fiber 05",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-05",
+      "name": "Muscle fiber 06",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-06",
+      "name": "Muscle fiber 07",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-07",
+      "name": "Muscle fiber 08",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-08",
+      "name": "Muscle fiber 09",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-09",
+      "name": "Muscle fiber 10",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-10",
+      "name": "Muscle fiber 11",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-11",
+      "name": "Muscle fiber 12",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-12",
+      "name": "Muscle fiber 13",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-13",
+      "name": "Muscle fiber 14",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-14",
+      "name": "Muscle fiber 15",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-15",
+      "name": "Muscle fiber 16",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-16",
+      "name": "Muscle fiber 17",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-17",
+      "name": "Muscle fiber 18",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-18",
+      "name": "Muscle fiber 19",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-19",
+      "name": "Muscle fiber 20",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-20",
+      "name": "Muscle fiber 21",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-21",
+      "name": "Muscle fiber 22",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-22",
+      "name": "Muscle fiber 23",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-23",
+      "name": "Muscle fiber 24",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-24",
+      "name": "Muscle fiber 25",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-25",
+      "name": "Muscle fiber 26",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-26",
+      "name": "Muscle fiber 27",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-27",
+      "name": "Muscle fiber 28",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-28",
+      "name": "Muscle fiber 29",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-29",
+      "name": "Muscle fiber 30",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-30",
+      "name": "Muscle fiber 31",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-31",
+      "name": "Muscle fiber 32",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-32",
+      "name": "Muscle fiber 33",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-33",
+      "name": "Muscle fiber 34",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-34",
+      "name": "Muscle fiber 35",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-35",
+      "name": "Muscle fiber 36",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-fiber-36",
+      "name": "Muscle fiber 37",
+      "kind": "myofiber",
+      "level": "fascicle",
+      "description": "One representative fiber segment; the population is not a counted source fascicle.",
+      "evidence": "representative",
+      "diameterM": 5e-05
+    },
+    {
+      "id": "pilot-perimysium",
+      "name": "Perimysium",
+      "kind": "sheath",
+      "level": "fascicle",
+      "description": "Connective sheath opened along a longitudinal teaching window.",
+      "evidence": "representative"
+    },
+    {
+      "id": "pilot-fascicle-capillaries",
+      "name": "Capillary segments",
+      "kind": "capillary",
+      "level": "fascicle",
+      "description": "Representative longitudinal capillary segments; no vascular connectivity or perfusion solution.",
+      "evidence": "representative",
+      "diameterM": 7e-06
+    },
+    {
+      "id": "pilot-sarcolemma",
+      "name": "Sarcolemma",
+      "kind": "membrane",
+      "level": "fiber",
+      "description": "Representative 50 \u00b5m fiber with a longitudinal inspection window; only a 240 \u00b5m segment is shown.",
+      "evidence": "representative"
+    },
+    {
+      "id": "pilot-myofibrils",
+      "name": "Striated myofibrils",
+      "kind": "myofibrils",
+      "level": "fiber",
+      "description": "Representative packed myofibrils. Painted repeats illustrate sarcomeres; filaments and contraction are not simulated.",
+      "evidence": "representative",
+      "representedCount": 517,
+      "diameterM": 1.2e-06,
+      "sarcomereRepeatM": 2.5e-06
+    },
+    {
+      "id": "pilot-myonuclei",
+      "name": "Peripheral myonuclei",
+      "kind": "nuclei",
+      "level": "fiber",
+      "description": "Illustrative peripheral nuclei in a multinucleated skeletal muscle fiber.",
+      "evidence": "representative",
+      "representedCount": 8
+    },
+    {
+      "id": "pilot-mitochondria",
+      "name": "Peripheral mitochondria",
+      "kind": "mitochondria",
+      "level": "fiber",
+      "description": "Representative organelles; density and ATP production are not measured or simulated.",
+      "evidence": "representative"
+    },
+    {
+      "id": "pilot-fiber-capillary",
+      "name": "Adjacent capillary",
+      "kind": "capillary",
+      "level": "fiber",
+      "description": "Opened representative capillary beside the fiber; geometry is not a registered vascular domain.",
+      "evidence": "representative",
+      "diameterM": 8e-06
+    },
+    {
+      "id": "pilot-erythrocytes",
+      "name": "Erythrocytes",
+      "kind": "erythrocytes",
+      "level": "fiber",
+      "description": "Representative biconcave cells inside the capillary; their positions are illustrative.",
+      "evidence": "representative",
+      "representedCount": 9
+    },
+    {
+      "id": "pilot-glut4-sites",
+      "name": "GLUT4 display sites",
+      "kind": "glut4",
+      "level": "fiber",
+      "description": "Representative display markers; geometry and marker count are not molecular structures or measured transporter inventory.",
+      "evidence": "representative",
+      "representedCount": 24
+    },
+    {
+      "id": "pilot-thick-filaments",
+      "name": "Thick filaments \u00b7 myosin",
+      "kind": "thick-filament",
+      "level": "sarcomere",
+      "description": "Central bipolar filaments with sparse illustrative heads. Filament length stays fixed during sliding; no ATP or cross-bridge kinetics.",
+      "evidence": "representative",
+      "representedCount": 91,
+      "diameterM": 1.5e-08
+    },
+    {
+      "id": "pilot-thin-left",
+      "name": "Thin filaments \u00b7 left Z disc",
+      "kind": "thin-filament",
+      "level": "sarcomere",
+      "description": "Actin-rich filaments anchored to this Z disc. Translate toward the M line without changing filament length. Troponin and tropomyosin are unresolved.",
+      "evidence": "representative",
+      "representedCount": 178,
+      "diameterM": 7e-09
+    },
+    {
+      "id": "pilot-z-left",
+      "name": "Z disc \u00b7 left",
+      "kind": "z-disc",
+      "level": "sarcomere",
+      "description": "Representative cross-linked anchoring lattice marking this sarcomere boundary. Not a resolved alpha-actinin structure.",
+      "evidence": "representative"
+    },
+    {
+      "id": "pilot-thin-right",
+      "name": "Thin filaments \u00b7 right Z disc",
+      "kind": "thin-filament",
+      "level": "sarcomere",
+      "description": "Actin-rich filaments anchored to this Z disc. Translate toward the M line without changing filament length. Troponin and tropomyosin are unresolved.",
+      "evidence": "representative",
+      "representedCount": 178,
+      "diameterM": 7e-09
+    },
+    {
+      "id": "pilot-z-right",
+      "name": "Z disc \u00b7 right",
+      "kind": "z-disc",
+      "level": "sarcomere",
+      "description": "Representative cross-linked anchoring lattice marking this sarcomere boundary. Not a resolved alpha-actinin structure.",
+      "evidence": "representative"
+    },
+    {
+      "id": "pilot-m-line",
+      "name": "M line",
+      "kind": "m-line",
+      "level": "sarcomere",
+      "description": "Representative links at the sarcomere midpoint, anchoring the thick-filament array; remains fixed during symmetric sliding.",
+      "evidence": "representative"
+    }
+  ],
+  "provenance": {
+    "blenderVersion": "4.4.3",
+    "generator": "scripts/blender/build-muscle-pilot.py",
+    "generatorSHA256": "444d8b70cb3f93d4b02b7795035cf153e4c37a32c4f98a10b51b075021b5f518",
+    "specSHA256": "be3ff20d364da37da0753334d098691e08c03aa7efcee1918ff7be61216a8a04",
+    "sourceHashes": {
+      "public/models/body-1.bin": "aa077a4675f0d0dd3c9b0af39dc8cf6bcb348c3bf7d283478d4206ce30a5a0de",
+      "public/models/body-13.bin": "4c51b6be85d5b705d2b52b79b9ad1cdae0b65ad03c9402a2f2673c7633fd94f3"
+    },
+    "license": "Source muscle/bone CC-BY-4.0; generated microstructure and texture MIT",
+    "referenceURL": "https://openstax.org/books/anatomy-and-physiology-2e/pages/10-3-muscle-fiber-contraction-and-relaxation",
+    "registration": "Representative microstructure is not spatially registered to the source muscle"
+  },
+  "validation": "Requires independent byte, bounds, identity and browser checks. No anatomical expert review or full phase completion is claimed."
+}

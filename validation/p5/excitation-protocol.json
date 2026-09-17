@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "lockedOn": "2026-09-17",
+  "scope": "Numerical reproduction of the pinned 56-state Shorten source, not human validation",
+  "durationMs": 500,
+  "sampleMs": 0.5,
+  "browserSolver": "Dormand-Prince 5(4), rtol 1e-6, atol 1e-9 in source state units; pulse boundaries split exactly",
+  "referenceSolver": "SciPy BDF, rtol 2e-9, atol 1e-11; separate archived Python export",
+  "cases": ["single", "train", "no-stimulus", "blocked-release"],
+  "bounds": {
+    "maximumVoltageErrorMV": 0.002,
+    "maximumCalciumErrorUM": 0.002,
+    "maximumCrossbridgeErrorUM": 0.002,
+    "allStateErrorAbsoluteFloor": 0.00002,
+    "allStateErrorRelativeScale": 0.0002,
+    "maximumScaledAllStateError": 1,
+    "maximumCalciumInventoryResidualMol": 1e-24,
+    "maximumAdenineInventoryResidualMol": 1e-24,
+    "negativeStateTolerance": 1e-9
+  },
+  "checks": ["Pinned source hashes", "Original waveform agrees with wrapper at non-boundary times", "All 56 states compared against independent reference", "Tighter tolerance comparison for single pulse", "Calcium and adenine inventories", "No stimulus and SR-block interventions", "Display changes cannot mutate computed trajectory", "Source species and fixed-length condition visible"]
+}

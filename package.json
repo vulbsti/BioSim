@@ -12,9 +12,18 @@
     "check": "tsc --noEmit",
     "test:physiology": "tsx --test tests/physiology.test.ts",
     "test:browser": "playwright test",
+    "test:browser:production": "playwright test --config playwright.production.config.ts",
     "audit:brain": "tsx scripts/audit-brain-vessels.ts",
-    "test": "npm run test:physiology && npm run test:anatomy && npm run test:browser",
-    "test:anatomy": "tsx --test tests/physical-anatomy.test.ts"
+    "test": "npm run test:physiology && npm run test:anatomy && npm run test:multiscale && npm run test:tissue && npm run test:circulation && npm run test:browser",
+    "test:anatomy": "tsx --test tests/physical-anatomy.test.ts",
+    "test:multiscale": "tsx --test tests/multiscale.test.ts",
+    "verify:multiscale": "tsx scripts/verify-multiscale.ts",
+    "test:tissue": "tsx --test tests/tissue.test.ts",
+    "verify:tissue": "tsx scripts/verify-tissue.ts",
+    "test:circulation": "tsx --test tests/circulation.test.ts",
+    "verify:circulation": "tsx scripts/verify-circulation.ts",
+    "verify:excitation": "tsx scripts/verify-excitation.ts",
+    "generate:excitation": "node scripts/generate-shorten.mjs"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "declaredOn": "2026-09-10",
+  "scope": "P1 synthetic kernel verification and source-model reproduction. No parameter fitting or human biological validation.",
+  "E01": {
+    "kind": "synthetic-verification",
+    "scenarios": ["first-order clearance analytic solution", "closed two-compartment mixing analytic solution", "reversible finite receptor binding equilibrium", "full transport-binding-clearance pulse", "zero-dose and zero-receptor controls"],
+    "amountLedgerTolerance": {"relative": 1e-8, "floorMol": 1e-15},
+    "analyticComparison": {"relative": 0.000001, "absoluteMol": 1e-18},
+    "numericalRequirements": ["nonnegative inventories", "single state owner", "authorized cross-module ports", "balanced conserved moieties", "unit-safe rate laws", "step subdivision convergence", "checkpoint resume reproduces subsequent state"],
+    "biologicalValidation": "not applicable: deliberately synthetic parameters"
+  },
+  "sedaghat2002": {
+    "kind": "published-model-reproduction",
+    "source": "https://www.imagwiki.nibib.nih.gov/physiome/jsim/models/webmodel/NSR/sedaghat2002insulinsignal",
+    "variant": "Archived JSim model 0166, FEEDBACK=0",
+    "input": {"insulinM": 1e-7, "startMinute": 0, "stopMinute": 15, "endMinute": 60},
+    "reference": "Independent transcription of the archived equations integrated with scipy.integrate.solve_ivp Radau; BDF cross-check. Neither is experimental data.",
+    "nativeBrowserStateUnits": "pM for the first 12 states, percentage of initial pools for the remaining states; original M values are converted by 1e12",
+    "solverComparisonTolerance": {"relative": 0.00001, "absoluteInNativeUnits": 0.0002},
+    "sourceProtocolChecks": ["0 to 15 minute insulin step and exact withdrawal", "unchanged original parameter values", "21 archived state variables including inactive feedback state", "Figure 6/7 response shapes and published approximate endpoints reviewed separately"],
+    "digitizedFigure10": "Archived comparison points are extracted without fitting; they were used in the original model paper, so they are not an independent human validation set.",
+    "excludedClaims": ["human skeletal-muscle calibration", "physical whole-body glucose uptake", "finite extracellular insulin conservation", "feedback variant reproduction", "atomistic chemistry"]
+  },
+  "M1HumanValidation": {
+    "status": "pending_data_and_model_mapping",
+    "candidate": "https://doi.org/10.2337/diabetes.54.6.1692",
+    "reason": "The 2005 human-muscle AS160 experiment is independent of the 2002 model, but its measured endpoint is not a state in this archived model. A quantitative observation mapping and usable data must be established before setting defensible human acceptance bounds or fitting M1.",
+    "acceptanceThreshold": null,
+    "phaseGate": "P1 remains in progress until independent human endpoints and acceptance bounds are specified. Source-model reproduction is not a substitute."
+  }
+}

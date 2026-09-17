@@ -1,0 +1,86 @@
+{
+  "id": "muscle-pilot",
+  "version": "0.2.0",
+  "name": "Vastus lateralis multiscale anatomy pilot",
+  "status": "representative_visual_prototype",
+  "engine": "Three.js 0.159 GLTFLoader",
+  "authoring": "Blender 4.4.3 Python; no paid generation",
+  "levels": {
+    "muscle": {
+      "unit": "m",
+      "source": "BodyParts3D 4.0 FJ1442, FJ3365, FJ3381",
+      "registration": "Source coordinates retained, translated to local center; no donor microstructure registration"
+    },
+    "fascicle": {
+      "unit": "m",
+      "diameterM": 0.0004,
+      "lengthM": 0.0012,
+      "fiberDiameterM": 5e-05,
+      "fiberCount": 37,
+      "registration": "Representative cropped segment; no measured placement inside the source muscle"
+    },
+    "sarcomere": {
+      "unit": "m",
+      "restLengthM": 0.0000025,
+      "minimumLengthM": 0.000002,
+      "maximumLengthM": 0.0000032,
+      "thickLengthM": 0.0000016,
+      "thinLengthM": 0.000001,
+      "thickLatticePitchM": 0.000000045,
+      "registration": "Representative cropped filament lattice, selected dimensions; no donor registration or resolved atomic structures",
+      "motion": "Symmetric Z-disc and attached thin-filament translation; thick filaments and M line stay fixed. No calcium, ATP, force, titin or cross-bridge state."
+    },
+    "fiber": {
+      "unit": "m",
+      "diameterM": 5e-05,
+      "lengthM": 0.00024,
+      "myofibrilDiameterM": 1.2e-06,
+      "sarcomereRepeatM": 2.5e-06,
+      "registration": "Representative partial myofiber; dimensions are illustrative choices, not donor measurements"
+    }
+  },
+  "visualBrief": "Anatomical 3D teaching specimen: realistic bundled longitudinal tissue, selectively opened connective sheaths, clearly visible cut faces, peripheral nuclei, packed striated myofibrils and adjacent capillaries. Restrained warm tissue colors on a dark neutral field. Stable, inspectable semantic structures.",
+  "negativeBrief": "No cartoon human silhouette, invented clinical tissue measurements, anatomy-as-connectivity claim, decorative blood flow claimed as solved transport, opaque shells concealing every interior, float-scale loss, or paid provider assets.",
+  "policy": {
+    "maximumBytesPerGLB": 6000000,
+    "maximumTrianglesPerLevel": 180000,
+    "maximumDrawCallsPerLevel": 160,
+    "requiredLODs": [
+      "detail",
+      "context"
+    ],
+    "metersPerAssetUnit": 1,
+    "externalTextureURIs": false,
+    "finiteGeometry": true,
+    "stableEntityIdsAcrossLODs": true,
+    "intentionalOpenSurfaces": [
+      "perimysium window",
+      "sarcolemma window",
+      "cropped specimen ends"
+    ],
+    "browserBudgetTargetMs": 33.3,
+    "targetBudgetIsMeasuredGate": true
+  },
+  "licenses": {
+    "sourceAnatomy": "CC-BY-4.0, existing public/ATTRIBUTION.md",
+    "generatedGeometryAndTextures": "MIT, project original; informed by anatomy references, no copied figure images"
+  },
+  "references": [
+    {
+      "url": "https://openstax.org/books/anatomy-and-physiology-2e/pages/10-3-muscle-fiber-contraction-and-relaxation",
+      "use": "Sliding filament organization: Z discs approach, A band remains fixed, I band and H zone narrow. Chosen lengths, cropped lattice and sparse heads are representative, not measured. Accessed 2026-09-17."
+    },
+    {
+      "url": "https://openstax.org/books/anatomy-and-physiology/pages/10-2-skeletal-muscle",
+      "use": "Fascicle/fiber/myofibril hierarchy, connective tissue layers and peripheral nuclei; qualitative guidance. Dimensions chosen for the prototype are disclosed separately."
+    }
+  ],
+  "validationClaimsExcluded": [
+    "Registered human microscopic reconstruction",
+    "Functional muscle contraction",
+    "Perfused capillary solver",
+    "Human-calibrated insulin response",
+    "Clinical anatomical review",
+    "Complete P2 including brain region package"
+  ]
+}

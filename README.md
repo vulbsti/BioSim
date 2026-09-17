@@ -14,11 +14,25 @@ Pause, accelerate, or advance the simulation; schedule inputs; fork a comparison
 
 **This is an exploratory model, not a completed or biologically validated whole-human simulation.** Hormones currently use relative activities, distal vessels are grouped, and several mechanisms remain proxies. Read [the model equations, exact coverage, limitations, and remaining work](docs/PHYSIOLOGY_MODEL.md). The linked public demo predates these local changes until they are deployed.
 
+## Molecular lab
+
+Open **Molecular lab** from the physiology introduction, or visit `/#molecular`. Play and scrub a finite ligand pulse through blood, tissue, receptor binding and clearance. Change receptor availability and see the calculated response change. A second experiment reproduces the published Sedaghat 2002 insulin-signaling model, including PI3K, Akt and GLUT4 movement. Inspect local values, response curves and reaction accounting; export and reload experiments.
+
+The new physical-unit kernel and independent-solver comparison are described in [the P1 implementation report](docs/P1_IMPLEMENTATION.md). These local mechanisms are isolated from the whole-body solver. The view uses schematic moving populations; new Blender anatomy and human-muscle calibration remain ahead.
+
+## 3D tissue explorer
+
+Open **Explore tissue in 3D**, or visit `/#tissue`. Inspect the source right vastus lateralis, a representative fascicle and a cut muscle-fiber segment. Pick named structures, reveal interiors, inspect the cut end, change geometry detail and follow a shared signaling playhead across scales. Editable Blender scenes and metric GLBs are included. [P2 implementation and exact coverage](docs/P2_IMPLEMENTATION.md).
+
+The microscopic structures are representative, with no donor registration or functional muscle/capillary solver. Human calibration, brain assets and further phase gates remain open.
+
 ## Direction: whole-body biological simulation
 
-The atlas (BodyParts3D reference assembly: 2,273 meshes, 15 systems, 3,457 concepts) is the spatial anchor. The `simulate` branch adds an exploratory organ-and-hormone lab (23 blood/tissue/lymph pools, 5 transported species, 31 relative hormone activities, 34-node/55-path cerebral schematic, fixed 1-second Web Worker steps with conserved, receipted transfers). Long term, this grows into a molecular-resolution human simulation where every interaction — transport, reaction, secretion, clearance — is a registered, conservable, provenance-bearing ledger entry.
+The atlas (BodyParts3D reference assembly: 2,273 meshes, 15 systems, 3,457 concepts) is the spatial anchor. The `simulate` branch adds an exploratory organ-and-hormone lab (23 blood/tissue/lymph pools, 5 transported species, 31 relative hormone activities, 34-node/55-path cerebral schematic, fixed 1-second Web Worker steps with conserved, receipted transfers). The next goal is a multiscale reference simulation: supported mechanisms connect organ physiology to tissue, cell, receptor and reaction models, with explicit evidence and accounting at each scale.
 
-Read [the biological simulation vision and roadmap](docs/BIOLOGICAL_SIMULATION.md) for what is done, what is still proxy, and the phase order (close organ-scale gaps → register vasculature → reaction registry with units → cellular/molecular decomposition → spatial-cell binding → calibration). Read [the model equations, exact coverage, and limitations](docs/PHYSIOLOGY_MODEL.md) before interpreting any simulated number. Numerical tests are not biological validation; nothing here is a clinical or predictive tool.
+Read [the multiscale execution plan](docs/MULTISCALE_EXECUTION_PLAN.md) for the Blender asset pipeline, blood/hormone transport, nervous-system and brain expansion, consistent body-to-cell zoom, and phase completion checks. The first milestone follows a meal through insulin signaling to muscle-cell glucose uptake and back to whole-body effects. [The phase tracker](docs/multiscale-roadmap.json) records **P0 complete; P1–P2 implementation in progress; P3–P10 pending**. This is a scoped research program, not a claim of an atomically complete human replica.
+
+The earlier [biological simulation rationale](docs/BIOLOGICAL_SIMULATION.md) explains the original design. Read [the current model equations, exact coverage, and limitations](docs/PHYSIOLOGY_MODEL.md) before interpreting any simulated number. Numerical tests are not biological validation; nothing here is a clinical or predictive tool.
 
 ## Explore
 
@@ -46,8 +60,11 @@ Open http://localhost:3016. To build the static site, run `npm run build`; the o
 npm run check
 npm run test:physiology
 npm run test:anatomy
+npm run verify:multiscale
+npm run verify:tissue
 npx playwright install chromium
 npm run test:browser
+npm run test:browser:production
 node scripts/validate-atlas.mjs
 node scripts/validate-interactions.mjs
 npm run build
@@ -79,6 +96,6 @@ Import this repository into Vercel as a Vite project. The included `vercel.json`
 
 ## License
 
-Original application code is released under the [MIT License](LICENSE). **Anatomy data has separate CC BY 4.0 and CC BY-SA 2.1 Japan terms**, as detailed in the attribution; preserve the applicable credit and share-alike requirements when redistributing adapted data. Third-party dependencies retain their respective licenses.
+Original application code is released under the [MIT License](LICENSE). **Anatomy data has separate CC BY 4.0 and CC BY-SA 2.1 Japan terms**, as detailed in the attribution; preserve the applicable credit and share-alike requirements when redistributing adapted data. The [archived insulin model](models/sedaghat2002/README.md) retains its University of Washington source notice and separate copying terms. Third-party dependencies retain their respective licenses.
 
 Issues and pull requests are welcome. Please include reproduction steps and browser/device details for interaction problems.

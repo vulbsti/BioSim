@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-10T04:23:38.449267+00:00",
+  "evidence": "Executed browser checks against a fixed production build. Desktop and emulated viewport evidence; no physical-device performance claim.",
+  "invocation": "npx playwright test --config work/p1/playwright.config.ts",
+  "configSHA256": "3e11c382c962744bb5a00a701adced6f8590b7c47177c742801fb4b4823fe766",
+  "playwrightVersion": "1.63.0",
+  "workers": 1,
+  "server": {
+    "command": "npx vite preview --host 127.0.0.1 --port 4316 --strictPort",
+    "cwd": "/home/vulbsti/proj/human_atlas/",
+    "url": "http://127.0.0.1:4316",
+    "reuseExistingServer": false
+  },
+  "stats": {
+    "startTime": "2026-09-09T21:11:35.868Z",
+    "duration": 156153.062,
+    "expected": 17,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "file": "molecular.spec.ts",
+      "name": "molecular lab runs local binding, changes visible state and preserves a replay package",
+      "status": "passed",
+      "durationMs": 1649,
+      "retries": 0
+    },
+    {
+      "file": "molecular.spec.ts",
+      "name": "changing receptor availability recomputes the model and invalid imports preserve the current experiment",
+      "status": "passed",
+      "durationMs": 1182,
+      "retries": 0
+    },
+    {
+      "file": "molecular.spec.ts",
+      "name": "published insulin pulse drives GLUT4 and its withdrawal precedes recovery",
+      "status": "passed",
+      "durationMs": 1082,
+      "retries": 0
+    },
+    {
+      "file": "molecular.spec.ts",
+      "name": "molecular controls fit 390px and return to the physiology lab",
+      "status": "passed",
+      "durationMs": 1103,
+      "retries": 0
+    },
+    {
+      "file": "molecular.spec.ts",
+      "name": "molecular controls fit 320px and return to the physiology lab",
+      "status": "passed",
+      "durationMs": 1060,
+      "retries": 0
+    },
+    {
+      "file": "physical-anatomy.spec.ts",
+      "name": "anatomical pixels move, pause freezes them, and breathing has live air tracers",
+      "status": "passed",
+      "durationMs": 50301,
+      "retries": 0
+    },
+    {
+      "file": "physical-anatomy.spec.ts",
+      "name": "meal input starts swallowing and digestion, then portal absorption appears",
+      "status": "passed",
+      "durationMs": 51681,
+      "retries": 0
+    },
+    {
+      "file": "physical-anatomy.spec.ts",
+      "name": "reduced motion, thyroid isolation, section controls and mobile expansion work",
+      "status": "passed",
+      "durationMs": 4838,
+      "retries": 0
+    },
+    {
+      "file": "physical-anatomy.spec.ts",
+      "name": "catalogue failure produces a visible error instead of an endless loading state",
+      "status": "passed",
+      "durationMs": 411,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "meal, worker time, chart, hormone inspection, comparison and export are connected",
+      "status": "passed",
+      "durationMs": 3554,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "scheduled input can be cancelled and playback pauses",
+      "status": "passed",
+      "durationMs": 2830,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "brain connections, anatomy link and model disclosure work",
+      "status": "passed",
+      "durationMs": 25698,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "responsive controls and no page overflow at 390x844",
+      "status": "passed",
+      "durationMs": 1516,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "responsive controls and no page overflow at 320x568",
+      "status": "passed",
+      "durationMs": 1521,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "responsive controls and no page overflow at 844x390",
+      "status": "passed",
+      "durationMs": 2946,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "transport inventory, local gradients, oxygen rates and cumulative exports agree",
+      "status": "passed",
+      "durationMs": 2530,
+      "retries": 0
+    },
+    {
+      "file": "simulation.spec.ts",
+      "name": "brain vessel coverage exposes unresolved meshes and filters by source name",
+      "status": "passed",
+      "durationMs": 597,
+      "retries": 0
+    }
+  ],
+  "rawReport": {
+    "path": "outputs/verification/p1/browser-report.json",
+    "sha256": "d4c777e452a1f2aa9489db161afa1e8db962adeceafdcfdfd90da6011b30313a"
+  },
+  "buildLog": {
+    "path": "outputs/verification/p1/build.log",
+    "sha256": "d11b051fb3f3574426a537cf49a8abf83cd2d28f91b1f49ccbf749f5a4319010",
+    "exitCode": 0
+  },
+  "sourceHashes": {
+    "app/globals.css": "0f4fa4fd53116600205f9d1d478b3b23d33199777ac3d0f81619092174dca6be",
+    "app/molecular/MolecularLab.tsx": "579736e644f6374a05404e48b9114e13b0d88160445a7436ef3195b44db76775",
+    "app/molecular/MolecularScene.tsx": "32e3ea631211e9b39845d56b371a06581bf970fc79904f3851dcdd7dc36fabc8",
+    "app/molecular/ResponseChart.tsx": "fb7e6e28b9c454103203718147f5e5e35eb55bca859bc1585c2b5d907dce2763",
+    "app/molecular/experiments.ts": "ca5c9656517aa30532fe5095b0727ad11b255d920baec63ba50c0a40d6165778",
+    "app/molecular/mechanism.worker.ts": "6e2ebb9bd44b3fb01e782edc117b9a093c7440e59c5700927a03450991254554",
+    "app/molecular/molecular.css": "11a9e1162157cc39994a1193d186e5c7a3a08004785c38460eb595ce49d419b1",
+    "app/molecular/sedaghat.ts": "95b5fe339e3e6cc25e4db501a2438cbfe01a47b42b7d2b07c313666aaea2e0e6",
+    "app/physical/PhysicalScene.tsx": "1862b3baacc15798bdc24cde512289c6bdebf2a1da5887548a7f203e680e21ce",
+    "app/simulation/Simulator.tsx": "271a25162e6b5030fc2c314ff931a8eb7203db4ca2d13bef59300e849c74b858",
+    "app/simulation/simulation.css": "2ac76a2b2abdb4e39a6d57b8555097742c3726e17e4277c7a702426af4b8f2ab",
+    "scripts/capture-molecular.mjs": "8482da1d7c63a549cdfa9c8a2f8ad1eccdead8f324db6cd063ff21c750e4a508",
+    "tests/browser/molecular.spec.ts": "f6b5f323b6b354a3e44761960ca09d1dd95a727b0a3f38db87bf875b3d587e3d",
+    "tests/browser/physical-anatomy.spec.ts": "27392f306445fa24391136043552be8503a98bcf2d9a3b85a0f7c32d6958eb6a",
+    "tests/browser/simulation.spec.ts": "5785fce4d36115df369f8b4c0ae3b42aa2618e86cb693d2f720063fb22520f9a",
+    "web/main.tsx": "35934e36759d9637eb70ec4564b19257864b24e8639679a12b97de0485bd85fa"
+  },
+  "priorDevelopmentRuns": "The reduced-motion offscreen initialization failure was fixed. An interim immediate pause-state update got ahead of rendered frames and was replaced with initialization plus render-synchronized updates. Final production suite passes without retries.",
+  "capture": {
+    "recordedAt": "2026-09-10T04:21:02.034Z",
+    "invocation": "node scripts/capture-molecular.mjs http://127.0.0.1:4316",
+    "baseURL": "http://127.0.0.1:4316",
+    "scope": "Recorded actual browser playback of the isolated archived insulin model. Schematic populations; not new 3D anatomy or biological validation.",
+    "viewport": {
+      "width": 1440,
+      "height": 1080
+    },
+    "playbackSpeed": 120,
+    "wallPlaybackSeconds": 16,
+    "finalPlayhead": "32:04",
+    "browser": "153.0.8010.12",
+    "pageErrors": [],
+    "mobileOverflow": false,
+    "sourceScriptSHA256": "8482da1d7c63a549cdfa9c8a2f8ad1eccdead8f324db6cd063ff21c750e4a508",
+    "artifacts": {
+      "insulin-response.webm": "b5978207fdc5726edbe6594dd22f4b937bfe20f7dca0fc02d62ccaf3d8e669be",
+      "insulin-response.png": "7d30b70171cf31c25e518247cb2fed2d794deecb9e0a9a470dd42c5d200d7322",
+      "receptor-binding-desktop.png": "25b33bf7cc2a2d68bc7ca84d6cecf2be7a9af5b5ee88bf51f13d21b1449d5147",
+      "insulin-desktop.png": "bedd95bc1390fc72bd9c1e3a96d8876e74493754d7ad462bdf2d19bea74ba1fa",
+      "insulin-mobile.png": "f24a93ae2ee9c2c02f3a0549a58007c5ba7e9a9359c87525743cf94fc41d6bb2"
+    },
+    "derivedVideo": {
+      "path": "outputs/verification/p1/insulin-response.mp4",
+      "sha256": "642efa4e84b1690eb3132dcdbb0a246a6f466cb46f484565c45c26cca5aea3de",
+      "conversion": "ffmpeg: H.264, CRF 22, yuv420p, faststart; source WebM retained"
+    }
+  },
+  "equivalentReproduction": "npm run test:browser:production (checked-in production config uses port 4317)",
+  "executedConfiguration": "import {defineConfig} from '@playwright/test';\nimport base from '../../playwright.config';\nconst path=(relative:string)=>new URL(relative,import.meta.url).pathname;\nexport default defineConfig({...base,testDir:path('../../tests/browser'),outputDir:path('../../outputs/verification/p1/browser-results'),\n  use:{...base.use,baseURL:'http://127.0.0.1:4316'},workers:1,\n  reporter:[['line'],['json',{outputFile:path('../../outputs/verification/p1/browser-report.json')}]],\n  webServer:{command:'npx vite preview --host 127.0.0.1 --port 4316 --strictPort',cwd:path('../..'),url:'http://127.0.0.1:4316',reuseExistingServer:false},\n});\n",
+  "buildAssets": {
+    "dist/assets/MolecularLab-Csed6Cgc.js": "95d1c5101ed214452d9ef06e3ed31407754816efa5829d31a95376a735697910",
+    "dist/assets/MolecularLab-PBX8knRT.css": "70a72bee32a377edcbed6f55651d9341f7fb32d8d6d2a9d4bafd075787b3bcf2",
+    "dist/assets/PhysicalScene-BT94Bqoz.js": "ab877bdc7e01ae1887754cddfafbc870b6d0f116a8faf01bfe868a5ca0a4d966",
+    "dist/assets/index-B_aT4jsF.css": "d534a778b7dbca6002ef6f8ee0bd24ae172773f11900be3d09e6f9e9d08203b4",
+    "dist/assets/index-BftrGaGO.js": "ea81b47a5a3da1b3a15f66f1b88069814ea8c39b4473e0b61af282336f026809",
+    "dist/assets/mechanism.worker-DpfYDgFd.js": "34c35bf18e3ed2e9c47173181c839cdbad157b74971347215d0677d35d8aef61",
+    "dist/assets/page-BcUmpuux.js": "c4de290302ca9473f38104bf502599b41280f719870fabba78cd214ec33ffaec",
+    "dist/assets/pointer-tap-r1ottQNz.js": "67dfe933a1b736d1c7924fe66832bbd0d2b38c5217a6eb9feed04c6fbbb53415",
+    "dist/assets/simulation.worker-BiueXn_5.js": "f0bfc99440f386f7de6b5147f7f5c9f84f9dfe703d749a948d8566d7f4d3c440",
+    "dist/index.html": "c63311729bf12b5e6a275b6a2a16c5714728b6417cb9c94c0320d2a68b711ab6"
+  },
+  "numericalReceiptSHA256": "41de90a446d814d44a50a48a720df8b8324c98a361bbe4e6a6fbcfade210676d"
+}

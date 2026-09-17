@@ -1,0 +1,496 @@
+{
+  "schemaVersion": 1,
+  "createdOn": "2026-09-09",
+  "title": "Human Atlas multiscale reference simulation",
+  "plan": "docs/MULTISCALE_EXECUTION_PLAN.md",
+  "baselineAudit": "docs/multiscale-baseline-audit.json",
+  "goal": {
+    "objective": "Build an interactive reference human whose supported inputs propagate through connected organ, tissue, cellular, neural and selected molecular-reaction models, with consistent scale inspection and reproducible evidence.",
+    "status": "in_progress",
+    "completionPolicy": "Finish bounded releases only when all phase criteria have receipts. This roadmap does not define perfect or atomically complete human simulation as achievable.",
+    "nextMilestone": "M1",
+    "nextPhase": "P1"
+  },
+  "execution": {
+    "implementationStarted": true,
+    "completedScope": "P0 complete; P1 local physical mechanisms and source reproduction delivered; P2 muscle/fascicle/fiber/sarcomere visual prototype delivered, including manual filament sliding. Scientific and full phase gates remain open.",
+    "automaticGoalStatusAtPlanning": "paused",
+    "note": "Project goals in this file do not resume or replace the pre-existing paused execution goal.",
+    "goalCreationAttempt": {
+      "objective": "M1: complete P1-P4 with their required evidence",
+      "result": "rejected_unfinished_existing_goal",
+      "message": "cannot create a new goal because this thread has an unfinished goal; complete the existing goal first",
+      "existingGoalLeftUnchanged": true
+    },
+    "activeDeliverable": "P1 human endpoint mapping; P2 anatomical review, brain-region package and remaining asset gates"
+  },
+  "milestones": [
+    {
+      "id": "M1",
+      "title": "Meal to muscle across scales",
+      "phases": [
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+      ],
+      "status": "in_progress",
+      "demonstration": "Defined meal -> glucose/insulin transport -> muscle exposure -> receptor signaling -> GLUT4/glucose uptake -> organ/systemic totals; compare receptor sensitivity while preserving state through zoom and replay."
+    },
+    {
+      "id": "M2",
+      "title": "Functional neural reflex and muscle response",
+      "phases": [
+        "P5"
+      ],
+      "status": "planned",
+      "demonstration": "Sensory input -> spinal route -> NMJ -> calcium/force -> proprioceptive and metabolic feedback."
+    },
+    {
+      "id": "M3",
+      "title": "Brain circuit and local blood supply",
+      "phases": [
+        "P6"
+      ],
+      "status": "planned",
+      "demonstration": "Selected sensory/central/motor activity -> local metabolic demand -> regional perfusion response."
+    },
+    {
+      "id": "M4",
+      "title": "Endocrine-organ feedback",
+      "phases": [
+        "P7"
+      ],
+      "status": "planned",
+      "demonstration": "Liver/kidney/vessel/adrenal feedback and scoped endocrine axes with receptor-mediated effects."
+    },
+    {
+      "id": "M5",
+      "title": "Functional organ microstructures",
+      "phases": [
+        "P8"
+      ],
+      "status": "planned",
+      "demonstration": "Individually validated organ units coupled to systemic transport and neural/endocrine regulation."
+    },
+    {
+      "id": "M6",
+      "title": "Integrated reference experiments",
+      "phases": [
+        "P9"
+      ],
+      "status": "planned",
+      "demonstration": "Held-out whole-body perturbations with consistent cross-scale inspection and uncertainty."
+    },
+    {
+      "id": "M7",
+      "title": "Selected molecular refinement",
+      "phases": [
+        "P10"
+      ],
+      "status": "planned",
+      "demonstration": "A detailed mechanism improves a held-out prediction at a declared computation cost."
+    }
+  ],
+  "phases": [
+    {
+      "id": "P0",
+      "title": "Baseline audit and execution plan",
+      "dependsOn": [],
+      "status": "complete",
+      "completionCriteria": [
+        "Recomputed live anatomy assembly and physiological state inventories.",
+        "Inspected current endocrine, transport, neural proxy and display-motion boundaries.",
+        "Saved a bounded multiscale plan with phase gates and source candidates."
+      ],
+      "experimentIds": [],
+      "receipts": [
+        "docs/multiscale-baseline-audit.json",
+        "docs/MULTISCALE_EXECUTION_PLAN.md"
+      ]
+    },
+    {
+      "id": "P1",
+      "title": "Physical units, model ownership and scientific fixtures",
+      "dependsOn": [
+        "P0"
+      ],
+      "status": "in_progress",
+      "completionCriteria": [
+        "Species, compartment, reaction, port and evidence contracts reject unit or ownership errors.",
+        "An E01 ligand transport/binding fixture passes analytic and conservation checks.",
+        "A pinned published insulin-response model reproduces its reference experiment.",
+        "Independent validation endpoints and tolerances are specified before fitting.",
+        "Legacy relative signals and recordings remain explicitly versioned."
+      ],
+      "experimentIds": [
+        "E01"
+      ],
+      "receipts": [
+        "docs/P1_IMPLEMENTATION.md",
+        "validation/p1/protocol.json",
+        "validation/p1/verification.json",
+        "validation/p1/insulin-reference.json",
+        "models/sedaghat2002/manifest.json",
+        "validation/p1/browser-verification.json",
+        "validation/p1/human-endpoint-review.json"
+      ],
+      "criterionProgress": [
+        {
+          "criterionIndex": 0,
+          "status": "passed",
+          "evidence": "Unit, ownership, port and moiety validation exercised by numerical tests."
+        },
+        {
+          "criterionIndex": 1,
+          "status": "passed",
+          "evidence": "E01 analytic fixtures, conservative transfers, binding equilibrium and causal controls pass."
+        },
+        {
+          "criterionIndex": 2,
+          "status": "passed",
+          "evidence": "Archived no-feedback pulse reproduced against independent Radau and BDF transcriptions at locked engineering tolerances."
+        },
+        {
+          "criterionIndex": 3,
+          "status": "pending",
+          "evidence": "Three human endpoints reviewed. AS160 and image-colocalization readouts do not map to existing states. Direct surface-GLUT4 assay is preferred for further review; donor data, observation mapping and bounds remain unresolved."
+        },
+        {
+          "criterionIndex": 4,
+          "status": "passed",
+          "evidence": "Molecular experiments and checkpoints have exact model/solver contracts; legacy whole-body recordings remain separate. Invalid imports preserve the current experiment."
+        }
+      ]
+    },
+    {
+      "id": "P2",
+      "title": "Blender pipeline and multiscale anatomy package",
+      "dependsOn": [
+        "P1"
+      ],
+      "status": "in_progress",
+      "completionCriteria": [
+        "A muscle/fascicle/capillary/cell package preserves entity IDs and physical scale through export.",
+        "A brain-region package records source space and registration status.",
+        "Measured and representative structures are distinguishable.",
+        "Runtime loading, cutaways, deformed picking and levels of detail pass inspection.",
+        "Source license, hashes, anatomy review and frame-time/memory receipts exist."
+      ],
+      "experimentIds": [],
+      "receipts": [
+        "docs/P2_IMPLEMENTATION.md",
+        "docs/SARCOMERE_INCREMENT.md",
+        "validation/p2/sarcomere-verification.json",
+        "assets/multiscale/muscle-pilot/spec.json",
+        "assets/multiscale/muscle-pilot/build-receipt.json",
+        "public/models/multiscale/muscle-pilot/manifest.json",
+        "validation/p2/asset-verification.json",
+        "validation/p2/browser-verification.json"
+      ],
+      "dependencyNote": "P1 physical-unit and identity contracts are implemented. Candidate asset work proceeds independently as allowed by plan section 6.2; human validation and full P1 completion remain open.",
+      "criterionProgress": [
+        {
+          "criterionIndex": 0,
+          "status": "partial",
+          "evidence": "Muscle/fascicle/fiber/capillary prototype exports meters and stable IDs in two LODs; source-to-microstructure registration and anatomical review remain open."
+        },
+        {
+          "criterionIndex": 1,
+          "status": "pending",
+          "evidence": "Brain region package not yet built."
+        },
+        {
+          "criterionIndex": 2,
+          "status": "passed",
+          "evidence": "Source surface versus representative geometry labeled in manifest and visible inspector."
+        },
+        {
+          "criterionIndex": 3,
+          "status": "partial",
+          "evidence": "2026-09-17: six tissue, three sarcomere and four circulation production browser checks pass. Manual filament translation, picking after movement, sections, LOD and replay are covered. Coupled force-driven deformation, anatomical review and hardware performance remain pending. Historical 23-test receipt belongs to the earlier package."
+        },
+        {
+          "criterionIndex": 4,
+          "status": "partial",
+          "evidence": "Source license, hashes and local software/browser checks exist; anatomical review and physical-device performance gates remain open."
+        }
+      ]
+    },
+    {
+      "id": "P3",
+      "title": "Circulation, blood chemistry and transported hormones",
+      "dependsOn": [
+        "P1"
+      ],
+      "status": "pending",
+      "completionCriteria": [
+        "A reviewed pilot vascular circuit has explicit ports and terminal beds.",
+        "Insulin has physical local concentration, transport, exchange and clearance.",
+        "Plasma/RBC and gas reference bases are explicit.",
+        "Pulsatile flow and gas-exchange fixtures pass conservation, convergence and reference comparisons.",
+        "Legacy coarse mechanisms cannot duplicate owned new fluxes."
+      ],
+      "experimentIds": [
+        "E01",
+        "E04"
+      ],
+      "receipts": []
+    },
+    {
+      "id": "P4",
+      "title": "Insulin-muscle mechanism and coherent zoom",
+      "dependsOn": [
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "status": "pending",
+      "completionCriteria": [
+        "A meal causes receptor-mediated muscle glucose uptake through the modeled route.",
+        "Normal and reduced sensitivity comparisons expose local and systemic causal effects.",
+        "Camera zoom leaves numerical results unchanged.",
+        "Fine-region replacement and aggregation conserve inventories and charge each flux once.",
+        "Pinned biological endpoints are evaluated and failures disclosed.",
+        "Export and resume preserve model, refinement, seed and parameter versions."
+      ],
+      "experimentIds": [
+        "E02",
+        "E03"
+      ],
+      "receipts": []
+    },
+    {
+      "id": "P5",
+      "title": "Functional peripheral nervous system",
+      "dependsOn": [
+        "P1",
+        "P2",
+        "P4"
+      ],
+      "status": "pending",
+      "completionCriteria": [
+        "A reviewed stretch-reflex route connects receptor, afferent, spinal circuit, motor output and muscle.",
+        "Axon events, synaptic release, cleft clearance and receptor action determine response.",
+        "Muscle calcium, force, proprioception and energy demand form a coupled loop.",
+        "Reflex timing and perturbation effects are evaluated against selected data.",
+        "Cardiac autonomic targets have distinct receptors and evidence-linked routes."
+      ],
+      "experimentIds": [
+        "E05"
+      ],
+      "receipts": []
+    },
+    {
+      "id": "P6",
+      "title": "Registered brain, selected circuits and blood supply",
+      "dependsOn": [
+        "P2",
+        "P3",
+        "P5"
+      ],
+      "status": "pending",
+      "completionCriteria": [
+        "Brain regions and source transforms have registration and uncertainty receipts.",
+        "The 178 baseline vascular candidates have an evidence-preserving updated classification.",
+        "A selected sensory/central/motor circuit has declared connectivity and model provenance.",
+        "Neural demand drives a tested regional metabolic/perfusion response with systemic accounting.",
+        "Selected exchange/CSF boundaries and unresolved connectivity are explicit.",
+        "Species and inference labels remain attached to cells and connections."
+      ],
+      "experimentIds": [
+        "E06"
+      ],
+      "receipts": []
+    },
+    {
+      "id": "P7",
+      "title": "Endocrine and organ feedback expansion",
+      "dependsOn": [
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "status": "pending",
+      "completionCriteria": [
+        "RAAS/aldosterone, ADH and counterregulation have explicit local transport/receptor effects.",
+        "HPA, thyroid, GH/IGF and calcium modules each have scoped evidence and tests.",
+        "All 31 legacy endocrine signals have causal, descriptive or unresolved status.",
+        "Digestive ducts and renal transport follow their correct physical routes.",
+        "Feedback delay, sensitivity and source-specific perturbations have receipts."
+      ],
+      "experimentIds": [
+        "E07"
+      ],
+      "receipts": []
+    },
+    {
+      "id": "P8",
+      "title": "Organ functional units and blood-cell detail",
+      "dependsOn": [
+        "P4",
+        "P6",
+        "P7"
+      ],
+      "status": "pending",
+      "completionCriteria": [
+        "Liver, nephron, alveolar, intestinal, islet, cardiac and skin units each have an individual receipt.",
+        "Blood-cell and glial detail is limited to named mechanisms with supporting evidence.",
+        "Fine-unit boundary fluxes aggregate consistently into the body.",
+        "Every unit passes its own reference experiments and whole-body regressions.",
+        "Units without accepted evidence remain coarse and cannot count as completed."
+      ],
+      "experimentIds": [
+        "E08"
+      ],
+      "receipts": []
+    },
+    {
+      "id": "P9",
+      "title": "Integrated sensory and whole-body experiment suite",
+      "dependsOn": [
+        "P6",
+        "P7",
+        "P8"
+      ],
+      "status": "pending",
+      "completionCriteria": [
+        "Supported food, air, sensory and environmental inputs have explicit receptor-to-effector paths.",
+        "Held-out meal/exercise/recovery and fluid scenarios are evaluated.",
+        "Uncertainty, parameter identifiability and model domain are reported.",
+        "Supported-duration stability, replay, browser behavior and runtime budgets pass.",
+        "Coverage report distinguishes anatomical, numerical and biological evidence."
+      ],
+      "experimentIds": [
+        "E09"
+      ],
+      "receipts": []
+    },
+    {
+      "id": "P10",
+      "title": "Selected molecular and individual refinement",
+      "dependsOn": [
+        "P9"
+      ],
+      "status": "pending",
+      "completionCriteria": [
+        "One selected detailed molecular or reaction-diffusion mechanism improves a predeclared held-out prediction.",
+        "Coarse/fine agreement is demonstrated in the supported domain.",
+        "Stochastic patches or offline atomistic work have explicit questions and compute budgets.",
+        "Any individual fitting has identifiable parameters and appropriate measurements.",
+        "No milestone claims every molecule or universal human completeness."
+      ],
+      "experimentIds": [],
+      "receipts": []
+    }
+  ],
+  "experiments": [
+    {
+      "id": "E01",
+      "title": "Two-compartment ligand pulse and receptor binding",
+      "firstRequiredBy": "P1",
+      "status": "passed_numerical",
+      "referenceDataset": "Analytic synthetic fixture; no biological dataset",
+      "acceptanceThreshold": "validation/p1/protocol.json#E01",
+      "note": "Physical amount and concentration checks, analytic clearance/mixing/binding, conservation and causal controls pass. This is numerical verification, not human biological validation.",
+      "receipts": [
+        "validation/p1/verification.json",
+        "validation/p1/numerical-tests.tap"
+      ]
+    },
+    {
+      "id": "E02",
+      "title": "Meal and insulin-sensitivity comparison",
+      "firstRequiredBy": "P4",
+      "status": "not_started",
+      "referenceDataset": null,
+      "acceptanceThreshold": null,
+      "note": "Dataset, endpoint, metric and acceptance bound must be fixed before fitting; no biological validation claim yet."
+    },
+    {
+      "id": "E03",
+      "title": "Muscle observation and explicit refinement",
+      "firstRequiredBy": "P4",
+      "status": "not_started",
+      "referenceDataset": null,
+      "acceptanceThreshold": null,
+      "note": "Dataset, endpoint, metric and acceptance bound must be fixed before fitting; no biological validation claim yet."
+    },
+    {
+      "id": "E04",
+      "title": "Pulsatile loop and blood/tissue gas exchange",
+      "firstRequiredBy": "P3",
+      "status": "not_started",
+      "referenceDataset": null,
+      "acceptanceThreshold": null,
+      "note": "Dataset, endpoint, metric and acceptance bound must be fixed before fitting; no biological validation claim yet."
+    },
+    {
+      "id": "E05",
+      "title": "Stretch reflex and neuromuscular perturbation",
+      "firstRequiredBy": "P5",
+      "status": "not_started",
+      "referenceDataset": null,
+      "acceptanceThreshold": null,
+      "note": "Dataset, endpoint, metric and acceptance bound must be fixed before fitting; no biological validation claim yet."
+    },
+    {
+      "id": "E06",
+      "title": "Selected neural circuit and regional perfusion",
+      "firstRequiredBy": "P6",
+      "status": "not_started",
+      "referenceDataset": null,
+      "acceptanceThreshold": null,
+      "note": "Dataset, endpoint, metric and acceptance bound must be fixed before fitting; no biological validation claim yet."
+    },
+    {
+      "id": "E07",
+      "title": "RAAS/fluid feedback and ACE-activity perturbation",
+      "firstRequiredBy": "P7",
+      "status": "not_started",
+      "referenceDataset": null,
+      "acceptanceThreshold": null,
+      "note": "Dataset, endpoint, metric and acceptance bound must be fixed before fitting; no biological validation claim yet."
+    },
+    {
+      "id": "E08",
+      "title": "Separate organ functional-unit reference experiments",
+      "firstRequiredBy": "P8",
+      "status": "not_started",
+      "referenceDataset": null,
+      "acceptanceThreshold": null,
+      "note": "Dataset, endpoint, metric and acceptance bound must be fixed before fitting; no biological validation claim yet."
+    },
+    {
+      "id": "E09",
+      "title": "Integrated meal/exercise/recovery and fluid scenarios",
+      "firstRequiredBy": "P9",
+      "status": "not_started",
+      "referenceDataset": null,
+      "acceptanceThreshold": null,
+      "note": "Dataset, endpoint, metric and acceptance bound must be fixed before fitting; no biological validation claim yet."
+    }
+  ],
+  "receiptRequirements": [
+    "source_and_model_hashes",
+    "exact_invocation",
+    "solver_and_platform_settings",
+    "initial_state_and_inputs",
+    "conservation_and_convergence_results",
+    "observed_outputs",
+    "expected_values_and_primary_sources",
+    "comparison_metrics_and_plots",
+    "browser_inspection_where_applicable",
+    "unresolved_failures_and_validity_domain"
+  ],
+  "statusPolicy": {
+    "ready": "Prerequisites complete and a bounded brief exists.",
+    "in_progress": "A concrete deliverable is actively being implemented.",
+    "complete": "Every completion criterion has inspected supporting receipts.",
+    "blocked": "A named missing dependency prevents this phase; independently ready work may continue.",
+    "pending": "Awaiting prerequisite work.",
+    "planned": "Defined goal or release, not yet complete."
+  },
+  "updatedOn": "2026-09-13"
+}

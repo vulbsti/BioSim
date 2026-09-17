@@ -1,0 +1,27 @@
+{
+  "id": "shorten2007-fast-pmr-33944b1-1",
+  "paper": "Shorten PR, O'Callaghan P, Davidson JB, Soboleva TK. A mathematical model of fatigue in skeletal muscle force contraction. 2007.",
+  "pubmed": "https://pubmed.ncbi.nlm.nih.gov/18080210/",
+  "exposure": "https://models.physiomeproject.org/exposure/159ba2f081022ca651284404f39eeb40/shorten_ocallaghan_davidson_soboleva_2007.cellml/view",
+  "changeset": "33944b1d8ee3227ebd32df9a7b1116c649632145",
+  "downloadedOn": "2026-09-17",
+  "species": "Mouse skeletal muscle; fast-twitch source parameters; not human-calibrated",
+  "license": "CC-BY-3.0",
+  "licenseURL": "https://creativecommons.org/licenses/by/3.0/",
+  "attribution": "Paul R. Shorten, Paul O'Callaghan, John B. Davidson and Tanya K. Soboleva; CellML encoding and code generation distributed by the Physiome Model Repository. Original author and encoding metadata retained in source/shorten2007.cellml.",
+  "files": {
+    "source/shorten2007.cellml": "c75badf411ea2888ad023590bb7412e1df64869456be76693576ea0a5483ecac",
+    "source/shorten2007.c": "c9d607abdc219989956bb2537bfb3ea9586944a38c4f3d2b9afb68d96233bb7a",
+    "source/shorten2007.py": "7c7179bd20d9aa8d4cf4681a7528b2c7a9ac35f513240fa07013480565ce8534"
+  },
+  "adaptations": [
+    "Mechanically translate archived C assignments to TypeScript; preserve all 56 states, 105 constants and 71 algebraic variables",
+    "Independent reference executes separate archived Python export with SciPy BDF",
+    "Replace only the source stimulus waveform at the wrapper boundary: no current, one 150 microA/cm2 0.5 ms pulse, or original nine-pulse 20 Hz train",
+    "Optional SR release perturbation scales source constant 98; not a calibrated drug intervention",
+    "Source time remains milliseconds; no physiological timescale conversion",
+    "Hold length fixed during activation playback: the source state equations contain no load or shortening state",
+    "Cross-bridge concentrations are not converted to physical force or absolute head counts"
+  ],
+  "limits": ["No motor neuron or neuromuscular junction", "No human calibration", "No load-dependent shortening", "Source ATP buffering is not a complete ATP hydrolysis or energy ledger", "No whole-body coupling", "No full fatigue validation in the 500 ms inspection window"]
+}

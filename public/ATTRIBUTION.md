@@ -54,3 +54,15 @@ Earlier repository revisions included female reference anatomy: Kristen Browne a
 Adaptations: translated native meter/Y-up coordinates onto the stage, coincident vertices welded and source normals averaged, geometry simplified with a 0.2% per-structure relative error bound, and normals quantized. Colors and display systems are curated for this interface. All 888 source meshes are represented, with 1,073 source nodes available as selectable individual or compound concepts.
 
 This is a reference assembly with whole-body surface and selected organs, including female reproductive anatomy. Its skeleton and muscle coverage is partial. It is not a complete model of every human structure or a single-person scan. Eight placenta/umbilical structures are classified under Pregnancy reference and hidden by default.
+
+## Multiscale muscle prototype
+
+The muscle-level GLBs in `models/multiscale/muscle-pilot/` re-encode BodyParts3D 4.0 FJ1442, FJ3365 and FJ3381 (right vastus lateralis, femur and patella), under the CC BY 4.0 credit above. Source geometry is translated to a local center, normals recalculated, and surface topology retained. The inverse translation, source-buffer hashes and IDs are recorded in the package manifest.
+
+The fascicle/fiber geometry and banding texture are original representative project assets under MIT. Their hierarchy is informed by OpenStax Anatomy and Physiology, section 10.2 (https://openstax.org/books/anatomy-and-physiology/pages/10-2-skeletal-muscle); no publication figure imagery is copied. These microstructures are illustrative and are not registered to the BodyParts3D donor.
+
+The sarcomere lattice is also original MIT geometry, informed by the qualitative sliding-filament description in OpenStax section 10.3 (https://openstax.org/books/anatomy-and-physiology-2e/pages/10-3-muscle-fiber-contraction-and-relaxation). It uses disclosed representative dimensions and sparse illustrative myosin heads. It contains no measured protein coordinates or copied figures. Length-controlled sliding is not a force or biochemical model.
+
+## Muscle excitation model
+
+The optional fixed-length activation experiment adapts the fast-twitch mouse-muscle CellML model by Paul R. Shorten, Paul O'Callaghan, John B. Davidson and Tanya K. Soboleva (2007), distributed by the Physiome Model Repository under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). Source exposure: https://models.physiomeproject.org/exposure/159ba2f081022ca651284404f39eeb40/shorten_ocallaghan_davidson_soboleva_2007.cellml/view, changeset `33944b1d8ee3227ebd32df9a7b1116c649632145`. C equations were mechanically translated to TypeScript; current input and SR-release interventions are described in `models/shorten2007/README.md`. Original CellML and generated C/Python source, author metadata and checksums are retained. This is not a human-calibrated model or physical force measurement.

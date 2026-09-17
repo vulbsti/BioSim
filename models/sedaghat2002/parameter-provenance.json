@@ -1,0 +1,365 @@
+{
+  "scope": "Native archived parameter basis, prior to browser pM conditioning. Fixed ranges prevent claiming estimated human parameter uncertainty.",
+  "parameters": [
+    {
+      "id": "k1",
+      "value": 60000000,
+      "unit": "L/(mol*min)",
+      "admittedRange": [
+        60000000,
+        60000000
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_1",
+      "value": 0.2,
+      "unit": "1/min",
+      "admittedRange": [
+        0.2,
+        0.2
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k2",
+      "value": 60000000,
+      "unit": "L/(mol*min)",
+      "admittedRange": [
+        60000000,
+        60000000
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_2",
+      "value": 20,
+      "unit": "1/min",
+      "admittedRange": [
+        20,
+        20
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k3",
+      "value": 2500,
+      "unit": "1/min",
+      "admittedRange": [
+        2500,
+        2500
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_3",
+      "value": 0.2,
+      "unit": "1/min",
+      "admittedRange": [
+        0.2,
+        0.2
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k4",
+      "value": 0.0003333333333333333,
+      "unit": "1/min",
+      "admittedRange": [
+        0.0003333333333333333,
+        0.0003333333333333333
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_4",
+      "value": 0.003,
+      "unit": "1/min",
+      "admittedRange": [
+        0.003,
+        0.003
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k44",
+      "value": 0.0021,
+      "unit": "1/min",
+      "admittedRange": [
+        0.0021,
+        0.0021
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_44",
+      "value": 0.00021,
+      "unit": "1/min",
+      "admittedRange": [
+        0.00021,
+        0.00021
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_5",
+      "value": 1.67e-18,
+      "unit": "1/min",
+      "admittedRange": [
+        1.67e-18,
+        1.67e-18
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k6",
+      "value": 0.461,
+      "unit": "1/min",
+      "admittedRange": [
+        0.461,
+        0.461
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k7",
+      "value": 4.16,
+      "unit": "1/min",
+      "admittedRange": [
+        4.16,
+        4.16
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_7",
+      "value": 1.3959731543624163,
+      "unit": "1/min",
+      "admittedRange": [
+        1.3959731543624163,
+        1.3959731543624163
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k8",
+      "value": 706464146944.5425,
+      "unit": "L/(mol*min)",
+      "admittedRange": [
+        706464146944.5425,
+        706464146944.5425
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_8",
+      "value": 10,
+      "unit": "1/min",
+      "admittedRange": [
+        10,
+        10
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k9stimulated",
+      "value": 1.39,
+      "unit": "1/min",
+      "admittedRange": [
+        1.39,
+        1.39
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_9",
+      "value": 42.14838709677419,
+      "unit": "1/min",
+      "admittedRange": [
+        42.14838709677419,
+        42.14838709677419
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k9basal",
+      "value": 0.1314486921529175,
+      "unit": "1/min",
+      "admittedRange": [
+        0.1314486921529175,
+        0.1314486921529175
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k10",
+      "value": 2.9610344827586212,
+      "unit": "1/min",
+      "admittedRange": [
+        2.9610344827586212,
+        2.9610344827586212
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_10",
+      "value": 2.77,
+      "unit": "1/min",
+      "admittedRange": [
+        2.77,
+        2.77
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_11",
+      "value": 6.931471805599453,
+      "unit": "1/min",
+      "admittedRange": [
+        6.931471805599453,
+        6.931471805599453
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_12",
+      "value": 6.931471805599453,
+      "unit": "1/min",
+      "admittedRange": [
+        6.931471805599453,
+        6.931471805599453
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k13",
+      "value": 0.006958333333333333,
+      "unit": "1/min",
+      "admittedRange": [
+        0.006958333333333333,
+        0.006958333333333333
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_13",
+      "value": 0.167,
+      "unit": "1/min",
+      "admittedRange": [
+        0.167,
+        0.167
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k_14",
+      "value": 0.001155,
+      "unit": "1/min",
+      "admittedRange": [
+        0.001155,
+        0.001155
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "k14",
+      "value": 0.11088,
+      "unit": "percentage-points/min",
+      "admittedRange": [
+        0.11088,
+        0.11088
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "IRp",
+      "value": 8.97e-13,
+      "unit": "mol/L",
+      "admittedRange": [
+        8.97e-13,
+        8.97e-13
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "PI3K",
+      "value": 5e-15,
+      "unit": "mol/L",
+      "admittedRange": [
+        5e-15,
+        5e-15
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    },
+    {
+      "id": "APequil",
+      "value": 9.090909090909092,
+      "unit": "percent of initial pool",
+      "admittedRange": [
+        9.090909090909092,
+        9.090909090909092
+      ],
+      "evidence": "Archived JSim 0166 source; original parameter or derived source expression",
+      "conditions": "No-feedback source protocol; temperature is not an adjustable parameter; preparation-specific source rates are preserved",
+      "status": "source-pinned, not fitted to this atlas or to human skeletal muscle"
+    }
+  ]
+}

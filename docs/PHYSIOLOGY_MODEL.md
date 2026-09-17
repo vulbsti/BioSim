@@ -125,6 +125,8 @@ No Pulse implementation or validation suite is embedded. Its validation status d
 
 ## Next implementation order
 
+The items below describe the organ-scale backlog. The [multiscale execution plan](MULTISCALE_EXECUTION_PLAN.md) now governs phase order and adds Blender assets, functional nerves/brain circuits, cellular mechanisms and validation gates. Its P0 inventory/planning is complete. [P1 is in progress](P1_IMPLEMENTATION.md): the new physical reaction kernel and molecular lab run isolated local experiments. They do not yet change the organ-scale equations or convert relative hormone activities to physical concentrations. [P2 is in progress](P2_IMPLEMENTATION.md): Blender-authored muscle, fascicle and fiber specimens support 3D inspection and observe the archived insulin trajectory. Their illustrative overlay does not add glucose uptake to the organ-scale model. P3–P10 remain pending.
+
 1. Expand the implemented transport network to electrolyte, urea, acid-base, and endocrine species. Add explicit elemental accounting and anaerobic / ketone support; retain the now-implemented arterial / venous / portal pools, local oxygen limits, and flux provenance.
 2. Audit all cerebral vascular meshes and attach provenance-bearing, reviewable topology. Distinguish known edges, grouped terminal beds, and unresolved source elements. Couple brain autoregulation back into systemic resistance / flow.
 3. Introduce a reaction and endocrine parameter registry with physiological units, transport, and secretion / clearance calibration; extend digestive / renal / hepatic chemistry and target effects.

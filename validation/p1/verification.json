@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-09T21:09:49.052Z",
+  "invocation": "npm run verify:multiscale",
+  "sourceRevision": "af3c240c4ae3beaf1ea89573aea0b6ff5d21c220",
+  "evidence": "Executed numerical verification and source-model reproduction. Not independent human biological validation.",
+  "platform": {
+    "node": "v22.22.0",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "solvers": {
+    "chemical": "conservative-rk4-step-doubling-1",
+    "insulin": "rk4-0.0005min-event-split-1"
+  },
+  "tests": {
+    "invocation": "node --import tsx --test tests/multiscale.test.ts",
+    "exitCode": 0,
+    "output": "validation/p1/numerical-tests.tap"
+  },
+  "E01": {
+    "input": {
+      "kind": "binding",
+      "parameters": {
+        "dosePmol": 100,
+        "receptorPmol": 20,
+        "clearancePerMinute": 0.12
+      }
+    },
+    "durationSeconds": 1200,
+    "samples": 241,
+    "maximumLedgerResidualMol": 1.7185808136782875e-24,
+    "minimumAmountMol": 0,
+    "ligandTotalPmol": 100.00000000000031,
+    "receptorTotalPmol": 19.999999999999922,
+    "status": "passed synthetic numerical checks"
+  },
+  "insulin": {
+    "model": "sedaghat2002-jsim-no-feedback-1",
+    "input": {
+      "doseNM": 100,
+      "pulseMinutes": 15
+    },
+    "samples": 241,
+    "durationSeconds": 3600,
+    "maximumNormalizedError": 0.00003459265338227643,
+    "maximumAbsoluteErrorNativeUnits": 6.953115624930284e-9,
+    "normalizedAcceptanceBound": 1,
+    "radauVsBdfNormalizedError": 0.000023684771494099344,
+    "surfaceGLUT4At15Minutes": 39.283198322657206,
+    "surfaceGLUT4At60Minutes": 4.427179585272186,
+    "status": "passed independent-solver reproduction"
+  },
+  "humanValidation": {
+    "status": "pending",
+    "reason": "The 2005 human-muscle AS160 experiment is independent of the 2002 model, but its measured endpoint is not a state in this archived model. A quantitative observation mapping and usable data must be established before setting defensible human acceptance bounds or fitting M1."
+  },
+  "sourceHashes": {
+    "app/simulation/core/units.ts": "1ada1c1771a6c9692bf0f213386071bb1e856da03a455e91d64db6a7c6a7d783",
+    "app/simulation/core/model.ts": "123950eb1780f1e7b599f5824b4cb519a1ad69f7ccbdf8620e07354a5782390c",
+    "app/simulation/core/integrator.ts": "7b5b0b3bbf67678ad8634bd9eba831e7b1cc8948f4fae46899d9090483864b9d",
+    "app/simulation/core/binding-fixture.ts": "e685c4a4b7f22b79233854babd135054218af8dbfc345716181e5d541244bb1a",
+    "app/molecular/sedaghat.ts": "95b5fe339e3e6cc25e4db501a2438cbfe01a47b42b7d2b07c313666aaea2e0e6",
+    "app/molecular/experiments.ts": "ca5c9656517aa30532fe5095b0727ad11b255d920baec63ba50c0a40d6165778",
+    "models/sedaghat2002/parameters.json": "180648b8bb3d5dd148f4b45229eee7011b76ec1881ec74da6ac6c1dd320468a6",
+    "models/sedaghat2002/manifest.json": "0e7bf73f237593d7255d9c1f5ebafa3801abb91a72feab77c93bbd99cccddd53",
+    "models/sedaghat2002/source/sedaghat2002.mod": "b9bb2f4202d20f8d0b40d4d388a20f55c25ffe5f626105642fe0139a98554125",
+    "models/sedaghat2002/source/sedaghat2002.proj": "2a42b4ea5ae24f9ed06645075fd802b532e73a43ccc5f07c5dc520b043eba603",
+    "models/sedaghat2002/parameter-provenance.json": "92e2d7a1a05f47434bad286c8887d19d81db5f79b8c2a2f141a045d9fc37e654",
+    "tests/multiscale.test.ts": "1d3e4e2e52d3724e0dd4240da86bf045d729116a76998ef6e68a7d4745daf990",
+    "scripts/reference-insulin.py": "6b3e85b3b9a23127fa00debff48902f28550cd23334d6f7b1418c78833d366a4",
+    "scripts/verify-multiscale.ts": "29c775d3797a6ae3e1a52d6fe8dc3ba1401504d871e6b550ecb752a80f10fed4",
+    "validation/p1/protocol.json": "dff47869542ddca9120ff9f629e1d78af045758e8872923c9ec2e4019aec51aa",
+    "validation/p1/insulin-reference.json": "6a3439a7707679c8255b1d174233e585ae24e5356c7338db009a6f1b9be32f24"
+  }
+}

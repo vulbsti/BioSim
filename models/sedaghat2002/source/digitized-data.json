@@ -1,0 +1,138 @@
+{
+  "source": "sedaghat2002.proj",
+  "evidence": "Archived digitized source-paper comparison points. Not independent human validation data.",
+  "datasets": [
+    {
+      "id": "Fig10a_Sedaghat2002",
+      "xLabel": "Insulin_M",
+      "x": [
+        2.04226e-11,
+        3.12994e-11,
+        5.09861e-11,
+        2.00917e-10,
+        3.16807e-10,
+        1.00447e-09,
+        3.07751e-09,
+        9.96545e-09,
+        3.06003e-08,
+        3.07617e-07
+      ],
+      "yLabel": "Percent_Resp",
+      "y": [
+        5.25071,
+        5.27173,
+        5.29576,
+        7.40415,
+        11.5083,
+        21.4293,
+        38.8318,
+        67.4618,
+        80.4426,
+        100.285
+      ],
+      "notes": "From Sedaghat et al. 2002 paper.\nFig 10A: Percent response for bound receptors vs. Insulin conc (M)"
+    },
+    {
+      "id": "Fig10b_Sedaghat2002",
+      "xLabel": "Insulin_M",
+      "x": [
+        3.15596e-11,
+        1.45619e-10,
+        1.47456e-09,
+        1.44959e-08,
+        9.58509e-08,
+        9.74868e-07
+      ],
+      "yLabel": "Percent_Resp",
+      "y": [
+        7.855,
+        4.514,
+        35.314,
+        62.398,
+        86.431,
+        100.0
+      ],
+      "notes": "From Sedaghat et al. 2002 paper.\nFig 10B: Percent response for phosphorylated receptors at cell surface vs. Insulin conc (M)"
+    },
+    {
+      "id": "Fig10c_Sedaghat2002",
+      "xLabel": "Insulin_M",
+      "x": [
+        1.54359e-11,
+        4.21179e-11,
+        1.51051e-10,
+        1.52043e-09,
+        3.05235e-09,
+        9.88588e-09,
+        2.96032e-08,
+        1.47822e-07,
+        2.97977e-07,
+        9.77249e-07
+      ],
+      "yLabel": "Percent_Resp",
+      "y": [
+        8.20279,
+        9.92235,
+        13.6825,
+        27.9766,
+        39.8581,
+        85.9889,
+        80.9311,
+        99.6147,
+        95.2251,
+        91.5254
+      ],
+      "notes": "From Sedaghat et al. 2002 paper.\nFig 10C: Percent response for PI 3-kinase activity vs. Insulin conc (M)"
+    },
+    {
+      "id": "Fig10d_Sedaghat2002",
+      "xLabel": "Insulin_M",
+      "x": [
+        1.99393e-11,
+        5.9897e-11,
+        2.034e-10,
+        9.92499e-10,
+        3.17611e-09,
+        1.01621e-08,
+        3.05953e-08,
+        9.79761e-08
+      ],
+      "yLabel": "Percent_Resp",
+      "y": [
+        36.4368,
+        47.5748,
+        58.3791,
+        89.0576,
+        92.453,
+        96.5218,
+        98.9055,
+        99.6073
+      ],
+      "notes": "From Sedaghat et al. 2002 paper.\nFig 10D: Percent response for glucose uptake (assumed to be directly proportional to GLUT4 levels at the cell surface). vs. Insulin conc (M)\n\n"
+    },
+    {
+      "id": "Fig11_Sedaghat2002",
+      "xLabel": "time_min",
+      "x": [
+        0.0,
+        1.0,
+        1.52,
+        1.99,
+        5.0,
+        10.0,
+        15.02
+      ],
+      "yLabel": "PKC_z_percent",
+      "y": [
+        0.048,
+        0.698,
+        0.996,
+        0.64,
+        0.462,
+        0.996,
+        0.754
+      ],
+      "notes": "From Sedaghat et al. 2002 paper.\nFig. 11: Biphasic activation of PKC-z in response to insulin stimulation.\nPublished data on insulin-stimulated activation of PKC-z\n(adapted from Ref. 48, Fig. 2A); step\ninput of 10-8 M insulin for 15 min."
+    }
+  ]
+}

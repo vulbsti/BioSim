@@ -18,6 +18,9 @@ export default function PhysicalScene({atlas,body,motion,view,onSelect,onProgres
  latest.current=view;pickCallback.current=onSelect;physiology.current=body;animate.current=motion;
  useEffect(()=>{
   const el=host.current!;let disposed=false,frame=0,dirty=true,ready=false,lastState:PhysicalViewState|null=null,active=true,lastFit='';
+  // Offscreen scenes may not draw yet. Subsequent updates follow rendered motion,
+  // so the pause indicator does not get ahead of a pending GPU frame.
+  el.dataset.motion=animate.current?'playing':'paused';
   const abort=new AbortController(),index=createAnatomyIndex(atlas);onError('');onProgress(0);
   let renderer:T.WebGLRenderer;
   try{renderer=new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});}catch{onError('3D rendering is unavailable. Enable WebGL to explore the physical anatomy.');return;}

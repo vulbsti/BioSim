@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-09-13",
+  "status": "no_human_validation_claim",
+  "scope": "Source and observation review for the next P1 decision. No human data fitted and no quantitative biological acceptance bounds invented.",
+  "candidates": [
+    {
+      "id": "karlsson2005-as160",
+      "doi": "10.2337/diabetes.54.6.1692",
+      "source": "https://pubmed.ncbi.nlm.nih.gov/15919790/",
+      "evidenceInspected": "Primary paper abstract",
+      "measuredEndpoint": "Human muscle AS160 phosphorylation; separate Akt phosphorylation sites are also reported.",
+      "admission": "not_mappable_to_current_states",
+      "reason": "The archived model has no AS160 state and one lumped Akt activation pool. Relabeling AktP as AS160 or either measured phosphorylation site is not an observation model."
+    },
+    {
+      "id": "bradley2015-glut4",
+      "doi": "10.14814/phy2.12375",
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4463815/",
+      "evidenceInspected": "Primary paper methods, results and discussion",
+      "measuredEndpoint": "GLUT4/dystrophin image colocalization in human muscle after glucose ingestion and exercise.",
+      "admission": "qualitative_only",
+      "reason": "Pearson image correlation is not a surface amount or fraction. Its change cannot be used directly as a GLUT4 fold-change; nearby vesicles are unresolved by this assay. A spatial measurement model would be needed."
+    },
+    {
+      "id": "persson2026-surface-glut4",
+      "doi": "10.2337/db25-0567",
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13007217/",
+      "evidenceInspected": "Primary paper methods, Figure 2 legend and results; supplement metadata via public Figshare API",
+      "measuredEndpoint": "Exofacial LM048 sarcolemmal fluorescence in nonpermeabilized human muscle fibers.",
+      "sourceProtocols": [
+        {
+          "preparation": "ex vivo human muscle bundles",
+          "insulinNM": 60,
+          "durationMinutes": 10,
+          "biologicalReplicates": 3,
+          "figure": "2E"
+        },
+        {
+          "preparation": "in vivo human muscle, hyperinsulinemic-euglycemic clamp",
+          "durationMinutes": 30,
+          "biologicalReplicates": 5,
+          "figure": "2G"
+        }
+      ],
+      "admission": "preferred_candidate_pending_observation_and_data",
+      "proposedObservation": "Within-donor, background-corrected stimulated/basal surface fluorescence ratio compared with modeled surface GLUT4 amount ratio.",
+      "unresolved": [
+        "Confirm fluorescence response and background normalization before equating ratios.",
+        "Separate sarcolemmal from total model surface GLUT4, including T-tubule contribution.",
+        "Acquire paired donor-level values or a reviewed extraction with explicit digitization error; individual fibers are not independent donors.",
+        "Match stimulus exposure and basal conditions; a maintained 100 nM source pulse is not the human clamp input."
+      ],
+      "supplement": {
+        "metadataURL": "https://api.figshare.com/v2/articles/31069570",
+        "doi": "10.2337/figshare.31069570.v1",
+        "filesSeen": [
+          "Supplementary_data_1_V2.pdf"
+        ],
+        "licenseReported": "CC BY-NC-SA 4.0",
+        "admittedToApplication": false,
+        "note": "No machine-readable donor table appeared in the file listing. No publication images or supplement files copied into the app."
+      }
+    },
+    {
+      "id": "lund1997-surface-glut4",
+      "doi": "10.2337/diab.46.12.1965",
+      "source": "https://pubmed.ncbi.nlm.nih.gov/9392481/",
+      "evidenceInspected": "Primary paper abstract; full methods not obtained",
+      "measuredEndpoint": "Exofacial photolabeled surface GLUT4 in human vastus lateralis strips",
+      "reportedSummary": {
+        "insulinPM": 2400,
+        "basalSurfaceGLUT4PmolPerGWetMuscle": 0.19,
+        "stimulatedSurfaceGLUT4PmolPerGWetMuscle": 0.38,
+        "reportedBasalPlusMinus": 0.03,
+        "reportedStimulatedPlusMinus": 0.05
+      },
+      "admission": "candidate_pending_full_protocol_and_independence",
+      "reason": "Absolute surface amounts may support a clearer observation mapping. The abstract alone does not establish exposure duration, error-bar definition, donor pairing, surface/T-tubule coverage, or overlap with the archived model calibration sources. No numerical acceptance interval or human fit is claimed."
+    }
+  ],
+  "acceptanceDesign": {
+    "status": "not_locked",
+    "statisticalUnit": "human donor, preserving baseline/stimulated pairing",
+    "primaryMetric": "Log stimulated/basal response after an admitted observation mapping",
+    "requiredBeforeFitting": [
+      "Record paired measurements, preparation and stimulus time course with provenance.",
+      "Specify primary endpoint and uncertainty construction using donor variability, assay error and any digitization error.",
+      "Freeze data split, parameter bounds and numeric acceptance interval before fitting.",
+      "Retain a separate test for transfer from cell preparations to human muscle."
+    ],
+    "numericBounds": null
+  },
+  "nextAction": "Resolve the Persson 2026 surface-assay mapping and paired data, or select a better matched public dataset. Keep the current source reproduction separate from human prediction."
+}

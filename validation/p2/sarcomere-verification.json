@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "recordedOn": "2026-09-17",
+  "packageVersion": "0.2.0",
+  "manifestSHA256": "ff7f0651e1b3ebb2fc4cb10c7ab32f4f98b4eec2cc59b2294ab211a4b23ca234",
+  "scope": "Representative sarcomere geometry and prescribed-length sliding, not biochemical or force validation",
+  "blender": {
+    "version": "4.4.3",
+    "exitCode": 0,
+    "source": "assets/multiscale/muscle-pilot/blender/sarcomere.blend",
+    "detailTriangles": 47000,
+    "contextTriangles": 13304,
+    "buildReceipt": "assets/multiscale/muscle-pilot/build-receipt.json"
+  },
+  "typescript": { "command": "npm run check", "exitCode": 0 },
+  "assetVerification": {
+    "command": "npm run verify:tissue",
+    "exitCode": 0,
+    "testsPassed": 5,
+    "glbsInspected": 8,
+    "receipt": "validation/p2/asset-verification.json"
+  },
+  "productionBrowser": {
+    "command": "npm run test:browser:production -- tests/browser/tissue.spec.ts tests/browser/sarcomere.spec.ts tests/browser/circulation.spec.ts --reporter=line,json",
+    "exitCode": 0,
+    "startTime": "2026-09-17T05:44:34.175Z",
+    "durationMs": 37567.562,
+    "passed": 13,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0,
+    "rawReport": "outputs/verification/p2/sarcomere-browser.log",
+    "buildWarning": "Existing chunk size warning; no build failure"
+  },
+  "visualReview": {
+    "captureReceipt": "outputs/verification/p2/sarcomere/capture.json",
+    "browser": "153.0.8010.12",
+    "pageErrors": [],
+    "mobileOverflow": false,
+    "checked": ["Blender render", "Browser front view at 3.2 and 2.5 micrometers", "Mobile layout"],
+    "correction": "Extended Z discs were cropped by the initial front camera. Default sarcomere framing was widened by 1.35; regenerated 3.2 micrometer capture shows both discs."
+  },
+  "remaining": [
+    "Independent anatomical review and donor microstructure registration",
+    "Calcium activation and troponin/tropomyosin regulation",
+    "ATP and cross-bridge kinetics, titin, force and load response",
+    "Neural, metabolic and whole-body coupling",
+    "Measured molecular structures and broader body coverage",
+    "Physical-device GPU time and memory verification"
+  ],
+  "overallGoalComplete": false
+}

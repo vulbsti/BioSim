@@ -1,0 +1,576 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-12T20:00:39.995Z",
+  "invocation": "npm run verify:circulation",
+  "evidence": "Executed conservative physical transport and source-observer checks. Independent solver agreement concerns a synthetic reference design, not a human waveform fit.",
+  "tests": {
+    "count": 6,
+    "exitCode": 0,
+    "output": "validation/p3/numerical-tests.tap"
+  },
+  "config": {
+    "dosePmol": 1200,
+    "route": "portal",
+    "hepaticClearance": 1,
+    "exchange": 1,
+    "muscleResistance": 1
+  },
+  "solver": {
+    "browserStepSeconds": 0.01,
+    "convergenceStepSeconds": 0.005,
+    "independentReference": {
+      "method": "DOP853",
+      "rtol": 1e-10,
+      "atolVolumeL": 1e-12,
+      "atolPhysicalInsulinPmol": 1e-9,
+      "atolNativeSignaling": 1e-12,
+      "maximumStepSeconds": 0.05,
+      "evaluations": 446058
+    }
+  },
+  "numericalAgreement": {
+    "stepHalving": {
+      "maximumPressureErrorMmHg": 0.00002331586615866854,
+      "maximumGLUT4ErrorPercentagePoints": 9.188481087107903e-10,
+      "maximumInsulinErrorPM": 0.00004716721014119685,
+      "maximumNormalizedInsulinError": 0.000019509116618279126
+    },
+    "independentDOP853": {
+      "maximumPressureErrorMmHg": 0.0001166946308757133,
+      "maximumGLUT4ErrorPercentagePoints": 2.355138661869205e-8,
+      "maximumInsulinErrorPM": 0.00012955185070495645,
+      "maximumNormalizedInsulinError": 0.000028934566363140215
+    }
+  },
+  "conservation": {
+    "maximumVolumeResidualL": 9.85878045867139e-14,
+    "maximumInsulinResidualMol": 5.343281372915954e-23,
+    "minimumInsulinMol": 0
+  },
+  "observed": {
+    "lateArterialPressureRangeMmHg": [
+      77.8096008789309,
+      114.36741639287997
+    ],
+    "arterialPeak": {
+      "timeS": 59.3,
+      "insulinPM": 289.985112202784
+    },
+    "liverPeak": {
+      "timeS": 25.2,
+      "insulinPM": 3225.86479525026
+    },
+    "arterialAUCPMSeconds": {
+      "portal": 87382.75811301016,
+      "venous": 136846.3252854821,
+      "portalWithoutHepaticClearance": 183824.81060278454
+    },
+    "final": {
+      "time": 600,
+      "volumesL": [
+        0.6776524811426101,
+        2.7235481441439315,
+        0.2291706608158352,
+        0.37082933918416017,
+        0.14971100604543702,
+        0.3995761389535821,
+        0.0996807175867809,
+        0.14978566292454498,
+        0.10000770514263065,
+        0.10003814406057554
+      ],
+      "pressureMmHg": [
+        77.8096008789309,
+        5.2943518017991416,
+        12.91706608158352,
+        9.041466959208009,
+        29.807337363624686,
+        24.894034738395526,
+        24.84035879339045,
+        24.928554308181663,
+        12.00128419043844,
+        8.007628812115106
+      ],
+      "flowLPerS": [
+        0,
+        0,
+        0.046138084790184664,
+        0.012308272696232362,
+        0.016341990374550364,
+        0.020788258126638894,
+        0.026949564037820027,
+        0.01513406916729727,
+        0.01954600699159131,
+        0.01007258029919033,
+        0.013258738582300743,
+        0.013312184594411114,
+        0.004680208855054698,
+        0.017334825343685332
+      ],
+      "integratedFlowL": [
+        50.0000000412896,
+        50.0000000412896,
+        50.02082938047268,
+        10.004447471689907,
+        10.00473646564409,
+        16.507376592506045,
+        16.507800453553088,
+        12.005362345698536,
+        12.00568162811152,
+        8.003577726527796,
+        8.003792063602972,
+        8.003784358461596,
+        3.501583423723766,
+        11.50532963812572
+      ],
+      "insulinPM": [
+        69.46429809364217,
+        66.86439232561867,
+        67.40064073827205,
+        68.01929978279472,
+        70.43975256762971,
+        71.913979981659,
+        55.00761859782666,
+        71.33054170854842,
+        72.6300870093116,
+        46.484775806771324
+      ],
+      "interstitialPM": 67.72885706662314,
+      "signal": [
+        0.8839506242627307,
+        0.0000014367827878897364,
+        0.000003238503336304308,
+        0.01590185020468694,
+        0.10024846541763241,
+        1.3543271925522262e-8,
+        0.00006137360500638728,
+        0.9507997920646324,
+        0.04885765323540861,
+        0,
+        0.09965744530004196,
+        0.00034255469995910935,
+        0.5109244081931187,
+        99.01434866515261,
+        0.47472692665732397,
+        99.28967350881838,
+        0.7103264911822381,
+        99.28967350881838,
+        0.7103264911822381,
+        93.74127612371491,
+        6.2667202112840075
+      ],
+      "injectedPmol": 1199.9999999999645,
+      "circulatingPmol": 185.46708071416464,
+      "interstitialPmol": 33.86442853331157,
+      "clearedPmol": [
+        750.8999194344234,
+        205.32768593555937,
+        24.440885382558026
+      ]
+    }
+  },
+  "supportedParameterCorners": [
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "portal",
+        "hepaticClearance": 0,
+        "exchange": 0,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "portal",
+        "hepaticClearance": 0,
+        "exchange": 0,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "portal",
+        "hepaticClearance": 0,
+        "exchange": 2,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "portal",
+        "hepaticClearance": 0,
+        "exchange": 2,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "portal",
+        "hepaticClearance": 2,
+        "exchange": 0,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "portal",
+        "hepaticClearance": 2,
+        "exchange": 0,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "portal",
+        "hepaticClearance": 2,
+        "exchange": 2,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "portal",
+        "hepaticClearance": 2,
+        "exchange": 2,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "portal",
+        "hepaticClearance": 0,
+        "exchange": 0,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 1.3710632629226893e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "portal",
+        "hepaticClearance": 0,
+        "exchange": 0,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 1.4711076801177113e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "portal",
+        "hepaticClearance": 0,
+        "exchange": 2,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 1.26419763546437e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "portal",
+        "hepaticClearance": 0,
+        "exchange": 2,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 1.4210854715202004e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "portal",
+        "hepaticClearance": 2,
+        "exchange": 0,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 1.8826540326699613e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "portal",
+        "hepaticClearance": 2,
+        "exchange": 0,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 1.7917045624926686e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "portal",
+        "hepaticClearance": 2,
+        "exchange": 2,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 1.482476363889873e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "portal",
+        "hepaticClearance": 2,
+        "exchange": 2,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 1.39152689371258e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "venous",
+        "hepaticClearance": 0,
+        "exchange": 0,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "venous",
+        "hepaticClearance": 0,
+        "exchange": 0,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "venous",
+        "hepaticClearance": 0,
+        "exchange": 2,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "venous",
+        "hepaticClearance": 0,
+        "exchange": 2,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "venous",
+        "hepaticClearance": 2,
+        "exchange": 0,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "venous",
+        "hepaticClearance": 2,
+        "exchange": 0,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "venous",
+        "hepaticClearance": 2,
+        "exchange": 2,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 0,
+        "route": "venous",
+        "hepaticClearance": 2,
+        "exchange": 2,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 0,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "venous",
+        "hepaticClearance": 0,
+        "exchange": 0,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 1.596163201611489e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "venous",
+        "hepaticClearance": 0,
+        "exchange": 0,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 1.4847501006443054e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "venous",
+        "hepaticClearance": 0,
+        "exchange": 2,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 1.3665157894138247e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "venous",
+        "hepaticClearance": 0,
+        "exchange": 2,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 1.2095924262212066e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "venous",
+        "hepaticClearance": 2,
+        "exchange": 0,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 1.2505552149377762e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "venous",
+        "hepaticClearance": 2,
+        "exchange": 0,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 2.191882231272757e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "venous",
+        "hepaticClearance": 2,
+        "exchange": 2,
+        "muscleResistance": 0.5
+      },
+      "maximumVolumeResidualL": 1.0480505352461478e-13,
+      "maximumInsulinResidualMol": 1.7189449863508343e-22,
+      "minimumInsulinMol": 0
+    },
+    {
+      "config": {
+        "dosePmol": 5000,
+        "route": "venous",
+        "hepaticClearance": 2,
+        "exchange": 2,
+        "muscleResistance": 2.5
+      },
+      "maximumVolumeResidualL": 3.4638958368304884e-13,
+      "maximumInsulinResidualMol": 1.4097167877480388e-22,
+      "minimumInsulinMol": 0
+    }
+  ],
+  "limitations": [
+    "No measured human pressure or concentration comparison",
+    "Prescribed pumps without valves or ventricular mechanics",
+    "No gas chemistry, water extravasation or spatial capillary flow",
+    "No human-calibrated secretion or glucose uptake coupling",
+    "Open-input source signaling is an observer, not a physical receptor binding ledger"
+  ],
+  "sourceHashes": {
+    "app/circulation/model.ts": "148268bac2dd9edfc6ecf12f5d37aecfdaebfa8d2fdc929dcf8fe7dd981cb382",
+    "scripts/reference-circulation.py": "9978f73e9e22497479ae86067cba570e2adf19944aa9fb481522facd4ac54bb0",
+    "scripts/reference-insulin.py": "6b3e85b3b9a23127fa00debff48902f28550cd23334d6f7b1418c78833d366a4",
+    "scripts/verify-circulation.ts": "4d02282ba4df386c3ac85154ca617f611fe64eedc4e21db288605a4e6b263667",
+    "tests/circulation.test.ts": "aa1cec71327ffbe4cb239f8ab69e8b66520965cb1676c0f727e4df2f35cb723d",
+    "validation/p3/protocol.json": "6b0b6dd88f9ba63d0ac4d942e8b0d6a82ea1ccc9c0b5282568025ba1b36cb842",
+    "validation/p3/circulation-reference.json": "c830ccfbcbe3ac53e0ac66592082c8bc8da39490842e40aa3fe032de01e8062f",
+    "app/molecular/sedaghat.ts": "95b5fe339e3e6cc25e4db501a2438cbfe01a47b42b7d2b07c313666aaea2e0e6",
+    "models/sedaghat2002/parameters.json": "180648b8bb3d5dd148f4b45229eee7011b76ec1881ec74da6ac6c1dd320468a6"
+  }
+}
