@@ -9,6 +9,8 @@ import scipy
 from scipy.integrate import solve_ivp
 ROOT=Path(__file__).resolve().parents[1]
 path=ROOT/'models/shorten2007/source/shorten2007.py'
+protocol_path=ROOT/'validation/p5/excitation-protocol.json'
+script_path=Path(__file__).resolve()
 spec=importlib.util.spec_from_file_location('archived_shorten',path)
 model=importlib.util.module_from_spec(spec);spec.loader.exec_module(model)
 OUT=ROOT/'validation/p5';OUT.mkdir(parents=True,exist_ok=True)
@@ -30,5 +32,12 @@ for name,stimulus,release in [('single','single',1),('train','train',1),('no-sti
         samples.extend({'timeMs':float(t),'state':s.tolist()} for t,s in zip(sol.t,sol.y.T))
     results.append({'name':name,'config':{'stimulus':stimulus,'releaseScale':release},'samples':samples,'rhsCalls':calls,'wallSeconds':time.monotonic()-started})
     print(name,'complete',calls,round(time.monotonic()-started,2),flush=True)
-receipt={'sourceSHA256':hashlib.sha256(path.read_bytes()).hexdigest(),'solver':'SciPy BDF','scipy':scipy.__version__,'rtol':2e-9,'atol':1e-11,'results':results,'evidence':'Independent numerical comparison, not independent biological validation'}
+receipt={
+    'sourceSHA256':hashlib.sha256(path.read_bytes()).hexdigest(),
+    'referenceScriptSHA256':hashlib.sha256(script_path.read_bytes()).hexdigest(),
+    'protocolSHA256':hashlib.sha256(protocol_path.read_bytes()).hexdigest(),
+    'solver':'SciPy BDF','scipy':scipy.__version__,'rtol':2e-9,'atol':1e-11,
+    'results':results,
+    'evidence':'Independent numerical comparison, not independent biological validation'
+}
 (OUT/'excitation-reference.json').write_text(json.dumps(receipt,separators=(',',':'))+'\n')

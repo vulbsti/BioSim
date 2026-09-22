@@ -8,12 +8,15 @@ import {SARCOMERE,sarcomereBands} from './sarcomere';
 import ExcitationPanel from './ExcitationPanel';
 import {useExcitation} from './use-excitation';
 import './tissue.css';
+import type {BodyRunObservation} from '../simulation/body-observation';
+import {multiscaleMealReadout} from '../simulation/multiscale-meal';
+import {glucose} from '../simulation/engine';
 const titles={muscle:'Right vastus lateralis',fascicle:'A bundle of muscle fibers',fiber:'Inside a muscle fiber',sarcomere:'The sliding filaments'};
 const subtitles={muscle:'SOURCE ANATOMY / THIGH',fascicle:'REPRESENTATIVE / TISSUE SEGMENT',fiber:'REPRESENTATIVE / CELL SEGMENT',sarcomere:'REPRESENTATIVE / FILAMENT LATTICE'};
 const defaults={muscle:'FJ1442',fascicle:'pilot-fiber-00',fiber:'pilot-myofibrils',sarcomere:'pilot-thick-filaments'};
 const levelNames={muscle:'Muscle',fascicle:'Fascicle',fiber:'Muscle fiber',sarcomere:'Sarcomere'};
 const clock=(s:number)=>`${Math.floor(s/60).toString().padStart(2,'0')}:${Math.floor(s%60).toString().padStart(2,'0')}`;
-export default function TissueExplorer({onBack,onAnatomy,onMolecular}:{onBack:()=>void;onAnatomy:(query:string)=>void;onMolecular:()=>void}){
+export default function TissueExplorer({onBack,onAnatomy,onMolecular,bodyRun}:{bodyRun?:BodyRunObservation;onBack:()=>void;onAnatomy:(query:string)=>void;onMolecular:()=>void}){
  const [manifest,setManifest]=useState<TissueManifest|null>(null),[error,setError]=useState(''),[sceneError,setSceneError]=useState(''),[ready,setReady]=useState(false);
  const [level,setLevel]=useState<TissueLevel>('muscle'),[lod,setLOD]=useState<TissueLOD>('detail'),[selection,setSelection]=useState({...defaults}),[showSheath,setShowSheath]=useState(true),[showBone,setShowBone]=useState(false),[section,setSection]=useState<TissueView['section']>('none'),[slice,setSlice]=useState(.5),[reset,setReset]=useState(0),[angle,setAngle]=useState<TissueView['angle']>('oblique');
  const [metrics,setMetrics]=useState<SceneMetrics|null>(null),[result,setResult]=useState<ExperimentResult|null>(null),[signalError,setSignalError]=useState(''),[signal,setSignal]=useState(false),[time,setTime]=useState(0),[playing,setPlaying]=useState(false),[speed,setSpeed]=useState(60),[notice,setNotice]=useState(''),[noticeError,setNoticeError]=useState(false);
@@ -22,17 +25,18 @@ export default function TissueExplorer({onBack,onAnatomy,onMolecular}:{onBack:()
  const excitation=useExcitation(),displayLength=excitation.view.enabled?SARCOMERE.rest:sarcomereLength;
  const bands=sarcomereBands(displayLength);
  useEffect(()=>{const abort=new AbortController();loadTissueManifest(abort.signal).then(setManifest).catch(e=>{if(!abort.signal.aborted)setError((e as Error).message);});return()=>abort.abort();},[]);
- useEffect(()=>{let worker:Worker;try{worker=new Worker(new URL('../molecular/mechanism.worker.ts',import.meta.url),{type:'module'});}catch{setSignalError('The signaling calculation worker is unavailable.');return;}
+ useEffect(()=>{if(bodyRun)return;let worker:Worker;try{worker=new Worker(new URL('../molecular/mechanism.worker.ts',import.meta.url),{type:'module'});}catch{setSignalError('The signaling calculation worker is unavailable.');return;}
   worker.onmessage=({data}:{data:{result?:ExperimentResult;error?:string}})=>{if(data.result)setResult(data.result);else setSignalError(data.error??'Could not compute the signaling preview.');};worker.onerror=()=>setSignalError('The signaling calculation worker stopped.');worker.postMessage({id:1,config:defaultConfig('insulin')});return()=>worker.terminate();
- },[]);
+ },[!!bodyRun]);
  useEffect(()=>{setReady(false);setSceneError('');setMetrics(null);},[level,lod]);
  useEffect(()=>{if(!playing||!result)return;let frame=0,last=performance.now();const tick=(now:number)=>{const dt=Math.min(.15,(now-last)/1000);last=now;setTime(t=>Math.min(3600,t+dt*speed));frame=requestAnimationFrame(tick);};frame=requestAnimationFrame(tick);return()=>cancelAnimationFrame(frame);},[playing,result,speed]);
  useEffect(()=>{if(time>=3600)setPlaying(false);},[time]);
  useEffect(()=>{if(!notice)return;const id=setTimeout(()=>setNotice(''),3500);return()=>clearTimeout(id);},[notice]);
  const sample=result?observe(result,time):null,entity=manifest?.entities.find(e=>e.id===selection[level]),levelIndex=LEVELS.indexOf(level);
  const changeLevel=(next:TissueLevel)=>{setLevel(next);setSection('none');setSlice(.5);};
- const glut4=sample?.values.glut4??4;
- const view=useMemo<TissueView>(()=>({selected:selection[level],showSheath,showBone,section,slice,reset,angle,signal,glut4,sarcomereLength:displayLength,excitation:excitation.sample?{boundTroponinUM:excitation.sample.boundTroponinUM,postStrokeUM:excitation.sample.postStrokeUM}:undefined}),[selection,level,showSheath,showBone,section,slice,reset,angle,signal,glut4,displayLength,excitation.sample]);
+ const linked=bodyRun?multiscaleMealReadout(bodyRun.state):null;
+ const glut4=linked?.surfaceGlut4Percent??sample?.values.glut4??4;
+ const view=useMemo<TissueView>(()=>({selected:selection[level],showSheath,showBone,section,slice,reset,angle,signal:!!bodyRun||signal,glut4,sarcomereLength:displayLength,excitation:!bodyRun&&excitation.sample?{boundTroponinUM:excitation.sample.boundTroponinUM,postStrokeUM:excitation.sample.postStrokeUM}:undefined}),[selection,level,showSheath,showBone,section,slice,reset,angle,signal,glut4,displayLength,excitation.sample,!!bodyRun]);
  const save=()=>{if(!manifest)return;try{const text=exportTissueView(manifest,{level,lod,selection,showSheath,showBone,section,slice,angle,signal,time,sarcomereLength,excitation:excitation.view});const url=URL.createObjectURL(new Blob([text],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='human-atlas-tissue-view.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setNoticeError(false);setNotice('Specimen selection and mechanism playheads saved.');}catch(e){setNoticeError(true);setNotice((e as Error).message);}};
  return <div className="tissue-app">
   <header className="tissue-header"><button className="tissue-brand" onClick={onBack}><span><Activity size={22}/></span><b>Human Atlas<small>TISSUE EXPLORER</small></b></button><button className="tissue-back" onClick={onBack}><ArrowLeft size={14}/> Whole-body physiology</button><button className="tissue-back tissue-molecular-link" onClick={onMolecular}>Molecular lab <ArrowRight size={14}/></button></header>
@@ -46,7 +50,8 @@ export default function TissueExplorer({onBack,onAnatomy,onMolecular}:{onBack:()
        {sceneError&&<div className="tissue-stage-error" role="alert">{sceneError}</div>}
        {!ready&&!sceneError&&<div className="tissue-stage-loading" role="status"><Box size={30}/><span>Loading {level} geometry</span></div>}
        <div className="tissue-stage-caption"><span>{level==='muscle'?'BodyParts3D / FJ1442':'Illustrative microstructure'}</span><small>{level==='muscle'?'Original source surface':'Not registered to the source donor'}</small></div>
-       {excitation.view.enabled&&<div className="tissue-activation-overlay">
+       {bodyRun&&linked&&<div className="tissue-activation-overlay" aria-label="Body pathway in scene"><button aria-label={bodyRun.running?'Pause body in tissue scene':'Play body in tissue scene'} onClick={()=>bodyRun.send({type:'run',running:!bodyRun.running})}>{bodyRun.running?<Pause size={12}/>:<Play size={12}/>} {clock(bodyRun.state.time)}</button><span>GLUT4 {linked.surfaceGlut4Percent.toFixed(2)}%</span><small>Same body run · aggregate response</small></div>}
+       {!bodyRun&&excitation.view.enabled&&<div className="tissue-activation-overlay">
         <button disabled={!excitation.result||excitation.busy} aria-label={excitation.playing?'Pause activation in scene':'Play activation in scene'} onClick={()=>{if(excitation.view.timeMs>=500)excitation.setView(v=>({...v,timeMs:0}));excitation.setPlaying(!excitation.playing);}}>{excitation.playing?<Pause size={12}/>:<Play size={12}/>} {excitation.view.timeMs.toFixed(1)} ms</button>
         <span>Ca²⁺ {excitation.sample?.calciumUM.toFixed(2)??'—'} µM</span><small>Fixed-length activation</small>
        </div>}
@@ -72,17 +77,22 @@ export default function TissueExplorer({onBack,onAnatomy,onMolecular}:{onBack:()
       <button className="tissue-locate" onClick={()=>onAnatomy('Right vastus lateralis')}>Locate muscle in full atlas <ArrowRight size={14}/></button>
      </aside>
     </section>
-    <ExcitationPanel controller={excitation}/>
-    <section className="tissue-signal"><div className="tissue-signal-title"><span className="tissue-eyebrow">ONE PLAYHEAD ACROSS VIEWS</span><h2>Follow the local response.</h2><p>Preview the archived insulin model while changing anatomical scale. The same calculated trajectory stays in place.</p></div>
+    {!bodyRun&&<ExcitationPanel controller={excitation}/>}
+    {bodyRun&&linked?<section className="tissue-signal tissue-body-link" aria-label="Linked body experiment">
+     <div className="tissue-signal-title"><span className="tissue-eyebrow">SAME BODY RUN · LIVE OBSERVATION</span><h2>Meal to muscle.</h2><p>This specimen reads the current body experiment. Changing scale, camera or detail does not advance or reset its calculation.</p></div>
+     <div className="tissue-signal-controls"><div className="tissue-playback"><button aria-label={bodyRun.running?'Pause linked body run':'Play linked body run'} onClick={()=>bodyRun.send({type:'run',running:!bodyRun.running})}>{bodyRun.running?<Pause size={15}/>:<Play size={15}/>} {bodyRun.running?'Pause body':'Play body'}</button><strong aria-label="Linked body elapsed time">{clock(bodyRun.state.time)}</strong><button onClick={onBack}>Return to body controls</button></div>
+     <div className="tissue-response-values"><span>Muscle interstitial insulin <b aria-label="Linked tissue insulin">{linked.interstitialInsulinPM.toFixed(1)}<small> pM</small></b></span><span>Surface GLUT4 <b aria-label="Tissue surface GLUT4">{linked.surfaceGlut4Percent.toFixed(2)}<small> % pool</small></b></span><span>Arterial glucose <b aria-label="Linked body glucose">{glucose(bodyRun.state).toFixed(1)}<small> mg/dL</small></b></span><span>Muscle cell uptake <b>{linked.lastUptakeMgPerMin.toFixed(2)}<small> mg/min</small></b></span></div></div>
+     <p className="tissue-signal-boundary">The physical insulin circuit and glucose circulation use different aggregate flow models. Secretion and uptake laws are synthetic; the depicted fibers are representative, not individually simulated cells. GLUT4 markers display the aggregate membrane response and do not count molecules. Human validation remains open.</p>
+    </section>:<section className="tissue-signal"><div className="tissue-signal-title"><span className="tissue-eyebrow">ONE PLAYHEAD ACROSS VIEWS</span><h2>Follow the local response.</h2><p>Preview the archived insulin model while changing anatomical scale. The same calculated trajectory stays in place.</p></div>
      {signalError?<p role="alert">{signalError}</p>:<div className="tissue-signal-controls"><div className="tissue-playback"><button disabled={!result} aria-label={playing?'Pause tissue signaling':'Play tissue signaling'} onClick={()=>{setSignal(true);if(time>=3600)setTime(0);setPlaying(!playing);}}>{playing?<Pause size={15}/>:<Play size={15}/>} {playing?'Pause':'Play'}</button><strong aria-label="Tissue mechanism elapsed time">{clock(time)}</strong><span>/ 60:00</span><select aria-label="Tissue playback speed" value={speed} onChange={e=>setSpeed(Number(e.target.value))}><option value="30">30×</option><option value="60">60×</option><option value="120">120×</option></select><button aria-label="Rewind tissue signaling" onClick={()=>{setTime(0);setPlaying(false);}}><RotateCcw size={14}/></button></div>
       <input aria-label="Tissue mechanism time" type="range" min="0" max="3600" step="1" value={time} disabled={!result} onChange={e=>{setTime(Number(e.target.value));setPlaying(false);}}/>
       <div className="tissue-response-values"><span>Insulin <b>{sample?.values.insulin.toFixed(1)??'—'}<small> nM</small></b></span><span>Active Akt <b>{sample?.values.akt.toFixed(1)??'—'}<small> % pool</small></b></span><span>Surface GLUT4 <b aria-label="Tissue surface GLUT4">{sample?.values.glut4.toFixed(1)??'—'}<small> % pool</small></b></span></div>
       <label className="tissue-check"><input aria-label="Show signaling overlay" type="checkbox" checked={signal} onChange={e=>setSignal(e.target.checked)}/> Highlight GLUT4 display sites in the fiber view</label>
      </div>}
      <p className="tissue-signal-boundary">The source model uses mixed cell preparations. Its response is an illustrative overlay, not a human muscle calibration or a contribution to whole-body glucose uptake. Surface markers show activity; they do not count molecules.</p>
-    </section>
+    </section>}
     <details className="tissue-provenance"><summary>Source, scale and rendering evidence</summary><p>{manifest.provenance.license}. {manifest.provenance.registration}. Blender {manifest.provenance.blenderVersion} exports preserve entity IDs across detail levels.</p><p>{metrics?`${metrics.triangles.toLocaleString()} drawn triangles · ${metrics.calls} draw calls · ${(metrics.loadedBytes/1000).toFixed(0)} kB loaded. Last CPU render submission: ${metrics.renderSubmitMs.toFixed(1)} ms (not GPU frame time).`:'Scene metrics will appear after loading.'}</p><a href="/ATTRIBUTION.md" target="_blank" rel="noreferrer">BodyParts3D attribution ↗</a><a href={manifest.provenance.referenceURL} target="_blank" rel="noreferrer">Muscle organization reference ↗</a></details>
-    <div className="tissue-files"><button onClick={save}><Download size={14}/> Save tissue view</button><button onClick={()=>file.current?.click()}><Upload size={14}/> Load tissue view</button><span>Selection, scale and mechanism playhead</span></div>
+    <div className="tissue-files">{bodyRun?<><button onClick={()=>bodyRun.send({type:'export'})}><Download size={14}/> Save body run</button><span>Includes the physical pathway. Load and resume from body controls.</span></>:<><button onClick={save}><Download size={14}/> Save tissue view</button><button onClick={()=>file.current?.click()}><Upload size={14}/> Load tissue view</button><span>Selection, scale and mechanism playhead</span></>}</div>
     <input ref={file} type="file" hidden accept=".json,application/json" aria-label="Import tissue view" onChange={async e=>{const input=e.target,f=input.files?.[0];if(!f)return;try{
      if(f.size>100000)throw new Error('Tissue recording exceeds 100 kB.');const d=importTissueView(manifest,await f.text());
      setPlaying(false);setTime(d.time);setLevel(d.level);setLOD(d.lod);setSelection(d.selection);setShowSheath(d.showSheath);setShowBone(d.showBone);setSection(d.section);setSlice(d.slice);setAngle(d.angle);setSignal(d.signal);setSarcomereLength(d.sarcomereLength);excitation.setPlaying(false);excitation.setView(d.excitation);setNoticeError(false);setNotice('Tissue view and playheads restored.');

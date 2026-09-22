@@ -1,0 +1,37 @@
+{
+  "receipt": "validation/current-2026-09-22/p4/response-metrics.json",
+  "checkedAt": "2026-09-22T06:30:27.909Z",
+  "passed": true,
+  "files": [
+    {
+      "path": "app/simulation/multiscale-meal.ts",
+      "expected": "4cde9e3367d70b590c2c0c9ed382878ba09d30bbd046b37688def744e7a5c622",
+      "actual": "4cde9e3367d70b590c2c0c9ed382878ba09d30bbd046b37688def744e7a5c622",
+      "matches": true
+    },
+    {
+      "path": "app/simulation/engine.ts",
+      "expected": "329c7259e1ad74b1b8c62337011b0653bd7549e213ea91b332ae55e0f226b51f",
+      "actual": "329c7259e1ad74b1b8c62337011b0653bd7549e213ea91b332ae55e0f226b51f",
+      "matches": true
+    },
+    {
+      "path": "app/simulation/transport.ts",
+      "expected": "366f3a0cc70b58916aef29a5963d4718b4db2e373e29f4118f9f6cc7e7eb8536",
+      "actual": "366f3a0cc70b58916aef29a5963d4718b4db2e373e29f4118f9f6cc7e7eb8536",
+      "matches": true
+    },
+    {
+      "path": "app/simulation/simulation.worker.ts",
+      "expected": "acfb0a6e3ad27e6bd0a9525b43bc1f3482176de6ce1d2e13443a4effd2511af7",
+      "actual": "acfb0a6e3ad27e6bd0a9525b43bc1f3482176de6ce1d2e13443a4effd2511af7",
+      "matches": true
+    },
+    {
+      "path": "app/circulation/model.ts",
+      "expected": "c120fc04b2cf9fb44f0e5cf2aa7c80966e1006a487ad064fb692d3d50425cfbf",
+      "actual": "c120fc04b2cf9fb44f0e5cf2aa7c80966e1006a487ad064fb692d3d50425cfbf",
+      "matches": true
+    }
+  ]
+}

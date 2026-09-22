@@ -1,0 +1,21 @@
+Script started on 2026-09-22 11:49:07+05:30 [COMMAND="npm run test:anatomy" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 test:anatomy
+> tsx --test tests/physical-anatomy.test.ts
+
+✔ source additions preserve base identity and have valid, finite geometry and complete concepts (62.092724ms)
+✔ display corrections retain actual heart, liver, brain and lung surfaces through isolation (4.743797ms)
+✔ cranial venous additions never become cerebral arterial territory associations (77.915419ms)
+✔ display routes handle Float32 boundary drift and distinguish pulmonary direction and oxygen color (3.645628ms)
+✔ cycles remain continuous and exercise and a meal drive visual rates from the solver (141.595832ms)
+✔ every chosen source route samples finitely and includes both main bronchi (22.63923ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 583.923074
+
+Script done on 2026-09-22 11:49:08+05:30 [COMMAND_EXIT_CODE="0"]

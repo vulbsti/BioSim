@@ -1,0 +1,16 @@
+typecheck	0
+physiology	0
+anatomy	0
+multiscale-tests	0
+tissue-tests	0
+circulation-tests	0
+verify-multiscale	0
+verify-tissue	0
+verify-circulation	0
+verify-excitation	0
+audit-brain	0
+audit-multiscale	0
+validate-atlas	0
+validate-interactions	0
+browser-full	1
+browser-physical-isolated	0

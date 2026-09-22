@@ -2,7 +2,8 @@ import {test,expect} from '@playwright/test';
 test.use({trace:{mode:'retain-on-failure',screenshots:false}});
 
 test('anatomical pixels move, pause freezes them, and breathing has live air tracers',async({page})=>{
- test.setTimeout(120000);
+ // Full-suite software-renderer captures measured 25.7s and 37.9s; the isolated test took 113s.
+ test.setTimeout(240000);
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});
  await page.getByRole('button',{name:'Watch breathing',exact:true}).click();await page.getByRole('button',{name:'Expand anatomy',exact:true}).click();
@@ -17,7 +18,8 @@ test('anatomical pixels move, pause freezes them, and breathing has live air tra
 });
 
 test('meal input starts swallowing and digestion, then portal absorption appears',async({page})=>{
- test.setTimeout(120000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});
+ // Leave margin for the same software-renderer load after the preceding browser suites.
+ test.setTimeout(240000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});
  await page.getByRole('button',{name:'Watch digestion',exact:true}).click();await expect(scene).toHaveAttribute('data-food-tracers','0');await expect(scene).toHaveAttribute('data-portal-tracers','0');
  await page.getByRole('button',{name:'Introduce meal',exact:false}).click();
  await expect.poll(async()=>Number(await scene.getAttribute('data-food-tracers'))).toBeGreaterThan(0);

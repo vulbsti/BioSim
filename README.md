@@ -18,19 +18,29 @@ Pause, accelerate, or advance the simulation; schedule inputs; fork a comparison
 
 Open **Molecular lab** from the physiology introduction, or visit `/#molecular`. Play and scrub a finite ligand pulse through blood, tissue, receptor binding and clearance. Change receptor availability and see the calculated response change. A second experiment reproduces the published Sedaghat 2002 insulin-signaling model, including PI3K, Akt and GLUT4 movement. Inspect local values, response curves and reaction accounting; export and reload experiments.
 
-The new physical-unit kernel and independent-solver comparison are described in [the P1 implementation report](docs/P1_IMPLEMENTATION.md). These local mechanisms are isolated from the whole-body solver. The view uses schematic moving populations; new Blender anatomy and human-muscle calibration remain ahead.
+The physical-unit kernel and independent-solver comparison are described in [the P1 implementation report](docs/P1_IMPLEMENTATION.md). The molecular lab remains a separate source-model experiment. It uses schematic moving populations; Blender tissue assets are available in the tissue explorer, while human-muscle calibration remains open.
 
 ## 3D tissue explorer
 
-Open **Explore tissue in 3D**, or visit `/#tissue`. Inspect the source right vastus lateralis, a representative fascicle and a cut muscle-fiber segment. Pick named structures, reveal interiors, inspect the cut end, change geometry detail and follow a shared signaling playhead across scales. Editable Blender scenes and metric GLBs are included. [P2 implementation and exact coverage](docs/P2_IMPLEMENTATION.md).
+Open **Explore tissue in 3D**, or visit `/#tissue`. Inspect the source right vastus lateralis, a representative fascicle, a cut muscle-fiber segment and a sarcomere filament lattice. Pick named structures, reveal interiors, inspect the cut end, change geometry detail and follow a shared signaling playhead across scales. Editable Blender scenes and metric GLBs are included. Manual filament sliding illustrates overlap; the optional Shorten 2007 mouse-muscle experiment drives calcium/activation color at fixed length. It does not produce human muscle force. [P2 coverage](docs/P2_IMPLEMENTATION.md), [sarcomere increment](docs/SARCOMERE_INCREMENT.md), and [excitation model boundaries](models/shorten2007/README.md).
 
 The microscopic structures are representative, with no donor registration or functional muscle/capillary solver. Human calibration, brain assets and further phase gates remain open.
+
+The [2026-09-22 Blender review](docs/BLENDER_ASSET_REVIEW_2026-09-22.md) records actual saved-scene topology and the anatomical quality gaps. Current assets are not approved as anatomically faithful tissue. The next authoring package requires calibrated human imaging, evidence-linked measurements, reviewed microanatomy, diagnostic renders and meaningful LOD/performance checks; extra polygons alone do not qualify it.
+
+## Physical circulation pilot
+
+Visit `/#circulation` to follow a finite insulin input through a ten-compartment pulsatile circuit, portal/hepatic routing, muscle interstitial exchange and clearance. Local insulin drives the archived signaling model. The circuit is synthetic and has no gas chemistry or reviewed anatomical vascular connectivity. [P3 implementation and verification scope](docs/P3_IMPLEMENTATION.md).
+
+## Meal-to-muscle integration
+
+In the physiology food controls, enable **Experimental physical meal pathway**. The same body worker then couples meal glucose, physical insulin transport, source-model signaling and GLUT4-dependent transfer into a muscle-cell glucose pool. Compare normal, reduced or blocked receptor input. Open **Explore tissue in 3D** to inspect that body run at each scale and export it for resume. The [P4 implementation report](docs/P4_IMPLEMENTATION.md) describes ownership, compatibility and the remaining human-validation, shared-flow and spatial-refinement gaps. This is a partial engineering milestone.
 
 ## Direction: whole-body biological simulation
 
 The atlas (BodyParts3D reference assembly: 2,273 meshes, 15 systems, 3,457 concepts) is the spatial anchor. The `simulate` branch adds an exploratory organ-and-hormone lab (23 blood/tissue/lymph pools, 5 transported species, 31 relative hormone activities, 34-node/55-path cerebral schematic, fixed 1-second Web Worker steps with conserved, receipted transfers). The next goal is a multiscale reference simulation: supported mechanisms connect organ physiology to tissue, cell, receptor and reaction models, with explicit evidence and accounting at each scale.
 
-Read [the multiscale execution plan](docs/MULTISCALE_EXECUTION_PLAN.md) for the Blender asset pipeline, blood/hormone transport, nervous-system and brain expansion, consistent body-to-cell zoom, and phase completion checks. The first milestone follows a meal through insulin signaling to muscle-cell glucose uptake and back to whole-body effects. [The phase tracker](docs/multiscale-roadmap.json) records **P0 complete; P1–P2 implementation in progress; P3–P10 pending**. This is a scoped research program, not a claim of an atomically complete human replica.
+Read [the multiscale execution plan](docs/MULTISCALE_EXECUTION_PLAN.md) for the Blender asset pipeline, blood/hormone transport, nervous-system and brain expansion, consistent body-to-cell zoom, and phase completion checks. The first milestone follows a meal through insulin signaling to muscle-cell glucose uptake and back to whole-body effects. [The phase tracker](docs/multiscale-roadmap.json) records **P0 complete; P1/P2/P3 pilots with open gates; P4 integration in progress; P5 excitation groundwork; P6–P10 pending**. Implemented pilots do not mean the corresponding full phases are complete.
 
 The earlier [biological simulation rationale](docs/BIOLOGICAL_SIMULATION.md) explains the original design. Read [the current model equations, exact coverage, and limitations](docs/PHYSIOLOGY_MODEL.md) before interpreting any simulated number. Numerical tests are not biological validation; nothing here is a clinical or predictive tool.
 
@@ -62,6 +72,9 @@ npm run test:physiology
 npm run test:anatomy
 npm run verify:multiscale
 npm run verify:tissue
+npm run verify:circulation
+npm run verify:excitation
+npm run test:p4
 npx playwright install chromium
 npm run test:browser
 npm run test:browser:production

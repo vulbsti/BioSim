@@ -1,0 +1,33 @@
+Script started on 2026-09-22 11:48:18+05:30 [COMMAND="npm run test:physiology" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 test:physiology
+> tsx --test tests/physiology.test.ts
+
+✔ resting circulation and gas exchange remain in broad reference ranges for an hour (644.927429ms)
+✔ mixed meal causes delayed glucose and insulin rise followed by storage and recovery (1746.878938ms)
+✔ water loading expands plasma and suppresses ADH relative to fasting control (1162.970428ms)
+✔ exercise raises cardiac, respiratory, and metabolic demand and recovers when removed (827.10007ms)
+✔ hypoxic air lowers arterial oxygen and recovery follows room air (213.089696ms)
+✔ sensory startle recruits fast catecholamines and delayed cortisol (299.058739ms)
+✔ integer scheduling is deterministic, ordered and applied once at exact boundaries (1377.277268ms)
+✔ invalid inputs are rejected before mutation (1.198308ms)
+✔ brain network conserves every interior node and equals body cerebral allocation (3.967582ms)
+✔ all preset experiments conserve modeled substrates throughout their duration (17999.64855ms)
+✔ 24-hour fasting run stays numerically finite and preserves complete intervention history (10904.569073ms)
+✔ exported recordings resume deterministically and reject invalid state before loading (1705.972926ms)
+✔ combined inputs preserve accounting across repeatable randomized experiments (11775.987671ms)
+✔ portal tracer reaches hepatic blood before the systemic artery, preserving total mass (4.224793ms)
+✔ oxidation cannot consume oxygen absent from organ blood (7.05938ms)
+✔ high-throughput blood transport remains nonnegative and conservative (27.271798ms)
+✔ meal absorption produces a portal-to-systemic nutrient gradient and flux receipts (232.560435ms)
+✔ brain coverage accounts for every candidate once and reports unresolved source evidence (53.360317ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 49137.905258
+
+Script done on 2026-09-22 11:49:07+05:30 [COMMAND_EXIT_CODE="0"]

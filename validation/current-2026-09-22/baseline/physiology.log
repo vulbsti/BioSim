@@ -1,0 +1,33 @@
+Script started on 2026-09-22 11:23:29+05:30 [COMMAND="npm run test:physiology" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 test:physiology
+> tsx --test tests/physiology.test.ts
+
+✔ resting circulation and gas exchange remain in broad reference ranges for an hour (694.969861ms)
+✔ mixed meal causes delayed glucose and insulin rise followed by storage and recovery (1997.295575ms)
+✔ water loading expands plasma and suppresses ADH relative to fasting control (1085.03764ms)
+✔ exercise raises cardiac, respiratory, and metabolic demand and recovers when removed (352.440659ms)
+✔ hypoxic air lowers arterial oxygen and recovery follows room air (157.540218ms)
+✔ sensory startle recruits fast catecholamines and delayed cortisol (173.947848ms)
+✔ integer scheduling is deterministic, ordered and applied once at exact boundaries (1102.779278ms)
+✔ invalid inputs are rejected before mutation (1.202782ms)
+✔ brain network conserves every interior node and equals body cerebral allocation (2.71247ms)
+✔ all preset experiments conserve modeled substrates throughout their duration (15899.524673ms)
+✔ 24-hour fasting run stays numerically finite and preserves complete intervention history (9218.058598ms)
+✔ exported recordings resume deterministically and reject invalid state before loading (1296.543428ms)
+✔ combined inputs preserve accounting across repeatable randomized experiments (10390.979746ms)
+✔ portal tracer reaches hepatic blood before the systemic artery, preserving total mass (4.466456ms)
+✔ oxidation cannot consume oxygen absent from organ blood (10.030548ms)
+✔ high-throughput blood transport remains nonnegative and conservative (28.335635ms)
+✔ meal absorption produces a portal-to-systemic nutrient gradient and flux receipts (216.186169ms)
+✔ brain coverage accounts for every candidate once and reports unresolved source evidence (45.717965ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 42969.954915
+
+Script done on 2026-09-22 11:24:13+05:30 [COMMAND_EXIT_CODE="0"]

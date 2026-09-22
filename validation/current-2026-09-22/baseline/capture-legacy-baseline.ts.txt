@@ -1,0 +1,42 @@
+import {createHash} from 'node:crypto';
+import {readFile,writeFile} from 'node:fs/promises';
+import {advance,applyAction,carbohydrateResidual,createBody,fatResidual,glucose,proteinResidual,waterResidual} from '../app/simulation/engine';
+import {gasResiduals,totalSubstance} from '../app/simulation/transport';
+import {HORMONES,SUBSTANCES,type BodyState} from '../app/simulation/types';
+
+const meal={kind:'meal',meal:{carbs:75,protein:25,fat:20,water:350,sodium:600}} as const;
+const state=createBody();
+applyAction(state,meal);
+const sample=(s:BodyState)=>({
+ time:s.time,
+ glucoseMgDl:glucose(s),
+ glucoseMassG:s.glucoseMass,
+ glycogenG:s.glycogen,
+ budgets:{
+  carbohydrateResidualG:carbohydrateResidual(s),proteinResidualG:proteinResidual(s),fatResidualG:fatResidual(s),waterResidualMl:waterResidual(s),
+  ...gasResiduals(s),
+ },
+ hormones:Object.fromEntries(HORMONES.map(name=>[name,s.hormones[name]])),
+ transportTotals:Object.fromEntries(SUBSTANCES.map(name=>[name,totalSubstance(s,name)])),
+ transportPools:Object.fromEntries(Object.entries(s.transport.compartments).map(([id,c])=>[id,{...c.amounts}])),
+});
+const samples=[sample(state)];
+advance(state,300);samples.push(sample(state));
+advance(state,3300);samples.push(sample(state));
+const hash=async(path:string)=>createHash('sha256').update(await readFile(path)).digest('hex');
+const receipt={
+ schemaVersion:1,
+ sourceCommit:'63deb0415408b0ca1bce5492f6bfe54ddc076258',
+ scope:'Pinned pre-P4 meal trajectory for equivalence when P4 is disabled; exploratory-model regression evidence, not biological validation.',
+ meal:meal.meal,
+ samplingSeconds:[0,300,3600],
+ samples,
+ sourceHashes:{
+  'app/simulation/engine.ts':await hash('app/simulation/engine.ts'),
+  'app/simulation/transport.ts':await hash('app/simulation/transport.ts'),
+  'app/simulation/endocrine.ts':await hash('app/simulation/endocrine.ts'),
+  'app/simulation/types.ts':await hash('app/simulation/types.ts'),
+  'scripts/capture-legacy-baseline.ts':await hash('scripts/capture-legacy-baseline.ts'),
+ },
+};
+await writeFile(process.argv[2],JSON.stringify(receipt,null,2)+'\n');

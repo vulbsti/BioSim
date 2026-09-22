@@ -1,0 +1,37 @@
+Script started on 2026-09-22 11:59:51+05:30 [COMMAND="PLAYWRIGHT_JSON_OUTPUT_FILE=/home/vulbsti/proj/human_atlas/validation/current-2026-09-22/final/browser-p4-linked-final.json npm run test:browser:production -- tests/browser/p4-linked.spec.ts --reporter=line,json" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 test:browser:production
+> playwright test --config playwright.production.config.ts tests/browser/p4-linked.spec.ts --reporter=line,json
+
+[WebServer] (node:1943260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:1943260) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+
+[WebServer] [plugin builtin:vite-reporter] 
+[WebServer] (!) Some chunks are larger than 500 kB after minification. Consider:
+[WebServer] - Using dynamic import() to code-split the application
+[WebServer] - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+[WebServer] - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+
+[WebServer] (node:1943359) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:1943372) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:1943372) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+
+
+Running 3 tests using 1 worker
+
+(node:1943464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/3] tests/browser/p4-linked.spec.ts:12:1 › body pathway survives tissue inspection and resumes its exact committed state
+[2/3] tests/browser/p4-linked.spec.ts:71:30 › linked body observations fit 320px
+[3/3] tests/browser/p4-linked.spec.ts:71:30 › linked body observations fit 390px
+  3 passed (20.4s)
+
+Script done on 2026-09-22 12:00:12+05:30 [COMMAND_EXIT_CODE="0"]

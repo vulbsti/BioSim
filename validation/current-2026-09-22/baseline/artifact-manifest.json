@@ -1,0 +1,26 @@
+{
+  "sourceCommit": "63deb0415408b0ca1bce5492f6bfe54ddc076258",
+  "packageLockSHA256": "ad307c5b0f83ee0de8af0aae3456a388510bda4db0b8f93e6bbc469805e78033",
+  "browserFullReport": {
+    "path": "validation/current-2026-09-22/baseline/browser-full.json",
+    "sha256": "c26fe4be932b46a4622a355e9970dc5429e6f9cb4af158e7917e79c1f3a8e8ae"
+  },
+  "browserPhysicalIsolatedReport": {
+    "path": "validation/current-2026-09-22/baseline/browser-physical-isolated.json",
+    "sha256": "540a6ca9bd067ddf8c59fd09b2fbb2cb0046cd797cde38ff1386064d77525e40"
+  },
+  "largeArtifacts": [
+    {
+      "path": "work/current-2026-09-22/baseline/browser-full-test-results/physical-anatomy-anatomica-ba34c-athing-has-live-air-tracers/trace.zip",
+      "sha256": "7a42a0d24a4eb178db472c1151bc4875a2d83a7aa4dec42853886c6db70a89dc"
+    },
+    {
+      "path": "work/current-2026-09-22/baseline/browser-full-test-results/physical-anatomy-meal-inpu-3a0b6-n-portal-absorption-appears/trace.zip",
+      "sha256": "1fcdb9e78f8b55d12e9440f249333c3f5d22924fb6c5fdd266dd3733e9f6a0b0"
+    },
+    {
+      "path": "work/current-2026-09-22/p5-provenance/excitation-reference.before.json",
+      "sha256": "997f4f132d2ef98e254e3d059a54e2da7f75eb262b7b80aeebd17928a60c2c75"
+    }
+  ]
+}

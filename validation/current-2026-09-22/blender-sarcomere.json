@@ -1,0 +1,340 @@
+{
+  "schemaVersion": 1,
+  "blenderVersion": "4.4.3",
+  "blendPath": "/home/vulbsti/proj/human_atlas/assets/multiscale/muscle-pilot/blender/sarcomere.blend",
+  "blendSHA256": "9a1a93dc586a29d90fb5162af7643ca14206b3c690df5ce85a45ac0ceb7e72f4",
+  "sceneUnitSystem": "METRIC",
+  "sceneScaleLength": 1.0,
+  "objects": [
+    {
+      "name": "pilot-m-line",
+      "type": "MESH",
+      "entityId": "pilot-m-line",
+      "kind": "m-line",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 2560,
+        "edges": 5280,
+        "polygons": 2880,
+        "triangles": 3840,
+        "components": 160,
+        "boundaryEdges": 960,
+        "nonManifoldEdges": 960,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 5.998433024979199e-16,
+        "coincidentBoundaryVertexPairs": 344,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "M line links"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -2.2649999209534144e-07,
+          -1.9658776295727876e-07,
+          -2.000003718194421e-09
+        ],
+        "max": [
+          2.2649999209534144e-07,
+          1.9658776295727876e-07,
+          2.000003718194421e-09
+        ]
+      }
+    },
+    {
+      "name": "pilot-thick-filaments",
+      "type": "MESH",
+      "entityId": "pilot-thick-filaments",
+      "kind": "thick-filament",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 19656,
+        "edges": 40859,
+        "polygons": 22386,
+        "triangles": 29848,
+        "components": 1183,
+        "boundaryEdges": 7098,
+        "nonManifoldEdges": 7098,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.7265084385750157e-15,
+        "coincidentBoundaryVertexPairs": 2366,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Myosin-rich thick filaments"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -2.4458765324197884e-07,
+          -2.1454316367908177e-07,
+          -8.000000093488779e-07
+        ],
+        "max": [
+          2.4484288019266387e-07,
+          2.1123750570950506e-07,
+          8.000000093488779e-07
+        ]
+      }
+    },
+    {
+      "name": "pilot-thin-left",
+      "type": "MESH",
+      "entityId": "pilot-thin-left",
+      "kind": "thin-filament",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 3560,
+        "edges": 7654,
+        "polygons": 4272,
+        "triangles": 5696,
+        "components": 178,
+        "boundaryEdges": 1068,
+        "nonManifoldEdges": 1068,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.173330543201201e-15,
+        "coincidentBoundaryVertexPairs": 356,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Actin-rich thin filaments"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -2.2849999936624954e-07,
+          -1.85365337301846e-07,
+          -1.249999968422344e-06
+        ],
+        "max": [
+          2.2849999936624954e-07,
+          2.2433647473008023e-07,
+          -2.499999993688107e-07
+        ]
+      }
+    },
+    {
+      "name": "pilot-thin-right",
+      "type": "MESH",
+      "entityId": "pilot-thin-right",
+      "kind": "thin-filament",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 3560,
+        "edges": 7654,
+        "polygons": 4272,
+        "triangles": 5696,
+        "components": 178,
+        "boundaryEdges": 1068,
+        "nonManifoldEdges": 1068,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.173330543201201e-15,
+        "coincidentBoundaryVertexPairs": 356,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Actin-rich thin filaments"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -2.2849999936624954e-07,
+          -1.85365337301846e-07,
+          2.499999993688107e-07
+        ],
+        "max": [
+          2.2849999936624954e-07,
+          2.2433647473008023e-07,
+          1.249999968422344e-06
+        ]
+      }
+    },
+    {
+      "name": "pilot-z-left",
+      "type": "MESH",
+      "entityId": "pilot-z-left",
+      "kind": "z-disc",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 600,
+        "edges": 1290,
+        "polygons": 720,
+        "triangles": 960,
+        "components": 30,
+        "boundaryEdges": 180,
+        "nonManifoldEdges": 180,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 6.788696237205076e-16,
+        "coincidentBoundaryVertexPairs": 60,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Z disc lattice"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -2.399999914359796e-07,
+          -2.399999914359796e-07,
+          -1.254000039807579e-06
+        ],
+        "max": [
+          2.399999914359796e-07,
+          2.399999914359796e-07,
+          -1.245999897037109e-06
+        ]
+      }
+    },
+    {
+      "name": "pilot-z-right",
+      "type": "MESH",
+      "entityId": "pilot-z-right",
+      "kind": "z-disc",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 600,
+        "edges": 1290,
+        "polygons": 720,
+        "triangles": 960,
+        "components": 30,
+        "boundaryEdges": 180,
+        "nonManifoldEdges": 180,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 6.788696237205076e-16,
+        "coincidentBoundaryVertexPairs": 60,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Z disc lattice"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -2.399999914359796e-07,
+          -2.399999914359796e-07,
+          1.245999897037109e-06
+        ],
+        "max": [
+          2.399999914359796e-07,
+          2.399999914359796e-07,
+          1.254000039807579e-06
+        ]
+      }
+    }
+  ]
+}

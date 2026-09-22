@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-09-22",
+  "protocol": {"durationS": 600, "mealCarbohydrateG": 75, "proteinG": 0, "fatG": 0, "waterMl": 0, "sodiumMg": 0},
+  "comparisons": [
+    {"name":"normal","sensitivity":1,"carbsG":75,"arterialGlucoseMgDl":112.2523657762488,"interstitialInsulinPM":38.90872113240155,"aktPercent":0.1882279027073285,"surfaceGlut4Percent":4.391840229151312,"muscleUptakeG":0.4435948144159615,"muscleCellGlucoseG":0.3108381337151893,"carbohydrateResidualG":-4.796752598971315e-14,"insulinResidualMol":-1.5251142543946448e-23,"elapsedMs":1268.784415},
+    {"name":"reduced","sensitivity":0.35,"carbsG":75,"arterialGlucoseMgDl":112.51187893927339,"interstitialInsulinPM":38.9288418355055,"aktPercent":0.06663493351956887,"surfaceGlut4Percent":4.138370605209421,"muscleUptakeG":0.28572591315639845,"muscleCellGlucoseG":0.1529692324585669,"carbohydrateResidualG":1.056254309802937e-14,"insulinResidualMol":5.381843860423136e-23,"elapsedMs":1270.309906},
+    {"name":"blocked","sensitivity":0,"carbsG":75,"arterialGlucoseMgDl":112.6525228216089,"interstitialInsulinPM":38.939707441891585,"aktPercent":0,"surfaceGlut4Percent":4,"muscleUptakeG":0.19999999999999876,"muscleCellGlucoseG":0.06724331930375352,"carbohydrateResidualG":-1.0222131313846296e-13,"insulinResidualMol":8.892191584945048e-24,"elapsedMs":840.967001},
+    {"name":"noMeal","sensitivity":1,"carbsG":0,"arterialGlucoseMgDl":90.37927938593978,"interstitialInsulinPM":25.838819440215307,"aktPercent":0.14337342405933165,"surfaceGlut4Percent":4.318333951996474,"muscleUptakeG":0.4087454934100697,"muscleCellGlucoseG":0.27598879422974115,"carbohydrateResidualG":1.3568601051492922e-13,"insulinResidualMol":-6.3589509590014e-24,"elapsedMs":771.755776}
+  ],
+  "sourceHashes": {
+    "app/simulation/multiscale-meal.ts":"4cde9e3367d70b590c2c0c9ed382878ba09d30bbd046b37688def744e7a5c622",
+    "app/simulation/engine.ts":"329c7259e1ad74b1b8c62337011b0653bd7549e213ea91b332ae55e0f226b51f",
+    "app/simulation/transport.ts":"366f3a0cc70b58916aef29a5963d4718b4db2e373e29f4118f9f6cc7e7eb8536",
+    "app/simulation/simulation.worker.ts":"acfb0a6e3ad27e6bd0a9525b43bc1f3482176de6ce1d2e13443a4effd2511af7",
+    "app/circulation/model.ts":"c120fc04b2cf9fb44f0e5cf2aa7c80966e1006a487ad064fb692d3d50425cfbf"
+  },
+  "boundary": "Deterministic engineering comparison only. Parameters are synthetic and metrics are not clinical validation bounds. Elapsed time is machine-specific wall time."
+}

@@ -1,0 +1,10 @@
+
+> anatomy-studio@0.1.0 check
+> tsc --noEmit
+
+validation/current-2026-09-22/baseline/capture-legacy-baseline.ts(3,117): error TS2307: Cannot find module '../app/simulation/engine' or its corresponding type declarations.
+validation/current-2026-09-22/baseline/capture-legacy-baseline.ts(4,43): error TS2307: Cannot find module '../app/simulation/transport' or its corresponding type declarations.
+validation/current-2026-09-22/baseline/capture-legacy-baseline.ts(5,50): error TS2307: Cannot find module '../app/simulation/types' or its corresponding type declarations.
+validation/current-2026-09-22/baseline/capture-legacy-baseline.ts(19,43): error TS7006: Parameter 'name' implicitly has an 'any' type.
+validation/current-2026-09-22/baseline/capture-legacy-baseline.ts(20,52): error TS7006: Parameter 'name' implicitly has an 'any' type.
+validation/current-2026-09-22/baseline/capture-legacy-baseline.ts(21,99): error TS18046: 'c' is of type 'unknown'.

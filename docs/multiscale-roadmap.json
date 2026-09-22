@@ -9,20 +9,12 @@
     "status": "in_progress",
     "completionPolicy": "Finish bounded releases only when all phase criteria have receipts. This roadmap does not define perfect or atomically complete human simulation as achievable.",
     "nextMilestone": "M1",
-    "nextPhase": "P1"
+    "nextPhase": "P4"
   },
   "execution": {
     "implementationStarted": true,
-    "completedScope": "P0 complete; P1 local physical mechanisms and source reproduction delivered; P2 muscle/fascicle/fiber/sarcomere visual prototype delivered, including manual filament sliding. Scientific and full phase gates remain open.",
-    "automaticGoalStatusAtPlanning": "paused",
-    "note": "Project goals in this file do not resume or replace the pre-existing paused execution goal.",
-    "goalCreationAttempt": {
-      "objective": "M1: complete P1-P4 with their required evidence",
-      "result": "rejected_unfinished_existing_goal",
-      "message": "cannot create a new goal because this thread has an unfinished goal; complete the existing goal first",
-      "existingGoalLeftUnchanged": true
-    },
-    "activeDeliverable": "P1 human endpoint mapping; P2 anatomical review, brain-region package and remaining asset gates"
+    "completedScope": "P0 complete; P1 numerical/source mechanisms, P2 four-scale teaching assets, P3 physical circulation pilot and P5 mouse-muscle excitation groundwork implemented. Full scientific, anatomical and release gates remain open.",
+    "activeDeliverable": "P4 authoritative body-to-muscle coupling, fresh regressions, human endpoint admission and Blender quality review"
   },
   "milestones": [
     {
@@ -134,7 +126,8 @@
         "validation/p1/insulin-reference.json",
         "models/sedaghat2002/manifest.json",
         "validation/p1/browser-verification.json",
-        "validation/p1/human-endpoint-review.json"
+        "validation/p1/human-endpoint-review.json",
+        "validation/p4/human-endpoint-protocol.json"
       ],
       "criterionProgress": [
         {
@@ -155,7 +148,7 @@
         {
           "criterionIndex": 3,
           "status": "pending",
-          "evidence": "Three human endpoints reviewed. AS160 and image-colocalization readouts do not map to existing states. Direct surface-GLUT4 assay is preferred for further review; donor data, observation mapping and bounds remain unresolved."
+          "evidence": "Human assay candidates reviewed; oral-glucose GLUT4 candidate pinned on 2026-09-22. Paired donor data, assay mapping, source-calibration independence and biological acceptance bounds remain unresolved."
         },
         {
           "criterionIndex": 4,
@@ -187,7 +180,9 @@
         "assets/multiscale/muscle-pilot/build-receipt.json",
         "public/models/multiscale/muscle-pilot/manifest.json",
         "validation/p2/asset-verification.json",
-        "validation/p2/browser-verification.json"
+        "validation/p2/browser-verification.json",
+        "docs/BLENDER_ASSET_REVIEW_2026-09-22.md",
+        "validation/current-2026-09-22/blender-quality-policy.json"
       ],
       "dependencyNote": "P1 physical-unit and identity contracts are implemented. Candidate asset work proceeds independently as allowed by plan section 6.2; human validation and full P1 completion remain open.",
       "criterionProgress": [
@@ -214,7 +209,7 @@
         {
           "criterionIndex": 4,
           "status": "partial",
-          "evidence": "Source license, hashes and local software/browser checks exist; anatomical review and physical-device performance gates remain open."
+          "evidence": "Fresh saved-scene Blender audit and byte identity evidence exist. Procedural topology and anatomical quality gates are explicitly failed/pending; anatomy signoff, clean rebuild and hardware performance remain open."
         }
       ]
     },
@@ -224,7 +219,7 @@
       "dependsOn": [
         "P1"
       ],
-      "status": "pending",
+      "status": "in_progress",
       "completionCriteria": [
         "A reviewed pilot vascular circuit has explicit ports and terminal beds.",
         "Insulin has physical local concentration, transport, exchange and clearance.",
@@ -236,7 +231,39 @@
         "E01",
         "E04"
       ],
-      "receipts": []
+      "receipts": [
+        "docs/P3_IMPLEMENTATION.md",
+        "validation/p3/protocol.json",
+        "validation/p3/verification.json",
+        "validation/p3/circulation-reference.json"
+      ],
+      "criterionProgress": [
+        {
+          "criterionIndex": 0,
+          "status": "partial",
+          "evidence": "Ten-node synthetic vascular circuit and explicit portal/systemic routes implemented; reviewed anatomical topology remains open."
+        },
+        {
+          "criterionIndex": 1,
+          "status": "passed",
+          "evidence": "Physical plasma/interstitial insulin transport and explicit clearance ledgers implemented."
+        },
+        {
+          "criterionIndex": 2,
+          "status": "partial",
+          "evidence": "Plasma/RBC volume bases explicit; gas chemistry is not implemented in this circuit."
+        },
+        {
+          "criterionIndex": 3,
+          "status": "partial",
+          "evidence": "Synthetic circulation conservation, independent integration and convergence verified; human waveform and gas endpoints open."
+        },
+        {
+          "criterionIndex": 4,
+          "status": "partial",
+          "evidence": "Standalone pilot cannot double-debit body pools. P4 must explicitly replace each legacy flux when integrated."
+        }
+      ]
     },
     {
       "id": "P4",
@@ -246,7 +273,7 @@
         "P2",
         "P3"
       ],
-      "status": "pending",
+      "status": "in_progress",
       "completionCriteria": [
         "A meal causes receptor-mediated muscle glucose uptake through the modeled route.",
         "Normal and reduced sensitivity comparisons expose local and systemic causal effects.",
@@ -259,7 +286,44 @@
         "E02",
         "E03"
       ],
-      "receipts": []
+      "receipts": [
+        "docs/P4_IMPLEMENTATION.md",
+        "validation/p4/human-endpoint-protocol.json",
+        "docs/CONTINUATION_HANDOFF_2026-09-22.md"
+      ],
+      "dependencyNote": "Engineering integration proceeds using verified P1/P3 mechanisms; unresolved P1 human and P2 anatomical gates still block M1 release.",
+      "criterionProgress": [
+        {
+          "criterionIndex": 0,
+          "status": "partial",
+          "evidence": "Body-owned engineering pathway reuses existing digestion, physical P3 insulin transport and Sedaghat signaling; synthetic GLUT4 uptake transfers interstitial glucose into an explicit cell pool."
+        },
+        {
+          "criterionIndex": 1,
+          "status": "partial",
+          "evidence": "Normal, reduced and blocked receptor input available; comparison preserves active physical state. Human calibration remains open."
+        },
+        {
+          "criterionIndex": 2,
+          "status": "partial",
+          "evidence": "Linked tissue scales read committed body state; production browser verification exercises unchanged exported state through scale/LOD/section controls. True spatial refinement remains open."
+        },
+        {
+          "criterionIndex": 3,
+          "status": "partial",
+          "evidence": "Distinct capillary exchange and cell entry prevent duplicate glucose debit; coarse spatial patch refinement/aggregation is not implemented."
+        },
+        {
+          "criterionIndex": 4,
+          "status": "pending",
+          "evidence": "Human oral-load endpoint candidate pinned; paired data, assay mapping and independent acceptance bounds are not yet admitted."
+        },
+        {
+          "criterionIndex": 5,
+          "status": "partial",
+          "evidence": "New body model version saves physical pathway and restores deterministically; legacy migration and malformed-state checks added. Spatial refinement and camera state are not body recording fields."
+        }
+      ]
     },
     {
       "id": "P5",
@@ -269,7 +333,7 @@
         "P2",
         "P4"
       ],
-      "status": "pending",
+      "status": "in_progress",
       "completionCriteria": [
         "A reviewed stretch-reflex route connects receptor, afferent, spinal circuit, motor output and muscle.",
         "Axon events, synaptic release, cleft clearance and receptor action determine response.",
@@ -280,7 +344,42 @@
       "experimentIds": [
         "E05"
       ],
-      "receipts": []
+      "receipts": [
+        "models/shorten2007/README.md",
+        "models/shorten2007/manifest.json",
+        "validation/p5/excitation-protocol.json",
+        "validation/p5/excitation-verification.json",
+        "validation/p5/excitation-browser-report.json",
+        "validation/current-2026-09-22/p5-provenance/excitation-verification.fresh.json"
+      ],
+      "dependencyNote": "Fixed-length mouse-muscle excitation groundwork was implemented ahead of P4; this does not complete the human reflex milestone.",
+      "criterionProgress": [
+        {
+          "criterionIndex": 0,
+          "status": "pending",
+          "evidence": "Not implemented or validated by the source excitation pilot."
+        },
+        {
+          "criterionIndex": 1,
+          "status": "pending",
+          "evidence": "Not implemented or validated by the source excitation pilot."
+        },
+        {
+          "criterionIndex": 2,
+          "status": "partial",
+          "evidence": "Source electrical/calcium/cross-bridge state model and rendering exist. Force, energy, proprioception and NMJ coupling remain open."
+        },
+        {
+          "criterionIndex": 3,
+          "status": "pending",
+          "evidence": "Not implemented or validated by the source excitation pilot."
+        },
+        {
+          "criterionIndex": 4,
+          "status": "pending",
+          "evidence": "Not implemented or validated by the source excitation pilot."
+        }
+      ]
     },
     {
       "id": "P6",
@@ -492,5 +591,6 @@
     "pending": "Awaiting prerequisite work.",
     "planned": "Defined goal or release, not yet complete."
   },
-  "updatedOn": "2026-09-13"
+  "updatedOn": "2026-09-13",
+  "reviewedOn": "2026-09-22"
 }

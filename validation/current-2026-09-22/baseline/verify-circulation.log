@@ -1,0 +1,31 @@
+Script started on 2026-09-22 11:24:24+05:30 [COMMAND="npm run verify:circulation" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 verify:circulation
+> tsx scripts/verify-circulation.ts
+
+{
+  "receipt": "validation/p3/verification.json",
+  "tests": 6,
+  "domainCorners": 32,
+  "numericalAgreement": {
+    "stepHalving": {
+      "maximumPressureErrorMmHg": 0.00002331586615866854,
+      "maximumGLUT4ErrorPercentagePoints": 9.188481087107903e-10,
+      "maximumInsulinErrorPM": 0.00004716721014119685,
+      "maximumNormalizedInsulinError": 0.000019509116618279126
+    },
+    "independentDOP853": {
+      "maximumPressureErrorMmHg": 0.0001166946308757133,
+      "maximumGLUT4ErrorPercentagePoints": 2.355138661869205e-8,
+      "maximumInsulinErrorPM": 0.00012955185070495645,
+      "maximumNormalizedInsulinError": 0.000028934566363140215
+    }
+  },
+  "conservation": {
+    "maximumVolumeResidualL": 9.85878045867139e-14,
+    "maximumInsulinResidualMol": 5.343281372915954e-23,
+    "minimumInsulinMol": 0
+  }
+}
+
+Script done on 2026-09-22 11:24:46+05:30 [COMMAND_EXIT_CODE="0"]

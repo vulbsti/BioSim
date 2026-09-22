@@ -1,0 +1,7 @@
+Script started on 2026-09-22 11:23:20+05:30 [COMMAND="npm run check" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 check
+> tsc --noEmit
+
+
+Script done on 2026-09-22 11:23:29+05:30 [COMMAND_EXIT_CODE="0"]

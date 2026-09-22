@@ -1,0 +1,38 @@
+Script started on 2026-09-22 11:34:56+05:30 [COMMAND="PLAYWRIGHT_JSON_OUTPUT_FILE=/home/vulbsti/proj/human_atlas/validation/current-2026-09-22/baseline/browser-physical-isolated.json npm run test:browser:production -- tests/browser/physical-anatomy.spec.ts --reporter=line,json" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 test:browser:production
+> playwright test --config playwright.production.config.ts tests/browser/physical-anatomy.spec.ts --reporter=line,json
+
+[WebServer] (node:1859958) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:1859958) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+
+[WebServer] [plugin builtin:vite-reporter] 
+[WebServer] (!) Some chunks are larger than 500 kB after minification. Consider:
+[WebServer] - Using dynamic import() to code-split the application
+[WebServer] - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+[WebServer] - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+
+[WebServer] (node:1860138) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:1860170) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:1860170) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+
+
+Running 4 tests using 1 worker
+
+(node:1860231) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/4] tests/browser/physical-anatomy.spec.ts:4:1 › anatomical pixels move, pause freezes them, and breathing has live air tracers
+[2/4] tests/browser/physical-anatomy.spec.ts:19:1 › meal input starts swallowing and digestion, then portal absorption appears
+[3/4] tests/browser/physical-anatomy.spec.ts:34:1 › reduced motion, thyroid isolation, section controls and mobile expansion work
+[4/4] tests/browser/physical-anatomy.spec.ts:43:1 › catalogue failure produces a visible error instead of an endless loading state
+  4 passed (3.8m)
+
+Script done on 2026-09-22 11:38:42+05:30 [COMMAND_EXIT_CODE="0"]

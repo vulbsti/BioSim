@@ -1,0 +1,7 @@
+Script started on 2026-09-22 11:39:28+05:30 [COMMAND="work/p1/venv/bin/python scripts/reference-excitation.py" <not executed on terminal>]
+single complete 5385 2.58
+train complete 28429 17.28
+no-stimulus complete 3261 1.27
+blocked-release complete 4848 1.79
+
+Script done on 2026-09-22 11:39:52+05:30 [COMMAND_EXIT_CODE="0"]

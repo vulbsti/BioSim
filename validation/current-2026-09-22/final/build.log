@@ -1,0 +1,39 @@
+Script started on 2026-09-22 11:50:16+05:30 [COMMAND="npm run build" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 build
+> vite build
+
+vite v8.0.13 building client environment for production...
+(node:1911973) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[2Ktransforming (30) ../node_modules/@base-ui/react/index.mjs[2Ktransforming (90) ../node_modules/@base-ui/react/button/Button.mjs[2Ktransforming (136) ../node_modules/@base-ui/react/toast/index.parts.mjs[2Ktransforming (350) ../app/physical/flow-routes.ts[2Ktransforming (478) ../node_modules/@base-ui/react/tooltip/viewport/TooltipViewport.mjs[2Ktransforming (719) ../node_modules/lucide-react/dist/esm/icons/badge-check.mjs[2Ktransforming (720) ../node_modules/lucide-react/dist/esm/icons/arrow-down-a-z.mjs[2Ktransforming (1313) ../node_modules/lucide-react/dist/esm/icons/heart-handshake.mjs[2Ktransforming (1314) ../node_modules/lucide-react/dist/esm/icons/dollar-sign.mjs[2Ktransforming (2500) ../app/physical/physical.css[2Ktransforming (2502) ../app/globals.css[2Ktransforming (2522) ../app/tissue/recording.ts[2K✓ 2526 modules transformed.
+[2Krendering chunks (1)...[2Krendering chunks (2)...[2Krendering chunks (3)...[2Krendering chunks (4)...[2Krendering chunks (5)...[2Krendering chunks (6)...[2Krendering chunks (7)...[2Krendering chunks (8)...[2Krendering chunks (9)...[2Krendering chunks (10)...[2Krendering chunks (11)...[2Kcomputing gzip size...
+[2Kdist/index.html                               0.63 kB │ gzip:   0.40 kB
+dist/assets/circulation.worker-CLjyZ6c2.js    8.99 kB
+dist/assets/excitation.worker-CzZAdDoe.js    13.05 kB
+dist/assets/mechanism.worker-DpfYDgFd.js     15.44 kB
+dist/assets/simulation.worker-Dc6cKPEP.js    45.24 kB
+dist/assets/CirculationLab-BUWfuwIG.css       7.50 kB │ gzip:   2.02 kB
+dist/assets/MolecularLab-PBX8knRT.css        14.90 kB │ gzip:   3.89 kB
+dist/assets/tissue-CYsi83sI.css              15.37 kB │ gzip:   3.80 kB
+dist/assets/index-BF8bLSFf.css              247.27 kB │ gzip:  41.80 kB
+dist/assets/upload-D6uZqr8h.js                0.50 kB │ gzip:   0.27 kB
+dist/assets/model-download-DEFToreh.js        2.28 kB │ gzip:   1.12 kB
+dist/assets/experiments-CEcPn6KO.js           7.65 kB │ gzip:   3.04 kB
+dist/assets/PhysicalScene-BU0G2C_q.js        17.20 kB │ gzip:   7.47 kB
+dist/assets/CirculationLab-DU-90Mea.js       19.87 kB │ gzip:   6.88 kB
+dist/assets/MolecularLab-DJNwG3cG.js         24.81 kB │ gzip:   8.45 kB
+dist/assets/TissueExplorer-DjdRaN6b.js       30.68 kB │ gzip:   9.51 kB
+dist/assets/tissue-DGdsAr5_.js               53.35 kB │ gzip:  16.85 kB
+dist/assets/page-C7nwcXFO.js                228.24 kB │ gzip:  78.01 kB
+dist/assets/index-Cg34MIWh.js               311.29 kB │ gzip:  99.46 kB
+dist/assets/pointer-tap-B5PzZnEW.js         525.13 kB │ gzip: 132.20 kB
+
+[2K[1G[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.93s
+
+Script done on 2026-09-22 11:50:18+05:30 [COMMAND_EXIT_CODE="0"]

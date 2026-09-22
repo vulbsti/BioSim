@@ -1,0 +1,11 @@
+Script started on 2026-09-22 11:40:25+05:30 [COMMAND="npm run verify:excitation" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 verify:excitation
+> tsx scripts/verify-excitation.ts
+
+single {"name":"single","maximumVoltageErrorMV":0.00001535193949564473,"maximumCalciumErrorUM":0.000003493713023772216,"maximumCrossbridgeErrorUM":1.1309277847537658e-8,"maximumScaledAllStateError":0.005357700714824842,"minimumNonVoltageState":0,"steps":269996,"rejected":10776,"elapsedMs":5329.746462,"maxCalciumResidualMol":7.491867483666347e-32,"maxAdenineResidualMol":2.1031154992708616e-31,"peakVoltageMV":18.850063283274228,"peakCalciumUM":7.753769780125609,"peakPostStrokeUM":0.7232361913373538}
+train {"name":"train","maximumVoltageErrorMV":0.000018418507496065217,"maximumCalciumErrorUM":0.000003493713023772216,"maximumCrossbridgeErrorUM":2.103415752685578e-8,"maximumScaledAllStateError":0.011251837699488886,"minimumNonVoltageState":0,"steps":291398,"rejected":10430,"elapsedMs":6020.415128000001,"maxCalciumResidualMol":4.2755644765396636e-32,"maxAdenineResidualMol":7.233792871118458e-31,"peakVoltageMV":22.148872259899196,"peakCalciumUM":7.753769780125609,"peakPostStrokeUM":0.9066176528192256}
+no-stimulus {"name":"no-stimulus","maximumVoltageErrorMV":1.8152944392113568e-7,"maximumCalciumErrorUM":4.3936289628732084e-7,"maximumCrossbridgeErrorUM":3.186187452763889e-9,"maximumScaledAllStateError":0.005016319072854812,"minimumNonVoltageState":0,"steps":267663,"rejected":10647,"elapsedMs":5738.507902999998,"maxCalciumResidualMol":5.874086330381069e-32,"maxAdenineResidualMol":1.8874113454994911e-31,"peakVoltageMV":-79.974,"peakCalciumUM":0.6470773826023628,"peakPostStrokeUM":0.2401441405729345}
+blocked-release {"name":"blocked-release","maximumVoltageErrorMV":0.000013526323424883913,"maximumCalciumErrorUM":4.305974231691434e-9,"maximumCrossbridgeErrorUM":1.9149758168079956e-10,"maximumScaledAllStateError":0.004938202048408961,"minimumNonVoltageState":0,"steps":265402,"rejected":10715,"elapsedMs":5802.799750999999,"maxCalciumResidualMol":3.331858803789918e-32,"maxAdenineResidualMol":5.253936888288379e-31,"peakVoltageMV":18.850063283273712,"peakCalciumUM":0.2513103053723274,"peakPostStrokeUM":0.2319279296630585}
+
+Script done on 2026-09-22 11:40:54+05:30 [COMMAND_EXIT_CODE="0"]

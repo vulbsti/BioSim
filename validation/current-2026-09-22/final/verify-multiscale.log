@@ -1,0 +1,44 @@
+Script started on 2026-09-22 11:49:21+05:30 [COMMAND="npm run verify:multiscale" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 verify:multiscale
+> tsx scripts/verify-multiscale.ts
+
+{
+  "receipt": "validation/p1/verification.json",
+  "E01": {
+    "input": {
+      "kind": "binding",
+      "parameters": {
+        "dosePmol": 100,
+        "receptorPmol": 20,
+        "clearancePerMinute": 0.12
+      }
+    },
+    "durationSeconds": 1200,
+    "samples": 241,
+    "maximumLedgerResidualMol": 1.7185808136782875e-24,
+    "minimumAmountMol": 0,
+    "ligandTotalPmol": 100.00000000000031,
+    "receptorTotalPmol": 19.999999999999922,
+    "status": "passed synthetic numerical checks"
+  },
+  "insulin": {
+    "model": "sedaghat2002-jsim-no-feedback-1",
+    "input": {
+      "doseNM": 100,
+      "pulseMinutes": 15
+    },
+    "samples": 241,
+    "durationSeconds": 3600,
+    "maximumNormalizedError": 0.00003459265338227643,
+    "maximumAbsoluteErrorNativeUnits": 6.953115624930284e-9,
+    "normalizedAcceptanceBound": 1,
+    "radauVsBdfNormalizedError": 0.000023684771494099344,
+    "surfaceGLUT4At15Minutes": 39.283198322657206,
+    "surfaceGLUT4At60Minutes": 4.427179585272186,
+    "status": "passed independent-solver reproduction"
+  },
+  "humanValidation": "pending"
+}
+
+Script done on 2026-09-22 11:49:23+05:30 [COMMAND_EXIT_CODE="0"]

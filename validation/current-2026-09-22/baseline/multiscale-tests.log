@@ -1,0 +1,26 @@
+Script started on 2026-09-22 11:24:13+05:30 [COMMAND="npm run test:multiscale" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 test:multiscale
+> tsx --test tests/multiscale.test.ts
+
+✔ physical units convert explicitly and reject relative activities, dimensions and nonfinite input (1.251484ms)
+✔ compilation rejects unbalanced chemistry, wrong kinetics, duplicate ownership and unauthorized ports (2.173712ms)
+✔ first-order clearance matches the exponential analytic solution and closes its ledger (16.421369ms)
+✔ closed mixing matches analytic two-compartment transport and equalizes concentrations (19.974123ms)
+✔ finite reversible receptor binding agrees with its analytic equilibrium and conserves both moieties (281.571435ms)
+✔ high rates trigger internal refinement while retaining positivity and analytic agreement (2.43421ms)
+✔ a coupled pulse shows delayed binding; receptor and clearance perturbations have causal effects (281.028818ms)
+✔ chemical checkpoint resume is deterministic; invalid state and model versions are rejected before mutation (7.67184ms)
+✔ insulin no-feedback implementation reproduces independent Radau outputs and timestep refinement (372.514673ms)
+✔ insulin dose modifies the computed cascade and source pool invariants hold (197.970251ms)
+✔ camera/playhead observations never alter trajectories and replay packages reject legacy or altered contracts (67.394198ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1455.679984
+
+Script done on 2026-09-22 11:24:15+05:30 [COMMAND_EXIT_CODE="0"]

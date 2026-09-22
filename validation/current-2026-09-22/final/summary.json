@@ -1,0 +1,88 @@
+{
+  "recordedAt": "2026-09-22T06:30:27.909Z",
+  "baseCommit": "63deb0415408b0ca1bce5492f6bfe54ddc076258",
+  "snapshots": {
+    "baseline": {
+      "identity": "63deb0415408b0ca1bce5492f6bfe54ddc076258",
+      "scope": "Detached clean checkout"
+    },
+    "preVisualFullSuite": {
+      "codeDiffSHA256": "1b6c346363fe37f06bfba53a4bb8dc79e563eb061be51ef02c8559b2c31a66d0",
+      "scope": "All application, web, test, script, package, Playwright, and P5 reference changes; excludes docs"
+    },
+    "final": {
+      "codeDiffSHA256": "e910ebd9beb302f4a60fe081f5d54bb5293b16de456799c8da0c011d7e979f93",
+      "scope": "Pre-visual snapshot plus linked-card readability CSS/class and linked playback-pause browser assertion; excludes docs"
+    }
+  },
+  "finalNumerical": {
+    "passed": 59,
+    "failed": 0,
+    "suites": {
+      "physiology": 18,
+      "anatomy": 6,
+      "multiscale": 11,
+      "tissue": 5,
+      "circulation": 6,
+      "p4": 13
+    }
+  },
+  "verification": {
+    "typecheck": "passed",
+    "productionBuild": "passed with existing chunk-size warning",
+    "multiscale": "passed",
+    "tissue": "passed",
+    "circulation": "passed",
+    "excitation": "passed",
+    "legacyP4DisabledEquivalence": {
+      "passed": true,
+      "sampleTimesSeconds": [0, 300, 3600],
+      "maximumAbsoluteDifference": 0,
+      "excludedNewState": ["muscle-cell", "version metadata"]
+    },
+    "responseMetricsSourceHashes": {
+      "passed": true,
+      "files": 5,
+      "receipt": "validation/current-2026-09-22/final/response-metrics-source-audit.json"
+    }
+  },
+  "browser": {
+    "preVisualFullSuite": {
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 397964.604,
+      "report": "validation/current-2026-09-22/final/browser-full.json"
+    },
+    "finalP4Linked": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 20360.327,
+      "report": "validation/current-2026-09-22/final/browser-p4-linked-final.json",
+      "screenshots": [
+        "validation/current-2026-09-22/final/p4-linked-320.png",
+        "validation/current-2026-09-22/final/p4-linked-390.png"
+      ]
+    },
+    "resolvedAttempt": {
+      "initialOutcome": "2 passed, 1 failed because Playwright check() required immediate controlled-checkbox state before the worker reply",
+      "resolution": "Used click() followed by the existing worker-backed toBeChecked assertion; no assertion was removed",
+      "failedReport": "validation/current-2026-09-22/final/browser-p4-linked-attempt1-failed.json"
+    }
+  },
+  "baselineBrowser": {
+    "full": "31 passed, 2 timed out in physical-anatomy software-renderer work",
+    "isolatedPhysical": "4 passed",
+    "resolution": "Only the two measured-heavy physical tests received 240 second budgets; assertions and screenshots are unchanged"
+  },
+  "p5ReferenceProvenance": {
+    "passed": true,
+    "scientificPayloadUnchanged": true,
+    "added": ["referenceScriptSHA256", "protocolSHA256"],
+    "staleProtocolRegressionCheck": "passed"
+  },
+  "claimBoundary": "Engineering regression and source-identity evidence only; not biological or clinical validation."
+}

@@ -1,0 +1,12 @@
+{
+  "baselineCommit": "63deb0415408b0ca1bce5492f6bfe54ddc076258",
+  "currentBaseCommit": "63deb0415408b0ca1bce5492f6bfe54ddc076258",
+  "samplingSeconds": [
+    0,
+    300,
+    3600
+  ],
+  "passed": true,
+  "maximumAbsoluteDifference": 0,
+  "scope": "Exact comparison of legacy fields with P4 disabled; newly added empty muscle-cell state and version metadata intentionally excluded."
+}

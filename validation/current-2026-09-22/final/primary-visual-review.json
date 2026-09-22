@@ -1,0 +1,56 @@
+{
+  "reviewedAt": "2026-09-22T06:31:57.212483+00:00",
+  "reviewer": "primary-agent",
+  "method": "Manual browser interaction, accessibility-tree inspection and rendered-pixel inspection; final production mobile screenshot review.",
+  "manualViews": [
+    "muscle",
+    "fascicle",
+    "muscle fiber",
+    "sarcomere"
+  ],
+  "linkedMealObservation": {
+    "timeS": 300,
+    "interstitialInsulinPM": 11.5,
+    "surfaceGLUT4Percent": 4.02,
+    "arterialGlucoseMgDl": 102.9,
+    "muscleUptakeMgMin": 26.92
+  },
+  "viewports": [
+    {
+      "width": 1265,
+      "height": 712
+    },
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 320,
+      "height": 844
+    }
+  ],
+  "finalMobileScreenshots": [
+    "p4-linked-320.png",
+    "p4-linked-390.png"
+  ],
+  "readabilityFix": {
+    "scope": "linked body experiment card",
+    "minimumMeasuredDeclaredTextContrast": 5.8,
+    "labelAndUnitFontPx": 11,
+    "boundaryFontPx": 12,
+    "buttonMinimumHeightPx": 44,
+    "resultsLayout": "two columns",
+    "observedClipping": false
+  },
+  "sourceHashes": {
+    "app/tissue/TissueExplorer.tsx": "cbec7e89188a3f47162119d4b9fcf9ae64c552c4b60e3da7388e536b8faea08c",
+    "app/tissue/tissue.css": "0c28735787f79ed802d70d25e9b2eab9a814982f20151485beaebbb2a87d6cc1",
+    "tests/browser/p4-linked.spec.ts": "75f6fca01627300ff912bb7fd34d6fce3e6b43f55203f95092d88049a1967e2e"
+  },
+  "anatomyVerdict": "representative_visual_prototype; fails requested anatomical fidelity bar",
+  "limits": [
+    "No human expert anatomy approval.",
+    "No calibrated hardware/GPU performance result.",
+    "Contrast measurements cover declared linked-panel colors, not a full-app accessibility certification."
+  ]
+}

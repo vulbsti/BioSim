@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-09-22",
+  "scope": "P4 body-owned meal-to-muscle engineering increment",
+  "sourceHashes": {
+    "app/simulation/multiscale-meal.ts": "4cde9e3367d70b590c2c0c9ed382878ba09d30bbd046b37688def744e7a5c622",
+    "app/simulation/engine.ts": "329c7259e1ad74b1b8c62337011b0653bd7549e213ea91b332ae55e0f226b51f",
+    "app/simulation/transport.ts": "366f3a0cc70b58916aef29a5963d4718b4db2e373e29f4118f9f6cc7e7eb8536",
+    "app/simulation/simulation.worker.ts": "acfb0a6e3ad27e6bd0a9525b43bc1f3482176de6ce1d2e13443a4effd2511af7",
+    "app/circulation/model.ts": "c120fc04b2cf9fb44f0e5cf2aa7c80966e1006a487ad064fb692d3d50425cfbf",
+    "tests/p4-meal.test.ts": "52fd7c056c55ff41e7e58b7fc66314bce338cfb4bd0d9599bf1c3c3bf6d6a3e7"
+  },
+  "checks": [
+    {"command": "npm run test:physiology", "result": "18 passed, 0 failed"},
+    {"command": "npm run test:circulation", "result": "6 passed, 0 failed"},
+    {"command": "npm run build", "result": "passed with existing large-chunk warning"},
+    {"command": "git diff --check", "result": "passed"},
+    {"command": "npm run test:p4", "result": "13 passed, 0 failed"}
+  ],
+  "claims": "Accounting and deterministic engineering checks only. No human physiological validation or full P4 acceptance claim."
+}

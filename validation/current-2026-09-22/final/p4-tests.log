@@ -1,0 +1,28 @@
+Script started on 2026-09-22 11:49:15+05:30 [COMMAND="npm run test:p4" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 test:p4
+> tsx --test tests/p4-meal.test.ts tests/p4-recording.test.ts
+
+✔ opt-in P4 pathway conserves body glucose and physical insulin ledgers (943.253107ms)
+✔ reduced receptor sensitivity propagates through Sedaghat before changing physical uptake (1560.468563ms)
+✔ null meal retains finite basal boundary and sensitivity has no direct glucose shortcut (235.769595ms)
+✔ zero receptor input leaves physical insulin delivery intact but suppresses signaling (642.588864ms)
+✔ disabled mode is deterministic legacy behavior and toggling preserves glucose inventory (239.660262ms)
+✔ P4 recording resumes exactly, migrates legacy disabled, and rejects mixed model IDs (471.743153ms)
+✔ readouts and repeated pause observations cannot mutate the trajectory (599.754067ms)
+✔ recording accepts conserved active P4 output and each supported sensitivity (255.345901ms)
+✔ recording rejects malformed P4 dimensions, numeric values, and sensitivity (6.613644ms)
+✔ recording rejects broken insulin, secretion, signal, and uptake ledgers (3.708946ms)
+✔ disabled P4 state cannot carry active circulation, ledgers, sensitivity, or cell contents (2.958218ms)
+✔ genuine 0.2 migration adds an empty disabled cell without changing old inventories (3.714987ms)
+✔ model identity cannot be relabeled to bypass migration or solver checks (3.128597ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4843.533971
+
+Script done on 2026-09-22 11:49:21+05:30 [COMMAND_EXIT_CODE="0"]

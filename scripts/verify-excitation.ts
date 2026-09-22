@@ -9,7 +9,18 @@ const protocol=JSON.parse(await readFile(file('validation/p5/excitation-protocol
 const reference=JSON.parse(await readFile(file('validation/p5/excitation-reference.json'),'utf8'));
 const sha=async(p:string)=>createHash('sha256').update(await readFile(file(p))).digest('hex');
 for(const [p,hash]of Object.entries(source.files))assert.equal(await sha('models/shorten2007/'+p),hash);
-assert.equal(reference.sourceSHA256,source.files['source/shorten2007.py']);
+const expectedReferenceProvenance={
+ sourceSHA256:source.files['source/shorten2007.py'],
+ referenceScriptSHA256:await sha('scripts/reference-excitation.py'),
+ protocolSHA256:await sha('validation/p5/excitation-protocol.json'),
+};
+const assertReferenceProvenance=(candidate:Record<string,unknown>)=>{
+ assert.equal(candidate.sourceSHA256,expectedReferenceProvenance.sourceSHA256,'Excitation reference source is stale');
+ assert.equal(candidate.referenceScriptSHA256,expectedReferenceProvenance.referenceScriptSHA256,'Excitation reference generator is stale');
+ assert.equal(candidate.protocolSHA256,expectedReferenceProvenance.protocolSHA256,'Excitation reference protocol is stale');
+};
+assert.throws(()=>assertReferenceProvenance({...reference,protocolSHA256:'0'.repeat(64)}),/protocol is stale/);
+assertReferenceProvenance(reference);
 const {states,constants}=initialShorten(),a=new Float64Array(56),b=new Float64Array(56),alg=new Float64Array(71);
 for(const t of [0,.1,.499,.5,1,50,50.1,50.5,399.9,400,400.1,400.5,450]){
  shortenRates(t,constants,a,states,alg);shortenRates(-1,constants,b,states,alg);b[0]+=stimulusAt({stimulus:'train',releaseScale:1},t)/constants[0];

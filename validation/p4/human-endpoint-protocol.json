@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-09-22",
+  "status": "selected_candidate_not_admitted_for_validation",
+  "purpose": "Predeclare the human oral-glucose endpoint review for P4 without inventing biological tolerances or fitting the synthetic bridge to summary statistics.",
+  "primaryCandidate": {
+    "id": "goodyear1996-oral-glucose",
+    "doi": "10.2337/diab.45.8.1051",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/8690151/",
+    "evidenceInspected": "Primary study abstract, live on 2026-09-22; publisher full PDF returned HTTP 403.",
+    "participants": 6,
+    "preparation": "Human vastus lateralis biopsy before and 60 minutes after a 75 g oral glucose load",
+    "measurements": [
+      {"endpoint": "Plasma-membrane GLUT4 per gram muscle", "unit": "assay arbitrary units", "basalMean": 3524, "basalReportedPlusMinus": 729, "postMean": 4473, "postReportedPlusMinus": 952},
+      {"endpoint": "Transporter-mediated uptake into isolated plasma-membrane vesicles", "unit": "pmol per mg per second", "basalMean": 130, "basalReportedPlusMinus": 11, "postMean": 224, "postReportedPlusMinus": 38}
+    ],
+    "primaryObservableProposed": "Within-donor log post/basal membrane-GLUT4 abundance at 60 minutes, after an admitted mapping from the model membrane pool to the assay recovery compartment.",
+    "notEquivalentTo": ["Total-body glucose disposal", "Net vascular-to-tissue glucose transfer", "Image colocalization", "Direct count of the rendered GLUT4 markers"],
+    "admissionBlockers": [
+      "Full methods and paired donor measurements are not available in the inspected abstract.",
+      "Confirm error-bar definition and membrane recovery/normalization; ratio of group means is not mean paired fold change.",
+      "Map sarcolemmal and T-tubule contributions and the model percent-pool denominator to the assay.",
+      "Pin plasma insulin/glucose exposure and meal formulation; an abstract-level 75 g glucose load is not a mixed-meal input.",
+      "Check independence from Sedaghat calibration/source data before naming this a held-out endpoint."
+    ]
+  },
+  "systemicCandidate": {
+    "id": "kelley1988-oral-disposal",
+    "doi": "10.1172/JCI113489",
+    "url": "https://www.jci.org/articles/view/113489",
+    "evidenceInspected": "Primary publisher abstract, live on 2026-09-22.",
+    "participants": 9,
+    "protocol": "1 g/kg oral glucose; five-hour isotope, calorimetry and forearm-balance study",
+    "admission": "pending_full_protocol_and_tracer_observation_model",
+    "reason": "Oral-load-specific tracer disposal cannot be equated to all glucose crossing the model muscle boundary. Net exchange, oxidation, storage and total versus meal-derived glucose need separate observation mappings."
+  },
+  "acceptance": {
+    "statisticalUnit": "donor with paired measurements",
+    "numericBounds": null,
+    "boundsStatus": "not_locked_missing_measurement_and_mapping_evidence",
+    "fitPerformed": false,
+    "biologicalPass": false,
+    "requiredBeforeFitting": [
+      "Acquire and version permitted data with checksums and extraction uncertainty.",
+      "Freeze assay observation model, basal initialization, exposure, parameter bounds and calibration/held-out split.",
+      "Derive and lock the numeric interval from donor, assay and extraction uncertainty before seeing model predictions.",
+      "Evaluate predeclared endpoints and retain failures; never borrow numerical conservation tolerances as biological bounds."
+    ]
+  },
+  "engineeringScope": "P4 may demonstrate conservative causal back-coupling using synthetic secretion and uptake laws. Passing that test does not satisfy the human-response phase gate."
+}

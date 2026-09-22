@@ -1,0 +1,4 @@
+Script started on 2026-09-22 11:25:36+05:30 [COMMAND="node scripts/validate-atlas.mjs" <not executed on terminal>]
+Verified 2234 individually indexed meshes, 3432 complete concept mappings, 2,288,268 triangles, and every binary buffer.
+
+Script done on 2026-09-22 11:25:36+05:30 [COMMAND_EXIT_CODE="0"]

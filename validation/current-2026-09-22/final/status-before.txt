@@ -1,0 +1,32 @@
+ M HANDOFF.md
+ M README.md
+ M app/circulation/model.ts
+ M app/simulation/Simulator.tsx
+ M app/simulation/engine.ts
+ M app/simulation/recording.ts
+ M app/simulation/simulation.css
+ M app/simulation/simulation.worker.ts
+ M app/simulation/transport.ts
+ M app/simulation/types.ts
+ M app/simulation/use-simulation.ts
+ M app/tissue/TissueExplorer.tsx
+ M docs/MULTISCALE_EXECUTION_PLAN.md
+ M docs/multiscale-roadmap.json
+ M package.json
+ M scripts/reference-excitation.py
+ M scripts/verify-excitation.ts
+ M tests/browser/physical-anatomy.spec.ts
+ M tests/browser/simulation.spec.ts
+ M validation/p5/excitation-reference.json
+ M web/main.tsx
+?? app/simulation/body-observation.ts
+?? app/simulation/multiscale-meal.ts
+?? docs/BLENDER_ASSET_REVIEW_2026-09-22.md
+?? docs/CONTINUATION_HANDOFF_2026-09-22.md
+?? docs/P4_IMPLEMENTATION.md
+?? scripts/blender/audit-muscle-pilot.py
+?? tests/browser/p4-linked.spec.ts
+?? tests/p4-meal.test.ts
+?? tests/p4-recording.test.ts
+?? validation/current-2026-09-22/
+?? validation/p4/

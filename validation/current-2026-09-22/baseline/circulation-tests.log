@@ -1,0 +1,21 @@
+Script started on 2026-09-22 11:24:16+05:30 [COMMAND="npm run test:circulation" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 test:circulation
+> tsx --test tests/circulation.test.ts
+
+✔ closed circulation preserves blood, plasma/RBC basis, per-node volume transfers and insulin budgets (14.888087ms)
+✔ signed upwind transport preserves uniform plasma concentration and handles reverse flow (0.342561ms)
+✔ pump beat integral equals declared cardiac output and pulse pressure is dynamic (1.101133ms)
+✔ portal first pass, no pulse, no exchange and hepatic clearance interventions have causal effects (1698.551753ms)
+✔ step halving meets the locked pressure, hormone and source-observer tolerances (1006.520563ms)
+✔ observation and recording preserve model state and incompatible inputs are rejected (2.513117ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3604.153869
+
+Script done on 2026-09-22 11:24:20+05:30 [COMMAND_EXIT_CODE="0"]

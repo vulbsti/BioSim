@@ -1,0 +1,395 @@
+{
+  "schemaVersion": 1,
+  "blenderVersion": "4.4.3",
+  "blendPath": "/home/vulbsti/proj/human_atlas/assets/multiscale/muscle-pilot/blender/fiber.blend",
+  "blendSHA256": "780ec519136f192095012145cef1bd9956a5bed6e47687300dccc3b7d3d7a36f",
+  "sceneUnitSystem": "METRIC",
+  "sceneScaleLength": 1.0,
+  "objects": [
+    {
+      "name": "pilot-erythrocytes",
+      "type": "MESH",
+      "entityId": "pilot-erythrocytes",
+      "kind": "erythrocytes",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 1026,
+        "edges": 2160,
+        "polygons": 1152,
+        "triangles": 2016,
+        "components": 9,
+        "boundaryEdges": 0,
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 2.172457450683643e-13,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3708808410930447e-16,
+        "hasUV": true,
+        "materials": [
+          "Erythrocyte"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -3.619999915827066e-05,
+          -3.2000000373955118e-06,
+          -0.00010852856212295592
+        ],
+        "max": [
+          -2.9799999538226984e-05,
+          3.2000000373955118e-06,
+          0.00010852856212295592
+        ]
+      }
+    },
+    {
+      "name": "pilot-fiber-capillary",
+      "type": "MESH",
+      "entityId": "pilot-fiber-capillary",
+      "kind": "capillary",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 63,
+        "edges": 102,
+        "polygons": 40,
+        "triangles": 80,
+        "components": 1,
+        "boundaryEdges": 44,
+        "nonManifoldEdges": 44,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 2.6820644441861315e-13,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Capillary wall"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -3.6984729376854375e-05,
+          -2.8694244065263774e-06,
+          -0.0001340000017080456
+        ],
+        "max": [
+          -2.9015831387368962e-05,
+          3.999998625658918e-06,
+          0.0001340000017080456
+        ]
+      }
+    },
+    {
+      "name": "pilot-glut4-sites",
+      "type": "MESH",
+      "entityId": "pilot-glut4-sites",
+      "kind": "glut4",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 624,
+        "edges": 1344,
+        "polygons": 768,
+        "triangles": 1152,
+        "components": 24,
+        "boundaryEdges": 0,
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.5208980709909815e-13,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 3.615528976591092e-17,
+        "hasUV": true,
+        "materials": [
+          "Membrane transport sites"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -2.5309658667538315e-05,
+          -1.7216494597960263e-05,
+          -6.880000000819564e-05
+        ],
+        "max": [
+          2.5317505787825212e-05,
+          2.3211718144011684e-05,
+          6.880000000819564e-05
+        ]
+      }
+    },
+    {
+      "name": "pilot-mitochondria",
+      "type": "MESH",
+      "entityId": "pilot-mitochondria",
+      "kind": "mitochondria",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 1152,
+        "edges": 2520,
+        "polygons": 1440,
+        "triangles": 2160,
+        "components": 36,
+        "boundaryEdges": 0,
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 2.27792495447547e-13,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 1.1192059854216347e-16,
+        "hasUV": true,
+        "materials": [
+          "Mitochondria"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -2.2831038222648203e-05,
+          -2.2817923309048638e-05,
+          -0.00011220000305911526
+        ],
+        "max": [
+          2.2849999368190765e-05,
+          2.2794494725530967e-05,
+          0.0001062540541170165
+        ]
+      }
+    },
+    {
+      "name": "pilot-myofibrils",
+      "type": "MESH",
+      "entityId": "pilot-myofibrils",
+      "kind": "myofibrils",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 14476,
+        "edges": 32571,
+        "polygons": 18612,
+        "triangles": 24816,
+        "components": 517,
+        "boundaryEdges": 3102,
+        "nonManifoldEdges": 3102,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 2.5424309242509456e-13,
+        "coincidentBoundaryVertexPairs": 1034,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -2.0400000721565448e-05,
+          -1.9176244677510113e-05,
+          -0.00012399999832268804
+        ],
+        "max": [
+          2.0400000721565448e-05,
+          1.9176244677510113e-05,
+          0.00012399999832268804
+        ]
+      }
+    },
+    {
+      "name": "pilot-myonuclei",
+      "type": "MESH",
+      "entityId": "pilot-myonuclei",
+      "kind": "nuclei",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 656,
+        "edges": 1408,
+        "polygons": 768,
+        "triangles": 1280,
+        "components": 8,
+        "boundaryEdges": 0,
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.9706219877312543e-13,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 5.330704276046564e-16,
+        "hasUV": true,
+        "materials": [
+          "Myonuclei"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -2.4193157514673658e-05,
+          -2.4193157514673658e-05,
+          -9.239999781129882e-05
+        ],
+        "max": [
+          2.4193157514673658e-05,
+          2.4193157514673658e-05,
+          9.239999781129882e-05
+        ]
+      }
+    },
+    {
+      "name": "pilot-sarcolemma",
+      "type": "MESH",
+      "entityId": "pilot-sarcolemma",
+      "kind": "membrane",
+      "evidence": "representative",
+      "metersPerUnit": 1.0,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 147,
+        "edges": 242,
+        "polygons": 96,
+        "triangles": 192,
+        "components": 1,
+        "boundaryEdges": 100,
+        "nonManifoldEdges": 100,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 2.4888371488579903e-13,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Muscle tissue"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -2.499911715858616e-05,
+          -1.7933902199729346e-05,
+          -0.00011999999696854502
+        ],
+        "max": [
+          2.4998749722726643e-05,
+          2.4999992092489265e-05,
+          0.00011999999696854502
+        ]
+      }
+    }
+  ]
+}

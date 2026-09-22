@@ -1,0 +1,69 @@
+Script started on 2026-09-22 11:49:23+05:30 [COMMAND="npm run verify:tissue" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 verify:tissue
+> tsx scripts/verify-tissue.ts
+
+{
+  "receipt": "validation/p2/asset-verification.json",
+  "representations": [
+    {
+      "level": "muscle",
+      "lod": "context",
+      "triangles": 2704,
+      "bytes": 75480,
+      "spanM": 0.5158109962940216
+    },
+    {
+      "level": "muscle",
+      "lod": "detail",
+      "triangles": 2704,
+      "bytes": 75492,
+      "spanM": 0.5158109962940216
+    },
+    {
+      "level": "fascicle",
+      "lod": "context",
+      "triangles": 2928,
+      "bytes": 122056,
+      "spanM": 0.001390000048559159
+    },
+    {
+      "level": "fascicle",
+      "lod": "detail",
+      "triangles": 5816,
+      "bytes": 200940,
+      "spanM": 0.001390000048559159
+    },
+    {
+      "level": "fiber",
+      "lod": "context",
+      "triangles": 16224,
+      "bytes": 672704,
+      "spanM": 0.0002680000034160912
+    },
+    {
+      "level": "fiber",
+      "lod": "detail",
+      "triangles": 31696,
+      "bytes": 1250540,
+      "spanM": 0.0002680000034160912
+    },
+    {
+      "level": "sarcomere",
+      "lod": "context",
+      "triangles": 13304,
+      "bytes": 639892,
+      "spanM": 0.000002508000079615158
+    },
+    {
+      "level": "sarcomere",
+      "lod": "detail",
+      "triangles": 47000,
+      "bytes": 2298852,
+      "spanM": 0.000002508000079615158
+    }
+  ],
+  "tests": "5 passed"
+}
+
+Script done on 2026-09-22 11:49:25+05:30 [COMMAND_EXIT_CODE="0"]

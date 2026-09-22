@@ -1,0 +1,74 @@
+Script started on 2026-09-22 11:52:35+05:30 [COMMAND="PLAYWRIGHT_JSON_OUTPUT_FILE=/home/vulbsti/proj/human_atlas/validation/current-2026-09-22/final/browser-full.json npm run test:browser:production -- --reporter=line,json" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 test:browser:production
+> playwright test --config playwright.production.config.ts --reporter=line,json
+
+[WebServer] (node:1919156) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:1919156) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+
+[WebServer] [plugin builtin:vite-reporter] 
+[WebServer] (!) Some chunks are larger than 500 kB after minification. Consider:
+[WebServer] - Using dynamic import() to code-split the application
+[WebServer] - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+[WebServer] - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+
+[WebServer] (node:1919302) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:1919356) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:1919356) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+
+
+Running 36 tests using 1 worker
+
+(node:1919401) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/36] tests/browser/circulation.spec.ts:4:1 › circulation moves, freezes when paused, and preserves the physical run while inspecting the fiber
+[2/36] tests/browser/circulation.spec.ts:14:1 › transport interventions recompute local exposure and saved experiments replay safely
+[3/36] tests/browser/circulation.spec.ts:22:30 › circulation controls and flow map fit 320px
+[4/36] tests/browser/circulation.spec.ts:22:30 › circulation controls and flow map fit 390px
+[5/36] tests/browser/excitation.spec.ts:9:1 › source excitation changes calcium and bridge overlays at fixed length; playback freezes and saves across scales
+[6/36] tests/browser/excitation.spec.ts:26:1 › blocking SR release retains the action potential but suppresses calcium activation
+[7/36] tests/browser/excitation.spec.ts:35:1 › activation controls and traces fit a narrow phone
+[8/36] tests/browser/molecular.spec.ts:4:1 › molecular lab runs local binding, changes visible state and preserves a replay package
+[9/36] tests/browser/molecular.spec.ts:27:1 › changing receptor availability recomputes the model and invalid imports preserve the current experiment
+[10/36] tests/browser/molecular.spec.ts:36:1 › published insulin pulse drives GLUT4 and its withdrawal precedes recovery
+[11/36] tests/browser/molecular.spec.ts:49:71 › molecular controls fit 390px and return to the physiology lab
+[12/36] tests/browser/molecular.spec.ts:49:71 › molecular controls fit 320px and return to the physiology lab
+[13/36] tests/browser/p4-linked.spec.ts:12:1 › body pathway survives tissue inspection and resumes its exact committed state
+[14/36] tests/browser/p4-linked.spec.ts:62:30 › linked body observations fit 320px
+[15/36] tests/browser/p4-linked.spec.ts:62:30 › linked body observations fit 390px
+[16/36] tests/browser/sarcomere.spec.ts:4:1 › sarcomere sliding renders, picks, preserves filament length readouts and restores saved state
+[17/36] tests/browser/sarcomere.spec.ts:37:30 › sarcomere controls and four scales fit 320px
+[18/36] tests/browser/sarcomere.spec.ts:37:30 › sarcomere controls and four scales fit 390px
+[19/36] tests/browser/simulation.spec.ts:5:1 › meal, worker time, chart, hormone inspection, comparison and export are connected
+[20/36] tests/browser/simulation.spec.ts:42:1 › scheduled input can be cancelled and playback pauses
+[21/36] tests/browser/simulation.spec.ts:63:1 › brain connections, anatomy link and model disclosure work
+[22/36] tests/browser/simulation.spec.ts:91:3 › responsive controls and no page overflow at 390x844
+[23/36] tests/browser/simulation.spec.ts:91:3 › responsive controls and no page overflow at 320x568
+[24/36] tests/browser/simulation.spec.ts:91:3 › responsive controls and no page overflow at 844x390
+[25/36] tests/browser/simulation.spec.ts:119:1 › transport inventory, local gradients, oxygen rates and cumulative exports agree
+[26/36] tests/browser/simulation.spec.ts:154:1 › brain vessel coverage exposes unresolved meshes and filters by source name
+[27/36] tests/browser/tissue.spec.ts:4:1 › tissue scales and geometry detail preserve entity selection, signaling time and saved view
+[28/36] tests/browser/tissue.spec.ts:16:1 › 3D picking, exposed interiors and cross sections change rendered anatomy
+[29/36] tests/browser/tissue.spec.ts:24:1 › signaling overlay moves through time, pauses, and rejects invalid replay without replacing the view
+[30/36] tests/browser/tissue.spec.ts:32:30 › tissue inspection and controls fit 320px
+[31/36] tests/browser/tissue.spec.ts:32:30 › tissue inspection and controls fit 390px
+[32/36] tests/browser/tissue.spec.ts:38:1 › failed tissue asset produces a visible error with usable navigation
+(node:1930476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[33/36] tests/browser/physical-anatomy.spec.ts:4:1 › anatomical pixels move, pause freezes them, and breathing has live air tracers
+[34/36] tests/browser/physical-anatomy.spec.ts:20:1 › meal input starts swallowing and digestion, then portal absorption appears
+[35/36] tests/browser/physical-anatomy.spec.ts:36:1 › reduced motion, thyroid isolation, section controls and mobile expansion work
+[36/36] tests/browser/physical-anatomy.spec.ts:45:1 › catalogue failure produces a visible error instead of an endless loading state
+  36 passed (6.6m)
+
+Script done on 2026-09-22 11:59:14+05:30 [COMMAND_EXIT_CODE="0"]

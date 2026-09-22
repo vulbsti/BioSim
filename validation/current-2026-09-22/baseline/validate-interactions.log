@@ -1,0 +1,5 @@
+Script started on 2026-09-22 11:25:36+05:30 [COMMAND="node scripts/validate-interactions.mjs" <not executed on terminal>]
+atlas.json: packing at desktop/mobile aspect ratios and search/inspection contracts passed.
+Tap, drag, multitouch, cancellation, and empty-view checks passed.
+
+Script done on 2026-09-22 11:25:36+05:30 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,87 @@
+{
+  "recordedAt": "2026-09-22T06:20:16.274Z",
+  "invocation": "npx tsx scripts/verify-excitation.ts",
+  "model": "shorten2007-fast-pmr-33944b1-1",
+  "scope": "Numerical reproduction of the pinned 56-state Shorten source, not human validation",
+  "initialInventories": {
+    "calciumMol": 1.34172508234131e-18,
+    "adenineMol": 6.565928646002661e-18
+  },
+  "metrics": [
+    {
+      "name": "single",
+      "maximumVoltageErrorMV": 0.00001535193949564473,
+      "maximumCalciumErrorUM": 0.000003493713023772216,
+      "maximumCrossbridgeErrorUM": 1.1309277847537658e-8,
+      "maximumScaledAllStateError": 0.005357700714824842,
+      "minimumNonVoltageState": 0,
+      "steps": 269996,
+      "rejected": 10776,
+      "elapsedMs": 4702.157962,
+      "maxCalciumResidualMol": 7.491867483666347e-32,
+      "maxAdenineResidualMol": 2.1031154992708616e-31,
+      "peakVoltageMV": 18.850063283274228,
+      "peakCalciumUM": 7.753769780125609,
+      "peakPostStrokeUM": 0.7232361913373538
+    },
+    {
+      "name": "train",
+      "maximumVoltageErrorMV": 0.000018418507496065217,
+      "maximumCalciumErrorUM": 0.000003493713023772216,
+      "maximumCrossbridgeErrorUM": 2.103415752685578e-8,
+      "maximumScaledAllStateError": 0.011251837699488886,
+      "minimumNonVoltageState": 0,
+      "steps": 291398,
+      "rejected": 10430,
+      "elapsedMs": 5024.10443,
+      "maxCalciumResidualMol": 4.2755644765396636e-32,
+      "maxAdenineResidualMol": 7.233792871118458e-31,
+      "peakVoltageMV": 22.148872259899196,
+      "peakCalciumUM": 7.753769780125609,
+      "peakPostStrokeUM": 0.9066176528192256
+    },
+    {
+      "name": "no-stimulus",
+      "maximumVoltageErrorMV": 1.8152944392113568e-7,
+      "maximumCalciumErrorUM": 4.3936289628732084e-7,
+      "maximumCrossbridgeErrorUM": 3.186187452763889e-9,
+      "maximumScaledAllStateError": 0.005016319072854812,
+      "minimumNonVoltageState": 0,
+      "steps": 267663,
+      "rejected": 10647,
+      "elapsedMs": 4563.821862999999,
+      "maxCalciumResidualMol": 5.874086330381069e-32,
+      "maxAdenineResidualMol": 1.8874113454994911e-31,
+      "peakVoltageMV": -79.974,
+      "peakCalciumUM": 0.6470773826023628,
+      "peakPostStrokeUM": 0.2401441405729345
+    },
+    {
+      "name": "blocked-release",
+      "maximumVoltageErrorMV": 0.000013526323424883913,
+      "maximumCalciumErrorUM": 4.305974231691434e-9,
+      "maximumCrossbridgeErrorUM": 1.9149758168079956e-10,
+      "maximumScaledAllStateError": 0.004938202048408961,
+      "minimumNonVoltageState": 0,
+      "steps": 265402,
+      "rejected": 10715,
+      "elapsedMs": 5502.630963,
+      "maxCalciumResidualMol": 3.331858803789918e-32,
+      "maxAdenineResidualMol": 5.253936888288379e-31,
+      "peakVoltageMV": 18.850063283273712,
+      "peakCalciumUM": 0.2513103053723274,
+      "peakPostStrokeUM": 0.2319279296630585
+    }
+  ],
+  "tighterToleranceMaximumCalciumDifferenceUM": 8.158549391623637e-10,
+  "passed": true,
+  "sourceHashes": {
+    "models/shorten2007/manifest.json": "80178dcb3b46e87f811c0231aa23e6197f87a4fb5804ef9396109cb303205509",
+    "app/tissue/generated/shorten.ts": "0ef3ec861117122a4ab59bd4cd60a0c0cd11eec24b15a6023bf5a90c7fe21c48",
+    "app/tissue/excitation.ts": "300b039dcb4c33f6e48c4618eb7158a8dbeea095477d2e67e6f47a4ea9470eb2",
+    "scripts/reference-excitation.py": "d372c6ba624ee94f364278aeba64503a6247af62519b396d68d01a2b03fd2813",
+    "scripts/verify-excitation.ts": "b84f348b949b38da874ddd59fa13cccb56dbe4e0bd21c0523a161f132003d4a8",
+    "validation/p5/excitation-protocol.json": "658138143fc83e3ff3dd73d41a4858e210cd75d8ddd34a64915c201b57c99f25",
+    "validation/p5/excitation-reference.json": "08c753084959e25c88cf152e273f36e095e4cb4e026ced5b59daa9ee16ef0214"
+  }
+}

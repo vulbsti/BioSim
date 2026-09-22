@@ -1,0 +1,17 @@
+Script started on 2026-09-22 11:25:35+05:30 [COMMAND="npm run audit:brain" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 audit:brain
+> tsx scripts/audit-brain-vessels.ts
+
+{
+  "candidateMeshes": 178,
+  "counts": {
+    "exact-name link": 83,
+    "grouped territory": 62,
+    "unresolved": 31,
+    "adjacent circulation": 2
+  },
+  "missingVenousGeometry": false
+}
+
+Script done on 2026-09-22 11:25:35+05:30 [COMMAND_EXIT_CODE="0"]

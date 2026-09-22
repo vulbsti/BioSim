@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "assetId": "muscle-pilot",
+    "assetVersion": "0.2.0",
+    "reviewedAt": "2026-09-22",
+    "claimCeiling": "representative_visual_prototype"
+  },
+  "evidenceBoundary": "Automated checks may update only their named technical gates. Anatomical and biological gates require cited evidence and recorded human reviewer decisions.",
+  "gates": {
+    "canonicalByteIdentity": {
+      "verdict": "pass",
+      "evidence": [
+        "assets/multiscale/muscle-pilot/build-receipt.json",
+        "public/models/multiscale/muscle-pilot/manifest.json",
+        "validation/p2/asset-verification.json"
+      ]
+    },
+    "generatedTopology": {
+      "verdict": "fail",
+      "reason": "Procedural tube and link geometry contains coincident but disconnected UV seams and unclassified open boundary loops.",
+      "evidence": [
+        "validation/current-2026-09-22/blender-fascicle.json",
+        "validation/current-2026-09-22/blender-fiber.json",
+        "validation/current-2026-09-22/blender-sarcomere.json"
+      ]
+    },
+    "sourceSurfaceTopology": {
+      "verdict": "pending",
+      "reason": "BodyParts3D source topology is preserved but is not watertight; any repaired derivative requires separate identity and receipts.",
+      "evidence": [
+        "validation/current-2026-09-22/blender-muscle.json"
+      ]
+    },
+    "humanMicroanatomySourceSet": {
+      "verdict": "pending",
+      "required": [
+        "licensed calibrated human imaging",
+        "specimen and acquisition metadata",
+        "stable source identities",
+        "applicability and uncertainty records"
+      ]
+    },
+    "parameterEvidenceLedger": {
+      "verdict": "pending",
+      "requiredFields": [
+        "parameterId",
+        "valueRangeOrDistribution",
+        "units",
+        "tissueSpeciesAgeState",
+        "citationLocation",
+        "extractionMethod",
+        "uncertainty",
+        "authoringTransform",
+        "reviewStatus"
+      ]
+    },
+    "microdomainRegistration": {
+      "verdict": "pending",
+      "required": [
+        "coordinate frames",
+        "landmarks",
+        "transform chain",
+        "registration error",
+        "donor correspondence statement"
+      ]
+    },
+    "morphologyCompleteness": {
+      "verdict": "fail",
+      "missing": [
+        "evidence-led fiber trajectories and pennation",
+        "endomysium and epimysium",
+        "tendon or aponeurosis continuity",
+        "connected realistic capillary graph",
+        "basal lamina",
+        "sarcoplasmic reticulum",
+        "T-tubules and triads",
+        "neuromuscular junction and nerve",
+        "evidence-led mitochondrial compartments",
+        "sarcomere regulatory and elastic proteins"
+      ]
+    },
+    "deformationAndSimulationDomains": {
+      "verdict": "pending",
+      "required": [
+        "cross-scale state ownership",
+        "source-to-derivative mapping",
+        "volume and length behavior",
+        "collision and self-intersection evidence",
+        "landmark continuity",
+        "separately identified simulation domains"
+      ]
+    },
+    "lodAndDevicePerformance": {
+      "verdict": "pending",
+      "reason": "Muscle context and detail have identical triangle counts; target-device GPU memory and frame-time gates are unverified."
+    },
+    "materialsAndDiagnosticRenders": {
+      "verdict": "pending",
+      "required": [
+        "calibrated reference set",
+        "locked color management",
+        "turntable and section views",
+        "wireframe normals depth and semantic masks",
+        "scale references",
+        "reference overlays"
+      ]
+    },
+    "anatomistReview": {
+      "verdict": "pending",
+      "automatable": false,
+      "required": "Named reviewer decision covering structure identity and spatial relationships."
+    },
+    "physiologyBiomechanicsReview": {
+      "verdict": "pending",
+      "automatable": false,
+      "required": "Named reviewer decision for every dynamic or functional claim."
+    },
+    "cleanRoomReproducibility": {
+      "verdict": "pending",
+      "required": [
+        "fresh staging directory",
+        "pinned Blender runtime",
+        "command environment and source hashes",
+        "independent byte inspection",
+        "semantic comparison",
+        "atomic promotion receipt"
+      ]
+    }
+  },
+  "releaseRule": {
+    "anatomicallyReady": false,
+    "biologicallyReady": false,
+    "rule": "No automated test or aggregate status may change either readiness field. Both require all applicable technical gates plus explicit human reviewer records."
+  }
+}

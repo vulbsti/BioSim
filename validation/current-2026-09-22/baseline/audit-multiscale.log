@@ -1,0 +1,22 @@
+Script started on 2026-09-22 11:25:35+05:30 [COMMAND="npx tsx scripts/audit-multiscale-baseline.ts" <not executed on terminal>]
+{
+  "audit": "docs/multiscale-baseline-audit.json",
+  "meshes": 2273,
+  "nervousMeshes": 144,
+  "compartments": 23,
+  "brain": {
+    "schematicNodes": 34,
+    "schematicPaths": 55,
+    "vascularCandidateMeshes": 178,
+    "candidateCounts": {
+      "exact-name link": 83,
+      "grouped territory": 62,
+      "unresolved": 31,
+      "adjacent circulation": 2
+    },
+    "scope": "Arterial / venous meshes intersecting the source brain bounding box, plus named carotid / vertebral, cerebral, communicating, and cerebellar vessels. Bounding-box overlap is a candidate rule, not proof of intracranial anatomy.",
+    "labelAssociationIsVerifiedConnectivity": false
+  }
+}
+
+Script done on 2026-09-22 11:25:36+05:30 [COMMAND_EXIT_CODE="0"]

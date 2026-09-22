@@ -1,0 +1,20 @@
+Script started on 2026-09-22 11:24:15+05:30 [COMMAND="npm run test:tissue" <not executed on terminal>]
+
+> anatomy-studio@0.1.0 test:tissue
+> tsx --test tests/tissue.test.ts
+
+✔ tissue GLBs match hashes, contain finite metric geometry and preserve every entity across LODs (460.26404ms)
+✔ source anatomy stays separate from representative cells and manifests reject unit or identity drift (2.156029ms)
+✔ independent GLB inspection rejects corrupted headers, indices and physical metadata (2.726377ms)
+✔ tissue recordings preserve scale, selection and playhead while rejecting incompatible packages before loading (2.594741ms)
+✔ exported filament endpoints remain anchored while shortening changes overlap, not filament lengths (211.973482ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 958.349615
+
+Script done on 2026-09-22 11:24:16+05:30 [COMMAND_EXIT_CODE="0"]

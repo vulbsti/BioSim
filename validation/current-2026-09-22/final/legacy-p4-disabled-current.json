@@ -1,0 +1,698 @@
+{
+  "schemaVersion": 1,
+  "baseCommit": "63deb0415408b0ca1bce5492f6bfe54ddc076258",
+  "scope": "Current meal trajectory with P4 disabled, compared to the pinned pre-P4 fixture; exploratory-model regression evidence, not biological validation.",
+  "meal": {
+    "carbs": 75,
+    "protein": 25,
+    "fat": 20,
+    "water": 350,
+    "sodium": 600
+  },
+  "samplingSeconds": [
+    0,
+    300,
+    3600
+  ],
+  "samples": [
+    {
+      "time": 0,
+      "glucoseMgDl": 90,
+      "glucoseMassG": 12.599999999999998,
+      "glycogenG": 110,
+      "budgets": {
+        "carbohydrateResidualG": 0,
+        "proteinResidualG": 0,
+        "fatResidualG": 0,
+        "waterResidualMl": 0,
+        "oxygen": 0,
+        "carbonDioxide": 0
+      },
+      "hormones": {
+        "insulin": 1,
+        "glucagon": 1,
+        "epinephrine": 1,
+        "norepinephrine": 1,
+        "crh": 1,
+        "acth": 1,
+        "cortisol": 1,
+        "trh": 1,
+        "tsh": 1,
+        "thyroid": 1,
+        "adh": 1,
+        "renin": 1,
+        "angiotensin": 1,
+        "aldosterone": 1,
+        "anp": 1,
+        "gastrin": 1,
+        "secretin": 1,
+        "cck": 1,
+        "glp1": 1,
+        "ghrelin": 1,
+        "leptin": 1,
+        "melatonin": 1,
+        "gh": 1,
+        "igf1": 1,
+        "gnrh": 1,
+        "lh": 1,
+        "fsh": 1,
+        "testosterone": 1,
+        "inhibin": 1,
+        "pth": 1,
+        "calcitriol": 1
+      },
+      "transportTotals": {
+        "glucose": 12.599999999999998,
+        "aminoAcids": 30.000000000000004,
+        "lipids": 15.000000000000002,
+        "oxygen": 805.2602582760021,
+        "carbonDioxide": 2538.6
+      },
+      "transportPools": {
+        "arterial": {
+          "glucose": 0.378,
+          "aminoAcids": 0.9,
+          "lipids": 0.45,
+          "oxygen": 138.63667895060993,
+          "carbonDioxide": 336
+        },
+        "venous": {
+          "glucose": 1.107,
+          "aminoAcids": 2.6357142857142857,
+          "lipids": 1.3178571428571428,
+          "oxygen": 307.5,
+          "carbonDioxide": 1057.8
+        },
+        "lungs-blood": {
+          "glucose": 0.243,
+          "aminoAcids": 0.5785714285714286,
+          "lipids": 0.2892857142857143,
+          "oxygen": 89.1235793253921,
+          "carbonDioxide": 216
+        },
+        "portal": {
+          "glucose": 0.081,
+          "aminoAcids": 0.19285714285714287,
+          "lipids": 0.09642857142857143,
+          "oxygen": 22.5,
+          "carbonDioxide": 77.4
+        },
+        "heart-blood": {
+          "glucose": 0.081,
+          "aminoAcids": 0.19285714285714287,
+          "lipids": 0.09642857142857143,
+          "oxygen": 22.5,
+          "carbonDioxide": 77.4
+        },
+        "heart-tissue": {
+          "glucose": 0.18,
+          "aminoAcids": 0.42857142857142855,
+          "lipids": 0.21428571428571427,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "brain-blood": {
+          "glucose": 0.081,
+          "aminoAcids": 0.19285714285714287,
+          "lipids": 0.09642857142857143,
+          "oxygen": 22.5,
+          "carbonDioxide": 77.4
+        },
+        "brain-tissue": {
+          "glucose": 0.45,
+          "aminoAcids": 1.0714285714285714,
+          "lipids": 0.5357142857142857,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "liver-blood": {
+          "glucose": 0.162,
+          "aminoAcids": 0.38571428571428573,
+          "lipids": 0.19285714285714287,
+          "oxygen": 45,
+          "carbonDioxide": 154.8
+        },
+        "liver-tissue": {
+          "glucose": 0.63,
+          "aminoAcids": 1.5,
+          "lipids": 0.75,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "gut-blood": {
+          "glucose": 0.135,
+          "aminoAcids": 0.32142857142857145,
+          "lipids": 0.16071428571428573,
+          "oxygen": 37.5,
+          "carbonDioxide": 129
+        },
+        "gut-tissue": {
+          "glucose": 1.3499999999999999,
+          "aminoAcids": 3.2142857142857144,
+          "lipids": 1.6071428571428572,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "kidneys-blood": {
+          "glucose": 0.108,
+          "aminoAcids": 0.2571428571428571,
+          "lipids": 0.12857142857142856,
+          "oxygen": 30,
+          "carbonDioxide": 103.2
+        },
+        "kidneys-tissue": {
+          "glucose": 0.45,
+          "aminoAcids": 1.0714285714285714,
+          "lipids": 0.5357142857142857,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "muscle-blood": {
+          "glucose": 0.189,
+          "aminoAcids": 0.45,
+          "lipids": 0.225,
+          "oxygen": 52.5,
+          "carbonDioxide": 180.6
+        },
+        "muscle-tissue": {
+          "glucose": 4.05,
+          "aminoAcids": 9.642857142857142,
+          "lipids": 4.821428571428571,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "skin-blood": {
+          "glucose": 0.054,
+          "aminoAcids": 0.12857142857142856,
+          "lipids": 0.06428571428571428,
+          "oxygen": 15,
+          "carbonDioxide": 51.6
+        },
+        "skin-tissue": {
+          "glucose": 1.08,
+          "aminoAcids": 2.5714285714285716,
+          "lipids": 1.2857142857142858,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "adipose-blood": {
+          "glucose": 0.054,
+          "aminoAcids": 0.12857142857142856,
+          "lipids": 0.06428571428571428,
+          "oxygen": 15,
+          "carbonDioxide": 51.6
+        },
+        "adipose-tissue": {
+          "glucose": 1.3499999999999999,
+          "aminoAcids": 3.2142857142857144,
+          "lipids": 1.6071428571428572,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "endocrine-blood": {
+          "glucose": 0.027,
+          "aminoAcids": 0.06428571428571428,
+          "lipids": 0.03214285714285714,
+          "oxygen": 7.5,
+          "carbonDioxide": 25.8
+        },
+        "endocrine-tissue": {
+          "glucose": 0.36,
+          "aminoAcids": 0.8571428571428571,
+          "lipids": 0.42857142857142855,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "muscle-cell": {
+          "glucose": 0,
+          "aminoAcids": 0,
+          "lipids": 0,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "lymph": {
+          "glucose": 0,
+          "aminoAcids": 0,
+          "lipids": 0,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        }
+      }
+    },
+    {
+      "time": 300,
+      "glucoseMgDl": 105.03553582472378,
+      "glucoseMassG": 13.375932929569299,
+      "glycogenG": 109.67952165772022,
+      "budgets": {
+        "carbohydrateResidualG": 1.0917201957277388e-13,
+        "proteinResidualG": -7.275957614183426e-12,
+        "fatResidualG": 9.094947017729282e-12,
+        "waterResidualMl": 2.411182364880915e-12,
+        "oxygen": 2.5011104298755527e-12,
+        "carbonDioxide": 3.410605131648481e-13
+      },
+      "hormones": {
+        "insulin": 1.4654509475266668,
+        "glucagon": 0.8754083860380857,
+        "epinephrine": 1.0000616521614685,
+        "norepinephrine": 1.0000385326009182,
+        "crh": 1.0000312288658844,
+        "acth": 1.000010592547272,
+        "cortisol": 1.0000003470543495,
+        "trh": 1,
+        "tsh": 1,
+        "thyroid": 1,
+        "adh": 1.2640402322588198,
+        "renin": 0.9958375020185993,
+        "angiotensin": 0.9988974742633785,
+        "aldosterone": 0.9999775487784393,
+        "anp": 1.011743304013089,
+        "gastrin": 2.458858328693996,
+        "secretin": 1.932155206567005,
+        "cck": 1.122480249061748,
+        "glp1": 1.3543525088833563,
+        "ghrelin": 0.8618335524015522,
+        "leptin": 0.9999996789854465,
+        "melatonin": 0.9394282452234303,
+        "gh": 1.000001033434953,
+        "igf1": 1.000000005831496,
+        "gnrh": 0.999999989554659,
+        "lh": 0.9999999997906991,
+        "fsh": 0.9999999999294718,
+        "testosterone": 0.9999999999991528,
+        "inhibin": 0.9999999999996207,
+        "pth": 1,
+        "calcitriol": 1
+      },
+      "transportTotals": {
+        "glucose": 13.375932929569299,
+        "aminoAcids": 30.298957410228635,
+        "lipids": 15.127724047963753,
+        "oxygen": 797.2850553606482,
+        "carbonDioxide": 2562.2719730594063
+      },
+      "transportPools": {
+        "arterial": {
+          "glucose": 0.44250844761324853,
+          "aminoAcids": 0.9205314579441602,
+          "lipids": 0.44366693297005066,
+          "oxygen": 138.72506482953628,
+          "carbonDioxide": 337.09181365496954
+        },
+        "venous": {
+          "glucose": 1.3042256627607725,
+          "aminoAcids": 2.7009409220614202,
+          "lipids": 1.2983744902077576,
+          "oxygen": 304.2315404654813,
+          "carbonDioxide": 1068.9695455747242
+        },
+        "lungs-blood": {
+          "glucose": 0.2855887741044808,
+          "aminoAcids": 0.59244660036023,
+          "lipids": 0.28508857668601034,
+          "oxygen": 89.19394551495382,
+          "carbonDioxide": 216.73487594166437
+        },
+        "portal": {
+          "glucose": 0.11561326389476557,
+          "aminoAcids": 0.20389439803449264,
+          "lipids": 0.09494658434016892,
+          "oxygen": 27.530745796795067,
+          "carbonDioxide": 73.89180650691489
+        },
+        "heart-blood": {
+          "glucose": 0.08438627515474877,
+          "aminoAcids": 0.19515595864528282,
+          "lipids": 0.09214473863010082,
+          "oxygen": 7.325274505177273,
+          "carbonDioxide": 89.27581029206024
+        },
+        "heart-tissue": {
+          "glucose": 0.17406034053715425,
+          "aminoAcids": 0.4307726316890554,
+          "lipids": 0.17689958759728436,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "brain-blood": {
+          "glucose": 0.07578799017346839,
+          "aminoAcids": 0.19574482773801447,
+          "lipids": 0.0954086484626833,
+          "oxygen": 16.904327145117584,
+          "carbonDioxide": 85.02825294018287
+        },
+        "brain-tissue": {
+          "glucose": 0.3539580006416426,
+          "aminoAcids": 1.0802734312070372,
+          "lipids": 0.5334896374809689,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "liver-blood": {
+          "glucose": 0.22698438023106884,
+          "aminoAcids": 0.40551105978738194,
+          "lipids": 0.18851018687390458,
+          "oxygen": 49.98574453852665,
+          "carbonDioxide": 151.64655309956015
+        },
+        "liver-tissue": {
+          "glucose": 0.8610035651617671,
+          "aminoAcids": 1.565626903940481,
+          "lipids": 0.711485318751807,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "gut-blood": {
+          "glucose": 0.15039099923833443,
+          "aminoAcids": 0.32636522822752895,
+          "lipids": 0.1581974094023972,
+          "oxygen": 45.88921990047085,
+          "carbonDioxide": 123.16518747565995
+        },
+        "gut-tissue": {
+          "glucose": 1.4572007680565366,
+          "aminoAcids": 3.2419220987925086,
+          "lipids": 1.5665421164232698,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "kidneys-blood": {
+          "glucose": 0.12032107240385234,
+          "aminoAcids": 0.2612809108344686,
+          "lipids": 0.12558720204538124,
+          "oxygen": 33.643500689912415,
+          "carbonDioxide": 100.86844653850886
+        },
+        "kidneys-tissue": {
+          "glucose": 0.48620111119219284,
+          "aminoAcids": 1.0822421652266918,
+          "lipids": 0.5038733604715868,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "muscle-blood": {
+          "glucose": 0.20206368183436796,
+          "aminoAcids": 0.45491923649272836,
+          "lipids": 0.22191909225755008,
+          "oxygen": 47.29184171995776,
+          "carbonDioxide": 185.33551768582424
+        },
+        "muscle-tissue": {
+          "glucose": 4.073143011537091,
+          "aminoAcids": 9.65940455058961,
+          "lipids": 4.725343115130096,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "skin-blood": {
+          "glucose": 0.05805914489148082,
+          "aminoAcids": 0.13000867839526348,
+          "lipids": 0.06351693731132745,
+          "oxygen": 16.818525995623183,
+          "carbonDioxide": 50.42507940172216
+        },
+        "skin-tissue": {
+          "glucose": 1.0970390772912373,
+          "aminoAcids": 2.5767097349822636,
+          "lipids": 1.2708874074854164,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "adipose-blood": {
+          "glucose": 0.057900371669442736,
+          "aminoAcids": 0.12998170984506804,
+          "lipids": 0.06645615019031399,
+          "oxygen": 15.821545152686934,
+          "carbonDioxide": 51.188276224387735
+        },
+        "adipose-tissue": {
+          "glucose": 1.3643639611941614,
+          "aminoAcids": 3.219674624606996,
+          "lipids": 1.9211657581660209,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "endocrine-blood": {
+          "glucose": 0.028620294091409284,
+          "aminoAcids": 0.06508023434324962,
+          "lipids": 0.031250349473678274,
+          "oxygen": 3.9237791064091327,
+          "carbonDioxide": 28.65080772322711
+        },
+        "endocrine-tissue": {
+          "glucose": 0.35651273589607596,
+          "aminoAcids": 0.8604700464847087,
+          "lipids": 0.3937224267180486,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "muscle-cell": {
+          "glucose": 0,
+          "aminoAcids": 0,
+          "lipids": 0,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "lymph": {
+          "glucose": 0,
+          "aminoAcids": 0,
+          "lipids": 0.1592480208879314,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        }
+      }
+    },
+    {
+      "time": 3600,
+      "glucoseMgDl": 109.69317033552518,
+      "glucoseMassG": 14.779982267795578,
+      "glycogenG": 134.64168444598073,
+      "budgets": {
+        "carbohydrateResidualG": 1.3761811571750036e-12,
+        "proteinResidualG": 1.8189894035458565e-12,
+        "fatResidualG": -4.547473508864641e-11,
+        "waterResidualMl": -8.891554159617954e-11,
+        "oxygen": -7.457856554538012e-10,
+        "carbonDioxide": -4.001776687800884e-11
+      },
+      "hormones": {
+        "insulin": 3.2964506340732855,
+        "glucagon": 0.1508145249766695,
+        "epinephrine": 1.0000000000000133,
+        "norepinephrine": 1.0000000000000133,
+        "crh": 0.999998409447973,
+        "acth": 0.9999976762027611,
+        "cortisol": 1.000002002928297,
+        "trh": 1,
+        "tsh": 1,
+        "thyroid": 1,
+        "adh": 0.7673592712901889,
+        "renin": 0.8272761365591957,
+        "angiotensin": 0.8215591214505774,
+        "aldosterone": 0.877519656373473,
+        "anp": 1.1775832301983904,
+        "gastrin": 2.2340195680747987,
+        "secretin": 1.4343424281704331,
+        "cck": 1.8760044740885413,
+        "glp1": 2.218761151716361,
+        "ghrelin": 0.31311804922033487,
+        "leptin": 0.9999825249828861,
+        "melatonin": 0.5700140922690897,
+        "gh": 1.0000000929837862,
+        "igf1": 1.0000000349064477,
+        "gnrh": 0.9999939332206382,
+        "lh": 0.9999984542173407,
+        "fsh": 0.9999994043116334,
+        "testosterone": 0.9999999094871365,
+        "inhibin": 0.9999999554486668,
+        "pth": 1,
+        "calcitriol": 1
+      },
+      "transportTotals": {
+        "glucose": 14.779982267795578,
+        "aminoAcids": 44.65439085401164,
+        "lipids": 20.776677694129756,
+        "oxygen": 808.6443323475887,
+        "carbonDioxide": 2584.2026507190035
+      },
+      "transportPools": {
+        "arterial": {
+          "glucose": 0.46566335413032695,
+          "aminoAcids": 1.400238644049251,
+          "lipids": 0.5445301147897156,
+          "oxygen": 139.8142439729292,
+          "carbonDioxide": 339.69410148513816
+        },
+        "venous": {
+          "glucose": 1.363476027472115,
+          "aminoAcids": 4.1029867297243525,
+          "lipids": 1.5967234589177288,
+          "oxygen": 307.8284692330697,
+          "carbonDioxide": 1079.9136454553352
+        },
+        "lungs-blood": {
+          "glucose": 0.2993213101949289,
+          "aminoAcids": 0.9004597480483733,
+          "lipids": 0.3503261419432237,
+          "oxygen": 89.87792541312169,
+          "carbonDioxide": 218.36834303540695
+        },
+        "portal": {
+          "glucose": 0.14965947783459682,
+          "aminoAcids": 0.315247828599841,
+          "lipids": 0.11457297083959087,
+          "oxygen": 27.41527376483626,
+          "carbonDioxide": 74.8175564001292
+        },
+        "heart-blood": {
+          "glucose": 0.09110644902870464,
+          "aminoAcids": 0.2976768030594082,
+          "lipids": 0.10770067283905797,
+          "oxygen": 9.055989641767008,
+          "carbonDioxide": 89.40622193415543
+        },
+        "heart-tissue": {
+          "glucose": 0.18958891381307946,
+          "aminoAcids": 0.6588751046909839,
+          "lipids": 0.17695349121629603,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "brain-blood": {
+          "glucose": 0.08384284833509888,
+          "aminoAcids": 0.29874216841215145,
+          "lipids": 0.11563441284944917,
+          "oxygen": 18.031863985593645,
+          "carbonDioxide": 84.72514570872714
+        },
+        "brain-tissue": {
+          "glucose": 0.40904451549708404,
+          "aminoAcids": 1.655292469807469,
+          "lipids": 0.6258688825011209,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "liver-blood": {
+          "glucose": 0.22006931211451752,
+          "aminoAcids": 0.6300965886310254,
+          "lipids": 0.2266018549784566,
+          "oxygen": 49.299078092774174,
+          "carbonDioxide": 154.03163002089914
+        },
+        "liver-tissue": {
+          "glucose": 0.6606176432512353,
+          "aminoAcids": 2.44803678293105,
+          "lipids": 0.8422761330712285,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "gut-blood": {
+          "glucose": 0.16475260272096345,
+          "aminoAcids": 0.49746199098176397,
+          "lipids": 0.1910642091919078,
+          "oxygen": 45.68918766434329,
+          "carbonDioxide": 124.694698897416
+        },
+        "gut-tissue": {
+          "glucose": 1.6371770228639337,
+          "aminoAcids": 4.958423764392159,
+          "lipids": 1.8040873512373508,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "kidneys-blood": {
+          "glucose": 0.13080781189259907,
+          "aminoAcids": 0.3988222411126982,
+          "lipids": 0.15263755479022664,
+          "oxygen": 34.379008830696414,
+          "carbonDioxide": 101.48181510087085
+        },
+        "kidneys-tissue": {
+          "glucose": 0.5388470327003655,
+          "aminoAcids": 1.6586418153089602,
+          "lipids": 0.5980389713093959,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "muscle-blood": {
+          "glucose": 0.22461582884426623,
+          "aminoAcids": 0.6588134195249782,
+          "lipids": 0.2582658647880389,
+          "oxygen": 49.386062349886586,
+          "carbonDioxide": 186.1585930146184
+        },
+        "muscle-tissue": {
+          "glucose": 4.697165068394605,
+          "aminoAcids": 13.553890560314175,
+          "lipids": 4.578075424396718,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "skin-blood": {
+          "glucose": 0.06553212331164494,
+          "aminoAcids": 0.19342305210506003,
+          "lipids": 0.07473522701720006,
+          "oxygen": 17.18940867406664,
+          "carbonDioxide": 50.74309083110803
+        },
+        "skin-tissue": {
+          "glucose": 1.2972712586744046,
+          "aminoAcids": 3.7856095432666916,
+          "lipids": 1.3017698799132649,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "adipose-blood": {
+          "glucose": 0.06506058759458372,
+          "aminoAcids": 0.19135223755541625,
+          "lipids": 0.07749103363295531,
+          "oxygen": 16.26086162695446,
+          "carbonDioxide": 51.48026527653165
+        },
+        "adipose-tissue": {
+          "glucose": 1.602254832528579,
+          "aminoAcids": 4.647088744984757,
+          "lipids": 1.9199996386522276,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "endocrine-blood": {
+          "glucose": 0.03096587405875077,
+          "aminoAcids": 0.09867130826814714,
+          "lipids": 0.03622011385046404,
+          "oxygen": 4.416959097549618,
+          "carbonDioxide": 28.687543558667624
+        },
+        "endocrine-tissue": {
+          "glucose": 0.3931423725391931,
+          "aminoAcids": 1.3045393082429295,
+          "lipids": 0.3675587079495943,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "muscle-cell": {
+          "glucose": 0,
+          "aminoAcids": 0,
+          "lipids": 0,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        },
+        "lymph": {
+          "glucose": 0,
+          "aminoAcids": 0,
+          "lipids": 4.715545583454543,
+          "oxygen": 0,
+          "carbonDioxide": 0
+        }
+      }
+    }
+  ],
+  "sourceHashes": {
+    "app/simulation/engine.ts": "329c7259e1ad74b1b8c62337011b0653bd7549e213ea91b332ae55e0f226b51f",
+    "app/simulation/transport.ts": "366f3a0cc70b58916aef29a5963d4718b4db2e373e29f4118f9f6cc7e7eb8536",
+    "app/simulation/endocrine.ts": "5cfa7d92d2fedc44c487081a2f89b096da64938409d5c22642087b78c69aa632",
+    "app/simulation/types.ts": "296bff2285e7c049944026539890718751d00711c9df44e027116132355d52bc",
+    "scripts/capture-current-regression.ts": "c95594bb453247a10ab97a548f472a165cf39313baf129e1c16a3e32918e29d8"
+  }
+}

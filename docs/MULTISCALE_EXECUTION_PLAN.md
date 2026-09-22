@@ -2,7 +2,7 @@
 
 Planning baseline: **2026-09-09**, code revision `af3c240c4ae3beaf1ea89573aea0b6ff5d21c220`.
 
-Status: **P0 complete; P1–P2 implementation in progress; P3–P10 pending.** The [P1 implementation report](P1_IMPLEMENTATION.md) records the working physical kernel, animated local mechanisms and published-model reproduction. Independent human validation endpoint mapping and acceptance bounds remain open. The machine-readable goals, dependencies, and completion receipts are in [multiscale-roadmap.json](multiscale-roadmap.json). The directly executed inventory is in [multiscale-baseline-audit.json](multiscale-baseline-audit.json).
+Status reviewed **2026-09-22**: **P0 complete; P1/P2/P3 pilots implemented with open acceptance gates; P4 integration in progress; P5 source-model excitation groundwork implemented; P6–P10 pending.** P3 transport and P5 excitation are no longer merely planned. Their pilot implementations do not satisfy the complete phase criteria below. The [P1 implementation report](P1_IMPLEMENTATION.md), [P3 implementation report](P3_IMPLEMENTATION.md), and [Shorten model scope](../models/shorten2007/README.md) distinguish implementation from biological validation. Independent human endpoint mapping and acceptance bounds remain open. The machine-readable dependencies and receipts are in [multiscale-roadmap.json](multiscale-roadmap.json). The [baseline inventory](multiscale-baseline-audit.json) is historical, not an automatic current-state census.
 
 Recompute that inventory from the working tree with `npx tsx scripts/audit-multiscale-baseline.ts`. It records source hashes and does not run biological validation. Descriptions of missing functionality below come from source inspection, rather than an automated completeness detector.
 
