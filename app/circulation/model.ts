@@ -228,24 +228,56 @@ export function validateCirculationConfig(value: unknown): asserts value is Circ
   )
     throw new Error("Circulation settings are outside the supported experiment.");
 }
+/**
+ * Body coupling for the P4 branch. The standalone P3 lab passes none and keeps its verified
+ * synthetic design. When present, the circuit takes its reference volumes, hematocrit, pump
+ * output, heart rate, branch flows and muscle interstitial volume from the body graph, so the
+ * insulin and glucose circuits describe the same blood and the same muscle population.
+ */
+export type CircuitCoupling = {
+  hematocrit: number;
+  interstitialL: number;
+  referenceVolumesL: number[];
+  /** Target mean whole-blood flow per BLOOD_EDGES entry, L/s; pump entries use cardiac output. */
+  edgeFlowsLPerS: number[];
+  cardiacOutputLPerS: number;
+  heartRate: number;
+  /** Fraction of the muscle bed still owned by the coarse interstitium (1 − refined patch). */
+  coarseFraction: number;
+};
 /** Prescribed ejection, 32% duty cycle, analytically normalized beat integral. */
-export function pumpFlow(time: number): number {
-  const phase = ((((time * HEART_RATE) / 60) % 1) + 1) % 1,
+export function pumpFlow(time: number, outputLPerS = OUTPUT_L_S, heartRate = HEART_RATE): number {
+  const phase = ((((time * heartRate) / 60) % 1) + 1) % 1,
     duty = TRANSPORT.pumpDuty;
   return phase < duty
-    ? ((OUTPUT_L_S * Math.PI) / (2 * duty)) * Math.sin((Math.PI * phase) / duty)
+    ? ((outputLPerS * Math.PI) / (2 * duty)) * Math.sin((Math.PI * phase) / duty)
     : 0;
 }
-export function pressures(y: readonly number[]): number[] {
-  return BLOOD_NODES.map((n, i) => n.pressureMmHg + (y[i] - n.volumeL) / n.complianceLPerMmHg);
+export function pressures(y: readonly number[], k?: CircuitCoupling): number[] {
+  return BLOOD_NODES.map(
+    (n, i) => n.pressureMmHg + (y[i] - (k?.referenceVolumesL[i] ?? n.volumeL)) / n.complianceLPerMmHg,
+  );
 }
-export function bloodFlows(y: readonly number[], time: number, c: CirculationConfig): number[] {
-  const p = pressures(y);
+/** Resistance that yields the target mean flow at reference pressures. */
+const coupledResistance = (i: number, k: CircuitCoupling) => {
+  const e = BLOOD_EDGES[i],
+    from = BLOOD_NODES[routes[i].from].pressureMmHg,
+    to = BLOOD_NODES[routes[i].to].pressureMmHg;
+  return (from - to) / Math.max(k.edgeFlowsLPerS[i], 1e-9) || e.resistance;
+};
+export function bloodFlows(
+  y: readonly number[],
+  time: number,
+  c: CirculationConfig,
+  k?: CircuitCoupling,
+): number[] {
+  const p = pressures(y, k);
   return BLOOD_EDGES.map((e, i) =>
     e.kind === "pump"
-      ? pumpFlow(time)
+      ? pumpFlow(time, k?.cardiacOutputLPerS, k?.heartRate)
       : (p[routes[i].from] - p[routes[i].to]) /
-        (e.resistance * (e.from === "muscle" || e.to === "muscle" ? c.muscleResistance : 1)),
+        ((k ? coupledResistance(i, k) : e.resistance) *
+          (e.from === "muscle" || e.to === "muscle" ? c.muscleResistance : 1)),
   );
 }
 /** Conservative upwind transfer for signed whole-blood flow; insulin occupies plasma only. */
@@ -255,12 +287,13 @@ export function advect(
   from: number,
   to: number,
   wholeBloodLPerS: number,
+  hematocrit = HEMATOCRIT,
 ): void {
   const a = wholeBloodLPerS >= 0 ? from : to,
     b = wholeBloodLPerS >= 0 ? to : from,
     q = Math.abs(wholeBloodLPerS);
-  const plasmaL = y[a] * (1 - HEMATOCRIT),
-    insulinFlux = (q * (1 - HEMATOCRIT) * y[STATE.insulin + a]) / plasmaL;
+  const plasmaL = y[a] * (1 - hematocrit),
+    insulinFlux = (q * (1 - hematocrit) * y[STATE.insulin + a]) / plasmaL;
   dy[a] -= q;
   dy[b] += q;
   dy[STATE.insulin + a] -= insulinFlux;
@@ -274,7 +307,11 @@ export function initialCirculation(): number[] {
     ...BLOOD_EDGES.map(() => 0),
   ];
 }
-export type CirculationBoundary = { portalInsulinMolPerS?: number; receptorSensitivity?: number };
+export type CirculationBoundary = {
+  portalInsulinMolPerS?: number;
+  receptorSensitivity?: number;
+  coupling?: CircuitCoupling;
+};
 export function circulationDerivative(
   y: readonly number[],
   time: number,
@@ -282,21 +319,26 @@ export function circulationDerivative(
   sourceOn: boolean,
   boundary: CirculationBoundary = {},
 ): number[] {
+  const k = boundary.coupling,
+    hematocrit = k?.hematocrit ?? HEMATOCRIT,
+    coarse = k?.coarseFraction ?? 1;
   const dy = Array(y.length).fill(0) as number[],
-    flows = bloodFlows(y, time, c);
+    flows = bloodFlows(y, time, c, k);
   flows.forEach((q, i) => {
-    advect(y, dy, routes[i].from, routes[i].to, q);
+    advect(y, dy, routes[i].from, routes[i].to, q, hematocrit);
     dy[STATE.integratedFlow + i] = q;
   });
   const concentration = (id: NodeId) =>
-    y[STATE.insulin + index[id]] / (y[index[id]] * (1 - HEMATOCRIT));
-  const interstitial = y[STATE.interstitial] / INTERSTITIAL_L;
-  const exchange = c.exchange * TRANSPORT.exchangeLPerS * (concentration("muscle") - interstitial);
+    y[STATE.insulin + index[id]] / (y[index[id]] * (1 - hematocrit));
+  // A refined patch owns fraction (1 − coarse) of the muscle interstitium, exchange and clearance.
+  const interstitial = y[STATE.interstitial] / ((k?.interstitialL ?? INTERSTITIAL_L) * coarse);
+  const exchange =
+    coarse * c.exchange * TRANSPORT.exchangeLPerS * (concentration("muscle") - interstitial);
   dy[STATE.insulin + index.muscle] -= exchange;
   dy[STATE.interstitial] += exchange;
   const hepatic = c.hepaticClearance * TRANSPORT.hepaticClearanceLPerS * concentration("liver"),
     renal = TRANSPORT.renalClearanceLPerS * concentration("kidney"),
-    muscle = TRANSPORT.muscleClearanceLPerS * interstitial;
+    muscle = coarse * TRANSPORT.muscleClearanceLPerS * interstitial;
   dy[STATE.insulin + index.liver] -= hepatic;
   dy[STATE.hepaticCleared] += hepatic;
   dy[STATE.insulin + index.kidney] -= renal;
@@ -350,16 +392,20 @@ export function circulationSample(
   y: readonly number[],
   time: number,
   c: CirculationConfig,
+  k?: CircuitCoupling,
 ): CirculationSample {
-  const amounts = y.slice(STATE.insulin, STATE.interstitial);
+  const amounts = y.slice(STATE.insulin, STATE.interstitial),
+    hematocrit = k?.hematocrit ?? HEMATOCRIT;
   return {
     time,
     volumesL: y.slice(0, 10),
-    pressureMmHg: pressures(y),
-    flowLPerS: bloodFlows(y, time, c),
+    pressureMmHg: pressures(y, k),
+    flowLPerS: bloodFlows(y, time, c, k),
     integratedFlowL: y.slice(STATE.integratedFlow),
-    insulinPM: amounts.map((n, i) => (n / (y[i] * (1 - HEMATOCRIT))) * 1e12),
-    interstitialPM: (y[STATE.interstitial] / INTERSTITIAL_L) * 1e12,
+    insulinPM: amounts.map((n, i) => (n / (y[i] * (1 - hematocrit))) * 1e12),
+    interstitialPM:
+      (y[STATE.interstitial] / ((k?.interstitialL ?? INTERSTITIAL_L) * (k?.coarseFraction ?? 1))) *
+      1e12,
     signal: y.slice(STATE.signal, STATE.integratedFlow),
     injectedPmol: y[STATE.injected] * 1e12,
     circulatingPmol: amounts.reduce((a, b) => a + b, 0) * 1e12,

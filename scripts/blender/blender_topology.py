@@ -1,9 +1,59 @@
 """Blender-side topology statistics shared by the build gate and the read-only audit."""
 import bmesh
 from mathutils import Vector
+from mathutils.bvhtree import BVHTree
 from mathutils.kdtree import KDTree
 
 from muscle_geometry import topology
+
+
+def self_intersecting_face_pairs(bm):
+    """Count pairs of non-adjacent faces whose geometry actually intersects, via a BVH
+    self-overlap test. Adjacent faces (sharing a vertex) legitimately touch at a shared
+    edge/corner and are excluded, matching the task's 'excluding adjacent faces' rule."""
+    if not bm.faces:
+        return 0
+    bm.faces.ensure_lookup_table()
+    tree = BVHTree.FromBMesh(bm, epsilon=0.0)
+    seen = set()
+    count = 0
+    for a, b in tree.overlap(tree):
+        if a == b:
+            continue
+        key = (a, b) if a < b else (b, a)
+        if key in seen:
+            continue
+        seen.add(key)
+        verts_a = {v.index for v in bm.faces[a].verts}
+        verts_b = {v.index for v in bm.faces[b].verts}
+        if verts_a & verts_b:
+            continue
+        count += 1
+    return count
+
+
+def winding_consistency(obj):
+    """Diagnostic only: count faces whose current winding disagrees with a consistent
+    recalculation (bmesh.ops.recalc_face_normals), WITHOUT modifying obj.data -- the bmesh
+    is discarded, never written back. Used to quantify backfacing/inconsistently wound
+    source-surface faces that policy forbids repairing in place."""
+    bm = bmesh.new()
+    bm.from_mesh(obj.data)
+    bm.faces.ensure_lookup_table()
+    before = [Vector(face.normal) for face in bm.faces]
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    bm.faces.ensure_lookup_table()
+    total = len(bm.faces)
+    inconsistent = sum(
+        1 for face, was in zip(bm.faces, before)
+        if was.length > 1e-12 and face.normal.length > 1e-12 and was.dot(face.normal) < 0
+    )
+    bm.free()
+    return {
+        "totalFaces": total,
+        "inconsistentFaces": inconsistent,
+        "fraction": (inconsistent / total) if total else 0.0,
+    }
 
 
 def mesh_stats(obj):
@@ -34,6 +84,7 @@ def mesh_stats(obj):
     volume = None
     if topo["boundaryEdges"] == 0 and topo["nonManifoldEdges"] == 0 and bm.faces:
         volume = abs(bm.calc_volume(signed=True))
+    self_intersections = self_intersecting_face_pairs(bm)
     bm.free()
     return {
         "vertices": len(mesh.vertices),
@@ -48,6 +99,7 @@ def mesh_stats(obj):
         "looseEdges": loose_edges,
         "looseVertices": loose_verts,
         "degenerateFaces": degenerate_faces,
+        "selfIntersectingFacePairs": self_intersections,
         "boundaryWeldToleranceM": weld_tolerance,
         "coincidentBoundaryVertexPairs": len(coincident_pairs),
         "closedVolumeM3": volume,

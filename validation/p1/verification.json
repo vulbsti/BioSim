@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-09T21:09:49.052Z",
+  "recordedAt": "2026-09-28T20:03:14.952Z",
   "invocation": "npm run verify:multiscale",
-  "sourceRevision": "af3c240c4ae3beaf1ea89573aea0b6ff5d21c220",
+  "sourceRevision": "f1a659e248e3d130b418655f6865c16cfd749659",
   "evidence": "Executed numerical verification and source-model reproduction. Not independent human biological validation.",
   "platform": {
-    "node": "v22.22.0",
+    "node": "v26.9.0",
     "platform": "linux",
     "arch": "x64"
   },

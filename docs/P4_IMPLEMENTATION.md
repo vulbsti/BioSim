@@ -43,3 +43,48 @@ The experimental UI limits manual advances to five minutes and playback speed to
 `npm run test:p4` covers the physical ownership/ledger path, interventions, replay, migration and invalid recordings. `tests/browser/p4-linked.spec.ts` exercises an actual worker run, body-to-tissue state equality through scale/LOD/sections, recording import/resume and narrow layouts. Existing numerical and production-browser suites must also pass on the final source snapshot.
 
 See [the current inspection handoff](CONTINUATION_HANDOFF_2026-09-22.md) for exact outcomes, source identity, preserved failures, and evidence paths. Historical passing P1/P2/P3/P5 receipts are not silently promoted to validation of this changed body UI.
+
+## M1 sprint 2 — body coupling, patch refinement, secretion structure (2026-09-29)
+
+Body recordings are now `atlas-physiology-0.4.0-m1-experimental`, and the branch is `meal-insulin-muscle-coupled-2`. 0.3 recordings migrate only when the physical pathway was off; an active 0.3 circuit is rejected rather than reinterpreted.
+
+**B1 — one blood, one muscle population.** The P3 circuit keeps its topology, but in the body branch it now takes these from the body graph each second:
+- hematocrit 0.40 (the body's 60% non-gas distribution fraction);
+- pump output (cardiac output) and heart rate;
+- branch mean flows (muscle, kidney, gut, hepatic artery, and "other" = heart + brain + skin + adipose + endocrine);
+- the full 4.5 L muscle interstitium.
+
+Node pressure references are the body blood volumes adopted when the pathway is enabled. Pump phase is integrated, so heart-rate changes do not jump the cycle.
+
+`circuitMappingReport()` exposes node volumes against body compartments, and exact 30-second block means of branch flows against body flows. Tests hold every branch within 2% at rest and within 3% after an exercise step settles. Pumps are within 5% at rest because of block phase.
+
+The standalone P3 lab passes no coupling, and its verification receipt is numerically unchanged. Enabling now primes the circuit at the basal steady state:
+- insulin amounts from a linear mean-flow balance;
+- signaling integrated for 240 min at the resulting interstitial concentration.
+
+The primed inventory is its own ledger term (`primedPmol`).
+
+Because the effective interstitium grew from 0.5 L to 4.5 L, interstitial insulin now lags plasma by tens of minutes. The earlier uptake law saturated at basal GLUT4, so it was replaced by symmetric GLUT4-facilitated transport: `Vmax × surface GLUT4 × (Cₜ/(Km+Cₜ) − Cᵢ/(Km+Cᵢ))`. Vmax and Km are order-of-magnitude engineering values, not fitted.
+
+**B2 — conserved patch refinement (E03).** `setMusclePatch(s, 0.01 | 0.05 | 0.2)` hands that fraction of the muscle population to four equal-thickness radial shells of a Krogh-type cylinder (area weights 1:3:5:7). The patch owns its share of each of these:
+- interstitial insulin, capillary exchange, local clearance and diffusion between shells;
+- Sedaghat signaling (per shell);
+- intracellular glucose, GLUT4 uptake and oxidation.
+
+The coarse remainder is scaled to `1 − fraction`. Refinement initializes the shells uniformly, because the coarse state does not determine a microstate. Aggregation sums amounts and population-weights signaling states.
+
+Tests show:
+- refine → aggregate is an exact round trip;
+- glucose and insulin ledgers are conserved;
+- uptake transfers are charged once;
+- insulin and GLUT4 fall outward from the capillary;
+- a 20% patch reproduces coarse muscle uptake within 1%;
+- refined recordings resume bit-identically.
+
+Interstitial glucose remains a single well-mixed pool. Shell conductance is a synthetic ratio.
+
+**B3 — secretion structure.** Secretion now follows the Dalla Man 2007 two-component structure in `app/simulation/beta-cell.ts` ([model notes](../models/dallaman2007/README.md)). It checks against an independent SciPy Radau/BDF transcription within 3.3e-6 pmol/kg/min. The structure is verified against open-access sources. The numeric constants are **unverified placeholders**, because the paper's Table 1 could not be read. Treat secretion magnitudes as synthetic.
+
+**B4 — validation protocol.** [M1 validation datasets](M1_VALIDATION_DATASETS.md) and `validation/p4/m1-validation-protocol.json` lock endpoint definitions and acceptance-rule forms before any comparison. No data is admitted yet, and every numeric band is null. The Dalla Man cohort is excluded from held-out validation of the secretion module.
+
+Still open for M1: admit data and freeze bounds; obtain verified secretion constants; reconcile circuit reference volumes if body plasma volume drifts far; add spatial interstitial glucose; add human calibration of uptake.

@@ -296,6 +296,14 @@ function OrganReadouts({ organ, s }: { organ: Organ; s: BodyState }) {
             value={p4.lastUptakeMgPerMin.toFixed(2)}
             unit="mg/min"
           />
+          {p4.patchShells.map((shell, k) => (
+            <Readout
+              key={k}
+              label={`Patch shell ${k + 1} insulin · GLUT4`}
+              value={`${shell.insulinPM.toFixed(1)} · ${shell.surfaceGlut4Percent.toFixed(2)}`}
+              unit="pM · %"
+            />
+          ))}
         </>
       )}
     </div>
@@ -700,6 +708,21 @@ export default function Simulator({
                       <option value="0">Receptor input blocked</option>
                     </select>
                   </label>
+                  {s.multiscaleMeal.enabled && (
+                    <label>
+                      Muscle patch
+                      <select
+                        aria-label="Refined muscle patch"
+                        value={s.multiscaleMeal.patchFraction}
+                        onChange={(e) => send({ type: "muscle-patch", fraction: Number(e.target.value) })}
+                      >
+                        <option value="0">Coarse muscle only</option>
+                        <option value="0.01">Refine 1% as radial shells</option>
+                        <option value="0.05">Refine 5% as radial shells</option>
+                        <option value="0.2">Refine 20% as radial shells</option>
+                      </select>
+                    </label>
+                  )}
                 </div>
                 <button
                   className="sim-primary"

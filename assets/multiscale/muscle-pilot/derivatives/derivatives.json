@@ -24,7 +24,7 @@
         {
           "object": "FJ1442--simulation",
           "derivedFrom": "FJ1442",
-          "method": "voxel remesh 0.003 m",
+          "method": "voxel remesh 0.003 m, normals made outward-consistent",
           "components": 9,
           "triangles": 19140,
           "closedVolumeM3": 0.0004966679518516015
@@ -32,7 +32,7 @@
         {
           "object": "FJ3365--simulation",
           "derivedFrom": "FJ3365",
-          "method": "voxel remesh 0.003 m",
+          "method": "voxel remesh 0.003 m, normals made outward-consistent",
           "components": 1,
           "triangles": 18884,
           "closedVolumeM3": 0.0004863100583094739
@@ -40,7 +40,7 @@
         {
           "object": "FJ3381--simulation",
           "derivedFrom": "FJ3381",
-          "method": "voxel remesh 0.003 m",
+          "method": "voxel remesh 0.003 m, normals made outward-consistent",
           "components": 1,
           "triangles": 1040,
           "closedVolumeM3": 1.0788721661172575e-05
@@ -434,8 +434,8 @@
     "sarcomere": {
       "kind": "collision",
       "file": "assets/multiscale/muscle-pilot/derivatives/sarcomere-collision.glb",
-      "bytes": 576624,
-      "sha256": "63b2ab1ab7e1ac02374193b6a7596e96d632ad8c652921ac0c7b6c8a827934b5",
+      "bytes": 474352,
+      "sha256": "9032e3feb5502c6fde960cf45c421ca32fc102ec64001bd379f4a469736cf2d4",
       "objects": [
         {
           "object": "pilot-thick-filaments--collision",
@@ -457,9 +457,9 @@
           "object": "pilot-z-left--collision",
           "derivedFrom": "pilot-z-left",
           "method": "convex hull per connected component",
-          "components": 30,
-          "triangles": 840,
-          "closedVolumeM3": 5.369440802711715e-22
+          "components": 1,
+          "triangles": 524,
+          "closedVolumeM3": 1.3546630675178203e-21
         },
         {
           "object": "pilot-thin-right--collision",
@@ -473,17 +473,17 @@
           "object": "pilot-z-right--collision",
           "derivedFrom": "pilot-z-right",
           "method": "convex hull per connected component",
-          "components": 30,
-          "triangles": 840,
-          "closedVolumeM3": 5.369440802711714e-22
+          "components": 1,
+          "triangles": 524,
+          "closedVolumeM3": 1.3546630257900019e-21
         },
         {
           "object": "pilot-m-line--collision",
           "derivedFrom": "pilot-m-line",
           "method": "convex hull per connected component",
-          "components": 251,
-          "triangles": 7568,
-          "closedVolumeM3": 7.674760884155881e-23
+          "components": 1,
+          "triangles": 136,
+          "closedVolumeM3": 8.06045084055152e-22
         }
       ]
     }

@@ -1,16 +1,17 @@
-✔ tissue GLBs match hashes, contain finite metric geometry and preserve every entity across LODs (268.359074ms)
-✔ muscle context LOD is a real reduced derivative that keeps identity and silhouette (4.773944ms)
-✔ generated display meshes are closed except named openings; source surfaces keep their topology (218.340387ms)
-✔ collision and simulation derivatives are separate, hash-bound and watertight in their GLB bytes (150.566769ms)
-✔ source anatomy stays separate from representative cells and manifests reject unit or identity drift (1.871063ms)
-✔ independent GLB inspection rejects corrupted headers, indices and physical metadata (2.312462ms)
-✔ tissue recordings preserve scale, selection and playhead while rejecting incompatible packages before loading (4.049133ms)
-✔ exported filament endpoints remain anchored while shortening changes overlap, not filament lengths (123.888752ms)
-ℹ tests 8
+✔ tissue GLBs match hashes, contain finite metric geometry and preserve every entity across LODs (318.742219ms)
+✔ muscle context LOD is a real reduced derivative that keeps identity and silhouette (4.245462ms)
+✔ generated display meshes are closed except named openings; source surfaces keep their topology (276.209312ms)
+✔ collision and simulation derivatives are separate, hash-bound and watertight in their GLB bytes (140.655039ms)
+✔ source anatomy stays separate from representative cells and manifests reject unit or identity drift (1.918999ms)
+✔ independent GLB inspection rejects corrupted headers, indices and physical metadata (2.350338ms)
+✔ tissue recordings preserve scale, selection and playhead while rejecting incompatible packages before loading (4.453172ms)
+✔ exported filament endpoints remain anchored while shortening changes overlap, not filament lengths (157.059906ms)
+✔ every spec dimension has one honest parameter-ledger entry with pending human review (1.664682ms)
+ℹ tests 9
 ℹ suites 0
-ℹ pass 8
+ℹ pass 9
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 899.760682
+ℹ duration_ms 1034.875139

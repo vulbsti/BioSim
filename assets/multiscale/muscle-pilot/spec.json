@@ -1,6 +1,6 @@
 {
   "id": "muscle-pilot",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "name": "Vastus lateralis multiscale anatomy pilot",
   "status": "representative_visual_prototype",
   "engine": "Three.js 0.159 GLTFLoader",
@@ -104,8 +104,18 @@
         "loopsPerComponent": 1
       }
     },
+    "selfIntersection": {
+      "note": "Per-entity self-intersecting face pairs, from a BVH self-overlap test (mathutils.bvhtree.BVHTree.overlap against itself) that excludes face pairs sharing a vertex (expected touching, e.g. adjacent quads on the same tube). Generated (non-source-surface) entities must report zero unless listed here with a reason.",
+      "allowlist": {
+        "pilot-thick-filaments": {
+          "maxPairs": 15000,
+          "reason": "Detail LOD only: sparse illustrative myosin heads are short links protruding from each thick-filament tube surface and are not boolean-unioned into it. Out of scope for this remediation, which unions only the Z-disc lattice links (pilot-z-left/right) and the M-line links/nodes (pilot-m-line); tracked here rather than silently ignored."
+        }
+      }
+    },
     "knownUnresolved": [
-      "Crossing Z-disc links and M-line links entering their lattice node spheres interpenetrate as separate closed components; no boolean union or intersection test is applied. Coincident duplicate faces are rejected by the GLB byte check."
+      "BodyParts3D source surfaces FJ1442/FJ3365/FJ3381 contain backfacing (inconsistently wound) faces -- see the winding-consistency counts recorded per object by scripts/blender/audit-muscle-pilot.py. Source topology and winding are preserved unmodified; only the derived muscle-context decimate LOD and the muscle simulation-domain derivative are made normals-consistent.",
+      "Thin filaments intentionally overlap their anchoring Z-disc lattice, and the thick-filament array intentionally overlaps the M-line lattice, by anchoring design; the build reports these as informational crossEntityOverlaps in topology-report.json and they are not required to resolve."
     ]
   },
   "lod": {

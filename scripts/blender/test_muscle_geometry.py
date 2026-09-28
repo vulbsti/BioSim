@@ -5,7 +5,7 @@ Run: python3 -m unittest discover -s scripts/blender -p 'test_*.py'
 import math
 import unittest
 
-from muscle_geometry import Mesh, classify, coincident_vertices, topology
+from muscle_geometry import Mesh, classify, coincident_vertices, topology, weld
 
 
 def closed(mesh):
@@ -42,6 +42,20 @@ class ClosedPrimitives(unittest.TestCase):
             want = sorted([(0.2, -0.1, 0.3), tuple(0.2 * c for c in b)])
             for p, q in zip(ends, want):
                 self.assertLess(math.dist(p, q), 1e-12, b)
+
+    def test_link_phase_keeps_ring_bounds_symmetric_and_shifts_angles(self):
+        # Any constant ring phase must keep the tube's bounding extent exactly symmetric
+        # about its own axis (every ring vertex keeps an angle+pi antipodal partner), while
+        # actually moving the sampled angles (this is what lets the sarcomere lattice avoid a
+        # ring vertex landing exactly on a shared coplanar symmetry plane during boolean union).
+        for phase in (0, math.pi / 8, math.pi / 6):
+            m = Mesh()
+            m.link((-1.0, 0.0, 0.0), (1.0, 0.0, 0.0), 0.05, 8, phase=phase)
+            ys = [v[1] for v in m.v]
+            self.assertAlmostEqual(min(ys), -max(ys), places=12)
+        unshifted = Mesh(); unshifted.link((-1.0, 0.0, 0.0), (1.0, 0.0, 0.0), 0.05, 8, phase=0)
+        shifted = Mesh(); shifted.link((-1.0, 0.0, 0.0), (1.0, 0.0, 0.0), 0.05, 8, phase=math.pi / 8)
+        self.assertNotEqual(sorted(unshifted.v), sorted(shifted.v))
 
     def test_ellipsoids_are_watertight(self):
         for biconcave in (False, True):
@@ -112,6 +126,61 @@ class Classification(unittest.TestCase):
         stats = self.stats(sheet)
         self.assertEqual(stats["loopsPerComponent"], [0, 1, 1])
         self.assertEqual(classify("sheet", stats, self.policy)["status"], "fail")
+
+    def test_self_intersecting_face_pairs_fail_unless_allowlisted(self):
+        tube = Mesh()
+        tube.tube(0, 0, 1, 2, 8)
+        clean = self.stats(tube)
+        clean["selfIntersectingFacePairs"] = 0
+        self.assertEqual(classify("tube", clean, self.policy)["status"], "closed")
+        dirty = dict(clean)
+        dirty["selfIntersectingFacePairs"] = 3
+        verdict = classify("tube", dirty, self.policy)
+        self.assertEqual(verdict["status"], "fail")
+        self.assertIn("selfIntersectingFacePairs=3", verdict["reasons"][0])
+        self.assertIn("not declared", verdict["reasons"][0])
+        policy_with_allowlist = dict(self.policy, selfIntersection={"allowlist": {"tube": {"maxPairs": 5, "reason": "test exception"}}})
+        allowed = classify("tube", dirty, policy_with_allowlist)
+        self.assertNotEqual(allowed["status"], "fail")
+        over_limit = dict(clean)
+        over_limit["selfIntersectingFacePairs"] = 9
+        over_verdict = classify("tube", over_limit, policy_with_allowlist)
+        self.assertEqual(over_verdict["status"], "fail")
+        self.assertIn("exceeds allowlisted maxPairs=5", over_verdict["reasons"][0])
+
+    def test_source_surface_self_intersection_is_never_checked(self):
+        stats = {"selfIntersectingFacePairs": 999, "loopsPerComponent": []}
+        self.assertEqual(classify("FJ1", stats, self.policy)["status"], "source-preserved")
+
+
+class Weld(unittest.TestCase):
+    def test_welds_near_duplicate_sliver_and_stays_manifold(self):
+        # Two closed tubes that touch at one shared edge whose two ends are ALMOST but not
+        # exactly duplicated (reproducing a boolean-union sliver): after welding within
+        # tolerance the result must be a single closed, manifold, non-self-intersecting mesh.
+        a, b = Mesh(), Mesh()
+        a.tube(0, 0, 1, 2, 8)
+        b.tube(0, 0, 1, 2, 8)
+        offset = 1e-13
+        b.v = [(x + offset, y, z) for x, y, z in b.v]
+        vertices = a.v + [(x, y, z) for x, y, z in b.v]
+        faces = list(a.f) + [tuple(v + len(a.v) for v in f) for f in b.f]
+        welded_v, welded_f = weld(vertices, faces, 1e-10)
+        # Welding two near-identical closed tubes onto each other collapses every face to a
+        # duplicate of its counterpart, so the whole thing should shrink back to one tube.
+        self.assertEqual(len(welded_v), len(a.v))
+        self.assertEqual(len(welded_f), len(a.f))
+        t = topology(welded_v, welded_f)
+        self.assertEqual(t["boundaryEdges"], 0)
+        self.assertEqual(t["nonManifoldEdges"], 0)
+
+    def test_leaves_genuinely_distinct_geometry_untouched(self):
+        m = Mesh()
+        m.tube(0, 0, 1, 2, 8)
+        m.tube(5, 0, 1, 2, 8)
+        welded_v, welded_f = weld(m.v, m.f, 1e-10)
+        self.assertEqual(len(welded_v), len(m.v))
+        self.assertEqual(len(welded_f), len(m.f))
 
 
 if __name__ == "__main__":

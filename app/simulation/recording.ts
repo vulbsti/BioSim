@@ -10,8 +10,12 @@ import {
 } from "./engine";
 import {
   createMultiscaleMeal,
+  insulinLedger,
   MULTISCALE_MEAL_SOLVER,
   MULTISCALE_MEAL_VERSION,
+  PATCH_CELL_IDS,
+  PATCH_FRACTIONS,
+  PATCH_SHELLS,
 } from "./multiscale-meal";
 import { HORMONES, SUBSTANCES, type BodyState, type Sample } from "./types";
 import { gasResiduals, totalSubstance } from "./transport";
@@ -60,28 +64,51 @@ function validateMultiscaleMeal(s: BodyState) {
   )
     throw new Error("Invalid multiscale meal circulation state.");
   const y = m.circulation;
+  const numbers = (a: unknown, n: number) =>
+    Array.isArray(a) && a.length === n && a.every((v) => typeof v === "number" && Number.isFinite(v));
+  if (!numbers(m.referenceVolumesL, 10) || m.referenceVolumesL.some((v) => v <= 0) || !numbers(m.meanFlowsLPerS, expected.length - STATE.integratedFlow) ||
+    !numbers(m.flowWindowL, expected.length - STATE.integratedFlow) ||
+    !Number.isInteger(m.flowWindowSeconds) || m.flowWindowSeconds < 0 || m.flowWindowSeconds >= 30 ||
+    !(m.pumpPhase >= 0 && m.pumpPhase < 1) ||
+    !object(m.betaCell) || !numbers([m.betaCell.Y, m.betaCell.Ipo, m.betaCell.previousG], 3) ||
+    m.betaCell.Ipo < 0 || m.betaCell.previousG < 0)
+    throw new Error("Invalid multiscale circulation coupling state.");
   const volumes = y.slice(STATE.volume, STATE.insulin);
-  if (volumes.some((value) => value <= 0) || !close(volumes.reduce((a, b) => a + b, 0), 5, 1e-8))
+  const reference = m.referenceVolumesL.reduce((a, b) => a + b, 0);
+  if (volumes.some((value) => value <= 0) || !close(volumes.reduce((a, b) => a + b, 0), reference, 1e-8))
     throw new Error("Multiscale circulation volume is outside its conserved domain.");
   if (y.slice(STATE.insulin, STATE.signal).some((value) => value < -1e-20))
     throw new Error("Multiscale insulin state must be nonnegative.");
-  const insulin = y.slice(STATE.insulin, STATE.hepaticCleared).reduce((a, b) => a + b, 0);
-  const cleared = y.slice(STATE.hepaticCleared, STATE.injected).reduce((a, b) => a + b, 0);
-  if (!close(y[STATE.injected], insulin + cleared, 1e-18))
+  const phi = m.patchFraction;
+  if (phi !== 0 && !(PATCH_FRACTIONS as readonly number[]).includes(phi)) throw new Error("Invalid muscle patch fraction.");
+  if (
+    !numbers(m.patchInsulinMol, phi ? PATCH_SHELLS : 0) ||
+    m.patchInsulinMol.some((v) => v < -1e-20) ||
+    !Array.isArray(m.patchSignal) ||
+    m.patchSignal.length !== (phi ? PATCH_SHELLS : 0) ||
+    !m.patchSignal.every((row) => numbers(row, STATE.integratedFlow - STATE.signal)) ||
+    m.patchClearedMol < 0 ||
+    m.patchUptakeG < 0 ||
+    (!phi && (m.patchClearedMol !== 0 || m.patchUptakeG !== 0))
+  )
+    throw new Error("Invalid refined muscle patch state.");
+  for (const id of PATCH_CELL_IDS)
+    if (!phi && Object.values(s.transport.compartments[id].amounts).some((v) => v !== 0))
+      throw new Error("Coarse muscle state contains refined patch balances.");
+  if (Math.abs(insulinLedger(m).residual) > 1e-18)
     throw new Error("Multiscale insulin ledger is not conserved.");
-  const signal = y.slice(STATE.signal, STATE.integratedFlow);
-  if (signal.some((value) => value < -1e-10))
-    throw new Error("Sedaghat signal state is outside its source domain.");
   const pools: Array<[number, number, number]> = [
     [10, 12, 0.1],
     [12, 15, 100],
     [15, 17, 100],
     [17, 19, 100],
   ];
-  if (
-    pools.some(([from, to, total]) => !close(signal.slice(from, to).reduce((a, b) => a + b, 0), total, 1e-5))
-  )
-    throw new Error("Sedaghat conserved pool is invalid.");
+  for (const signal of [y.slice(STATE.signal, STATE.integratedFlow), ...m.patchSignal]) {
+    if (signal.some((value) => value < -1e-10))
+      throw new Error("Sedaghat signal state is outside its source domain.");
+    if (pools.some(([from, to, total]) => !close(signal.slice(from, to).reduce((a, b) => a + b, 0), total, 1e-5)))
+      throw new Error("Sedaghat conserved pool is invalid.");
+  }
   for (const key of [
     "secretedPmol",
     "muscleUptakeG",
@@ -89,7 +116,8 @@ function validateMultiscaleMeal(s: BodyState) {
     "lastUptakeMgPerMin",
   ] as const)
     if (m[key] < 0) throw new Error(`Negative multiscale meal ledger ${key}.`);
-  if (!close(m.secretedPmol * 1e-12, y[STATE.injected], 1e-18))
+  if (m.primedPmol < 0 || (!m.enabled && m.primedPmol !== 0)) throw new Error("Invalid primed insulin ledger.");
+  if (!close((m.secretedPmol + m.primedPmol) * 1e-12, y[STATE.injected], 1e-18))
     throw new Error("Secreted insulin disagrees with the physical insulin ledger.");
   const cell = s.transport.compartments["muscle-cell"];
   if (!m.enabled) {
@@ -100,6 +128,12 @@ function validateMultiscaleMeal(s: BodyState) {
       m.lastSecretionPmolPerMin !== 0 ||
       m.lastUptakeMgPerMin !== 0 ||
       y.some((value, index) => value !== expected[index]) ||
+      m.referenceVolumesL.some((value, index) => value !== expected[index]) ||
+      m.meanFlowsLPerS.some((value) => value !== 0) ||
+      m.flowWindowL.some((value) => value !== 0) ||
+      m.flowWindowSeconds !== 0 ||
+      m.pumpPhase !== 0 ||
+      Object.values(m.betaCell).some((value) => value !== 0) ||
       Object.values(cell.amounts).some((value) => value !== 0)
     )
       throw new Error("Disabled multiscale meal state contains active pathway balances.");
@@ -220,8 +254,28 @@ function validateState(value: unknown): asserts value is BodyState {
 export function parseRecording(text: string): Recording {
   if (text.length > 15_000_000) throw new Error("Recording exceeds the 15 MB import limit.");
   const data: unknown = JSON.parse(text);
-  if (!object(data) || ![MODEL_VERSION, "atlas-physiology-0.2.0"].includes(data.model as string))
+  const P4 = "atlas-physiology-0.3.0-p4-experimental";
+  if (!object(data) || ![MODEL_VERSION, P4, "atlas-physiology-0.2.0"].includes(data.model as string))
     throw new Error(`Expected a ${MODEL_VERSION} recording.`);
+  if (data.model === P4) {
+    // The 0.3 synthetic circuit cannot be re-expressed in body-coupled units; only coarse runs migrate.
+    const template = createBody();
+    for (const key of ["state", "reference"] as const) {
+      const state = data[key];
+      if (!object(state)) continue;
+      const meal = state.multiscaleMeal,
+        compartments = object(state.transport) ? state.transport.compartments : undefined;
+      if (!object(meal) || meal.enabled !== false)
+        throw new Error("Recordings with an active 0.3 physical meal pathway cannot be resumed by the body-coupled model.");
+      state.multiscaleMeal = createMultiscaleMeal();
+      if (object(compartments))
+        for (const id of PATCH_CELL_IDS) {
+          if (Object.hasOwn(compartments, id)) throw new Error("Legacy recording contains fields from a newer model.");
+          compartments[id] = structuredClone(template.transport.compartments[id]);
+        }
+    }
+    data.model = MODEL_VERSION;
+  }
   if (data.model === "atlas-physiology-0.2.0") {
     const template = createBody();
     for (const key of ["state", "reference"] as const) {
@@ -236,9 +290,8 @@ export function parseRecording(text: string): Recording {
         throw new Error("Legacy recording contains fields from a newer model.");
       state.multiscaleMeal = createMultiscaleMeal();
       if (object(compartments))
-        compartments["muscle-cell"] = structuredClone(
-          template.transport.compartments["muscle-cell"],
-        );
+        for (const id of ["muscle-cell", ...PATCH_CELL_IDS])
+          compartments[id] = structuredClone(template.transport.compartments[id]);
     }
     data.model = MODEL_VERSION;
   }

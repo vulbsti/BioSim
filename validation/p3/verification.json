@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-12T20:00:39.995Z",
+  "recordedAt": "2026-09-28T20:03:13.724Z",
   "invocation": "npm run verify:circulation",
   "evidence": "Executed conservative physical transport and source-observer checks. Independent solver agreement concerns a synthetic reference design, not a human waveform fit.",
   "tests": {
@@ -563,7 +563,7 @@
     "Open-input source signaling is an observer, not a physical receptor binding ledger"
   ],
   "sourceHashes": {
-    "app/circulation/model.ts": "148268bac2dd9edfc6ecf12f5d37aecfdaebfa8d2fdc929dcf8fe7dd981cb382",
+    "app/circulation/model.ts": "7aa9614c976f7a1422071f5ebc815882af8d899c5f9f75d59eb3167996c755b1",
     "scripts/reference-circulation.py": "9978f73e9e22497479ae86067cba570e2adf19944aa9fb481522facd4ac54bb0",
     "scripts/reference-insulin.py": "6b3e85b3b9a23127fa00debff48902f28550cd23334d6f7b1418c78833d366a4",
     "scripts/verify-circulation.ts": "4d02282ba4df386c3ac85154ca617f611fe64eedc4e21db288605a4e6b263667",

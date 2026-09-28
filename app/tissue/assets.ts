@@ -6,7 +6,7 @@ export type Representation={url:string;bytes:number;sha256:string;triangles:numb
 export type TissueManifest={id:string;version:string;status:string;metersPerAssetUnit:number;sourceSpace:string;levels:Record<TissueLevel,{spanM:number;description:string;localToAtlasTranslationM?:number[];layout?:{fiberCentersM:number[][];capillaryCentersM:number[][];fiberRadiusM:number;capillaryRadiusM:number};representations:Record<TissueLOD,Representation>}>;entities:TissueEntity[];provenance:{blenderVersion:string;license:string;referenceURL:string;registration:string}};
 export function validateManifest(value:unknown):asserts value is TissueManifest {
  const m=value as TissueManifest;
- if(!m||m.id!=='muscle-pilot'||m.version!=='0.3.0'||m.metersPerAssetUnit!==1||!Array.isArray(m.entities)||!m.levels||!m.provenance)throw new Error('Unsupported tissue package or physical scale.');
+ if(!m||m.id!=='muscle-pilot'||m.version!=='0.3.1'||m.metersPerAssetUnit!==1||!Array.isArray(m.entities)||!m.levels||!m.provenance)throw new Error('Unsupported tissue package or physical scale.');
  const ids=new Set<string>();
  for(const e of m.entities){if(!e.id||ids.has(e.id)||!LEVELS.includes(e.level)||!['source-surface','representative'].includes(e.evidence)||!e.description)throw new Error('Invalid tissue entity contract.');ids.add(e.id);}
  for(const level of LEVELS){

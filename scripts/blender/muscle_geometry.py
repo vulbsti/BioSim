@@ -39,7 +39,7 @@ class Mesh:
         self.uv.append(uv)
         self.smooth.append(smooth)
 
-    def tube(self, x, y, r, length, segments=16, steps=1, arc=None, zoffset=0, period=None):
+    def tube(self, x, y, r, length, segments=16, steps=1, arc=None, zoffset=0, period=None, phase=0):
         start = len(self.v)
         a0, a1 = arc or (0, math.tau)
         closed = arc is None
@@ -47,7 +47,14 @@ class Mesh:
         for j in range(steps + 1):
             z = (j / steps - .5) * length + zoffset
             for i in range(ring):
-                a = a0 + (a1 - a0) * i / segments
+                # `phase` rotates every ring vertex by a constant angle. For a closed ring
+                # (arc is None) this keeps every vertex's antipodal partner (angle a+pi) in
+                # the sampled set, so the ring's bounding extent stays exactly symmetric
+                # about its axis -- while letting a caller steer ring vertices away from a
+                # specific world direction (see the sarcomere lattice links, which use this
+                # to avoid a ring vertex landing exactly on a shared coplanar symmetry plane
+                # that otherwise makes the exact boolean solver produce non-manifold slivers).
+                a = a0 + (a1 - a0) * i / segments + phase
                 self.v.append((x + r * math.cos(a), y + r * math.sin(a), z))
         vid = lambda j, i: start + j * ring + (i % ring if closed else i)
         for j in range(steps):
@@ -90,11 +97,11 @@ class Mesh:
                 b = start + 1 + j * segments + (i + 1) % segments
                 self.face([a, a + segments, b + segments, b], [(0, 0)] * 4)
 
-    def link(self, a, b, r, segments=6):
+    def link(self, a, b, r, segments=6, phase=0):
         start = len(self.v)
         axis = tuple(q - p for p, q in zip(a, b))
         length = math.sqrt(sum(c * c for c in axis))
-        self.tube(0, 0, r, length, segments)
+        self.tube(0, 0, r, length, segments, phase=phase)
         m = _rotate_z_to(tuple(c / length for c in axis))
         center = tuple((p + q) / 2 for p, q in zip(a, b))
         for i in range(start, len(self.v)):
@@ -163,6 +170,15 @@ def classify(entity_id, stats, policy):
     for key in ("nonManifoldEdges", "looseVertices", "looseEdges", "degenerateFaces", "coincidentBoundaryVertexPairs"):
         if stats.get(key, 0):
             reasons.append(f"{key}={stats[key]}")
+    pairs = stats.get("selfIntersectingFacePairs", 0)
+    if pairs:
+        allowed = policy.get("selfIntersection", {}).get("allowlist", {}).get(entity_id)
+        limit = allowed["maxPairs"] if allowed else 0
+        if pairs > limit:
+            reasons.append(
+                f"selfIntersectingFacePairs={pairs}"
+                + (f" exceeds allowlisted maxPairs={limit} ({allowed['reason']})" if allowed else " (not declared in topology.selfIntersection.allowlist)")
+            )
     opening = policy.get("openings", {}).get(entity_id)
     if opening:
         want = opening["loopsPerComponent"]
@@ -193,3 +209,47 @@ def coincident_vertices(vertices, tolerance):
                             pairs += 1
         grid.setdefault(key, []).append(index)
     return pairs
+
+
+def weld(vertices, faces, tolerance):
+    """Merge vertices within `tolerance` (grid hashing, same technique as
+    coincident_vertices) to their lowest-index cluster member, remap faces onto the merged
+    indices, then drop any face that degenerates (repeats a vertex) or exactly duplicates
+    an earlier face's vertex set. Used to clean up sub-feature-scale slivers a boolean union
+    can leave (e.g. two near-coincident microscopic triangles sharing one long edge, which
+    read as locally non-manifold once positions are compared exactly) without relying on
+    Blender's own dissolve/remove-doubles operators, whose distance semantics are not
+    reliably in the caller's chosen coordinate frame. Returns (vertices, faces); indices are
+    compacted to only the vertices actually used by a kept face."""
+    cell = tolerance * 2 or 1e-30
+    grid = {}
+    canonical = list(range(len(vertices)))
+    for index, p in enumerate(vertices):
+        key = tuple(int(math.floor(c / cell)) for c in p)
+        found = None
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                for dz in (-1, 0, 1):
+                    for other in grid.get((key[0] + dx, key[1] + dy, key[2] + dz), ()):
+                        if math.dist(p, vertices[other]) <= tolerance:
+                            if found is None or other < found:
+                                found = other
+        if found is not None:
+            canonical[index] = canonical[found]
+        grid.setdefault(key, []).append(index)
+    kept_faces = []
+    seen_faces = set()
+    for face in faces:
+        remapped = [canonical[v] for v in face]
+        if len(set(remapped)) != len(remapped):
+            continue  # degenerate: a boolean-union sliver collapsed onto itself
+        key = tuple(sorted(remapped))
+        if key in seen_faces:
+            continue  # exact duplicate face left by the union
+        seen_faces.add(key)
+        kept_faces.append(tuple(remapped))
+    used = sorted({v for face in kept_faces for v in face})
+    reindex = {old: new for new, old in enumerate(used)}
+    out_vertices = [vertices[i] for i in used]
+    out_faces = [tuple(reindex[v] for v in face) for face in kept_faces]
+    return out_vertices, out_faces

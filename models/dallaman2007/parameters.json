@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "declaredOn": "2026-09-29",
+  "modelId": "dallaman2007-betacell-engineering-1",
+  "scope": "Beta-cell insulin secretion subsystem only (S, Ipo, Y states) of Dalla Man, Rizza, Cobelli 2007 (IEEE TBME 54(10):1740-1749), equation structure as it appears (via the same two-component dynamic/static secretion mechanism) in Breda, Cavaghan, Toffolo, Polonsky, Cobelli 2001 (Diabetes 50(1):150-158) and as described qualitatively in Dalla Man, Raimondo, Rizza, Cobelli 2007 (J Diabetes Sci Technol 1(3):323-330, PMC2769591) and in Cobelli, Dalla Man, Toffolo, Basu, Vella, Rizza 2014 'The Oral Minimal Model Method' (Diabetes 63(4):1203-1213, PMC4179313).",
+  "verificationSummary": "The EQUATION STRUCTURE (S=gamma*Ipo; dIpo/dt=-gamma*Ipo+Spo with Spo split into a dG/dt-proportional dynamic term and a (G-h)-proportional static term; dY/dt=-alpha*[Y-beta*(G-h)] with a floor branch) is verified against two primary/authoritative sources actually read in this session (PMC2769591, PMC4179313; see sources.equationStructure). The NUMERIC constants (gamma, K, alpha, beta, Sb) that Dalla Man 2007 Table 1 and Breda 2001 report for the population-average normal subject could NOT be read in this session: the IEEE TBME 2007 paper has no open-access copy anywhere (confirmed via Unpaywall API, is_oa=false, checked 2026-09-29), and the Breda 2001 Diabetes paper, although flagged bronze/is_oa=true by Unpaywall with a direct PDF URL, returned an anti-bot challenge page (Cloudflare 'Just a moment...') to both the automated fetch tool and a browsered request; per the task's own instruction this was not bypassed. The archived BioModels SBML curation of the full 2007 model (BIOMD0000000379), which would likely contain curator-verified numeric values, could not be downloaded either (network access to ebi.ac.uk/biomodels.org from this environment returned empty 301 redirect bodies or timed out on every attempt; see sources.attemptedNotRead). Every parameter below is therefore status=\"unverified\": each is an internally self-consistent engineering placeholder chosen only to (a) carry the correct physical units, (b) reproduce the paper-described qualitative shape (a first-phase/dynamic component that responds to the RATE of glucose rise, and a second-phase/static component that responds to the LEVEL of glucose above threshold), and (c) put basal secretion in the same order of magnitude as this repository's prior synthetic law (35 pmol/min basal, 20-360 pmol/min range, at the existing app/simulation/multiscale-meal.ts callsite). They are NOT the literature's fitted values and must not be cited as such.",
+  "units": {
+    "G": "mg/dL",
+    "dGdt": "mg/dL/min",
+    "S": "pmol/kg/min (per-body-mass); also reported as pmol/min using bodyMassKg",
+    "Ipo": "pmol/kg (amount, above/at the level implied by steady-state basal secretion)",
+    "Y": "pmol/kg/min (insulin provision rate, above basal)",
+    "gamma": "1/min",
+    "K": "pmol/kg per mg/dL (multiplies dG/dt in mg/dL/min to give pmol/kg/min)",
+    "alpha": "1/min",
+    "beta": "pmol/kg/min per mg/dL",
+    "Sb": "pmol/kg/min",
+    "h": "mg/dL (set equal to Gb, basal glucose)"
+  },
+  "parameters": {
+    "Gb": {
+      "value": 91.76,
+      "unit": "mg/dL",
+      "status": "verified",
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2769591/ (Dalla Man, Raimondo, Rizza, Cobelli 2007, GIM software description)",
+      "locator": "Body text, default normal-subject settings paragraph: 'a basal glucose concentration of 91.76 mg/dl'.",
+      "accessedOn": "2026-09-29",
+      "note": "Used here as h (the glucose threshold in the static secretion term) and as the default Gb for betaCellInitial. It is the GIM software's own default normal-subject basal glucose, not a value we fitted."
+    },
+    "bodyMassKg": {
+      "value": 70,
+      "unit": "kg",
+      "status": "declared_assumption",
+      "note": "The GIM paper's own default normal subject is 78 kg (same PMC2769591 paragraph), but this package declares a round 70 kg reference body mass for the pmol/kg <-> pmol conversions used at the app/simulation/multiscale-meal.ts callsite, matching this repository's other 70 kg reference-body conventions. This is an explicit engineering choice, not a verified subject weight for this model."
+    },
+    "gamma": {
+      "value": 0.5,
+      "unit": "1/min",
+      "status": "unverified",
+      "note": "Sets the Ipo pool's own relaxation time constant to 2 minutes, giving S=gamma*Ipo a fast (few-minute) approach to whatever Spo currently demands. Chosen only for a physiologically plausible order of magnitude (real beta-cell first-phase kinetics resolve over single-digit minutes); not read from a source."
+    },
+    "K": {
+      "value": 1.0,
+      "unit": "pmol/kg per mg/dL",
+      "status": "unverified",
+      "note": "Dynamic (first-phase) responsivity. Chosen so a 2 mg/dL/min glucose rise (typical of a meal onset) contributes about 2 pmol/kg/min to Spo, i.e. roughly half of a full stimulated response at 70 kg. Not read from a source."
+    },
+    "alpha": {
+      "value": 0.05,
+      "unit": "1/min",
+      "status": "unverified",
+      "note": "Sets Y's own relaxation time constant to 20 minutes, so the static/second-phase component builds in over tens of minutes rather than instantly, which is the qualitative behavior both read sources describe ('after a delay T'). The exact delay is not reproduced quantitatively; this is a single first-order lag standing in for it."
+    },
+    "beta": {
+      "value": 0.03,
+      "unit": "pmol/kg/min per mg/dL",
+      "status": "unverified",
+      "note": "Static responsivity. Chosen so a sustained 75 mg/dL rise above Gb (e.g. G=160 vs Gb=85) drives Y toward about 2.25 pmol/kg/min at steady state. Not read from a source."
+    },
+    "Sb": {
+      "value": 0.5,
+      "unit": "pmol/kg/min",
+      "status": "unverified",
+      "note": "Basal secretion. At the declared 70 kg reference mass this is 35 pmol/min, matching this repository's prior synthetic secretion law's basal term (see app/simulation/multiscale-meal.ts, replaced by this package). Chosen for continuity with the existing engineering baseline, not read from a source."
+    }
+  },
+  "derivedSteadyState": {
+    "note": "At G=Gb (dGdt=0, G-h=0): Y_ss=beta*(Gb-h)=0, Spo_ss=Y_ss+Sb=Sb, Ipo_ss=Sb/gamma, S_ss=gamma*Ipo_ss=Sb. betaCellInitial(Gb) uses exactly this closed form, so basal secretion is Sb by construction regardless of the other placeholder values.",
+    "Ipo_ss_at_Sb=0.5_gamma=0.5": 1.0
+  },
+  "sources": {
+    "equationStructure": [
+      {
+        "citation": "Dalla Man C, Raimondo DM, Rizza RA, Cobelli C. GIM, Simulation Software of Meal Glucose-Insulin Model. J Diabetes Sci Technol. 2007;1(3):323-330.",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2769591/",
+        "accessedOn": "2026-09-29",
+        "whatWasRead": "Full article text via the fetch tool. Confirms: 'Beta-cell insulin secretion is described by dynamic and static components. The dynamic component ... is proportional to the rate of increase of glucose concentration ... The static component ... is proportional to a delayed glucose signal.' Also gives the default normal-subject Gb=91.76 mg/dL, basal insulin 25.49 pmol/L, 78 kg body weight, and states 'All model parameters and GIM values are reported in the article by Dalla Man and co-workers' (i.e. the numeric Table 1 lives only in the 2007 IEEE TBME paper, confirmed not reproduced here)."
+      },
+      {
+        "citation": "Cobelli C, Dalla Man C, Toffolo G, Basu R, Vella A, Rizza R. The Oral Minimal Model Method. Diabetes. 2014;63(4):1203-1213.",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4179313/",
+        "accessedOn": "2026-09-29",
+        "whatWasRead": "Full article text via the fetch tool, in particular the paragraph describing Fig. 3 (middle), which states: 'ISR is made up of two components: one proportional, through parameter kG, to glucose rate of change (dG/dt), and one representing insulin release that, after a delay T, occurs proportionally to plasma glucose level above a threshold, h, through parameter beta. The two components are termed, respectively, dynamic and static, and the parameters responsible for them: dynamic, Phi_d (=kG), and static, Phi_s (=beta), responsivity indices.' No population numeric values for kG/beta/h/alpha/gamma are given in this article; it documents the C-peptide/ISR minimal model used to ESTIMATE these indices per-subject, not the fixed forward-simulation population parameters of the 2007 meal model."
+      }
+    ],
+    "primarySourceAccessStatus": [
+      {
+        "citation": "Dalla Man C, Rizza RA, Cobelli C. Meal simulation model of the glucose-insulin system. IEEE Trans Biomed Eng. 2007;54(10):1740-1749. doi:10.1109/TBME.2007.893506",
+        "checkedVia": "Unpaywall API (https://api.unpaywall.org/v2/10.1109/TBME.2007.893506)",
+        "accessedOn": "2026-09-29",
+        "result": "is_oa=false, oa_status=closed, oa_locations=[]. No legal open-access copy exists anywhere Unpaywall indexes. Publisher page (ieeexplore) was not scraped/bypassed."
+      },
+      {
+        "citation": "Breda E, Cavaghan MK, Toffolo G, Polonsky KS, Cobelli C. Oral glucose tolerance test minimal model indexes of beta-cell function and insulin sensitivity. Diabetes. 2001;50(1):150-158.",
+        "checkedVia": "Unpaywall API (https://api.unpaywall.org/v2/10.2337/diabetes.50.1.150) then a direct fetch of the reported open PDF URL",
+        "accessedOn": "2026-09-29",
+        "result": "Unpaywall reports is_oa=true, oa_status=bronze, url_for_pdf=https://diabetesjournals.org/diabetes/article-pdf/50/1/150/366712/0500150.pdf. Both the fetch tool and a browser navigation to that URL returned a Cloudflare 'Just a moment...' bot-verification interstitial instead of the PDF. Per the operating instructions in force for this session, bypassing bot/CAPTCHA detection is prohibited, so the PDF's Table/Figure with numeric parameter values was not read."
+      }
+    ],
+    "attemptedNotRead": [
+      "https://biomodels.org/BIOMD0000000379 (BioModels curated SBML overview page) - timed out (60s) on every fetch attempt from this environment.",
+      "https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000379 and https://www.biomodels.org/model/download/BIOMD0000000379 (direct SBML/XML download) - every attempt (curl with several header/redirect variants, and WebFetch) returned an empty body after a 301 redirect or timed out; the curated numeric parameter set was never actually read.",
+      "https://www.research.unipd.it/retrieve/e14fb26f-fc0e-3de1-e053-1705fe0ac030/Visentin_PhDThesis.pdf (Padova PhD thesis, likely reproduces the full parameter table) - returned HTTP 403 to both the fetch tool and a direct curl.",
+      "https://journals.physiology.org/doi/full/10.1152/ajpendo.00421.2006 (Cobelli 2007 AJP-Endocrinol-Metab companion paper) - returned a Cloudflare bot-verification interstitial; not bypassed.",
+      "https://journals.sagepub.com/doi/pdf/10.1177/19322968211015268 and https://www.researchgate.net/publication/5917874_Meal_Simulation_Model_of_the_Glucose-Insulin_System - both returned HTTP 403.",
+      "arXiv review/survey papers (2307.16444, 2205.01332, 2010.06266, 2008.02852) and two US patents (10169544, plus the general search) were opened and text-searched for 'Ipo'/'secretion'/beta-cell equations; none reprints the Dalla Man 2007 Table 1 values."
+    ]
+  }
+}

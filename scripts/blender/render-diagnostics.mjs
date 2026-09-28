@@ -42,7 +42,7 @@ const validationRoot = `${ROOT}validation/p2/diagnostics`;
 
 const expectedFiles = (frames) => [
   ...Array.from({length: frames}, (_, i) => `turntable-${String(i).padStart(2, '0')}.png`),
-  'section-cross.png', 'section-longitudinal.png', 'wireframe.png', 'normals.png',
+  'section-cross.png', 'section-longitudinal.png', 'wireframe.png', 'wireframe-crop.png', 'normals.png',
   'contact-sheet.png', 'diagnostics.json',
 ];
 

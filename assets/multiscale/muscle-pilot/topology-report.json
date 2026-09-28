@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "policy": {
     "note": "Generated meshes must be closed 2-manifolds except named inspection windows. BodyParts3D source surfaces keep their original, non-watertight topology and are never repaired in place.",
     "sourceSurfaces": [
@@ -21,8 +21,18 @@
         "loopsPerComponent": 1
       }
     },
+    "selfIntersection": {
+      "note": "Per-entity self-intersecting face pairs, from a BVH self-overlap test (mathutils.bvhtree.BVHTree.overlap against itself) that excludes face pairs sharing a vertex (expected touching, e.g. adjacent quads on the same tube). Generated (non-source-surface) entities must report zero unless listed here with a reason.",
+      "allowlist": {
+        "pilot-thick-filaments": {
+          "maxPairs": 15000,
+          "reason": "Detail LOD only: sparse illustrative myosin heads are short links protruding from each thick-filament tube surface and are not boolean-unioned into it. Out of scope for this remediation, which unions only the Z-disc lattice links (pilot-z-left/right) and the M-line links/nodes (pilot-m-line); tracked here rather than silently ignored."
+        }
+      }
+    },
     "knownUnresolved": [
-      "Crossing Z-disc links and M-line links entering their lattice node spheres interpenetrate as separate closed components; no boolean union or intersection test is applied. Coincident duplicate faces are rejected by the GLB byte check."
+      "BodyParts3D source surfaces FJ1442/FJ3365/FJ3381 contain backfacing (inconsistently wound) faces -- see the winding-consistency counts recorded per object by scripts/blender/audit-muscle-pilot.py. Source topology and winding are preserved unmodified; only the derived muscle-context decimate LOD and the muscle simulation-domain derivative are made normals-consistent.",
+      "Thin filaments intentionally overlap their anchoring Z-disc lattice, and the thick-filament array intentionally overlaps the M-line lattice, by anchoring design; the build reports these as informational crossEntityOverlaps in topology-report.json and they are not required to resolve."
     ]
   },
   "levels": {
@@ -44,6 +54,7 @@
             "looseEdges": 57,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 57,
             "boundaryWeldToleranceM": 4.834656890172828e-10,
             "coincidentBoundaryVertexPairs": 28,
             "closedVolumeM3": null,
@@ -51,6 +62,11 @@
               "1": 2,
               "38": 1
             }
+          },
+          "normalsConsistency": {
+            "totalFaces": 514,
+            "inconsistentFaces": 3,
+            "fraction": 0.005836575875486381
           }
         },
         "FJ3365": {
@@ -69,12 +85,18 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 4.851971204023936e-10,
             "coincidentBoundaryVertexPairs": 3,
             "closedVolumeM3": null,
             "componentsByBoundaryLoops": {
               "8": 1
             }
+          },
+          "normalsConsistency": {
+            "totalFaces": 324,
+            "inconsistentFaces": 0,
+            "fraction": 0.0
           }
         },
         "FJ3381": {
@@ -93,12 +115,18 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 3,
             "boundaryWeldToleranceM": 6.12178944627085e-11,
             "coincidentBoundaryVertexPairs": 5,
             "closedVolumeM3": null,
             "componentsByBoundaryLoops": {
               "7": 1
             }
+          },
+          "normalsConsistency": {
+            "totalFaces": 106,
+            "inconsistentFaces": 0,
+            "fraction": 0.0
           }
         }
       },
@@ -119,6 +147,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 31,
             "boundaryWeldToleranceM": 4.82670164596948e-10,
             "coincidentBoundaryVertexPairs": 508,
             "closedVolumeM3": null,
@@ -126,6 +155,11 @@
               "1": 46,
               "44": 1
             }
+          },
+          "normalsConsistency": {
+            "totalFaces": 1470,
+            "inconsistentFaces": 35,
+            "fraction": 0.023809523809523808
           }
         },
         "FJ3365": {
@@ -144,12 +178,18 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 4.843677969173939e-10,
             "coincidentBoundaryVertexPairs": 15,
             "closedVolumeM3": null,
             "componentsByBoundaryLoops": {
               "8": 1
             }
+          },
+          "normalsConsistency": {
+            "totalFaces": 930,
+            "inconsistentFaces": 0,
+            "fraction": 0.0
           }
         },
         "FJ3381": {
@@ -168,12 +208,18 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 3,
             "boundaryWeldToleranceM": 6.12686096138961e-11,
             "coincidentBoundaryVertexPairs": 23,
             "closedVolumeM3": null,
             "componentsByBoundaryLoops": {
               "8": 1
             }
+          },
+          "normalsConsistency": {
+            "totalFaces": 304,
+            "inconsistentFaces": 0,
+            "fraction": 0.0
           }
         }
       }
@@ -196,6 +242,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.323285359130032e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.1005447410351174e-13,
@@ -220,6 +267,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.3318785029473553e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.493750145598551e-12,
@@ -244,6 +292,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500001230681213e-12,
@@ -268,6 +317,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.250000123068121e-12,
@@ -292,6 +342,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500001230681213e-12,
@@ -316,6 +367,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.250000123068121e-12,
@@ -340,6 +392,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500000194119635e-12,
@@ -364,6 +417,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.250000019411963e-12,
@@ -388,6 +442,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500001285513303e-12,
@@ -412,6 +467,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500001285513307e-12,
@@ -436,6 +492,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2499999994380676e-12,
@@ -460,6 +517,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2499999994380684e-12,
@@ -484,6 +542,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.249999999438068e-12,
@@ -508,6 +567,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.249999999438068e-12,
@@ -532,6 +592,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500000067490247e-12,
@@ -556,6 +617,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500000067490247e-12,
@@ -580,6 +642,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500000067490243e-12,
@@ -604,6 +667,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500000067490247e-12,
@@ -628,6 +692,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.250000208446905e-12,
@@ -652,6 +717,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500002084469047e-12,
@@ -676,6 +742,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500001085774425e-12,
@@ -700,6 +767,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500001957839485e-12,
@@ -724,6 +792,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.250000108577443e-12,
@@ -748,6 +817,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.249999941344131e-12,
@@ -772,6 +842,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500001957839485e-12,
@@ -796,6 +867,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2499999413441303e-12,
@@ -820,6 +892,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.249999941344131e-12,
@@ -844,6 +917,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500001957839473e-12,
@@ -868,6 +942,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2499999413441307e-12,
@@ -892,6 +967,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.250000108577442e-12,
@@ -916,6 +992,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.250000195783948e-12,
@@ -940,6 +1017,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500001085774425e-12,
@@ -964,6 +1042,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500003175862703e-12,
@@ -988,6 +1067,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2499998177140993e-12,
@@ -1012,6 +1092,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2499998177140993e-12,
@@ -1036,6 +1117,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2499998177141e-12,
@@ -1060,6 +1142,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2499998177140993e-12,
@@ -1084,6 +1167,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.2500003175862715e-12,
@@ -1109,6 +1193,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.244610454949144e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": null,
@@ -1135,6 +1220,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.3233167858075782e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3761215780467406e-13,
@@ -1159,6 +1245,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.3318785029473553e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.581720080660724e-12,
@@ -1183,6 +1270,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293714892416004e-12,
@@ -1207,6 +1295,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371489241601e-12,
@@ -1231,6 +1320,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371489241601e-12,
@@ -1255,6 +1345,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293714892416008e-12,
@@ -1279,6 +1370,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293714521485126e-12,
@@ -1303,6 +1395,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815773780321e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293714521485126e-12,
@@ -1327,6 +1420,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371563212885e-12,
@@ -1351,6 +1445,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371563212885e-12,
@@ -1375,6 +1470,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371500034419e-12,
@@ -1399,6 +1495,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293715000344195e-12,
@@ -1423,6 +1520,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371500034419e-12,
@@ -1447,6 +1545,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371500034419e-12,
@@ -1471,6 +1570,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293715038188456e-12,
@@ -1495,6 +1595,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293715038188464e-12,
@@ -1519,6 +1620,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293715038188464e-12,
@@ -1543,6 +1645,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371503818846e-12,
@@ -1567,6 +1670,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293715753260876e-12,
@@ -1591,6 +1695,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815772856739e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293715753260884e-12,
@@ -1615,6 +1720,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371505877358e-12,
@@ -1639,6 +1745,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371626996392e-12,
@@ -1663,6 +1770,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371505877358e-12,
@@ -1687,6 +1795,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293713990922547e-12,
@@ -1711,6 +1820,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293716269963935e-12,
@@ -1735,6 +1845,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293713990922543e-12,
@@ -1759,6 +1870,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371399092254e-12,
@@ -1783,6 +1895,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293716269963927e-12,
@@ -1807,6 +1920,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293713990922543e-12,
@@ -1831,6 +1945,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371505877358e-12,
@@ -1855,6 +1970,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293716269963935e-12,
@@ -1879,6 +1995,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371505877359e-12,
@@ -1903,6 +2020,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293717117163566e-12,
@@ -1927,6 +2045,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293714098850872e-12,
@@ -1951,6 +2070,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293714098850872e-12,
@@ -1975,6 +2095,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293714098850872e-12,
@@ -1999,6 +2120,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815774703904e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.329371409885088e-12,
@@ -2023,6 +2145,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.2020815775627489e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3293717117163566e-12,
@@ -2048,6 +2171,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.244916777003707e-12,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": null,
@@ -2076,6 +2200,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 2.172457450683643e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 1.8677926933521536e-16,
@@ -2101,6 +2226,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 2.6820474809883853e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": null,
@@ -2125,6 +2251,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.5208980709909815e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 3.615528976591092e-17,
@@ -2149,6 +2276,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 2.277703871467622e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 9.89403083951342e-17,
@@ -2173,6 +2301,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 2.542188901553652e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 1.1992136761304102e-13,
@@ -2197,6 +2326,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.9701900929159623e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 5.117332469472081e-16,
@@ -2222,6 +2352,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 2.4888371488579903e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": null,
@@ -2248,6 +2379,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 2.172457450683643e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.3708808410930447e-16,
@@ -2273,6 +2405,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 2.6820644441861315e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": null,
@@ -2297,6 +2430,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.5208980709909815e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 3.615528976591092e-17,
@@ -2321,6 +2455,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 2.27792495447547e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 1.1192059854216347e-16,
@@ -2345,6 +2480,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 2.5424309242509456e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 1.3847325912586897e-13,
@@ -2369,6 +2505,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.9706219877312543e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 5.330704276046564e-16,
@@ -2394,6 +2531,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 2.4888371488579903e-13,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": null,
@@ -2412,21 +2550,22 @@
             "reasons": []
           },
           "stats": {
-            "vertices": 3420,
-            "polygons": 4104,
-            "triangles": 5836,
-            "components": 251,
+            "vertices": 6490,
+            "polygons": 4444,
+            "triangles": 13256,
+            "components": 1,
             "boundaryEdges": 0,
             "boundaryLoops": 0,
             "nonManifoldEdges": 0,
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 6.032611349037047e-16,
             "coincidentBoundaryVertexPairs": 0,
-            "closedVolumeM3": 6.025685473595049e-23,
+            "closedVolumeM3": 5.889154578173285e-23,
             "componentsByBoundaryLoops": {
-              "0": 251
+              "0": 1
             }
           }
         },
@@ -2446,6 +2585,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.7141743482251476e-15,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.1278241309128223e-20,
@@ -2470,6 +2610,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.1729507540369234e-15,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 5.184446899934861e-21,
@@ -2494,6 +2635,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.1729507540369234e-15,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 5.184446899934863e-21,
@@ -2508,21 +2650,22 @@
             "reasons": []
           },
           "stats": {
-            "vertices": 420,
-            "polygons": 540,
-            "triangles": 720,
-            "components": 30,
+            "vertices": 4300,
+            "polygons": 2084,
+            "triangles": 9268,
+            "components": 1,
             "boundaryEdges": 0,
             "boundaryLoops": 0,
             "nonManifoldEdges": 0,
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
-            "boundaryWeldToleranceM": 6.788696223801934e-16,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 6.78869617018936e-16,
             "coincidentBoundaryVertexPairs": 0,
-            "closedVolumeM3": 4.932140515618184e-22,
+            "closedVolumeM3": 4.441714039593975e-22,
             "componentsByBoundaryLoops": {
-              "0": 30
+              "0": 1
             }
           }
         },
@@ -2532,21 +2675,22 @@
             "reasons": []
           },
           "stats": {
-            "vertices": 420,
-            "polygons": 540,
-            "triangles": 720,
-            "components": 30,
+            "vertices": 4300,
+            "polygons": 2084,
+            "triangles": 9268,
+            "components": 1,
             "boundaryEdges": 0,
             "boundaryLoops": 0,
             "nonManifoldEdges": 0,
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
-            "boundaryWeldToleranceM": 6.788696223801934e-16,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 6.78869617018936e-16,
             "coincidentBoundaryVertexPairs": 0,
-            "closedVolumeM3": 4.932140515618195e-22,
+            "closedVolumeM3": 4.441713805909521e-22,
             "componentsByBoundaryLoops": {
-              "0": 30
+              "0": 1
             }
           }
         }
@@ -2558,21 +2702,22 @@
             "reasons": []
           },
           "stats": {
-            "vertices": 4606,
-            "polygons": 5792,
-            "triangles": 8208,
-            "components": 251,
+            "vertices": 5946,
+            "polygons": 4232,
+            "triangles": 12168,
+            "components": 1,
             "boundaryEdges": 0,
             "boundaryLoops": 0,
             "nonManifoldEdges": 0,
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
-            "boundaryWeldToleranceM": 6.037876523197228e-16,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 6.037876747655725e-16,
             "coincidentBoundaryVertexPairs": 0,
-            "closedVolumeM3": 7.674760735293879e-23,
+            "closedVolumeM3": 7.472904816079187e-23,
             "componentsByBoundaryLoops": {
-              "0": 251
+              "0": 1
             }
           }
         },
@@ -2592,6 +2737,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 10626,
             "boundaryWeldToleranceM": 1.7265084385750157e-15,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 2.4358459587046382e-20,
@@ -2616,6 +2762,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.173330543201201e-15,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 6.16738538255003e-21,
@@ -2640,6 +2787,7 @@
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
             "boundaryWeldToleranceM": 1.173330543201201e-15,
             "coincidentBoundaryVertexPairs": 0,
             "closedVolumeM3": 6.167385382550034e-21,
@@ -2654,21 +2802,22 @@
             "reasons": []
           },
           "stats": {
-            "vertices": 540,
-            "polygons": 720,
-            "triangles": 960,
-            "components": 30,
+            "vertices": 4400,
+            "polygons": 3808,
+            "triangles": 9452,
+            "components": 1,
             "boundaryEdges": 0,
             "boundaryLoops": 0,
             "nonManifoldEdges": 0,
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
-            "boundaryWeldToleranceM": 6.788696223801934e-16,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 6.78863082097338e-16,
             "coincidentBoundaryVertexPairs": 0,
-            "closedVolumeM3": 5.369440751262868e-22,
+            "closedVolumeM3": 4.80558643370393e-22,
             "componentsByBoundaryLoops": {
-              "0": 30
+              "0": 1
             }
           }
         },
@@ -2678,23 +2827,65 @@
             "reasons": []
           },
           "stats": {
-            "vertices": 540,
-            "polygons": 720,
-            "triangles": 960,
-            "components": 30,
+            "vertices": 4400,
+            "polygons": 3808,
+            "triangles": 9452,
+            "components": 1,
             "boundaryEdges": 0,
             "boundaryLoops": 0,
             "nonManifoldEdges": 0,
             "looseEdges": 0,
             "looseVertices": 0,
             "degenerateFaces": 0,
-            "boundaryWeldToleranceM": 6.788696223801934e-16,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 6.78863082097338e-16,
             "coincidentBoundaryVertexPairs": 0,
-            "closedVolumeM3": 5.369440751262861e-22,
+            "closedVolumeM3": 4.805586570614767e-22,
             "componentsByBoundaryLoops": {
-              "0": 30
+              "0": 1
             }
           }
+        }
+      }
+    }
+  },
+  "crossEntityOverlaps": {
+    "note": "Informational only, never failing: intersecting face pairs between DIFFERENT entities in the same level/lod (e.g. thin filaments anchored inside their Z disc by design).",
+    "byLevel": {
+      "muscle": {
+        "context": {
+          "FJ1442|FJ3365": 99,
+          "FJ1442|FJ3381": 23,
+          "FJ3365|FJ3381": 10
+        },
+        "detail": {
+          "FJ1442|FJ3365": 155,
+          "FJ1442|FJ3381": 27,
+          "FJ3365|FJ3381": 25
+        }
+      },
+      "fascicle": {
+        "context": {},
+        "detail": {}
+      },
+      "fiber": {
+        "context": {
+          "pilot-glut4-sites|pilot-sarcolemma": 288
+        },
+        "detail": {
+          "pilot-glut4-sites|pilot-sarcolemma": 320
+        }
+      },
+      "sarcomere": {
+        "context": {
+          "pilot-m-line|pilot-thick-filaments": 1920,
+          "pilot-thin-left|pilot-z-left": 1226,
+          "pilot-thin-right|pilot-z-right": 1228
+        },
+        "detail": {
+          "pilot-m-line|pilot-thick-filaments": 2560,
+          "pilot-thin-left|pilot-z-left": 1509,
+          "pilot-thin-right|pilot-z-right": 1509
         }
       }
     }

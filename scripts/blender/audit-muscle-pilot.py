@@ -15,7 +15,7 @@ from pathlib import Path
 from mathutils import Vector
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from blender_topology import mesh_stats  # noqa: E402
+from blender_topology import mesh_stats, winding_consistency  # noqa: E402
 from muscle_geometry import classify  # noqa: E402
 
 
@@ -55,6 +55,11 @@ for obj in sorted(bpy.context.scene.objects, key=lambda item: item.name):
             record["topologyVerdict"] = classify(obj.get("entityId"), record["mesh"], policy)
             if record["topologyVerdict"]["status"] == "fail":
                 failures.append({"entityId": obj.get("entityId"), "reasons": record["topologyVerdict"]["reasons"]})
+            if obj.get("entityId") in policy.get("sourceSurfaces", []):
+                # Diagnostic only (never repairs the source): quantifies backfacing/
+                # inconsistently wound faces reported as "pink patches" in the normals
+                # diagnostic render.
+                record["normalsConsistency"] = winding_consistency(obj)
     objects.append(record)
 
 report = {

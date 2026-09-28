@@ -276,14 +276,97 @@ def emission_material(name, color):
 BAR_MATERIAL = emission_material('ScaleBarWhite', (1, 1, 1, 1))
 LABEL_MATERIAL = emission_material('ScaleBarLabel', (1, 1, 1, 1))
 
+LEGEND_SWATCH_MATERIALS = {}
+
+def legend_swatch_material(name, color):
+    if name not in LEGEND_SWATCH_MATERIALS:
+        LEGEND_SWATCH_MATERIALS[name] = emission_material(name, color)
+    return LEGEND_SWATCH_MATERIALS[name]
+
+def make_legend(entries, ortho_scale):
+    """Camera-facing legend (color swatch + text per entry), stacked top-left, sized relative
+    to the current framing. Used to make a diagnostic's color coding unambiguous (e.g. that
+    magenta in the normals render specifically means backfacing, not just a normal direction).
+    Returns (rig, [objects]) for the caller to remove after rendering."""
+    rig = bpy.data.objects.new('DiagnosticLegend', None)
+    bpy.context.collection.objects.link(rig)
+    rig.parent = CAMERA
+    size = ortho_scale * 0.05
+    x0 = -ortho_scale * 0.40
+    y0 = ortho_scale * 0.40
+    made = [rig]
+    for i, (color, text) in enumerate(entries):
+        y = y0 - i * size * 1.7
+        bpy.ops.mesh.primitive_cube_add(size=1)
+        swatch = bpy.context.object
+        swatch.name = f'DiagnosticLegendSwatch{i}'
+        swatch.dimensions = (size, size, size * 0.15)
+        swatch.location = (x0, y, 0)
+        swatch.data.materials.append(legend_swatch_material(f'DiagnosticLegendColor{i}', color))
+        swatch.parent = rig
+        swatch.matrix_parent_inverse = Matrix.Identity(4)
+        made.append(swatch)
+        curve = bpy.data.curves.new(f'DiagnosticLegendLabel{i}', type='FONT')
+        curve.align_x = 'LEFT'
+        curve.align_y = 'CENTER'
+        curve.body = text
+        curve.size = size * 0.8
+        if MICRO_FONT is not None:
+            curve.font = MICRO_FONT
+        label = bpy.data.objects.new(f'DiagnosticLegendLabel{i}', curve)
+        bpy.context.collection.objects.link(label)
+        label.data.materials.append(LABEL_MATERIAL)
+        label.location = (x0 + size * 0.75, y, 0)
+        label.parent = rig
+        label.matrix_parent_inverse = Matrix.Identity(4)
+        made.append(label)
+    rig.location = (0, 0, -(CAMERA.data.clip_start * 4))
+    return rig, made
+
+def remove_legend(made):
+    for o in made:
+        if o.type == 'EMPTY':
+            bpy.data.objects.remove(o, do_unlink=True)
+            continue
+        data = o.data
+        bpy.data.objects.remove(o, do_unlink=True)
+        if data is None or data.users:
+            continue
+        if isinstance(data, bpy.types.Mesh):
+            bpy.data.meshes.remove(data)
+        elif isinstance(data, bpy.types.Curve):
+            bpy.data.curves.remove(data)
+
 bpy.ops.mesh.primitive_cube_add(size=1)
 BAR_OBJ = bpy.context.object
 BAR_OBJ.name = 'DiagnosticScaleBar'
 BAR_OBJ.data.materials.append(BAR_MATERIAL)
 
+# Blender's built-in default font has no U+00B5 (MICRO SIGN) glyph, so labels like "50 µm"
+# silently fall back to "um". Blender's own datafiles only bundle complex-script fonts
+# (Noto Sans for Kannada/Gurmukhi/Khmer/... under 4.4/datafiles/fonts); none cover Latin-1
+# Supplement, so a system font with the glyph is loaded instead and recorded in the receipt.
+MICRO_FONT_CANDIDATES = [
+    '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+    '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
+    '/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf',
+]
+MICRO_FONT = None
+MICRO_FONT_PATH = None
+for candidate in MICRO_FONT_CANDIDATES:
+    if os.path.exists(candidate):
+        try:
+            MICRO_FONT = bpy.data.fonts.load(candidate)
+            MICRO_FONT_PATH = candidate
+            break
+        except RuntimeError:
+            continue
+
 BAR_CURVE = bpy.data.curves.new('DiagnosticScaleLabel', type='FONT')
 BAR_CURVE.align_x = 'CENTER'
 BAR_CURVE.align_y = 'TOP'
+if MICRO_FONT is not None:
+    BAR_CURVE.font = MICRO_FONT
 LABEL_OBJ = bpy.data.objects.new('DiagnosticScaleLabel', BAR_CURVE)
 bpy.context.collection.objects.link(LABEL_OBJ)
 LABEL_OBJ.data.materials.append(LABEL_MATERIAL)
@@ -333,14 +416,17 @@ def place_scale_bar(ortho_scale, length_m=None):
 # ---------------------------------------------------------------------------
 RENDERS = []
 
-def do_render(filename, kind):
+def do_render(filename, kind, legend=None):
     path = OUT / filename
     scene.render.filepath = str(path)
     bpy.ops.render.render(write_still=True)
     img = bpy.data.images.load(str(path))
     w, h = img.size[0], img.size[1]
     bpy.data.images.remove(img)
-    RENDERS.append({'file': filename, 'kind': kind, 'sha256': sha256(path), 'width': w, 'height': h})
+    record = {'file': filename, 'kind': kind, 'sha256': sha256(path), 'width': w, 'height': h}
+    if legend is not None:
+        record['legend'] = [{'color': list(color), 'meaning': text} for color, text in legend]
+    RENDERS.append(record)
     return path
 
 # ---------------------------------------------------------------------------
@@ -467,7 +553,7 @@ def wireframe_material():
         nt.nodes.remove(n)
     wire = nt.nodes.new('ShaderNodeWireframe')
     wire.use_pixel_size = True  # constant on-screen line width regardless of world-space zoom
-    wire.inputs['Size'].default_value = 1.6
+    wire.inputs['Size'].default_value = 1.1  # thinner than the original 1.6: dense lattices
     fill = nt.nodes.new('ShaderNodeEmission')
     fill.inputs['Color'].default_value = (0.05, 0.05, 0.06, 1)
     fill.inputs['Strength'].default_value = 0.4
@@ -493,6 +579,14 @@ orient_camera(forward, LONG_LETTER)
 ortho_scale, distance = fit_camera(copies, forward, LONG_LETTER, target=TURNTABLE_TARGET, margin=1.3)
 place_scale_bar(ortho_scale, BAR_LENGTH_M)
 do_render('wireframe.png', 'wireframe')
+# A dense lattice (many filaments/links) rendered full-frame becomes a saturated silhouette
+# at contact-sheet tile resolution; add a zoomed crop of the same view, centered on the same
+# target, so individual edges stay legible alongside the full-specimen context shot.
+CROP_SCALE = ortho_scale * 0.10
+CAMERA.data.ortho_scale = CROP_SCALE
+place_scale_bar(CROP_SCALE)
+do_render('wireframe-crop.png', 'wireframe-crop')
+CAMERA.data.ortho_scale = ortho_scale
 hide_originals(False)
 cleanup_copies(rig, copies)
 
@@ -532,7 +626,16 @@ forward = orbit_forward(math.radians(35), ELEVATION_DEG)
 orient_camera(forward, LONG_LETTER)
 ortho_scale, distance = fit_camera(copies, forward, LONG_LETTER, target=TURNTABLE_TARGET, margin=1.3)
 place_scale_bar(ortho_scale, BAR_LENGTH_M)
-do_render('normals.png', 'normals')
+# Make the color coding unambiguous: magenta here specifically means "backfacing" (per the
+# shader above), not a normal direction that happens to look pink -- bake a legend into the
+# render itself rather than relying on a caption elsewhere.
+NORMALS_LEGEND = [
+    ((1.0, 0.1, 0.6, 1), 'backfacing (inconsistent winding)'),
+    ((0.75, 0.85, 0.95, 1), 'front-facing: color = normal * 0.5 + 0.5'),
+]
+legend_rig, legend_objs = make_legend(NORMALS_LEGEND, ortho_scale)
+do_render('normals.png', 'normals', legend=NORMALS_LEGEND)
+remove_legend(legend_objs)
 hide_originals(False)
 cleanup_copies(rig, copies)
 
@@ -609,7 +712,7 @@ receipt = {
     'camera': {'type': 'ORTHO', 'orthoScale': TURNTABLE_ORTHO, 'elevationDeg': ELEVATION_DEG},
     'samples': SAMPLES,
     'size': SIZE,
-    'scaleBar': {'lengthM': BAR_LENGTH_M, 'label': BAR_LABEL},
+    'scaleBar': {'lengthM': BAR_LENGTH_M, 'label': BAR_LABEL, 'labelFont': MICRO_FONT_PATH or 'Blender built-in (no U+00B5 glyph)'},
     'renders': RENDERS,
     'normalizationScale': NORM_SCALE,
 }

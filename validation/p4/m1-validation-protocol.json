@@ -1,0 +1,305 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-09-29",
+  "status": "metrics_locked_no_data_admitted",
+  "purpose": "Predeclare M1 (meal -> portal/systemic glucose -> insulin secretion -> muscle interstitial insulin -> receptor/AKT/GLUT4 -> muscle uptake -> systemic clearance) endpoint definitions, comparison metrics and acceptance-rule FORM before any model output for this milestone is seen. This document locks metrics and ranks dataset candidates. It does not admit data, does not set numeric acceptance bounds, and does not authorize fitting.",
+  "governingDocuments": [
+    "validation/p4/human-endpoint-protocol.json",
+    "docs/P4_IMPLEMENTATION.md",
+    "docs/MULTISCALE_EXECUTION_PLAN.md#9-verification-and-biological-validation"
+  ],
+  "carriedForwardCandidates": {
+    "note": "These two candidates were already selected in validation/p4/human-endpoint-protocol.json (reviewedOn 2026-09-22). They are repeated here by reference, not re-verified beyond what that file already records, and keep their original admission status.",
+    "goodyear1996": {
+      "id": "goodyear1996-oral-glucose",
+      "role": "muscle-specific candidate (membrane GLUT4 / vesicle transport)",
+      "status": "see validation/p4/human-endpoint-protocol.json#primaryCandidate",
+      "admission": "not_admitted",
+      "blockersCarriedForward": [
+        "Full methods and paired donor measurements not available in the inspected abstract (publisher PDF returned HTTP 403 on 2026-09-22, not re-attempted today).",
+        "Error-bar definition and membrane-recovery normalization unconfirmed.",
+        "No independence check against Sedaghat calibration/source data performed yet."
+      ]
+    },
+    "kelley1988": {
+      "id": "kelley1988-oral-disposal",
+      "role": "systemic/muscle tracer-disposal candidate",
+      "status": "see validation/p4/human-endpoint-protocol.json#systemicCandidate",
+      "admission": "pending_full_protocol_and_tracer_observation_model",
+      "verifiedTodayAdditional": "WebFetch of https://www.jci.org/articles/view/113489 on 2026-09-29 confirms: n=9 normal volunteers, 1 g/kg oral glucose, 5-hour observation, dual-isotope ([6-3H] IV tracer / [1-14C] oral tracer) plus indirect calorimetry and forearm balance (glucose, lactate, alanine, pyruvate, O2, CO2). Only group summary statistics (mean +/- SE) are reported in the inspected abstract; individual-level timepoint data were not found. No stated data-availability or reuse license.",
+      "blockersCarriedForward": [
+        "Summary-only (group mean +/- SE), not individual/paired donor series.",
+        "Forearm balance is one limb's net exchange, not whole-muscle or whole-body disposal; observation mapping to the model's muscle compartment boundary is unresolved.",
+        "Oral load is 1 g/kg, not a fixed 75 g dose; per-subject body-mass-scaled dose is not identical to the M1 75 g reference input."
+      ]
+    }
+  },
+  "newCandidatesReviewedToday": [
+    {
+      "id": "hall2018-glucotypes",
+      "title": "Glucotypes reveal new patterns of glucose dysregulation",
+      "doi": "10.1371/journal.pbio.2005143",
+      "url": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.2005143",
+      "evidenceInspected": "Primary article and its Supporting Information listing, fetched live on 2026-09-29 (article page and #sec002 methods excerpt). Actual S5/S8 data files were located in the article's Supporting Information list but were NOT downloaded, opened or checksummed in this review.",
+      "population": {
+        "n": 57,
+        "sex": "32 female, 25 male",
+        "ageRange": "25-76, median 51",
+        "glucoseToleranceBreakdown": "38 normoglycemic by standard clinical criteria, 14 prediabetes, 5 type 2 diabetes (by fasting/2-h OGTT criteria)",
+        "caveat": "The paper separately reports that 16 of the 38 clinically 'normal' subjects showed prediabetic- or diabetic-range excursions on CGM during standardized meals. This is a within-study finding about classification discordance, not a study-design blocker, but it means 'normoglycemic by standard criteria' and 'normoglycemic by this study's own CGM criteria' are two different candidate strata and must not be conflated when selecting the calibration/held-out subset."
+      },
+      "protocol": {
+        "ogttLoadGrams": 75,
+        "ogttTimepointsMinutes": [
+          0,
+          30,
+          120
+        ],
+        "ogttMeasuredVariables": [
+          "plasma glucose (oximetric)",
+          "plasma insulin (radioimmunoassay)",
+          "C-peptide (for ISEC-derived insulin secretion rate)"
+        ],
+        "separateStandardizedMealArm": "30 of the 57 subjects also completed 3 standardized breakfast meals (bread+peanut butter, PROBAR protein bar, cornflakes+milk) with CGM-only glucose (no insulin) at those meals; this arm does NOT have paired insulin and is not proposed as an M1 endpoint source."
+      },
+      "measuredVariablesForM1": [
+        "plasma glucose at 0/30/120 min (mg/dL)",
+        "plasma insulin at 0/30/120 min",
+        "C-peptide-derived insulin secretion rate (ISEC software output) at 0/30/120 min"
+      ],
+      "individualVsSummary": "Individual-level: S5 Data is a per-participant SQLite table of clinical/glucotype variables; S8 Data is a TSV of insulin secretion rate. Confirmed only from the Supporting Information listing and its stated file descriptions, not from opening the files.",
+      "license": "CC BY 4.0 (PLOS Biology open-access license, confirmed on the article page)",
+      "independenceRisk": "Low as currently understood: this is an independent clinical/wearables cohort study, not a source used to calibrate Sedaghat 2002 receptor signaling or Dalla Man 2007 meal-model parameters. Not yet cross-checked against every parameter source cited elsewhere in this repository.",
+      "admissionBlockers": [
+        "Only 3 OGTT timepoints (0/30/120 min); the locked M1 glucose panel below wants 0/30/60/90/120 min, so this dataset can only populate 0, 30 and 120 min cells and cannot supply 60/90 min, time-to-peak, or a full iAUC trapezoid without interpolation assumptions this review does not authorize.",
+        "S5/S8 files not yet downloaded, opened, or checksummed; per-subject pairing, units, and missing-data patterns are unverified beyond the Supporting Information descriptions.",
+        "Need to separate the 38-by-standard-criteria stratum from the 16 CGM-discordant subjects before treating any subset as 'normal glucose tolerance' for this protocol.",
+        "Insulin secretion rate (ISEC, C-peptide-derived) is not the same observable as plasma insulin concentration; a separate observation mapping is needed if it is used in place of an insulin panel.",
+        "No muscle-specific endpoint in this dataset; it can only serve the systemic glucose/insulin panel, not the muscle GLUT4/uptake panel."
+      ]
+    },
+    {
+      "id": "nhanes-ogtt-public-use",
+      "title": "NHANES Oral Glucose Tolerance Test public-use files (multiple cycles, e.g. OGTT_I / GLU_I for 2015-2016)",
+      "url": "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2015/DataFiles/OGTT_I.htm",
+      "evidenceInspected": "Primary CDC/NHANES documentation page for the 2015-2016 cycle, fetched live on 2026-09-29.",
+      "population": {
+        "n": "2084 participants with complete glucose measurements in the 2015-2016 cycle alone (2713 eligible aged 12+); additional independent n per other cycles (2005-2006 onward)",
+        "glucoseTolerance": "Mixed population; normal/prediabetic/diabetic status must be derived post hoc from fasting and 2-h glucose using ADA/WHO cutoffs, not pre-selected by the survey"
+      },
+      "protocol": {
+        "ogttLoadGrams": 75,
+        "beverage": "Trutol",
+        "timepointsMinutes": [
+          0,
+          120
+        ],
+        "note": "Only fasting (0 min) and one post-load draw at 120 min (+/-15 min window); no 30/60/90 min samples."
+      },
+      "measuredVariablesForM1": [
+        "fasting and 2-h plasma glucose (GLU_x file)",
+        "fasting insulin (separate INS_x file); no 2-h insulin confirmed in the inspected documentation"
+      ],
+      "individualVsSummary": "Individual-level, de-identified public-use microdata linkable by SEQN across NHANES files.",
+      "license": "US federal public-use government data; no reuse restriction found in the inspected page.",
+      "independenceRisk": "Unassessed; large general-population survey, unlikely to overlap with Sedaghat 2002 or Dalla Man 2007 source cohorts, but not explicitly checked.",
+      "admissionBlockers": [
+        "Only 2 OGTT timepoints (0, 120 min); cannot support 30/60/90-min glucose, time-to-peak, or a trapezoidal iAUC without heavy assumptions.",
+        "2-hour insulin measurement not confirmed to exist in the inspected documentation (insulin file appears to be fasting-only for at least the checked cycles); needs a direct check of INS_x file variable lists before this can be treated as a paired glucose+insulin curve source at all.",
+        "Requires constructing the normal-glucose-tolerance subset from raw variables (fasting glucose <100 mg/dL and 2-h glucose <140 mg/dL) rather than a pre-labeled cohort; that derivation is not yet performed.",
+        "No muscle-specific endpoint; systemic panel only, and only at the 2 available timepoints."
+      ]
+    },
+    {
+      "id": "dallaman-basu-rizza-triple-tracer-cohort",
+      "title": "Triple-tracer mixed-meal cohort underlying Basu/Rizza/Dalla Man postprandial glucose kinetics work (e.g. Basu et al. 2003 AJP-Endo; Dalla Man et al. 2007 IEEE TBME meal model)",
+      "urlsChecked": [
+        "https://journals.physiology.org/doi/full/10.1152/ajpendo.00190.2001",
+        "https://www.ebi.ac.uk/biomodels/BIOMD0000000379",
+        "https://pubmed.ncbi.nlm.nih.gov/17946394/"
+      ],
+      "evidenceInspected": "Search-result abstracts/summaries only; full methods and any data-sharing statement were not opened.",
+      "population": "Reported across related papers as up to ~204 subjects (various glucose-tolerance strata) contributing to the triple-tracer/model-parameter literature; the exact normal-glucose-tolerance subset size was not independently confirmed today.",
+      "individualVsSummary": "Not established; no public raw-data repository or download link was found in this review.",
+      "license": "Not found; no public data repository located.",
+      "independenceRisk": "HIGH and explicit per the task's own warning: this cohort (or heavily overlapping cohorts from the same Mayo/Rizza/Cobelli group) is the calibration source for the Dalla Man 2007 meal-glucose model. If this simulator's secretion or meal-appearance module ever adopts Dalla Man-derived kinetics, this cohort cannot also serve as a held-out human validation set for that module. Currently the P4 secretion boundary is described in docs/P4_IMPLEMENTATION.md as a 'declared synthetic secretion boundary,' not an explicit Dalla Man implementation, so the conflict is not yet active -- but this candidate should not be pursued as a data source without first confirming which published kinetic model (if any) the secretion/appearance module actually reuses.",
+      "admissionBlockers": [
+        "No public raw individual-level dataset located; the underlying data appear to live only inside the originating lab's records and derived model publications.",
+        "High independence risk against a Dalla Man-based secretion or gut-appearance module, as stated above.",
+        "Not pursued further in this review beyond confirming the independence risk; treat as excluded pending a public data release."
+      ],
+      "admission": "excluded_pending_public_release_and_independence_resolution"
+    },
+    {
+      "id": "hall2018-glucotypes-muscle-caveat",
+      "note": "No new muscle-biopsy or tracer-disposal muscle-specific dataset candidate (beyond the carried-forward Goodyear 1996 and Kelley 1988) was found and verified in this review. OpenML, general Zenodo/Dryad/figshare/Mendeley Data searches for '75 g OGTT glucose insulin' surfaced either disease-population cohorts (e.g. a lipodystrophy OGTT dataset on Zenodo, DOI 10.5281/zenodo.22944731, glucose+insulin present but population is partial lipodystrophy and file format is a .docx summary table, not raw timepoint data -- excluded on population and format grounds) or CGM-only wearable datasets with no insulin/C-peptide at all (e.g. PhysioNet 'BIG IDEAS Lab Glycemic Variability and Wearable Device Data' v1.1.2, n=16, OGTT explicitly NOT collected because study files were corrupted, confirmed by fetching https://physionet.org/content/big-ideas-glycemic-wearable/1.1.2/ on 2026-09-29 -- excluded, no OGTT and no insulin).",
+      "admission": "not_applicable_no_candidate"
+    }
+  ],
+  "proposedCalibrationHeldOutSplit": {
+    "status": "blocked_pending_data_admission",
+    "reason": "No dataset above has been admitted (downloaded, checksummed, and had its exact per-subject fields and observation mapping confirmed). A calibration/held-out split cannot be finalized before the actual admitted data and its normal-glucose-tolerance subset are in hand, per docs/MULTISCALE_EXECUTION_PLAN.md #9.1 ('Separate calibration data from held-out validation data... before fitting').",
+    "proposedAssignmentPendingAdmission": {
+      "calibrationCandidateOnly": [],
+      "heldOutOnly": [
+        "hall2018-glucotypes (systemic glucose/insulin panel at 0/30/120 min, normal-glucose-tolerance-by-standard-criteria stratum)",
+        "goodyear1996-oral-glucose (muscle membrane-GLUT4 panel, if admitted)",
+        "kelley1988-oral-disposal (muscle/systemic tracer-disposal panel, if admitted)"
+      ],
+      "rationale": "None of the presently reviewed candidates are known to have been used to fit any parameter of this simulator's secretion, transport, receptor or signaling modules (Sedaghat 2002 is the fitted signaling source; none of these clinical cohorts are Sedaghat's source data). Provisionally every admitted dataset would sit in the held-out set and NONE would be used for calibration, because this project has performed no fitting of the meal/secretion module to any human curve yet. This assignment is provisional and must be re-confirmed once actual admission occurs and once the secretion/appearance module's own kinetic-model provenance (see dallaman-basu-rizza-triple-tracer-cohort entry above) is fully resolved.",
+      "nhanesRole": "If admitted, nhanes-ogtt-public-use is proposed as a large-n sanity/background-variability reference for 0 and 120 min glucose only, not as the primary held-out curve source, because it cannot supply the 30/60/90-min shape endpoints below."
+    }
+  },
+  "lockedEndpointsAndMetrics": {
+    "lockedBefore": "Any admission of the datasets above and any model run of this milestone's meal-to-muscle pathway.",
+    "referenceSubject": {
+      "declaration": "One adult male reference subject, 70 kg, as the simulator's only currently declared body. No claim is made for female, pediatric, elderly, or other body-composition subjects. Any comparison dataset must report or allow derivation of subject-level age/BMI/sex so a covariate mismatch is visible rather than silently averaged away.",
+      "requiredCovariates": [
+        "age",
+        "BMI (or height+weight)",
+        "sex"
+      ],
+      "limits": "Comparisons are restricted to adult, non-pregnant, non-diabetic subjects reasonably near a 70 kg reference mass; no correction model for body-mass scaling of glucose/insulin doses is implied or authorized by this document."
+    },
+    "systemicGlucosePanel": [
+      {
+        "endpoint": "plasma glucose at 0/30/60/90/120 min",
+        "modelObservable": "Arterial glucose compartment -> declared as a plasma-basis, systemic-arterial readout. Caveat: clinical OGTT draws are typically venous, and some published values are whole-blood rather than plasma; any comparison must state which basis the source dataset uses and apply only a documented unit/basis conversion, never an unstated assumption of equivalence.",
+        "unitsConversion": "Model glucose is tracked as grams in the declared compartment and converted to mg/dL using the compartment's declared reference volume for reporting; source data are typically already mg/dL or mmol/L (multiply mmol/L by 18.0156 for mg/dL).",
+        "timeAlignment": "t=0 aligned to the start of the modeled 75 g carbohydrate meal ingestion event, matching the source study's t=0 oral dose administration.",
+        "comparisonStatistic": "Fraction of the model's 0/30/60/90/120-min timepoints falling inside the admitted cohort's reported or derived 10th-90th percentile band at the matching timepoint. Where a source dataset reports only mean +/- SD, the band is standardized-error-based (locked form: model value must fall within a number of SDs of the reported mean, with that SD-multiplier itself set from the admitted dataset's own reported variability at admission time, not invented now).",
+        "acceptanceRule": {
+          "form": "LOCKED as a form only: PASS if the model value at each timepoint falls within the admitted dataset's own 10th-90th percentile band (percentile form) or within its own reported-SD-derived band (SD form), using whichever form the admitted dataset actually supports.",
+          "numericBand": null,
+          "numericBandStatus": "not_locked_pending_admitted_data; the interval must be derived from the admitted dataset's own variability, never from a simulator numerical tolerance (per docs/MULTISCALE_EXECUTION_PLAN.md #9.1)."
+        }
+      },
+      {
+        "endpoint": "glucose incremental AUC (iAUC), 0-120 min",
+        "modelObservable": "Trapezoidal integration of (modeled arterial glucose above the modeled t=0 baseline) over 0-120 min, same plasma-basis caveat as above.",
+        "unitsConversion": "mg/dL*min (or mmol/L*min if the admitted source is reported in mmol/L; convert once and record the conversion, do not mix bases within one comparison).",
+        "timeAlignment": "Same t=0 anchor as the glucose panel above.",
+        "comparisonStatistic": "Standardized error of model iAUC vs the admitted cohort's reported or derived iAUC mean and SD.",
+        "acceptanceRule": {
+          "form": "LOCKED: PASS if model iAUC falls within the admitted dataset's own reported-SD-derived band around its mean iAUC.",
+          "numericBand": null,
+          "numericBandStatus": "not_locked_pending_admitted_data"
+        }
+      },
+      {
+        "endpoint": "time-to-peak glucose",
+        "modelObservable": "Time of the modeled arterial glucose compartment's maximum value within the 0-120 min window.",
+        "unitsConversion": "minutes, no conversion needed.",
+        "timeAlignment": "Same t=0 anchor.",
+        "comparisonStatistic": "Absolute difference in minutes from the admitted cohort's reported or derived median/mean time-to-peak.",
+        "acceptanceRule": {
+          "form": "LOCKED: PASS if the model's time-to-peak falls within the admitted dataset's own reported spread (e.g. IQR or SD-derived band) of observed times-to-peak.",
+          "numericBand": null,
+          "numericBandStatus": "not_locked_pending_admitted_data"
+        }
+      },
+      {
+        "endpoint": "2-hour (120 min) glucose",
+        "modelObservable": "Same arterial glucose compartment value at t=120 min; this is the endpoint the NHANES-style 0/120-only sources can actually supply.",
+        "unitsConversion": "mg/dL, same conversion rule as above.",
+        "timeAlignment": "t=120 min from meal start, allowing the same +/-15 min window used by clinical OGTT protocols when the source data declares one.",
+        "comparisonStatistic": "Fraction inside the admitted dataset's own 10th-90th percentile band, or SD-derived band, at 120 min.",
+        "acceptanceRule": {
+          "form": "LOCKED, same form as the systemic glucose panel above.",
+          "numericBand": null,
+          "numericBandStatus": "not_locked_pending_admitted_data"
+        }
+      },
+      {
+        "endpoint": "return to basal (time for glucose to re-cross the modeled t=0 baseline after its peak, within the observed window)",
+        "modelObservable": "First post-peak crossing time of the modeled arterial glucose compartment back through its own t=0 value.",
+        "unitsConversion": "minutes.",
+        "timeAlignment": "Same t=0 anchor; window bounded by the admitted dataset's last observed timepoint (e.g. 120 min), so 'no return to basal observed by end of window' is itself a valid, recorded outcome for both model and data, not treated as a missing value.",
+        "comparisonStatistic": "Categorical/qualitative match (returned vs not returned within window) plus, when both returned, the same standardized-error-vs-SD comparison as time-to-peak.",
+        "acceptanceRule": {
+          "form": "LOCKED: category must match (both return within window, or both fail to); if both return, the numeric time must fall within the admitted dataset's own reported spread.",
+          "numericBand": null,
+          "numericBandStatus": "not_locked_pending_admitted_data"
+        }
+      }
+    ],
+    "systemicInsulinPanel": [
+      {
+        "endpoint": "insulin peak (magnitude and, where the source supports it, time)",
+        "modelObservable": "Portal or peripheral insulin compartment, per the source dataset's own draw site. Caveat locked explicitly: portal-vein insulin (as produced at the modeled beta-cell secretion boundary, before hepatic first-pass extraction) is NOT the same observable as peripheral venous insulin (as measured in essentially every human OGTT study, including all candidates above). The model observable for comparison to any of the candidates in this document MUST be the post-hepatic peripheral/systemic insulin compartment, never the raw portal secretion output, unless a dataset is later found that specifically reports portal insulin.",
+        "unitsConversion": "The model tracks a declared physical insulin amount/concentration (docs/P4_IMPLEMENTATION.md notes secretion is carried in pmol/min and converted internally); clinical sources are typically uIU/mL or pmol/L. Conversion: 1 uIU/mL insulin approx 6.0 pmol/L (assay-dependent; the admitted dataset's own assay conversion factor must be used if it states one, rather than this generic figure, at admission time).",
+        "timeAlignment": "Same t=0 meal-start anchor as glucose.",
+        "comparisonStatistic": "Standardized error of model peak insulin vs the admitted dataset's reported/derived peak mean and SD; if the dataset only reports insulin at 0/30/120 min (as hall2018-glucotypes does), 'peak' is restricted to the maximum of the available discrete draws, not a continuous-curve peak, and this restriction must be stated in the comparison record.",
+        "acceptanceRule": {
+          "form": "LOCKED, SD-derived band form as above.",
+          "numericBand": null,
+          "numericBandStatus": "not_locked_pending_admitted_data"
+        }
+      },
+      {
+        "endpoint": "insulin iAUC, 0-120 min",
+        "modelObservable": "Trapezoidal integration of the systemic/peripheral insulin compartment above its t=0 baseline over 0-120 min; restricted to the timepoints actually available in the admitted dataset (e.g. only 0/30/120 min for hall2018-glucotypes, which materially widens trapezoidal error relative to a 0/30/60/90/120 min source and must be flagged, not silently treated as equally precise).",
+        "unitsConversion": "Same insulin unit conversion as the peak endpoint.",
+        "timeAlignment": "Same t=0 anchor.",
+        "comparisonStatistic": "Standardized error vs the admitted dataset's own reported/derived SD.",
+        "acceptanceRule": {
+          "form": "LOCKED, SD-derived band form.",
+          "numericBand": null,
+          "numericBandStatus": "not_locked_pending_admitted_data"
+        }
+      },
+      {
+        "endpoint": "insulin/glucose iAUC ratio, 0-120 min",
+        "modelObservable": "Ratio of the two iAUC observables defined above, both computed on the same restricted timepoint set actually available in the admitted dataset.",
+        "unitsConversion": "Dimensionless after each iAUC's own unit conversion is applied; ratio units must be recorded (e.g. pmol/L*min per mg/dL*min) rather than assumed self-canceling.",
+        "timeAlignment": "Same t=0 anchor.",
+        "comparisonStatistic": "Standardized error vs the admitted dataset's own reported/derived ratio SD, or, if the source reports insulin and glucose iAUC separately without a joint ratio SD, a conservative propagated-error band computed from the two component SDs (locked as a form; the propagation formula and its inputs must be recorded at admission time, not invented per-comparison).",
+        "acceptanceRule": {
+          "form": "LOCKED, SD-derived band form.",
+          "numericBand": null,
+          "numericBandStatus": "not_locked_pending_admitted_data"
+        }
+      }
+    ],
+    "muscleSpecificPanel": {
+      "status": "endpoint definitions locked in form only; no muscle dataset is admitted",
+      "goodyear1996Mapping": {
+        "modelObservable": "Muscle-cell-compartment surface/membrane GLUT4 pool (the 'muscle-cell' compartment described in docs/P4_IMPLEMENTATION.md) at the model-minute matching the source's 60-minute post-75g-glucose biopsy timepoint, expressed as a within-run post/basal ratio to match the source's within-donor design.",
+        "comparisonStatistic": "Log within-donor (or, absent paired donor data, within-run) post/basal ratio, standardized error vs the source's reported ratio and propagated SD from its basalReportedPlusMinus/postReportedPlusMinus fields in validation/p4/human-endpoint-protocol.json.",
+        "acceptanceRule": {
+          "form": "LOCKED, SD-derived band form, IDENTICAL in structure to the systemic endpoints above.",
+          "numericBand": null,
+          "numericBandStatus": "not_locked_pending_admission; blocked on the same admission gaps already recorded in validation/p4/human-endpoint-protocol.json (paired donor data, membrane-recovery normalization, independence check)."
+        }
+      },
+      "kelley1988Mapping": {
+        "modelObservable": "Net glucose flux across the model's muscle-tissue/muscle-blood boundary (capillary exchange plus GLUT4-mediated flux, summed) over the observation window, expressed as a fraction of the modeled 75 g (or mass-scaled equivalent) oral dose, to match the source's percent-of-dose disposal framing.",
+        "comparisonStatistic": "Standardized error vs the source's reported group mean and SE, explicitly treated as a group-level (not individual) comparison given the source provides only summary statistics.",
+        "acceptanceRule": {
+          "form": "LOCKED, SD/SE-derived band form.",
+          "numericBand": null,
+          "numericBandStatus": "not_locked_pending_admission; blocked on dose-scaling (1 g/kg vs fixed 75 g) and observation-window mapping already noted above."
+        }
+      }
+    }
+  },
+  "failureHandling": {
+    "rule": "Every locked endpoint above is evaluated once data are admitted and a model run exists, including endpoints the model fails. A failed endpoint is retained in the evaluation record with its computed value, the acceptance band it was compared against, and the FAIL outcome; it is never deleted, silently re-scoped, or re-run with a widened band after failing.",
+    "noBorrowedTolerances": "Numeric acceptance bands for every endpoint above must be derived solely from the admitted dataset's own reported or extractable variability (SD, percentile band, or explicit propagated error). The P1 numerical engineering tolerances (e.g. the 1e-8 amount-ledger residual in docs/MULTISCALE_EXECUTION_PLAN.md #9.1) are conservation/solver checks and are explicitly forbidden from being reused as a biological acceptance bound for any endpoint in this document."
+  },
+  "fitPerformed": false,
+  "biologicalPass": false,
+  "requiredBeforeFitting": [
+    "Download, checksum and version at least one systemic glucose+insulin dataset (hall2018-glucotypes is the leading candidate) with its exact per-subject fields verified by opening the files, not just their Supporting Information descriptions.",
+    "Confirm the normal-glucose-tolerance subset definition (standard clinical criteria vs this study's own CGM-based discordance finding) before computing any band.",
+    "Resolve whether the simulator's secretion/appearance module reuses any Dalla Man-derived kinetics, to finalize the independence determination against the dallaman-basu-rizza-triple-tracer-cohort entry.",
+    "Derive and lock each numericBand above from the admitted dataset's own variability, still before any model output for this milestone is inspected.",
+    "Only then run the meal-to-muscle pathway and evaluate every locked endpoint, retaining failures per failureHandling above."
+  ],
+  "engineeringScope": "This document performs candidate selection and metric locking only. It runs no model, admits no dataset, and sets no numeric bound. It supersedes nothing in validation/p4/human-endpoint-protocol.json; that file's own candidates and blockers remain authoritative for Goodyear 1996 and Kelley 1988 and are only cross-referenced here.",
+  "secretionModuleProvenance": {
+    "resolvedOn": "2026-09-29",
+    "module": "app/simulation/beta-cell.ts (models/dallaman2007)",
+    "finding": "The P4 secretion boundary now reuses the Dalla Man 2007 secretion STRUCTURE (static delayed component plus dG/dt dynamic component, portal release). Its numeric constants (gamma, K, alpha, beta, Sb) are declared unverified engineering placeholders; Table 1 of the IEEE paper could not be read. Consequence: the conflict with the dallaman-basu-rizza-triple-tracer-cohort is now ACTIVE for structure and becomes a parameter conflict if Table 1 values are adopted; that cohort stays excluded from held-out validation of the secretion module."
+  }
+}

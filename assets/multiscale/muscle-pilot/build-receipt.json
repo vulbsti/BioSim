@@ -10,12 +10,12 @@
     "node": "v26.9.0"
   },
   "inputs": {
-    "scripts/blender/build-muscle-pilot.py": "f4fa1df9923beb7ffb2faeee55e475df4ae3cc0f9e0c86e650bae676c33ff04b",
-    "scripts/blender/muscle_geometry.py": "5c1e035514602aed20e20eb16f094fcb14546202a1bf7dcbd716c7bfa6f8720a",
-    "scripts/blender/blender_topology.py": "cdf9afad137fe51bfc6cdba5d79fd84e1d1dbca53b2b418023db7acfd93e75e9",
-    "scripts/blender/audit-muscle-pilot.py": "e2470b813b226066d66bee9df2d73b80b297f5e5dce777b652b0c647c8c53009",
+    "scripts/blender/build-muscle-pilot.py": "f1ba2a79d1cddcbfd26ed2ef01c4c3c0b2b614f10224d587aa743ecdf0864c03",
+    "scripts/blender/muscle_geometry.py": "3d47ca6071233cb7929f6eb77a1c6610da8ea67fa6f13bdcf3d77b835feac3e7",
+    "scripts/blender/blender_topology.py": "206abedc566635010e23af5456d0bbc24536656a02782041ae28a9b45c82ee8d",
+    "scripts/blender/audit-muscle-pilot.py": "83b6bcfc837b21c05edfe3bcadf855e3c7a661d15cea27784f8b346143ac5e9d",
     "scripts/blender/build-package.mjs": "75be86acd54c21be26bb0fdad7123587ce79db35875f4b20de8cd3131537698f",
-    "assets/multiscale/muscle-pilot/spec.json": "937578ab2f8fada7cdca74c1ddd1db57ffd1584597ba3dd9b0442d98c37d0e36",
+    "assets/multiscale/muscle-pilot/spec.json": "09a424ab38891c03509ca943db5bdc1f0df2cb31d692e6f1f595c746f94058f0",
     "public/models/atlas.json": "c359f4bcd2cba90b7411d66d5e9fc04dc81294d46cd5c1e8b212c824f2e5bbee",
     "public/models/body-1.bin": "aa077a4675f0d0dd3c9b0af39dc8cf6bcb348c3bf7d283478d4206ce30a5a0de",
     "public/models/body-13.bin": "4c51b6be85d5b705d2b52b79b9ad1cdae0b65ad03c9402a2f2673c7633fd94f3"
@@ -31,48 +31,45 @@
     "reports": "validation/p2/blender-audit/",
     "failures": 0
   },
-  "semanticChanges": [
-    "sarcomere/context: 13304 -> 16580 triangles",
-    "sarcomere/detail: 47000 -> 51368 triangles"
-  ],
-  "manifestSHA256": "c571f1767073b54d5e9e22cbf5fb8c4663924ddba92109a54ae907fe282f6092",
+  "semanticChanges": [],
+  "manifestSHA256": "5757b76382a3c4ce05beafd3995d9200b83691aa17ae0c81784cc45b08c9a959",
   "blenderFiles": {
-    "fascicle.blend": "a902387b29c0a95c47b20ba3278f5e469097eed7c3bf6599c0af949b5a8d6bd4",
-    "fiber.blend": "f2b582d19f89a5efc0195d43c15e7a8fe019ff38e8fe602d1eeb3f4518547498",
-    "muscle.blend": "ed4943d5538ac584a74dce26ad713a543c805a5b65113e7e50e2c76d495288f8",
-    "sarcomere.blend": "c7150b7226c7a7ea00ee7fdab0ec7f502b4eeb63a08f5d74fc1ce633b9111cff"
+    "fascicle.blend": "bdc8b9d398772585f64c8d6f54cc9caf45fe179c57546191c7c91f88b1098615",
+    "fiber.blend": "bb7b238ce80cbccbe72085c50d43ca4e11f889dcc84e04eea13bd9553e0e9809",
+    "muscle.blend": "aaa16afe778f4bbb78ef3dd5bd49f63158b41c86e99bdd12d34aec765d65e3b5",
+    "sarcomere.blend": "2bf9ea5e496dc997318bf33e0e02b9b4ea2d25d12c8ef805730b56339f313615"
   },
   "previews": {
-    "fascicle-blender.png": "3e8b4da4c9f49efcc1cdd092fa15c0d8e0f2173faa3de7e1969e4c403e5a647a",
-    "fiber-blender.png": "3940cfd9f0730c4776673e63549cc7d0cdb34673ce434929ded4d5887c5bdf08",
-    "muscle-blender.png": "f85c21949f7b51c59f650402a90448aa246d446606a21f7a89580cbf4e4bca5d",
-    "sarcomere-blender.png": "b46dab9d917bd1458ecd1f8406207a967f47b8749560547da24fa4a98d09d7af"
+    "fascicle-blender.png": "5544d20ba1d759585fc9ffd7794ad93a9ad7e5cdd0345ecd198d23b026e85d95",
+    "fiber-blender.png": "a240a6fe7123cb9b1adf2f17f75565f71fdd6ab335f4e5c69d142ee9d7649dfe",
+    "muscle-blender.png": "d786a10d1eca3fab223ae62f29e6c9056a108aab9b3d627cfd9121fa5cfd8c4f",
+    "sarcomere-blender.png": "e8029e565fad5e87fd6077821a00169aab683ce27f93009cd88219998b0452a5"
   },
   "outputs": {
-    "assets/multiscale/muscle-pilot/blender/fascicle.blend": "a902387b29c0a95c47b20ba3278f5e469097eed7c3bf6599c0af949b5a8d6bd4",
-    "assets/multiscale/muscle-pilot/blender/fiber.blend": "f2b582d19f89a5efc0195d43c15e7a8fe019ff38e8fe602d1eeb3f4518547498",
-    "assets/multiscale/muscle-pilot/blender/muscle.blend": "ed4943d5538ac584a74dce26ad713a543c805a5b65113e7e50e2c76d495288f8",
-    "assets/multiscale/muscle-pilot/blender/sarcomere.blend": "c7150b7226c7a7ea00ee7fdab0ec7f502b4eeb63a08f5d74fc1ce633b9111cff",
-    "assets/multiscale/muscle-pilot/derivatives/derivatives.json": "c94b4a17f23d45bfd6aadc592bb38145ff1d30cef26a48dd14448bdbbc7f8735",
+    "assets/multiscale/muscle-pilot/blender/fascicle.blend": "bdc8b9d398772585f64c8d6f54cc9caf45fe179c57546191c7c91f88b1098615",
+    "assets/multiscale/muscle-pilot/blender/fiber.blend": "bb7b238ce80cbccbe72085c50d43ca4e11f889dcc84e04eea13bd9553e0e9809",
+    "assets/multiscale/muscle-pilot/blender/muscle.blend": "aaa16afe778f4bbb78ef3dd5bd49f63158b41c86e99bdd12d34aec765d65e3b5",
+    "assets/multiscale/muscle-pilot/blender/sarcomere.blend": "2bf9ea5e496dc997318bf33e0e02b9b4ea2d25d12c8ef805730b56339f313615",
+    "assets/multiscale/muscle-pilot/derivatives/derivatives.json": "6415c7c85416895730365f5acd88324dd80034123a4901cd89b19858c133c5f6",
     "assets/multiscale/muscle-pilot/derivatives/fascicle-collision.glb": "7391be78d6d6d19b589c037d69bcdcbe94adb188c86f05007f77de9b63ec0b26",
     "assets/multiscale/muscle-pilot/derivatives/fiber-collision.glb": "8e34a638eddbf420932b6194e9a090c6c5ea3358332b7267eb54944c8d94348a",
     "assets/multiscale/muscle-pilot/derivatives/muscle-simulation.glb": "49f9884174e9a43a635392bc0ecddd06a7b49717cea35faceb31169badd70643",
-    "assets/multiscale/muscle-pilot/derivatives/sarcomere-collision.glb": "63b2ab1ab7e1ac02374193b6a7596e96d632ad8c652921ac0c7b6c8a827934b5",
+    "assets/multiscale/muscle-pilot/derivatives/sarcomere-collision.glb": "9032e3feb5502c6fde960cf45c421ca32fc102ec64001bd379f4a469736cf2d4",
     "assets/multiscale/muscle-pilot/sarcomere-bands.png": "23c01bffe9a4018a9df192e42a23b74705c4e1f62b8ac2398f74b8dd239bbf81",
-    "assets/multiscale/muscle-pilot/topology-report.json": "19c288f1532614bb9df7b970611b81d509e22bc53e3275aaa40707b1082c8b13",
+    "assets/multiscale/muscle-pilot/topology-report.json": "608070de159847227029d72e6d322cfdd3c9e8907d072a8cdd92636ecc8bc7ed",
     "public/models/multiscale/muscle-pilot/fascicle-context.glb": "bed614e93e4c9ea8e95da2434eeca71a13fd777e6ccc25730f18086f904ddbbd",
     "public/models/multiscale/muscle-pilot/fascicle-detail.glb": "08b21962a8052e9a8ccfa10954a1e3d63bcea4d94cdf3bee1be7ba8c7d1914fd",
     "public/models/multiscale/muscle-pilot/fiber-context.glb": "3d16fd8066b3b1238fafb5686c2c1b356b7ebed3b485ff1c297d40810f062097",
     "public/models/multiscale/muscle-pilot/fiber-detail.glb": "7255e16e11e9ef3e82f1a5658a49c8487a59ecbff60d2e45859c0af3cc162cf7",
-    "public/models/multiscale/muscle-pilot/manifest.json": "c571f1767073b54d5e9e22cbf5fb8c4663924ddba92109a54ae907fe282f6092",
-    "public/models/multiscale/muscle-pilot/muscle-context.glb": "e9721579048aafa777596a4547da7ecdd1bb562c66d35dcdcba620746359eebb",
+    "public/models/multiscale/muscle-pilot/manifest.json": "5757b76382a3c4ce05beafd3995d9200b83691aa17ae0c81784cc45b08c9a959",
+    "public/models/multiscale/muscle-pilot/muscle-context.glb": "068918ceab9e7f9e9fd9e5f100b267c0d4e05b756669366a001128ff9ca8dea8",
     "public/models/multiscale/muscle-pilot/muscle-detail.glb": "2a01e8ba38b89cb57866bbf900b0d35a3f512b07331d94c7fe64daf35a7f71b3",
-    "public/models/multiscale/muscle-pilot/sarcomere-context.glb": "8b42b97c8134011d507d95ed1f2dfa16c078463845f46305e5cdca934a006fd7",
-    "public/models/multiscale/muscle-pilot/sarcomere-detail.glb": "642198b250de4ea0d9d132a3641e19318b89f22bb676c129a3ee990a5fa79eff",
-    "validation/p2/blender-audit/fascicle.json": "fbe320fdcf6f6023a3dd4fcf76709ba5567057832063709bbe97fd325e15497f",
-    "validation/p2/blender-audit/fiber.json": "33a3cea64767e67eed5362275a8dac4df1f87ba22e57e354cc126b4f4adb03be",
-    "validation/p2/blender-audit/muscle.json": "a187c7309ab851d2c98d1fa888d76f73735c9039f120e6d33154127fe95c56ec",
-    "validation/p2/blender-audit/sarcomere.json": "57e02f73a068c84dcbe9f72c979a8fd8c2e1080677e9bb59b680826f55903cb2"
+    "public/models/multiscale/muscle-pilot/sarcomere-context.glb": "230ece0e3c86e6ea0e0226227c8a7fe65f0e7ce8d9a2d543a05bdd9bdc25e3d3",
+    "public/models/multiscale/muscle-pilot/sarcomere-detail.glb": "63133399f5ca0bc93fed26fae215df03c740aef084792bc32683821fa5f6b10c",
+    "validation/p2/blender-audit/fascicle.json": "7eaec104d0109067b78f462634faf426e460260dc7e6b3cf935a387203b6b8d2",
+    "validation/p2/blender-audit/fiber.json": "483f97694cc74cba4331cc4b20a7895f6036e31e42d37ab931c254575dab8688",
+    "validation/p2/blender-audit/muscle.json": "f4493e8815f204f75df97ff211deedacac138bd6be3de6fd9b60140027654ece",
+    "validation/p2/blender-audit/sarcomere.json": "f69abe3a3eba59b9d716a917700971f8a6f82acd567fc9c755edfe9b86c6276b"
   },
   "excluded": [
     "*.blend1 backups (never written: save_version=0)",

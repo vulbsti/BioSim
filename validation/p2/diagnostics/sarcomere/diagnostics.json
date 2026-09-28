@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "blenderVersion": "4.4.3",
   "blendPath": "assets/multiscale/muscle-pilot/blender/sarcomere.blend",
-  "blendSHA256": "c7150b7226c7a7ea00ee7fdab0ec7f502b4eeb63a08f5d74fc1ce633b9111cff",
+  "blendSHA256": "2bf9ea5e496dc997318bf33e0e02b9b4ea2d25d12c8ef805730b56339f313615",
   "level": "sarcomere",
   "colorManagement": {
     "displayDevice": "sRGB",
@@ -24,107 +24,135 @@
   },
   "camera": {
     "type": "ORTHO",
-    "orthoScale": 1.0690774720594063,
+    "orthoScale": 1.069289772712653,
     "elevationDeg": 22.0
   },
   "samples": 12,
   "size": 360,
   "scaleBar": {
     "lengthM": 5e-07,
-    "label": "500 nm"
+    "label": "500 nm",
+    "labelFont": "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
   },
   "renders": [
     {
       "file": "turntable-00.png",
       "kind": "turntable",
-      "sha256": "626d7afb4a9a85e87892f347f1f4ba17210dcfedbcbcc7be494d8b999cf91ae6",
+      "sha256": "a0cfd75903bc83bcdfc49576731f4be009ea20f36dec3eda5f235fc8bb713677",
       "width": 360,
       "height": 360
     },
     {
       "file": "turntable-01.png",
       "kind": "turntable",
-      "sha256": "8c5e7257c0b330945a1997e3c4bc2ce4bb7d5b79f665276e7dfe28f18917e8e4",
+      "sha256": "4f59fb40083237b9e50e51e9463f6485013241b7649ae61402245014c22544bb",
       "width": 360,
       "height": 360
     },
     {
       "file": "turntable-02.png",
       "kind": "turntable",
-      "sha256": "aeb4fc738a333fec2bf62bb8c2f47a076599b8efaf76e7836b5467264f560307",
+      "sha256": "6f71801a9d09636e143f8e05aa2b2afbde2f7d71bb8f8f3fcd8ef8a3e6325ede",
       "width": 360,
       "height": 360
     },
     {
       "file": "turntable-03.png",
       "kind": "turntable",
-      "sha256": "1cf7612d26c01cfb3f71a75f4be7d3299dddb1febf944eab6f6d86de3b8a7af8",
+      "sha256": "362a12ae78c63397d237d7da30983c86aca5a4b27bc62d8b2cf1128a51c8c3e8",
       "width": 360,
       "height": 360
     },
     {
       "file": "turntable-04.png",
       "kind": "turntable",
-      "sha256": "96a7b08e91fbda5db801f05164f57f69192d33f261be4cf29d25504f3eaa21ce",
+      "sha256": "0769672295dff2a4e0b2cc04858e7c36320bfde1011d3adf7f2e4ef85b6edcbc",
       "width": 360,
       "height": 360
     },
     {
       "file": "turntable-05.png",
       "kind": "turntable",
-      "sha256": "f17fffd745e64253529a44cb3175ce2982819c1e25103da341c66c540d72a6d7",
+      "sha256": "745dfe53ff455be737580d0b9db0b31df407a3aa1d7b1106f586294d9a079ac7",
       "width": 360,
       "height": 360
     },
     {
       "file": "turntable-06.png",
       "kind": "turntable",
-      "sha256": "bd4a24d5c634ed5d755c1d22d295ee372f553124a767b795c0040051be6b0213",
+      "sha256": "177a02ee1942978a7dd38867a40b3de83dceeaa6e770271edaf278dac151f6a6",
       "width": 360,
       "height": 360
     },
     {
       "file": "turntable-07.png",
       "kind": "turntable",
-      "sha256": "869e228bb10748aea3d3f1209205cbdce4db1702e6accf9371012e382bbeee8c",
+      "sha256": "79c63db97dcb4fca07213aca9dbb97d5bcc34d617b0651870ca79aeb55649a8f",
       "width": 360,
       "height": 360
     },
     {
       "file": "section-cross.png",
       "kind": "section",
-      "sha256": "d0711d7bf56c2f3e39469c70e68f5591544e47b1d94ea32472a02333657004ad",
+      "sha256": "7ac1a6b392a31a67fb5f49dfb8d35377d02a45588c83e4df7a0956bd985a122c",
       "width": 360,
       "height": 360
     },
     {
       "file": "section-longitudinal.png",
       "kind": "section",
-      "sha256": "bb46e8bf7a7be92b85f01575a19d824b8dc56306c3d5d84af49755c126133ff4",
+      "sha256": "159800de3cfebbf4b153c5cad5a7356d18310f3cb3144f5914f3258e917189d3",
       "width": 360,
       "height": 360
     },
     {
       "file": "wireframe.png",
       "kind": "wireframe",
-      "sha256": "4bebb91c682661f6942392c2755e1af5bb812ba8f646836b65024e9ae729c40b",
+      "sha256": "a867f6f353c30036cc3a351b5ad912502b9e4cfe27d147872e404db8e8e266ec",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "wireframe-crop.png",
+      "kind": "wireframe-crop",
+      "sha256": "1e418ccf0d73a87a9df603d77b454e0263b0dc5ca7665e5976565651e4f1edf5",
       "width": 360,
       "height": 360
     },
     {
       "file": "normals.png",
       "kind": "normals",
-      "sha256": "bc6791fcb5ab04af15df11c2940e1778cc5bbb29f678a438026ae7edb3620d5c",
+      "sha256": "0fb745b76b66a05f9c32283e9a00cbf16ab4d023f0cafa9410f1df3f86f93d65",
       "width": 360,
-      "height": 360
+      "height": 360,
+      "legend": [
+        {
+          "color": [
+            1.0,
+            0.1,
+            0.6,
+            1
+          ],
+          "meaning": "backfacing (inconsistent winding)"
+        },
+        {
+          "color": [
+            0.75,
+            0.85,
+            0.95,
+            1
+          ],
+          "meaning": "front-facing: color = normal * 0.5 + 0.5"
+        }
+      ]
     },
     {
       "file": "contact-sheet.png",
       "kind": "contact-sheet",
-      "sha256": "fb4ea9cd7e57583e1f41a818633578b1624a7edd43fca3b514b8e3277833b2be",
+      "sha256": "3d7c688057e2d03078b5edbd31721e5f681e2c889070183fd2338d3b33e03c72",
       "width": 640,
-      "height": 480
+      "height": 640
     }
   ],
-  "normalizationScale": 398724.0702773206
+  "normalizationScale": 398815.61820019985
 }

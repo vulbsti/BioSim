@@ -1,6 +1,6 @@
 {
   "id": "muscle-pilot",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "status": "representative_visual_prototype",
   "metersPerAssetUnit": 1,
   "sourceSpace": "glTF right-handed Y-up, meters; muscle translation retained separately",
@@ -10,14 +10,14 @@
         "context": {
           "url": "/models/multiscale/muscle-pilot/muscle-context.glb",
           "bytes": 29008,
-          "sha256": "e9721579048aafa777596a4547da7ecdd1bb562c66d35dcdcba620746359eebb",
+          "sha256": "068918ceab9e7f9e9fd9e5f100b267c0d4e05b756669366a001128ff9ca8dea8",
           "triangles": 944,
           "entities": [
             "FJ1442",
             "FJ3365",
             "FJ3381"
           ],
-          "derivation": "Decimate collapse ratio 0.35 of each source surface; display-only LOD, not source bytes.",
+          "derivation": "Decimate collapse ratio 0.35 of each source surface, then recalculated to consistent outward normals; display-only LOD, not source bytes or source winding.",
           "topology": {
             "source-derived-lod": 3
           }
@@ -424,9 +424,9 @@
       "representations": {
         "context": {
           "url": "/models/multiscale/muscle-pilot/sarcomere-context.glb",
-          "bytes": 675100,
-          "sha256": "8b42b97c8134011d507d95ed1f2dfa16c078463845f46305e5cdca934a006fd7",
-          "triangles": 16580,
+          "bytes": 1095144,
+          "sha256": "230ece0e3c86e6ea0e0226227c8a7fe65f0e7ce8d9a2d543a05bdd9bdc25e3d3",
+          "triangles": 41096,
           "entities": [
             "pilot-m-line",
             "pilot-thick-filaments",
@@ -442,9 +442,9 @@
         },
         "detail": {
           "url": "/models/multiscale/muscle-pilot/sarcomere-detail.glb",
-          "bytes": 2359688,
-          "sha256": "642198b250de4ea0d9d132a3641e19318b89f22bb676c129a3ee990a5fa79eff",
-          "triangles": 51368,
+          "bytes": 2618084,
+          "sha256": "63133399f5ca0bc93fed26fae215df03c740aef084792bc32683821fa5f6b10c",
+          "triangles": 72312,
           "entities": [
             "pilot-m-line",
             "pilot-thick-filaments",
@@ -929,7 +929,7 @@
       "name": "Z disc \u00b7 left",
       "kind": "z-disc",
       "level": "sarcomere",
-      "description": "Representative cross-linked anchoring lattice marking this sarcomere boundary. Not a resolved alpha-actinin structure.",
+      "description": "Representative cross-linked anchoring lattice marking this sarcomere boundary, boolean-unioned into one non-self-intersecting solid. Not a resolved alpha-actinin structure.",
       "evidence": "representative"
     },
     {
@@ -947,7 +947,7 @@
       "name": "Z disc \u00b7 right",
       "kind": "z-disc",
       "level": "sarcomere",
-      "description": "Representative cross-linked anchoring lattice marking this sarcomere boundary. Not a resolved alpha-actinin structure.",
+      "description": "Representative cross-linked anchoring lattice marking this sarcomere boundary, boolean-unioned into one non-self-intersecting solid. Not a resolved alpha-actinin structure.",
       "evidence": "representative"
     },
     {
@@ -955,19 +955,19 @@
       "name": "M line",
       "kind": "m-line",
       "level": "sarcomere",
-      "description": "Representative links and lattice nodes at the sarcomere midpoint, anchoring the thick-filament array; remains fixed during symmetric sliding.",
+      "description": "Representative links and lattice nodes at the sarcomere midpoint, boolean-unioned into one non-self-intersecting solid anchoring the thick-filament array; remains fixed during symmetric sliding.",
       "evidence": "representative"
     }
   ],
   "provenance": {
     "blenderVersion": "4.4.3",
     "generator": "scripts/blender/build-muscle-pilot.py",
-    "generatorSHA256": "f4fa1df9923beb7ffb2faeee55e475df4ae3cc0f9e0c86e650bae676c33ff04b",
+    "generatorSHA256": "f1ba2a79d1cddcbfd26ed2ef01c4c3c0b2b614f10224d587aa743ecdf0864c03",
     "generatorModules": {
-      "scripts/blender/muscle_geometry.py": "5c1e035514602aed20e20eb16f094fcb14546202a1bf7dcbd716c7bfa6f8720a",
-      "scripts/blender/blender_topology.py": "cdf9afad137fe51bfc6cdba5d79fd84e1d1dbca53b2b418023db7acfd93e75e9"
+      "scripts/blender/muscle_geometry.py": "3d47ca6071233cb7929f6eb77a1c6610da8ea67fa6f13bdcf3d77b835feac3e7",
+      "scripts/blender/blender_topology.py": "206abedc566635010e23af5456d0bbc24536656a02782041ae28a9b45c82ee8d"
     },
-    "specSHA256": "937578ab2f8fada7cdca74c1ddd1db57ffd1584597ba3dd9b0442d98c37d0e36",
+    "specSHA256": "09a424ab38891c03509ca943db5bdc1f0df2cb31d692e6f1f595c746f94058f0",
     "sourceHashes": {
       "public/models/body-1.bin": "aa077a4675f0d0dd3c9b0af39dc8cf6bcb348c3bf7d283478d4206ce30a5a0de",
       "public/models/body-13.bin": "4c51b6be85d5b705d2b52b79b9ad1cdae0b65ad03c9402a2f2673c7633fd94f3"

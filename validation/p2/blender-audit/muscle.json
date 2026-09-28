@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "blenderVersion": "4.4.3",
   "blendPath": "assets/multiscale/muscle-pilot/blender/muscle.blend",
-  "blendSHA256": "ed4943d5538ac584a74dce26ad713a543c805a5b65113e7e50e2c76d495288f8",
+  "blendSHA256": "aaa16afe778f4bbb78ef3dd5bd49f63158b41c86e99bdd12d34aec765d65e3b5",
   "sceneUnitSystem": "METRIC",
   "sceneScaleLength": 1,
   "topologyPolicyApplied": true,
@@ -92,6 +92,7 @@
         "looseEdges": 0,
         "looseVertices": 0,
         "degenerateFaces": 0,
+        "selfIntersectingFacePairs": 31,
         "boundaryWeldToleranceM": 4.82670164596948e-10,
         "coincidentBoundaryVertexPairs": 508,
         "closedVolumeM3": null,
@@ -115,6 +116,11 @@
       "topologyVerdict": {
         "status": "source-preserved",
         "reasons": []
+      },
+      "normalsConsistency": {
+        "totalFaces": 1470,
+        "inconsistentFaces": 35,
+        "fraction": 0.023809523809523808
       }
     },
     {
@@ -155,6 +161,7 @@
         "looseEdges": 0,
         "looseVertices": 0,
         "degenerateFaces": 0,
+        "selfIntersectingFacePairs": 0,
         "boundaryWeldToleranceM": 4.843677969173939e-10,
         "coincidentBoundaryVertexPairs": 15,
         "closedVolumeM3": null,
@@ -178,6 +185,11 @@
       "topologyVerdict": {
         "status": "source-preserved",
         "reasons": []
+      },
+      "normalsConsistency": {
+        "totalFaces": 930,
+        "inconsistentFaces": 0,
+        "fraction": 0
       }
     },
     {
@@ -218,6 +230,7 @@
         "looseEdges": 0,
         "looseVertices": 0,
         "degenerateFaces": 0,
+        "selfIntersectingFacePairs": 3,
         "boundaryWeldToleranceM": 6.12686096138961e-11,
         "coincidentBoundaryVertexPairs": 23,
         "closedVolumeM3": null,
@@ -241,6 +254,11 @@
       "topologyVerdict": {
         "status": "source-preserved",
         "reasons": []
+      },
+      "normalsConsistency": {
+        "totalFaces": 304,
+        "inconsistentFaces": 0,
+        "fraction": 0
       }
     }
   ]
