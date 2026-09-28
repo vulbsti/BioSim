@@ -1,0 +1,491 @@
+{
+  "schemaVersion": 1,
+  "policy": {
+    "note": "Closed collision/simulation derivatives, kept separate from display meshes and never loaded as anatomy.",
+    "muscleSimulationDomain": {
+      "method": "Voxel remesh of each source surface",
+      "voxelSizeM": 0.003,
+      "claim": "Watertight derivative for volume/collision experiments; not the source surface and not donor-validated."
+    },
+    "collision": {
+      "closedMeshes": "convex hull per connected component",
+      "namedOpenings": "solidified shell",
+      "shellThicknessFractionOfSpan": 0.004,
+      "claim": "Coarse collision proxies; not a validated mechanical domain."
+    }
+  },
+  "levels": {
+    "muscle": {
+      "kind": "simulation",
+      "file": "assets/multiscale/muscle-pilot/derivatives/muscle-simulation.glb",
+      "bytes": 471080,
+      "sha256": "49f9884174e9a43a635392bc0ecddd06a7b49717cea35faceb31169badd70643",
+      "objects": [
+        {
+          "object": "FJ1442--simulation",
+          "derivedFrom": "FJ1442",
+          "method": "voxel remesh 0.003 m",
+          "components": 9,
+          "triangles": 19140,
+          "closedVolumeM3": 0.0004966679518516015
+        },
+        {
+          "object": "FJ3365--simulation",
+          "derivedFrom": "FJ3365",
+          "method": "voxel remesh 0.003 m",
+          "components": 1,
+          "triangles": 18884,
+          "closedVolumeM3": 0.0004863100583094739
+        },
+        {
+          "object": "FJ3381--simulation",
+          "derivedFrom": "FJ3381",
+          "method": "voxel remesh 0.003 m",
+          "components": 1,
+          "triangles": 1040,
+          "closedVolumeM3": 1.0788721661172575e-05
+        }
+      ]
+    },
+    "fascicle": {
+      "kind": "collision",
+      "file": "assets/multiscale/muscle-pilot/derivatives/fascicle-collision.glb",
+      "bytes": 54808,
+      "sha256": "7391be78d6d6d19b589c037d69bcdcbe94adb188c86f05007f77de9b63ec0b26",
+      "objects": [
+        {
+          "object": "pilot-fiber-00--collision",
+          "derivedFrom": "pilot-fiber-00",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.5817200786349823e-12
+        },
+        {
+          "object": "pilot-fiber-01--collision",
+          "derivedFrom": "pilot-fiber-01",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293714981750068e-12
+        },
+        {
+          "object": "pilot-fiber-02--collision",
+          "derivedFrom": "pilot-fiber-02",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371498175007e-12
+        },
+        {
+          "object": "pilot-fiber-03--collision",
+          "derivedFrom": "pilot-fiber-03",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293714981750076e-12
+        },
+        {
+          "object": "pilot-fiber-04--collision",
+          "derivedFrom": "pilot-fiber-04",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371498175007e-12
+        },
+        {
+          "object": "pilot-fiber-05--collision",
+          "derivedFrom": "pilot-fiber-05",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371379799685e-12
+        },
+        {
+          "object": "pilot-fiber-06--collision",
+          "derivedFrom": "pilot-fiber-06",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371393923357e-12
+        },
+        {
+          "object": "pilot-fiber-07--collision",
+          "derivedFrom": "pilot-fiber-07",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371506815456e-12
+        },
+        {
+          "object": "pilot-fiber-08--collision",
+          "derivedFrom": "pilot-fiber-08",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371506815457e-12
+        },
+        {
+          "object": "pilot-fiber-09--collision",
+          "derivedFrom": "pilot-fiber-09",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371500034418e-12
+        },
+        {
+          "object": "pilot-fiber-10--collision",
+          "derivedFrom": "pilot-fiber-10",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293715000344167e-12
+        },
+        {
+          "object": "pilot-fiber-11--collision",
+          "derivedFrom": "pilot-fiber-11",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293715000344167e-12
+        },
+        {
+          "object": "pilot-fiber-12--collision",
+          "derivedFrom": "pilot-fiber-12",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371500034417e-12
+        },
+        {
+          "object": "pilot-fiber-13--collision",
+          "derivedFrom": "pilot-fiber-13",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293714896951696e-12
+        },
+        {
+          "object": "pilot-fiber-14--collision",
+          "derivedFrom": "pilot-fiber-14",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293714896951688e-12
+        },
+        {
+          "object": "pilot-fiber-15--collision",
+          "derivedFrom": "pilot-fiber-15",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293715038188435e-12
+        },
+        {
+          "object": "pilot-fiber-16--collision",
+          "derivedFrom": "pilot-fiber-16",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371503818843e-12
+        },
+        {
+          "object": "pilot-fiber-17--collision",
+          "derivedFrom": "pilot-fiber-17",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293715171009307e-12
+        },
+        {
+          "object": "pilot-fiber-18--collision",
+          "derivedFrom": "pilot-fiber-18",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293715171009307e-12
+        },
+        {
+          "object": "pilot-fiber-19--collision",
+          "derivedFrom": "pilot-fiber-19",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371505877357e-12
+        },
+        {
+          "object": "pilot-fiber-20--collision",
+          "derivedFrom": "pilot-fiber-20",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293716269963923e-12
+        },
+        {
+          "object": "pilot-fiber-21--collision",
+          "derivedFrom": "pilot-fiber-21",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371505877357e-12
+        },
+        {
+          "object": "pilot-fiber-22--collision",
+          "derivedFrom": "pilot-fiber-22",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.32937140802567e-12
+        },
+        {
+          "object": "pilot-fiber-23--collision",
+          "derivedFrom": "pilot-fiber-23",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371626996392e-12
+        },
+        {
+          "object": "pilot-fiber-24--collision",
+          "derivedFrom": "pilot-fiber-24",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.32937140802567e-12
+        },
+        {
+          "object": "pilot-fiber-25--collision",
+          "derivedFrom": "pilot-fiber-25",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371408025672e-12
+        },
+        {
+          "object": "pilot-fiber-26--collision",
+          "derivedFrom": "pilot-fiber-26",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293716269963923e-12
+        },
+        {
+          "object": "pilot-fiber-27--collision",
+          "derivedFrom": "pilot-fiber-27",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293714080256696e-12
+        },
+        {
+          "object": "pilot-fiber-28--collision",
+          "derivedFrom": "pilot-fiber-28",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293715058773596e-12
+        },
+        {
+          "object": "pilot-fiber-29--collision",
+          "derivedFrom": "pilot-fiber-29",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293716269963915e-12
+        },
+        {
+          "object": "pilot-fiber-30--collision",
+          "derivedFrom": "pilot-fiber-30",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371505877359e-12
+        },
+        {
+          "object": "pilot-fiber-31--collision",
+          "derivedFrom": "pilot-fiber-31",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293716534911925e-12
+        },
+        {
+          "object": "pilot-fiber-32--collision",
+          "derivedFrom": "pilot-fiber-32",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371409885087e-12
+        },
+        {
+          "object": "pilot-fiber-33--collision",
+          "derivedFrom": "pilot-fiber-33",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293714098850892e-12
+        },
+        {
+          "object": "pilot-fiber-34--collision",
+          "derivedFrom": "pilot-fiber-34",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371409885087e-12
+        },
+        {
+          "object": "pilot-fiber-35--collision",
+          "derivedFrom": "pilot-fiber-35",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.3293714098850892e-12
+        },
+        {
+          "object": "pilot-fiber-36--collision",
+          "derivedFrom": "pilot-fiber-36",
+          "method": "convex hull per connected component",
+          "components": 1,
+          "triangles": 92,
+          "closedVolumeM3": 2.329371653491191e-12
+        },
+        {
+          "object": "pilot-perimysium--collision",
+          "derivedFrom": "pilot-perimysium",
+          "method": "solidified shell of named opening",
+          "components": 1,
+          "triangles": 780,
+          "closedVolumeM3": 6.049548096092678e-12
+        },
+        {
+          "object": "pilot-fascicle-capillaries--collision",
+          "derivedFrom": "pilot-fascicle-capillaries",
+          "method": "convex hull per connected component",
+          "components": 5,
+          "triangles": 180,
+          "closedVolumeM3": 2.3761215780467406e-13
+        }
+      ]
+    },
+    "fiber": {
+      "kind": "collision",
+      "file": "assets/multiscale/muscle-pilot/derivatives/fiber-collision.glb",
+      "bytes": 374048,
+      "sha256": "8e34a638eddbf420932b6194e9a090c6c5ea3358332b7267eb54944c8d94348a",
+      "objects": [
+        {
+          "object": "pilot-sarcolemma--collision",
+          "derivedFrom": "pilot-sarcolemma",
+          "method": "solidified shell of named opening",
+          "components": 1,
+          "triangles": 584,
+          "closedVolumeM3": 3.04752913136915e-14
+        },
+        {
+          "object": "pilot-myofibrils--collision",
+          "derivedFrom": "pilot-myofibrils",
+          "method": "convex hull per connected component",
+          "components": 517,
+          "triangles": 22748,
+          "closedVolumeM3": 1.384732572796377e-13
+        },
+        {
+          "object": "pilot-myonuclei--collision",
+          "derivedFrom": "pilot-myonuclei",
+          "method": "convex hull per connected component",
+          "components": 8,
+          "triangles": 1280,
+          "closedVolumeM3": 5.330704370919311e-16
+        },
+        {
+          "object": "pilot-mitochondria--collision",
+          "derivedFrom": "pilot-mitochondria",
+          "method": "convex hull per connected component",
+          "components": 36,
+          "triangles": 2160,
+          "closedVolumeM3": 1.1192059720659886e-16
+        },
+        {
+          "object": "pilot-fiber-capillary--collision",
+          "derivedFrom": "pilot-fiber-capillary",
+          "method": "solidified shell of named opening",
+          "components": 1,
+          "triangles": 248,
+          "closedVolumeM3": 5.434396337111623e-15
+        },
+        {
+          "object": "pilot-erythrocytes--collision",
+          "derivedFrom": "pilot-erythrocytes",
+          "method": "convex hull per connected component",
+          "components": 9,
+          "triangles": 1404,
+          "closedVolumeM3": 2.567708120024541e-16
+        },
+        {
+          "object": "pilot-glut4-sites--collision",
+          "derivedFrom": "pilot-glut4-sites",
+          "method": "convex hull per connected component",
+          "components": 24,
+          "triangles": 1152,
+          "closedVolumeM3": 3.61552902758435e-17
+        }
+      ]
+    },
+    "sarcomere": {
+      "kind": "collision",
+      "file": "assets/multiscale/muscle-pilot/derivatives/sarcomere-collision.glb",
+      "bytes": 576624,
+      "sha256": "63b2ab1ab7e1ac02374193b6a7596e96d632ad8c652921ac0c7b6c8a827934b5",
+      "objects": [
+        {
+          "object": "pilot-thick-filaments--collision",
+          "derivedFrom": "pilot-thick-filaments",
+          "method": "convex hull per connected component",
+          "components": 1183,
+          "triangles": 25222,
+          "closedVolumeM3": 2.4358461455853614e-20
+        },
+        {
+          "object": "pilot-thin-left--collision",
+          "derivedFrom": "pilot-thin-left",
+          "method": "convex hull per connected component",
+          "components": 178,
+          "triangles": 4984,
+          "closedVolumeM3": 6.167385569927337e-21
+        },
+        {
+          "object": "pilot-z-left--collision",
+          "derivedFrom": "pilot-z-left",
+          "method": "convex hull per connected component",
+          "components": 30,
+          "triangles": 840,
+          "closedVolumeM3": 5.369440802711715e-22
+        },
+        {
+          "object": "pilot-thin-right--collision",
+          "derivedFrom": "pilot-thin-right",
+          "method": "convex hull per connected component",
+          "components": 178,
+          "triangles": 4984,
+          "closedVolumeM3": 6.167385207262312e-21
+        },
+        {
+          "object": "pilot-z-right--collision",
+          "derivedFrom": "pilot-z-right",
+          "method": "convex hull per connected component",
+          "components": 30,
+          "triangles": 840,
+          "closedVolumeM3": 5.369440802711714e-22
+        },
+        {
+          "object": "pilot-m-line--collision",
+          "derivedFrom": "pilot-m-line",
+          "method": "convex hull per connected component",
+          "components": 251,
+          "triangles": 7568,
+          "closedVolumeM3": 7.674760884155881e-23
+        }
+      ]
+    }
+  }
+}

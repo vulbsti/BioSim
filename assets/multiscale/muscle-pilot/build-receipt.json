@@ -1,16 +1,81 @@
 {
-  "manifestSHA256": "ff7f0651e1b3ebb2fc4cb10c7ab32f4f98b4eec2cc59b2294ab211a4b23ca234",
-  "blenderVersion": "4.4.3",
+  "schemaVersion": 2,
+  "command": "node scripts/blender/build-package.mjs",
+  "environment": {
+    "blender": "Blender 4.4.3",
+    "blenderExecutableSHA256": "2de8d1e2d358e52f88ecb18a31439a4f12da5858c82218e91fa8b4e6cdb365f6",
+    "blenderArchiveSHA256": "8d3be07d2bc412b502c6bfe3cfe3e22195a4164076867da987ce148d73c27946",
+    "archiveChecksumVerified": true,
+    "platform": "linux 6.17.0-1032-oem x64",
+    "node": "v26.9.0"
+  },
+  "inputs": {
+    "scripts/blender/build-muscle-pilot.py": "f4fa1df9923beb7ffb2faeee55e475df4ae3cc0f9e0c86e650bae676c33ff04b",
+    "scripts/blender/muscle_geometry.py": "5c1e035514602aed20e20eb16f094fcb14546202a1bf7dcbd716c7bfa6f8720a",
+    "scripts/blender/blender_topology.py": "cdf9afad137fe51bfc6cdba5d79fd84e1d1dbca53b2b418023db7acfd93e75e9",
+    "scripts/blender/audit-muscle-pilot.py": "e2470b813b226066d66bee9df2d73b80b297f5e5dce777b652b0c647c8c53009",
+    "scripts/blender/build-package.mjs": "75be86acd54c21be26bb0fdad7123587ce79db35875f4b20de8cd3131537698f",
+    "assets/multiscale/muscle-pilot/spec.json": "937578ab2f8fada7cdca74c1ddd1db57ffd1584597ba3dd9b0442d98c37d0e36",
+    "public/models/atlas.json": "c359f4bcd2cba90b7411d66d5e9fc04dc81294d46cd5c1e8b212c824f2e5bbee",
+    "public/models/body-1.bin": "aa077a4675f0d0dd3c9b0af39dc8cf6bcb348c3bf7d283478d4206ce30a5a0de",
+    "public/models/body-13.bin": "4c51b6be85d5b705d2b52b79b9ad1cdae0b65ad03c9402a2f2673c7633fd94f3"
+  },
+  "determinism": {
+    "builds": 2,
+    "byteComparedFiles": 16,
+    "identical": true,
+    "blendComparison": "saved scenes compared by audit semantics; .blend containers embed pointers and are not byte-stable"
+  },
+  "topologyAudit": {
+    "policy": "assets/multiscale/muscle-pilot/spec.json#topology",
+    "reports": "validation/p2/blender-audit/",
+    "failures": 0
+  },
+  "semanticChanges": [
+    "sarcomere/context: 13304 -> 16580 triangles",
+    "sarcomere/detail: 47000 -> 51368 triangles"
+  ],
+  "manifestSHA256": "c571f1767073b54d5e9e22cbf5fb8c4663924ddba92109a54ae907fe282f6092",
   "blenderFiles": {
-    "fascicle.blend": "1f623e02c3f9c341060a7c3c5e1db14566903f48e3e72847bb1a63323a1d4f9c",
-    "fiber.blend": "780ec519136f192095012145cef1bd9956a5bed6e47687300dccc3b7d3d7a36f",
-    "muscle.blend": "f2a41ab2b6b49f008dfde223361a3ba5be983499d9029f6824a37e30edd7a591",
-    "sarcomere.blend": "9a1a93dc586a29d90fb5162af7643ca14206b3c690df5ce85a45ac0ceb7e72f4"
+    "fascicle.blend": "a902387b29c0a95c47b20ba3278f5e469097eed7c3bf6599c0af949b5a8d6bd4",
+    "fiber.blend": "f2b582d19f89a5efc0195d43c15e7a8fe019ff38e8fe602d1eeb3f4518547498",
+    "muscle.blend": "ed4943d5538ac584a74dce26ad713a543c805a5b65113e7e50e2c76d495288f8",
+    "sarcomere.blend": "c7150b7226c7a7ea00ee7fdab0ec7f502b4eeb63a08f5d74fc1ce633b9111cff"
   },
   "previews": {
-    "fascicle-blender.png": "35437f5f5e602cece703fba98e68c1398f8265cc2a8275407e2f740ebd9de2bc",
-    "fiber-blender.png": "9dccd161ae04f49087f086e6e4e79b6650964ad1ed55c6b2902987606f359512",
-    "muscle-blender.png": "db7ec459dfa53292a883669f94553e87a0a351f0ee903c91f0bc0f2099d05816",
-    "sarcomere-blender.png": "508bdc904f87f8efd9fd5a4721092782735a1f181236b796cdd93b913311f551"
-  }
+    "fascicle-blender.png": "3e8b4da4c9f49efcc1cdd092fa15c0d8e0f2173faa3de7e1969e4c403e5a647a",
+    "fiber-blender.png": "3940cfd9f0730c4776673e63549cc7d0cdb34673ce434929ded4d5887c5bdf08",
+    "muscle-blender.png": "f85c21949f7b51c59f650402a90448aa246d446606a21f7a89580cbf4e4bca5d",
+    "sarcomere-blender.png": "b46dab9d917bd1458ecd1f8406207a967f47b8749560547da24fa4a98d09d7af"
+  },
+  "outputs": {
+    "assets/multiscale/muscle-pilot/blender/fascicle.blend": "a902387b29c0a95c47b20ba3278f5e469097eed7c3bf6599c0af949b5a8d6bd4",
+    "assets/multiscale/muscle-pilot/blender/fiber.blend": "f2b582d19f89a5efc0195d43c15e7a8fe019ff38e8fe602d1eeb3f4518547498",
+    "assets/multiscale/muscle-pilot/blender/muscle.blend": "ed4943d5538ac584a74dce26ad713a543c805a5b65113e7e50e2c76d495288f8",
+    "assets/multiscale/muscle-pilot/blender/sarcomere.blend": "c7150b7226c7a7ea00ee7fdab0ec7f502b4eeb63a08f5d74fc1ce633b9111cff",
+    "assets/multiscale/muscle-pilot/derivatives/derivatives.json": "c94b4a17f23d45bfd6aadc592bb38145ff1d30cef26a48dd14448bdbbc7f8735",
+    "assets/multiscale/muscle-pilot/derivatives/fascicle-collision.glb": "7391be78d6d6d19b589c037d69bcdcbe94adb188c86f05007f77de9b63ec0b26",
+    "assets/multiscale/muscle-pilot/derivatives/fiber-collision.glb": "8e34a638eddbf420932b6194e9a090c6c5ea3358332b7267eb54944c8d94348a",
+    "assets/multiscale/muscle-pilot/derivatives/muscle-simulation.glb": "49f9884174e9a43a635392bc0ecddd06a7b49717cea35faceb31169badd70643",
+    "assets/multiscale/muscle-pilot/derivatives/sarcomere-collision.glb": "63b2ab1ab7e1ac02374193b6a7596e96d632ad8c652921ac0c7b6c8a827934b5",
+    "assets/multiscale/muscle-pilot/sarcomere-bands.png": "23c01bffe9a4018a9df192e42a23b74705c4e1f62b8ac2398f74b8dd239bbf81",
+    "assets/multiscale/muscle-pilot/topology-report.json": "19c288f1532614bb9df7b970611b81d509e22bc53e3275aaa40707b1082c8b13",
+    "public/models/multiscale/muscle-pilot/fascicle-context.glb": "bed614e93e4c9ea8e95da2434eeca71a13fd777e6ccc25730f18086f904ddbbd",
+    "public/models/multiscale/muscle-pilot/fascicle-detail.glb": "08b21962a8052e9a8ccfa10954a1e3d63bcea4d94cdf3bee1be7ba8c7d1914fd",
+    "public/models/multiscale/muscle-pilot/fiber-context.glb": "3d16fd8066b3b1238fafb5686c2c1b356b7ebed3b485ff1c297d40810f062097",
+    "public/models/multiscale/muscle-pilot/fiber-detail.glb": "7255e16e11e9ef3e82f1a5658a49c8487a59ecbff60d2e45859c0af3cc162cf7",
+    "public/models/multiscale/muscle-pilot/manifest.json": "c571f1767073b54d5e9e22cbf5fb8c4663924ddba92109a54ae907fe282f6092",
+    "public/models/multiscale/muscle-pilot/muscle-context.glb": "e9721579048aafa777596a4547da7ecdd1bb562c66d35dcdcba620746359eebb",
+    "public/models/multiscale/muscle-pilot/muscle-detail.glb": "2a01e8ba38b89cb57866bbf900b0d35a3f512b07331d94c7fe64daf35a7f71b3",
+    "public/models/multiscale/muscle-pilot/sarcomere-context.glb": "8b42b97c8134011d507d95ed1f2dfa16c078463845f46305e5cdca934a006fd7",
+    "public/models/multiscale/muscle-pilot/sarcomere-detail.glb": "642198b250de4ea0d9d132a3641e19318b89f22bb676c129a3ee990a5fa79eff",
+    "validation/p2/blender-audit/fascicle.json": "fbe320fdcf6f6023a3dd4fcf76709ba5567057832063709bbe97fd325e15497f",
+    "validation/p2/blender-audit/fiber.json": "33a3cea64767e67eed5362275a8dac4df1f87ba22e57e354cc126b4f4adb03be",
+    "validation/p2/blender-audit/muscle.json": "a187c7309ab851d2c98d1fa888d76f73735c9039f120e6d33154127fe95c56ec",
+    "validation/p2/blender-audit/sarcomere.json": "57e02f73a068c84dcbe9f72c979a8fd8c2e1080677e9bb59b680826f55903cb2"
+  },
+  "excluded": [
+    "*.blend1 backups (never written: save_version=0)",
+    "staging directories under work/staging"
+  ]
 }

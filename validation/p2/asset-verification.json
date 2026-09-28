@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-17T05:58:23.021Z",
+  "recordedAt": "2026-09-28T19:00:56.935Z",
   "invocation": "npm run verify:tissue",
   "evidence": "Executed independent GLB byte inspection, physical identity, filament endpoint/length invariants and replay checks; not a clinical anatomical review or a functional contraction validation.",
   "blenderVersion": "4.4.3",
@@ -9,10 +9,10 @@
       "level": "muscle",
       "lod": "context",
       "path": "public/models/multiscale/muscle-pilot/muscle-context.glb",
-      "sha256": "2a01e8ba38b89cb57866bbf900b0d35a3f512b07331d94c7fe64daf35a7f71b3",
-      "bytes": 75480,
-      "triangles": 2704,
-      "vertices": 1747,
+      "sha256": "e9721579048aafa777596a4547da7ecdd1bb562c66d35dcdcba620746359eebb",
+      "bytes": 29008,
+      "triangles": 944,
+      "vertices": 625,
       "primitives": 3,
       "entityIds": [
         "FJ1442",
@@ -21,57 +21,57 @@
       ],
       "boundsM": {
         "min": [
-          -0.037787746638059616,
-          -0.23511749505996704,
-          -0.04774690046906471
+          -0.037513576447963715,
+          -0.23590844869613647,
+          -0.0481361448764801
         ],
         "max": [
-          0.08994995057582855,
-          0.28069350123405457,
-          0.03977390006184578
+          0.0887683779001236,
+          0.28073227405548096,
+          0.03993140161037445
         ]
       },
       "entityBoundsM": {
         "FJ1442": {
           "min": [
-            -0.037787746638059616,
-            -0.23511749505996704,
-            -0.03977390006184578
+            -0.037513576447963715,
+            -0.23590844869613647,
+            -0.04000211879611015
           ],
           "max": [
             0.03778775408864021,
             0.23491546511650085,
-            0.03977390006184578
+            0.03993140161037445
           ]
         },
         "FJ3365": {
           "min": [
-            -0.028119754046201706,
-            -0.18489950895309448,
-            -0.04774690046906471
+            -0.02868485637009144,
+            -0.18582689762115479,
+            -0.0481361448764801
           ],
           "max": [
-            0.08994995057582855,
-            0.28069350123405457,
-            0.014661900699138641
+            0.0887683779001236,
+            0.28073227405548096,
+            0.014661341905593872
           ]
         },
         "FJ3381": {
           "min": [
             0.019556250423192978,
-            -0.19156351685523987,
-            0.0037148999981582165
+            -0.1914980560541153,
+            0.0036163523327559233
           ],
           "max": [
-            0.06122345104813576,
-            -0.15225350856781006,
-            0.025449899956583977
+            0.06125160679221153,
+            -0.15223035216331482,
+            0.025230588391423225
           ]
         }
       },
-      "spanM": 0.5158109962940216,
-      "minimumNormalLength": 0.9999999260350161,
-      "maximumNormalLength": 1.000000136783336,
+      "spanM": 0.5166407227516174,
+      "minimumNormalLength": 0.9999999278640885,
+      "maximumNormalLength": 1.0000001519657769,
       "embeddedImages": 0,
       "generator": "Khronos glTF Blender I/O v4.4.56"
     },
@@ -79,8 +79,8 @@
       "level": "muscle",
       "lod": "detail",
       "path": "public/models/multiscale/muscle-pilot/muscle-detail.glb",
-      "sha256": "08e944758c6b9821b4419acc2b586cbe77165e5d57ba32743d95ab15047b0b5c",
-      "bytes": 75492,
+      "sha256": "2a01e8ba38b89cb57866bbf900b0d35a3f512b07331d94c7fe64daf35a7f71b3",
+      "bytes": 75480,
       "triangles": 2704,
       "vertices": 1747,
       "primitives": 3,
@@ -149,10 +149,10 @@
       "level": "fascicle",
       "lod": "context",
       "path": "public/models/multiscale/muscle-pilot/fascicle-context.glb",
-      "sha256": "0c8b3c01d397d17819f2b510cba550dfe571548ad0732c3edf36cffae01698c8",
-      "bytes": 122056,
+      "sha256": "bed614e93e4c9ea8e95da2434eeca71a13fd777e6ccc25730f18086f904ddbbd",
+      "bytes": 119368,
       "triangles": 2928,
-      "vertices": 2729,
+      "vertices": 2645,
       "primitives": 39,
       "entityIds": [
         "pilot-fascicle-capillaries",
@@ -687,10 +687,10 @@
       "level": "fascicle",
       "lod": "detail",
       "path": "public/models/multiscale/muscle-pilot/fascicle-detail.glb",
-      "sha256": "247914031770301411108049da08aafaf09cfbe3a04b2145a45019daeaedfa91",
-      "bytes": 200940,
+      "sha256": "08b21962a8052e9a8ccfa10954a1e3d63bcea4d94cdf3bee1be7ba8c7d1914fd",
+      "bytes": 198252,
       "triangles": 5816,
-      "vertices": 5125,
+      "vertices": 5041,
       "primitives": 39,
       "entityIds": [
         "pilot-fascicle-capillaries",
@@ -1225,10 +1225,10 @@
       "level": "fiber",
       "lod": "context",
       "path": "public/models/multiscale/muscle-pilot/fiber-context.glb",
-      "sha256": "8c61e251054ce6666f465f18909897ea08a7bc9551bccd78ff0a9176d0afb39d",
-      "bytes": 672704,
+      "sha256": "3d16fd8066b3b1238fafb5686c2c1b356b7ebed3b485ff1c297d40810f062097",
+      "bytes": 639616,
       "triangles": 16224,
-      "vertices": 17612,
+      "vertices": 16578,
       "primitives": 7,
       "entityIds": [
         "pilot-erythrocytes",
@@ -1347,10 +1347,10 @@
       "level": "fiber",
       "lod": "detail",
       "path": "public/models/multiscale/muscle-pilot/fiber-detail.glb",
-      "sha256": "e9e1b69e3fbedc2d73add7c82dc0f32902a50353592b4311e92a59dc5bf75cd6",
-      "bytes": 1250540,
+      "sha256": "7255e16e11e9ef3e82f1a5658a49c8487a59ecbff60d2e45859c0af3cc162cf7",
+      "bytes": 1217452,
       "triangles": 31696,
-      "vertices": 32766,
+      "vertices": 31732,
       "primitives": 7,
       "entityIds": [
         "pilot-erythrocytes",
@@ -1469,10 +1469,10 @@
       "level": "sarcomere",
       "lod": "context",
       "path": "public/models/multiscale/muscle-pilot/sarcomere-context.glb",
-      "sha256": "e04b943e51fddc05c268ffaa35ee1e6f0f76ae0a51b1d82e57f9a9a89d095c3a",
-      "bytes": 639892,
-      "triangles": 13304,
-      "vertices": 17426,
+      "sha256": "8b42b97c8134011d507d95ed1f2dfa16c078463845f46305e5cdca934a006fd7",
+      "bytes": 675100,
+      "triangles": 16580,
+      "vertices": 17912,
       "primitives": 6,
       "entityIds": [
         "pilot-m-line",
@@ -1484,12 +1484,12 @@
       ],
       "boundsM": {
         "min": [
-          -2.4000001985768904e-7,
+          -2.399999914359796e-7,
           -0.000001254000039807579,
           -2.399999914359796e-7
         ],
         "max": [
-          2.4000001985768904e-7,
+          2.399999914359796e-7,
           0.000001254000039807579,
           2.399999914359796e-7
         ]
@@ -1521,13 +1521,13 @@
         },
         "pilot-z-left": {
           "min": [
-            -2.4000001985768904e-7,
+            -2.399999914359796e-7,
             -0.000001254000039807579,
             -2.399999914359796e-7
           ],
           "max": [
-            2.4000001985768904e-7,
-            -0.000001245999897037109,
+            2.399999914359796e-7,
+            -0.0000012460000107239466,
             2.399999914359796e-7
           ]
         },
@@ -1545,32 +1545,32 @@
         },
         "pilot-z-right": {
           "min": [
-            -2.4000001985768904e-7,
-            0.000001245999897037109,
+            -2.399999914359796e-7,
+            0.0000012460000107239466,
             -2.399999914359796e-7
           ],
           "max": [
-            2.4000001985768904e-7,
+            2.399999914359796e-7,
             0.000001254000039807579,
             2.399999914359796e-7
           ]
         },
         "pilot-m-line": {
           "min": [
-            -2.2649999209534144e-7,
-            -2.0000019418375814e-9,
-            -1.968557228337886e-7
+            -2.2800000465394987e-7,
+            -3.000000026176508e-9,
+            -1.9745378665447788e-7
           ],
           "max": [
-            2.2649999209534144e-7,
-            2.0000019418375814e-9,
-            1.968557228337886e-7
+            2.2800000465394987e-7,
+            3.000000026176508e-9,
+            1.9745378665447788e-7
           ]
         }
       },
       "spanM": 0.000002508000079615158,
       "minimumNormalLength": 0.9999999621371384,
-      "maximumNormalLength": 1.000000067179426,
+      "maximumNormalLength": 1.0000000715856574,
       "embeddedImages": 0,
       "generator": "Khronos glTF Blender I/O v4.4.56"
     },
@@ -1578,10 +1578,10 @@
       "level": "sarcomere",
       "lod": "detail",
       "path": "public/models/multiscale/muscle-pilot/sarcomere-detail.glb",
-      "sha256": "5ded6527d943a221d2888794cdb10ac4d5d686ce62a3473f9399e1cef5f5029a",
-      "bytes": 2298852,
-      "triangles": 47000,
-      "vertices": 64066,
+      "sha256": "642198b250de4ea0d9d132a3641e19318b89f22bb676c129a3ee990a5fa79eff",
+      "bytes": 2359688,
+      "triangles": 51368,
+      "vertices": 65148,
       "primitives": 6,
       "entityIds": [
         "pilot-m-line",
@@ -1608,12 +1608,12 @@
           "min": [
             -2.4458765324197884e-7,
             -8.000000093488779e-7,
-            -2.1123750570950506e-7
+            -2.1123751992035977e-7
           ],
           "max": [
             2.4484288019266387e-7,
             8.000000093488779e-7,
-            2.1454316367908177e-7
+            2.1454314946822706e-7
           ]
         },
         "pilot-thin-left": {
@@ -1636,7 +1636,7 @@
           ],
           "max": [
             2.399999914359796e-7,
-            -0.000001245999897037109,
+            -0.0000012460000107239466,
             2.399999914359796e-7
           ]
         },
@@ -1655,7 +1655,7 @@
         "pilot-z-right": {
           "min": [
             -2.399999914359796e-7,
-            0.000001245999897037109,
+            0.0000012460000107239466,
             -2.399999914359796e-7
           ],
           "max": [
@@ -1666,31 +1666,36 @@
         },
         "pilot-m-line": {
           "min": [
-            -2.2649999209534144e-7,
-            -2.000003718194421e-9,
-            -1.9658776295727876e-7
+            -2.2800000465394987e-7,
+            -3.000000026176508e-9,
+            -1.9785571225838794e-7
           ],
           "max": [
-            2.2649999209534144e-7,
-            2.000003718194421e-9,
-            1.9658776295727876e-7
+            2.2800000465394987e-7,
+            3.000000026176508e-9,
+            1.9785571225838794e-7
           ]
         }
       },
       "spanM": 0.000002508000079615158,
-      "minimumNormalLength": 0.9999999504388718,
-      "maximumNormalLength": 1.0000001024423768,
+      "minimumNormalLength": 0.9999999562792315,
+      "maximumNormalLength": 1.0000000916355687,
       "embeddedImages": 0,
       "generator": "Khronos glTF Blender I/O v4.4.56"
     }
   ],
   "tests": {
-    "count": 5,
+    "count": 8,
     "exitCode": 0,
     "output": "validation/p2/asset-tests.tap"
   },
+  "topology": "assets/multiscale/muscle-pilot/topology-report.json",
+  "derivatives": "assets/multiscale/muscle-pilot/derivatives/derivatives.json",
+  "blenderAudits": "validation/p2/blender-audit/",
   "unresolved": [
     "Anatomical expert review",
+    "Evidence-led fascicle/fiber morphology (current geometry is regular procedural teaching geometry)",
+    "Interpenetrating Z-disc/M-line lattice components (no union or intersection test)",
     "Registered muscle-to-cell placement",
     "Brain-region package",
     "Calcium, ATP, cross-bridge and force coupling",
@@ -1698,15 +1703,21 @@
     "P1 human calibration prerequisites"
   ],
   "sourceHashes": {
-    "scripts/blender/build-muscle-pilot.py": "444d8b70cb3f93d4b02b7795035cf153e4c37a32c4f98a10b51b075021b5f518",
-    "scripts/lib/inspect-tissue.mjs": "e82e55c170ffa1f24e0c23e2f8b3270655cf08fa72edbfdc4721bafc39e3eb1b",
-    "scripts/verify-tissue.ts": "f1a6e0e7cfc32a825d738d5029011a760222ecf98ef559c43f1ec19b2cc8aa29",
-    "tests/tissue.test.ts": "c8829e00580d17dc846df88d0eb3bcc95deef971e223512f461c0d0c5c33f07c",
-    "app/tissue/assets.ts": "9cb284ab1961bc967b640ef8c1c7274f854d6af122a8093813325a62930859c6",
+    "scripts/blender/build-muscle-pilot.py": "f4fa1df9923beb7ffb2faeee55e475df4ae3cc0f9e0c86e650bae676c33ff04b",
+    "scripts/blender/muscle_geometry.py": "5c1e035514602aed20e20eb16f094fcb14546202a1bf7dcbd716c7bfa6f8720a",
+    "scripts/blender/blender_topology.py": "cdf9afad137fe51bfc6cdba5d79fd84e1d1dbca53b2b418023db7acfd93e75e9",
+    "scripts/blender/audit-muscle-pilot.py": "e2470b813b226066d66bee9df2d73b80b297f5e5dce777b652b0c647c8c53009",
+    "scripts/blender/build-package.mjs": "75be86acd54c21be26bb0fdad7123587ce79db35875f4b20de8cd3131537698f",
+    "scripts/lib/inspect-tissue.mjs": "5d9bc9b670ef5eac4e596237033112cad1d3370481c551e970364a7507a33e35",
+    "scripts/verify-tissue.ts": "df8aa2359fa10a5edfaaca7e95e4576f290eaee521911cbcff07eedf757da02e",
+    "tests/tissue.test.ts": "fedc7e1b3ae8802dafc4edaaf2fbac1a69c629312feb940ae614606d200667d2",
+    "app/tissue/assets.ts": "259a8e7b9f8cb4bf0756872e705ffb530efda6fdd5a52e2c638754c0a6dacc76",
     "app/tissue/recording.ts": "480aa5553743009f7fb1f27a39f0fdd14e64cbcec295561bd8061024ada3c343",
     "app/tissue/sarcomere.ts": "e511ba539d5ea4d62719aebaaebda581bfcc74ec4de1fe054256f075f036b43d",
-    "assets/multiscale/muscle-pilot/spec.json": "be3ff20d364da37da0753334d098691e08c03aa7efcee1918ff7be61216a8a04",
-    "assets/multiscale/muscle-pilot/build-receipt.json": "033d1b3be1e0c54b72ce3e9ab6b221009df1b84b66d4c3f9046f782c06bc3278",
-    "public/models/multiscale/muscle-pilot/manifest.json": "ff7f0651e1b3ebb2fc4cb10c7ab32f4f98b4eec2cc59b2294ab211a4b23ca234"
+    "assets/multiscale/muscle-pilot/spec.json": "937578ab2f8fada7cdca74c1ddd1db57ffd1584597ba3dd9b0442d98c37d0e36",
+    "assets/multiscale/muscle-pilot/build-receipt.json": "21cf4d4e56d3871386b231c38cec4abdaf68358cdb2d84a797b17c8a47271803",
+    "public/models/multiscale/muscle-pilot/manifest.json": "c571f1767073b54d5e9e22cbf5fb8c4663924ddba92109a54ae907fe282f6092",
+    "assets/multiscale/muscle-pilot/topology-report.json": "19c288f1532614bb9df7b970611b81d509e22bc53e3275aaa40707b1082c8b13",
+    "assets/multiscale/muscle-pilot/derivatives/derivatives.json": "c94b4a17f23d45bfd6aadc592bb38145ff1d30cef26a48dd14448bdbbc7f8735"
   }
 }

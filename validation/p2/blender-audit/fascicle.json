@@ -1,0 +1,2474 @@
+{
+  "schemaVersion": 2,
+  "blenderVersion": "4.4.3",
+  "blendPath": "assets/multiscale/muscle-pilot/blender/fascicle.blend",
+  "blendSHA256": "a902387b29c0a95c47b20ba3278f5e469097eed7c3bf6599c0af949b5a8d6bd4",
+  "sceneUnitSystem": "METRIC",
+  "sceneScaleLength": 1,
+  "topologyPolicyApplied": true,
+  "topologyFailures": [],
+  "objects": [
+    {
+      "name": "pilot-fascicle-capillaries",
+      "type": "MESH",
+      "entityId": "pilot-fascicle-capillaries",
+      "kind": "capillary",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 110,
+        "edges": 250,
+        "polygons": 150,
+        "triangles": 200,
+        "components": 5,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.3233167858075782e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3761215780467406e-13,
+        "hasUV": true,
+        "materials": [
+          "Capillary wall"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00003099999958067201,
+          -0.000035082961403531954,
+          -0.0006600000197067857
+        ],
+        "max": [
+          0.00003099999958067201,
+          0.000035082961403531954,
+          0.0006600000197067857
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-00",
+      "type": "MESH",
+      "entityId": "pilot-fiber-00",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.3318785029473553e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.581720080660724e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00002499999936844688,
+          -0.00002499999936844688,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00002499999936844688,
+          0.00002499999936844688,
+          0.0007300000288523734
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-01",
+      "type": "MESH",
+      "entityId": "pilot-fiber-01",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815773780321e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293714892416004e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00005249999958323315,
+          0.00002263139685965143,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.000002499999936844688,
+          0.00007263139559654519,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-02",
+      "type": "MESH",
+      "entityId": "pilot-fiber-02",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815773780321e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371489241601e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00005249999958323315,
+          -0.00007263139559654519,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.000002499999936844688,
+          -0.00002263139685965143,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-03",
+      "type": "MESH",
+      "entityId": "pilot-fiber-03",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815773780321e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371489241601e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.000002499999936844688,
+          0.00002263139685965143,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00005249999958323315,
+          0.00007263139559654519,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-04",
+      "type": "MESH",
+      "entityId": "pilot-fiber-04",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815773780321e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293714892416008e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.000002499999936844688,
+          -0.00007263139559654519,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00005249999958323315,
+          -0.00002263139685965143,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-05",
+      "type": "MESH",
+      "entityId": "pilot-fiber-05",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815773780321e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293714521485126e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00007999999797903001,
+          -0.00002499999936844688,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.000029999999242136255,
+          0.00002499999936844688,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-06",
+      "type": "MESH",
+      "entityId": "pilot-fiber-06",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815773780321e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293714521485126e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.000029999999242136255,
+          -0.00002499999936844688,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00007999999797903001,
+          0.00002499999936844688,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-07",
+      "type": "MESH",
+      "entityId": "pilot-fiber-07",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371563212885e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00002499999936844688,
+          0.00007026279490673915,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00002499999936844688,
+          0.00012026279728161171,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-08",
+      "type": "MESH",
+      "entityId": "pilot-fiber-08",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371563212885e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00002499999936844688,
+          -0.00012026279728161171,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00002499999936844688,
+          -0.00007026279490673915,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-09",
+      "type": "MESH",
+      "entityId": "pilot-fiber-09",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815772856739e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371500034419e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00010749999637482688,
+          0.00002263139685965143,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.00005750000127591193,
+          0.00007263139559654519,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-10",
+      "type": "MESH",
+      "entityId": "pilot-fiber-10",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815772856739e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293715000344195e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00010749999637482688,
+          -0.00007263139559654519,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.00005750000127591193,
+          -0.00002263139685965143,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-11",
+      "type": "MESH",
+      "entityId": "pilot-fiber-11",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815772856739e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371500034419e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.00005750000127591193,
+          0.00002263139685965143,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00010749999637482688,
+          0.00007263139559654519,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-12",
+      "type": "MESH",
+      "entityId": "pilot-fiber-12",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815772856739e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371500034419e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.00005750000127591193,
+          -0.00007263139559654519,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00010749999637482688,
+          -0.00002263139685965143,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-13",
+      "type": "MESH",
+      "entityId": "pilot-fiber-13",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293715038188456e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00007999999797903001,
+          0.00007026279490673915,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.000029999999242136255,
+          0.00012026279728161171,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-14",
+      "type": "MESH",
+      "entityId": "pilot-fiber-14",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293715038188464e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00007999999797903001,
+          -0.00012026279728161171,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.000029999999242136255,
+          -0.00007026279490673915,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-15",
+      "type": "MESH",
+      "entityId": "pilot-fiber-15",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293715038188464e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.000029999999242136255,
+          0.00007026279490673915,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00007999999797903001,
+          0.00012026279728161171,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-16",
+      "type": "MESH",
+      "entityId": "pilot-fiber-16",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371503818846e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.000029999999242136255,
+          -0.00012026279728161171,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00007999999797903001,
+          -0.00007026279490673915,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-17",
+      "type": "MESH",
+      "entityId": "pilot-fiber-17",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815772856739e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293715753260876e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00013499999477062374,
+          -0.00002499999936844688,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.00008499999967170879,
+          0.00002499999936844688,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-18",
+      "type": "MESH",
+      "entityId": "pilot-fiber-18",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815772856739e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293715753260884e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.00008499999967170879,
+          -0.00002499999936844688,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00013499999477062374,
+          0.00002499999936844688,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-19",
+      "type": "MESH",
+      "entityId": "pilot-fiber-19",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371505877358e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00016250000044237822,
+          0.00002263139685965143,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.00011249999806750566,
+          0.00007263139559654519,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-20",
+      "type": "MESH",
+      "entityId": "pilot-fiber-20",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815774703904e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371626996392e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00013499999477062374,
+          0.00007026279490673915,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.00008499999967170879,
+          0.00012026279728161171,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-21",
+      "type": "MESH",
+      "entityId": "pilot-fiber-21",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371505877358e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00016250000044237822,
+          -0.00007263139559654519,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.00011249999806750566,
+          -0.00002263139685965143,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-22",
+      "type": "MESH",
+      "entityId": "pilot-fiber-22",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293713990922547e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00005249999958323315,
+          0.00011789418931584805,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.000002499999936844688,
+          0.00016789419169072062,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-23",
+      "type": "MESH",
+      "entityId": "pilot-fiber-23",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815774703904e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293716269963935e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00013499999477062374,
+          -0.00012026279728161171,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.00008499999967170879,
+          -0.00007026279490673915,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-24",
+      "type": "MESH",
+      "entityId": "pilot-fiber-24",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293713990922543e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.000002499999936844688,
+          0.00011789418931584805,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00005249999958323315,
+          0.00016789419169072062,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-25",
+      "type": "MESH",
+      "entityId": "pilot-fiber-25",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371399092254e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00005249999958323315,
+          -0.00016789419169072062,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.000002499999936844688,
+          -0.00011789418931584805,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-26",
+      "type": "MESH",
+      "entityId": "pilot-fiber-26",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815774703904e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293716269963927e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.00008499999967170879,
+          0.00007026279490673915,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00013499999477062374,
+          0.00012026279728161171,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-27",
+      "type": "MESH",
+      "entityId": "pilot-fiber-27",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293713990922543e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.000002499999936844688,
+          -0.00016789419169072062,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00005249999958323315,
+          -0.00011789418931584805,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-28",
+      "type": "MESH",
+      "entityId": "pilot-fiber-28",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371505877358e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.00011249999806750566,
+          0.00002263139685965143,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00016250000044237822,
+          0.00007263139559654519,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-29",
+      "type": "MESH",
+      "entityId": "pilot-fiber-29",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815774703904e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293716269963935e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.00008499999967170879,
+          -0.00012026279728161171,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00013499999477062374,
+          -0.00007026279490673915,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-30",
+      "type": "MESH",
+      "entityId": "pilot-fiber-30",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371505877359e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.00011249999806750566,
+          -0.00007263139559654519,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00016250000044237822,
+          -0.00002263139685965143,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-31",
+      "type": "MESH",
+      "entityId": "pilot-fiber-31",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293717117163566e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.0001900000061141327,
+          -0.00002499999936844688,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.00014000000373926014,
+          0.00002499999936844688,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-32",
+      "type": "MESH",
+      "entityId": "pilot-fiber-32",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815774703904e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293714098850872e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00010749999637482688,
+          0.00011789418931584805,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.00005750000127591193,
+          0.00016789419169072062,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-33",
+      "type": "MESH",
+      "entityId": "pilot-fiber-33",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815774703904e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293714098850872e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00010749999637482688,
+          -0.00016789419169072062,
+          -0.0006000000284984708
+        ],
+        "max": [
+          -0.00005750000127591193,
+          -0.00011789418931584805,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-34",
+      "type": "MESH",
+      "entityId": "pilot-fiber-34",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815774703904e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293714098850872e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.00005750000127591193,
+          0.00011789418931584805,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00010749999637482688,
+          0.00016789419169072062,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-35",
+      "type": "MESH",
+      "entityId": "pilot-fiber-35",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815774703904e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.329371409885088e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.00005750000127591193,
+          -0.00016789419169072062,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.00010749999637482688,
+          -0.00011789418931584805,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-fiber-36",
+      "type": "MESH",
+      "entityId": "pilot-fiber-36",
+      "kind": "myofiber",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 74,
+        "edges": 168,
+        "polygons": 96,
+        "triangles": 144,
+        "components": 1,
+        "boundaryEdges": 0,
+        "boundaryLoops": 0,
+        "loopsPerComponent": [
+          0
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.2020815775627489e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": 2.3293717117163566e-12,
+        "hasUV": true,
+        "materials": [
+          "Myofiber"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.00014000000373926014,
+          -0.00002499999936844688,
+          -0.0006000000284984708
+        ],
+        "max": [
+          0.0001900000061141327,
+          0.00002499999936844688,
+          0.0006000000284984708
+        ]
+      },
+      "topologyVerdict": {
+        "status": "closed",
+        "reasons": []
+      }
+    },
+    {
+      "name": "pilot-perimysium",
+      "type": "MESH",
+      "entityId": "pilot-perimysium",
+      "kind": "sheath",
+      "evidence": "representative",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 196,
+        "edges": 339,
+        "polygons": 144,
+        "triangles": 288,
+        "components": 1,
+        "boundaryEdges": 102,
+        "boundaryLoops": 1,
+        "loopsPerComponent": [
+          1
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "boundaryWeldToleranceM": 1.244916777003707e-12,
+        "coincidentBoundaryVertexPairs": 0,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Connective sheath"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.00019492441788315773,
+          -0.00015274874749593437,
+          -0.0005649999948218465
+        ],
+        "max": [
+          0.0001949328143382445,
+          0.00019499994232319295,
+          0.0005649999948218465
+        ]
+      },
+      "topologyVerdict": {
+        "status": "classified-openings",
+        "reasons": [],
+        "opening": "perimysium longitudinal teaching window"
+      }
+    }
+  ]
+}

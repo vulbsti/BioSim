@@ -111,3 +111,18 @@ Acceptance requires: calibration and transform checks; measured-feature comparis
 6. Run a clean-room reproducibility build and retain the new receipt before replacing canonical assets.
 
 Until these gates pass, keep the manifest status `representative_visual_prototype` and the current disclaimers. Raising polygon count or rendering quality alone would not close the anatomical gap.
+
+## Sprint 1 remediation — package 0.3.0 (2026-09-29)
+
+This addresses the tooling items in the recommended order above. It does not change the asset claim: the status remains `representative_visual_prototype`, and no anatomical or biological review verdict is set.
+
+| Gate | Change | Evidence | Still open |
+|---|---|---|---|
+| 6 Topology | Tube geometry moved to `scripts/blender/muscle_geometry.py`; closed tubes and links share seam vertices, with the UV split kept per corner. M-line links are trimmed into new lattice-node spheres so collinear links no longer share coincident end caps. The audit classifies every boundary loop against `spec.topology` and exits nonzero on any unclassified opening. | `topology-report.json`; `validation/p2/blender-audit/`; 10 Blender-free Python regression tests; Node tests weld the runtime GLB bytes by exact position and count edge uses | Crossing Z-disc links and M-line links entering their node spheres still interpenetrate as separate closed components; no union or intersection test |
+| 8 LOD (partial) | Muscle `context` is a 0.35 decimation of each source surface: 944 versus 2,704 triangles, with the same entity IDs and bounds within 2% of span. Every level's context is now lighter than its detail. | `manifest.json`, tissue tests | Screen-space error targets and device frame-time measurements |
+| Collision/simulation | Closed derivatives kept outside the runtime package: a 3 mm voxel-remeshed muscle/femur/patella domain (FJ1442 about 499 cm³ in three components) and per-component convex-hull or solidified-shell collision proxies for the fascicle, fiber and sarcomere. | `derivatives/derivatives.json`; GLB edge check | Not a validated mechanical/perfusion domain; no deformation contract yet |
+| 10 Reproducibility | `npm run build:tissue` builds twice into fresh staging roots with the pinned Blender, audits both, requires byte-identical GLBs/manifest/reports/derivatives, compares entity identity with the canonical package and promotes by rename. It never writes `.blend1` backups. | `build-receipt.json` (schema 2) | `.blend` bytes are not reproducible (embedded pointers); they are compared semantically |
+| 2 Parameter ledger (schema) | `parameter-ledger.json` gives every spec dimension an evidence class, source, locator, uncertainty and separate anatomy/physiology review fields. All 14 entries are honestly marked `representative-choice`, review `pending`. | Ledger test | Real measurements, citations with locators, named reviewers |
+| 9 Diagnostics | `npm run render:diagnostics` produces turntable, cross/longitudinal sections, wireframe, normals and scale-bar renders under locked color management. | `validation/p2/diagnostics/` | Reference-image overlays require licensed reference imaging |
+
+Gates 1–5 (claim, reference, registration, morphology, ultrastructure) and gate 7 (dynamics) are unchanged. They need licensed human imaging and expert reviewers, not more tooling.

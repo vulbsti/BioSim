@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "blenderVersion": "4.4.3",
+  "blendPath": "assets/multiscale/muscle-pilot/blender/muscle.blend",
+  "blendSHA256": "ed4943d5538ac584a74dce26ad713a543c805a5b65113e7e50e2c76d495288f8",
+  "level": "muscle",
+  "colorManagement": {
+    "displayDevice": "sRGB",
+    "viewTransform": "Standard",
+    "look": "None",
+    "exposure": 0.0,
+    "gamma": 1.0,
+    "sequencerColorspace": "sRGB",
+    "filmTransparent": false,
+    "worldColor": [
+      0.05000000074505806,
+      0.05999999865889549,
+      0.07000000029802322
+    ],
+    "cyclesSeed": 0,
+    "denoising": false,
+    "threadsMode": "FIXED",
+    "threads": 4
+  },
+  "camera": {
+    "type": "ORTHO",
+    "orthoScale": 1.063771106724681,
+    "elevationDeg": 22.0
+  },
+  "samples": 12,
+  "size": 360,
+  "scaleBar": {
+    "lengthM": 0.1,
+    "label": "10 cm"
+  },
+  "renders": [
+    {
+      "file": "turntable-00.png",
+      "kind": "turntable",
+      "sha256": "774ffeb0ba1c9cc5e8de54b4dbbdbbf9b6f592616ae8f2c9c532b10dab62409b",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-01.png",
+      "kind": "turntable",
+      "sha256": "2c56610ef8c06774d4820f81e9637eb1515794177bc0fc0b3dd1646af564c44e",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-02.png",
+      "kind": "turntable",
+      "sha256": "8d918086d0f38ab217a1c6c108cbdb7b4865d0823e157569edc2a02c9aeb0d04",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-03.png",
+      "kind": "turntable",
+      "sha256": "f5a6d8d580b004c536469d4eeaddfcb8d2809731cad6fb2dad20067d6d0639fb",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-04.png",
+      "kind": "turntable",
+      "sha256": "2234cedfe80602771d0d1b975617916b0b9d53ba8006d4a456501e95393bf8bf",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-05.png",
+      "kind": "turntable",
+      "sha256": "fa35dadf52d41840fa94d593d657b252e2652f1c5df5b33f628681aa3e351083",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-06.png",
+      "kind": "turntable",
+      "sha256": "3e8c9b4e7450ac6694927ae75c06f213d2d37e8ad8b4fa96a5a63c22f3dc2823",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-07.png",
+      "kind": "turntable",
+      "sha256": "f9aec96cc6cf0f522341ab24bb4932e513aedb8e62868c1dc83d419613ec95aa",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "section-cross.png",
+      "kind": "section",
+      "sha256": "8b331313aa1c5fd37a271a78be818a353c918aaee5e2c4f2ae280f52bc3f0775",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "section-longitudinal.png",
+      "kind": "section",
+      "sha256": "6b3a75ea98c231b30cf39eecc428a05ef154b831ee6d2de8bc560659c495e1a8",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "wireframe.png",
+      "kind": "wireframe",
+      "sha256": "77d80f568cb2efbc948cf606d0f32bdee1ae4805aac709b077aeece65953a639",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "normals.png",
+      "kind": "normals",
+      "sha256": "36d814c14038c2282bbfb5d27256e0ab0d4999b9f5d67a5a67653d73efaa3339",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "contact-sheet.png",
+      "kind": "contact-sheet",
+      "sha256": "338d06b5437eeaaa63a8a76d76ab3bd0260f452f6a1a0f10cfb6c22b89707db1",
+      "width": 640,
+      "height": 480
+    }
+  ],
+  "normalizationScale": 2.1275103763458687
+}

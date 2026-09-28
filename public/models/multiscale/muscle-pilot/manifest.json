@@ -1,6 +1,6 @@
 {
   "id": "muscle-pilot",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "status": "representative_visual_prototype",
   "metersPerAssetUnit": 1,
   "sourceSpace": "glTF right-handed Y-up, meters; muscle translation retained separately",
@@ -9,6 +9,21 @@
       "representations": {
         "context": {
           "url": "/models/multiscale/muscle-pilot/muscle-context.glb",
+          "bytes": 29008,
+          "sha256": "e9721579048aafa777596a4547da7ecdd1bb562c66d35dcdcba620746359eebb",
+          "triangles": 944,
+          "entities": [
+            "FJ1442",
+            "FJ3365",
+            "FJ3381"
+          ],
+          "derivation": "Decimate collapse ratio 0.35 of each source surface; display-only LOD, not source bytes.",
+          "topology": {
+            "source-derived-lod": 3
+          }
+        },
+        "detail": {
+          "url": "/models/multiscale/muscle-pilot/muscle-detail.glb",
           "bytes": 75480,
           "sha256": "2a01e8ba38b89cb57866bbf900b0d35a3f512b07331d94c7fe64daf35a7f71b3",
           "triangles": 2704,
@@ -16,18 +31,11 @@
             "FJ1442",
             "FJ3365",
             "FJ3381"
-          ]
-        },
-        "detail": {
-          "url": "/models/multiscale/muscle-pilot/muscle-detail.glb",
-          "bytes": 75492,
-          "sha256": "08e944758c6b9821b4419acc2b586cbe77165e5d57ba32743d95ab15047b0b5c",
-          "triangles": 2704,
-          "entities": [
-            "FJ1442",
-            "FJ3365",
-            "FJ3381"
-          ]
+          ],
+          "derivation": "Source surface topology retained.",
+          "topology": {
+            "source-preserved": 3
+          }
         }
       },
       "localToAtlasTranslationM": [
@@ -42,8 +50,8 @@
       "representations": {
         "context": {
           "url": "/models/multiscale/muscle-pilot/fascicle-context.glb",
-          "bytes": 122056,
-          "sha256": "0c8b3c01d397d17819f2b510cba550dfe571548ad0732c3edf36cffae01698c8",
+          "bytes": 119368,
+          "sha256": "bed614e93e4c9ea8e95da2434eeca71a13fd777e6ccc25730f18086f904ddbbd",
           "triangles": 2928,
           "entities": [
             "pilot-fascicle-capillaries",
@@ -85,12 +93,17 @@
             "pilot-fiber-35",
             "pilot-fiber-36",
             "pilot-perimysium"
-          ]
+          ],
+          "derivation": "Generated representative geometry.",
+          "topology": {
+            "closed": 38,
+            "classified-openings": 1
+          }
         },
         "detail": {
           "url": "/models/multiscale/muscle-pilot/fascicle-detail.glb",
-          "bytes": 200940,
-          "sha256": "247914031770301411108049da08aafaf09cfbe3a04b2145a45019daeaedfa91",
+          "bytes": 198252,
+          "sha256": "08b21962a8052e9a8ccfa10954a1e3d63bcea4d94cdf3bee1be7ba8c7d1914fd",
           "triangles": 5816,
           "entities": [
             "pilot-fascicle-capillaries",
@@ -132,7 +145,12 @@
             "pilot-fiber-35",
             "pilot-fiber-36",
             "pilot-perimysium"
-          ]
+          ],
+          "derivation": "Generated representative geometry.",
+          "topology": {
+            "closed": 38,
+            "classified-openings": 1
+          }
         }
       },
       "spanM": 0.00139,
@@ -360,8 +378,8 @@
       "representations": {
         "context": {
           "url": "/models/multiscale/muscle-pilot/fiber-context.glb",
-          "bytes": 672704,
-          "sha256": "8c61e251054ce6666f465f18909897ea08a7bc9551bccd78ff0a9176d0afb39d",
+          "bytes": 639616,
+          "sha256": "3d16fd8066b3b1238fafb5686c2c1b356b7ebed3b485ff1c297d40810f062097",
           "triangles": 16224,
           "entities": [
             "pilot-erythrocytes",
@@ -371,12 +389,17 @@
             "pilot-myofibrils",
             "pilot-myonuclei",
             "pilot-sarcolemma"
-          ]
+          ],
+          "derivation": "Generated representative geometry.",
+          "topology": {
+            "closed": 5,
+            "classified-openings": 2
+          }
         },
         "detail": {
           "url": "/models/multiscale/muscle-pilot/fiber-detail.glb",
-          "bytes": 1250540,
-          "sha256": "e9e1b69e3fbedc2d73add7c82dc0f32902a50353592b4311e92a59dc5bf75cd6",
+          "bytes": 1217452,
+          "sha256": "7255e16e11e9ef3e82f1a5658a49c8487a59ecbff60d2e45859c0af3cc162cf7",
           "triangles": 31696,
           "entities": [
             "pilot-erythrocytes",
@@ -386,7 +409,12 @@
             "pilot-myofibrils",
             "pilot-myonuclei",
             "pilot-sarcolemma"
-          ]
+          ],
+          "derivation": "Generated representative geometry.",
+          "topology": {
+            "closed": 5,
+            "classified-openings": 2
+          }
         }
       },
       "spanM": 0.000268,
@@ -396,9 +424,9 @@
       "representations": {
         "context": {
           "url": "/models/multiscale/muscle-pilot/sarcomere-context.glb",
-          "bytes": 639892,
-          "sha256": "e04b943e51fddc05c268ffaa35ee1e6f0f76ae0a51b1d82e57f9a9a89d095c3a",
-          "triangles": 13304,
+          "bytes": 675100,
+          "sha256": "8b42b97c8134011d507d95ed1f2dfa16c078463845f46305e5cdca934a006fd7",
+          "triangles": 16580,
           "entities": [
             "pilot-m-line",
             "pilot-thick-filaments",
@@ -406,13 +434,17 @@
             "pilot-thin-right",
             "pilot-z-left",
             "pilot-z-right"
-          ]
+          ],
+          "derivation": "Generated representative geometry.",
+          "topology": {
+            "closed": 6
+          }
         },
         "detail": {
           "url": "/models/multiscale/muscle-pilot/sarcomere-detail.glb",
-          "bytes": 2298852,
-          "sha256": "5ded6527d943a221d2888794cdb10ac4d5d686ce62a3473f9399e1cef5f5029a",
-          "triangles": 47000,
+          "bytes": 2359688,
+          "sha256": "642198b250de4ea0d9d132a3641e19318b89f22bb676c129a3ee990a5fa79eff",
+          "triangles": 51368,
           "entities": [
             "pilot-m-line",
             "pilot-thick-filaments",
@@ -420,7 +452,11 @@
             "pilot-thin-right",
             "pilot-z-left",
             "pilot-z-right"
-          ]
+          ],
+          "derivation": "Generated representative geometry.",
+          "topology": {
+            "closed": 6
+          }
         }
       },
       "spanM": 2.5080000000000004e-06,
@@ -919,15 +955,19 @@
       "name": "M line",
       "kind": "m-line",
       "level": "sarcomere",
-      "description": "Representative links at the sarcomere midpoint, anchoring the thick-filament array; remains fixed during symmetric sliding.",
+      "description": "Representative links and lattice nodes at the sarcomere midpoint, anchoring the thick-filament array; remains fixed during symmetric sliding.",
       "evidence": "representative"
     }
   ],
   "provenance": {
     "blenderVersion": "4.4.3",
     "generator": "scripts/blender/build-muscle-pilot.py",
-    "generatorSHA256": "444d8b70cb3f93d4b02b7795035cf153e4c37a32c4f98a10b51b075021b5f518",
-    "specSHA256": "be3ff20d364da37da0753334d098691e08c03aa7efcee1918ff7be61216a8a04",
+    "generatorSHA256": "f4fa1df9923beb7ffb2faeee55e475df4ae3cc0f9e0c86e650bae676c33ff04b",
+    "generatorModules": {
+      "scripts/blender/muscle_geometry.py": "5c1e035514602aed20e20eb16f094fcb14546202a1bf7dcbd716c7bfa6f8720a",
+      "scripts/blender/blender_topology.py": "cdf9afad137fe51bfc6cdba5d79fd84e1d1dbca53b2b418023db7acfd93e75e9"
+    },
+    "specSHA256": "937578ab2f8fada7cdca74c1ddd1db57ffd1584597ba3dd9b0442d98c37d0e36",
     "sourceHashes": {
       "public/models/body-1.bin": "aa077a4675f0d0dd3c9b0af39dc8cf6bcb348c3bf7d283478d4206ce30a5a0de",
       "public/models/body-13.bin": "4c51b6be85d5b705d2b52b79b9ad1cdae0b65ad03c9402a2f2673c7633fd94f3"

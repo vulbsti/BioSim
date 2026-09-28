@@ -1,18 +1,32 @@
 """Build a reproducible, metric, representative muscle inspection package.
-Run: blender --background --factory-startup --python scripts/blender/build-muscle-pilot.py
+Run through the staging driver, which audits, compares and promotes the outputs:
+  node scripts/blender/build-package.mjs
+Direct use writes only into a staging root:
+  blender --background --factory-startup --python scripts/blender/build-muscle-pilot.py -- --out-root DIR [--no-previews]
 Original source buffers remain untouched. No human microstructure registration is implied.
 """
-import bpy, math, json, struct, hashlib, random, itertools
+import bpy, math, json, struct, hashlib, random, itertools, sys
 from pathlib import Path
 from mathutils import Vector
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from muscle_geometry import Mesh, classify
+from blender_topology import mesh_stats, summarize
 ROOT=Path(__file__).resolve().parents[2]
-SOURCE=ROOT/'assets/multiscale/muscle-pilot'
-OUT=ROOT/'public/models/multiscale/muscle-pilot'
-PREVIEW=ROOT/'outputs/verification/p2'
-for p in [SOURCE/'blender',OUT,PREVIEW]:p.mkdir(parents=True,exist_ok=True)
-SPEC=json.loads((SOURCE/'spec.json').read_text())
+ARGS=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else []
+if '--out-root' not in ARGS:raise SystemExit('Pass -- --out-root STAGING_DIR; canonical outputs are promoted by build-package.mjs.')
+STAGE=Path(ARGS[ARGS.index('--out-root')+1]).resolve();PREVIEWS='--no-previews' not in ARGS
+if STAGE==ROOT or ROOT in STAGE.parents and not str(STAGE.relative_to(ROOT)).startswith('work/'):raise SystemExit('The staging root must be outside the repository or under work/.')
+SPEC_PATH=ROOT/'assets/multiscale/muscle-pilot/spec.json'
+SOURCE=STAGE/'assets/multiscale/muscle-pilot'
+OUT=STAGE/'public/models/multiscale/muscle-pilot'
+DERIVED=SOURCE/'derivatives'
+PREVIEW=STAGE/'previews'
+for p in [SOURCE/'blender',OUT,DERIVED,PREVIEW]:p.mkdir(parents=True,exist_ok=True)
+SPEC=json.loads(SPEC_PATH.read_text())
 ATLAS=json.loads((ROOT/'public/models/atlas.json').read_text())
-entities={}; levels={}; sources={}
+# Never write Blender .blend1 backups; they are not part of the package.
+bpy.context.preferences.filepaths.save_version=0
+entities={}; levels={}; sources={}; topology_report={}; derivatives={}
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 def color(h):
     rgb=[int(h[i:i+2],16)/255 for i in (1,3,5)]
@@ -28,63 +42,17 @@ def prepare():
     for m in list(bpy.data.materials):bpy.data.materials.remove(m)
     sc=bpy.context.scene;sc.unit_settings.system='METRIC';sc.unit_settings.scale_length=1
     return {'muscle':material('Muscle tissue','#a9504c',.52),'fiber':material('Myofiber','#be7664',.53),'sheath':material('Connective sheath','#dfc3a9',.63),'bone':material('Cortical bone','#d9d1b7',.7),'nucleus':material('Myonuclei','#756581',.48),'mito':material('Mitochondria','#a07540',.5),'capillary':material('Capillary wall','#ad5459',.47),'blood':material('Erythrocyte','#a73546',.39),'glut4':material('Membrane transport sites','#83c4ae',.35)}
-class Mesh:
-    def __init__(self):self.v=[];self.f=[];self.uv=[];self.smooth=[]
-    def face(self,ids,uv,smooth=True):self.f.append(tuple(ids));self.uv.append(uv);self.smooth.append(smooth)
-    def tube(self,x,y,r,length,segments=16,steps=1,arc=None,zoffset=0,period=None):
-        start=len(self.v);a0,a1=arc or (0,math.tau);closed=arc is None
-        # Duplicate seam vertices for unambiguous periodic UVs.
-        for j in range(steps+1):
-            z=(j/steps-.5)*length+zoffset
-            for i in range(segments+1):
-                a=a0+(a1-a0)*i/segments
-                self.v.append((x+r*math.cos(a),y+r*math.sin(a),z))
-        for j in range(steps):
-            v0=((j/steps-.5)*length+zoffset)/(period or length);v1=(((j+1)/steps-.5)*length+zoffset)/(period or length)
-            for i in range(segments):
-                a=start+j*(segments+1)+i;b=a+segments+1
-                self.face([a,a+1,b+1,b],[(i/segments,v0),((i+1)/segments,v0),((i+1)/segments,v1),(i/segments,v1)])
-        if closed:
-            for j in [0,steps]:
-                center=len(self.v);self.v.append((x,y,(j/steps-.5)*length+zoffset))
-                for i in range(segments):
-                    a=start+j*(segments+1)+i
-                    ids=[center,a+1,a] if j==0 else [center,a,a+1]
-                    uv=[(.5,.5)]+[(.5+.45*math.cos(a0+(a1-a0)*n/segments),.5+.45*math.sin(a0+(a1-a0)*n/segments)) for n in ([i+1,i] if j==0 else [i,i+1])]
-                    self.face(ids,uv,False)
-    def ellipsoid(self,center,radii,segments=12,rings=6,biconcave=False):
-        start=len(self.v);x,y,z=center;rx,ry,rz=radii
-        self.v.append((x,y,z+rz*(.3 if biconcave else 1)))
-        for j in range(1,rings):
-            phi=math.pi*j/rings
-            for i in range(segments):
-                a=math.tau*i/segments;s=math.sin(phi);q=math.cos(phi)*(.3+.7*s*s if biconcave else 1)
-                self.v.append((x+rx*s*math.cos(a),y+ry*s*math.sin(a),z+rz*q))
-        bottom=len(self.v);self.v.append((x,y,z-rz*(.3 if biconcave else 1)))
-        for i in range(segments):
-            self.face([start,start+1+i,start+1+(i+1)%segments],[(0,0)]*3)
-            last=start+1+(rings-2)*segments
-            self.face([bottom,last+(i+1)%segments,last+i],[(0,0)]*3)
-        for j in range(rings-2):
-            for i in range(segments):
-                a=start+1+j*segments+i;b=start+1+j*segments+(i+1)%segments
-                self.face([a,a+segments,b+segments,b],[(0,0)]*4)
-    def link(self,a,b,r,segments=6):
-        start=len(self.v);a,b=Vector(a),Vector(b);axis=b-a
-        self.tube(0,0,r,axis.length,segments)
-        rotation=Vector((0,0,1)).rotation_difference(axis.normalized())
-        center=(a+b)/2
-        for i in range(start,len(self.v)):self.v[i]=tuple(rotation@Vector(self.v[i])+center)
-    def object(self,id,name,mat,kind,level,description,**extra):
-        mesh=bpy.data.meshes.new(id);mesh.from_pydata(self.v,[],self.f);mesh.update()
-        uv=mesh.uv_layers.new(name='UVMap')
-        for poly,coords,smooth in zip(mesh.polygons,self.uv,self.smooth):
-            poly.use_smooth=smooth
-            for loop,coord in zip(poly.loop_indices,coords):uv.data[loop].uv=coord
-        obj=bpy.data.objects.new(id,mesh);bpy.context.collection.objects.link(obj);mesh.materials.append(mat)
-        obj['entityId']=id;obj['kind']=kind;obj['evidence']='source-surface' if id.startswith('FJ') else 'representative';obj['metersPerUnit']=1.0
-        entities[id]={'id':id,'name':name,'kind':kind,'level':level,'description':description,'evidence':obj['evidence'],**extra}
-        return obj
+def to_object(self,id,name,mat,kind,level,description,**extra):
+    mesh=bpy.data.meshes.new(id);mesh.from_pydata(self.v,[],self.f);mesh.update()
+    uv=mesh.uv_layers.new(name='UVMap')
+    for poly,coords,smooth in zip(mesh.polygons,self.uv,self.smooth):
+        poly.use_smooth=smooth
+        for loop,coord in zip(poly.loop_indices,coords):uv.data[loop].uv=coord
+    obj=bpy.data.objects.new(id,mesh);bpy.context.collection.objects.link(obj);mesh.materials.append(mat)
+    obj['entityId']=id;obj['kind']=kind;obj['evidence']='source-surface' if id.startswith('FJ') else 'representative';obj['metersPerUnit']=1.0
+    entities[id]={'id':id,'name':name,'kind':kind,'level':level,'description':description,'evidence':obj['evidence'],**extra}
+    return obj
+Mesh.object=to_object
 
 def hexgrid(rings,pitch):
     out=[]
@@ -205,8 +173,12 @@ def build_sarcomere(detail):
     m=Mesh()
     for x,y in centers:
         for dx,dy in [(pitch,0),(pitch/2,pitch*math.sqrt(3)/2)]:
-            if any(math.hypot(x+dx-a,y+dy-b)<1e-12 for a,b in centers):m.link((x,y,0),(x+dx,y+dy,0),2e-9,6 if detail else 4)
-    m.object('pilot-m-line','M line',mid,'m-line','sarcomere','Representative links at the sarcomere midpoint, anchoring the thick-filament array; remains fixed during symmetric sliding.')
+            if any(math.hypot(x+dx-a,y+dy-b)<1e-12 for a,b in centers):
+                # Trim links inside the node spheres so collinear links never share coincident end caps.
+                u=(dx/math.hypot(dx,dy),dy/math.hypot(dx,dy));t=1.8e-9
+                m.link((x+u[0]*t,y+u[1]*t,0),(x+dx-u[0]*t,y+dy-u[1]*t,0),2e-9,6 if detail else 4)
+        m.ellipsoid((x,y,0),(3e-9,3e-9,3e-9),8 if detail else 6,4)
+    m.object('pilot-m-line','M line',mid,'m-line','sarcomere','Representative links and lattice nodes at the sarcomere midpoint, anchoring the thick-filament array; remains fixed during symmetric sliding.')
     return {'spanM':length+8e-9,'description':'Cropped representative sarcomere lattice: fixed-length thick and thin filaments, two Z discs and an M line. Manual length-controlled kinematics, not a force or biochemical simulation.'}
 
 def export(level,lod):
@@ -215,7 +187,90 @@ def export(level,lod):
     bpy.ops.export_scene.gltf(filepath=str(path),export_format='GLB',use_selection=True,export_extras=True,export_yup=True,export_animations=False,export_cameras=False,export_lights=False)
     bpy.context.view_layer.update()
     triangles=sum(len(o.data.loop_triangles) or (o.data.calc_loop_triangles() or len(o.data.loop_triangles)) for o in bpy.context.scene.objects if o.type=='MESH')
-    return {'url':'/'+str(path.relative_to(ROOT/'public')),'bytes':path.stat().st_size,'sha256':sha(path),'triangles':triangles,'entities':sorted(o['entityId'] for o in bpy.context.scene.objects if o.type=='MESH')}
+    return {'url':f'/models/multiscale/muscle-pilot/{level}-{lod}.glb','bytes':path.stat().st_size,'sha256':sha(path),'triangles':triangles,'entities':sorted(o['entityId'] for o in bpy.context.scene.objects if o.type=='MESH')}
+
+def evaluated(obj,modifier):
+    """Apply one modifier without operators: replace the mesh with its evaluated copy."""
+    dg=bpy.context.evaluated_depsgraph_get();mesh=bpy.data.meshes.new_from_object(obj.evaluated_get(dg));old=obj.data
+    obj.modifiers.remove(modifier);obj.data=mesh;bpy.data.meshes.remove(old)
+    return obj
+
+def decimate_context():
+    ratio=SPEC['lod']['muscleContext']['ratio']
+    for o in [o for o in bpy.context.scene.objects if o.type=='MESH']:
+        m=o.modifiers.new('Context LOD','DECIMATE');m.decimate_type='COLLAPSE';m.ratio=ratio;evaluated(o,m)
+    return {'derivation':f"Decimate collapse ratio {ratio} of each source surface; display-only LOD, not source bytes."}
+
+def gate(level,lod):
+    """Every generated mesh must be closed or a named opening; stop the build otherwise."""
+    report={};failures=[]
+    for o in sorted((o for o in bpy.context.scene.objects if o.type=='MESH'),key=lambda o:o['entityId']):
+        stats=mesh_stats(o);verdict=classify(o['entityId'],stats,SPEC['topology'])
+        if lod=='context' and level=='muscle':verdict={'status':'source-derived-lod','reasons':[]}
+        report[o['entityId']]={'verdict':verdict,'stats':summarize(stats)}
+        if verdict['status']=='fail':failures.append((o['entityId'],verdict['reasons']))
+    if failures:raise SystemExit(f'Topology gate failed for {level}/{lod}: {failures}')
+    topology_report.setdefault(level,{})[lod]=report
+    counts={}
+    for r in report.values():counts[r['verdict']['status']]=counts.get(r['verdict']['status'],0)+1
+    return counts
+
+def hull_components(obj,out):
+    """Convex hull per connected component, computed in a unit-normalized frame for float safety."""
+    import bmesh
+    bm=bmesh.new();bm.from_mesh(obj.data);bm.verts.ensure_lookup_table();seen=set()
+    for v in bm.verts:
+        if v.index in seen:continue
+        stack=[v];comp=[];seen.add(v.index)
+        while stack:
+            c=stack.pop();comp.append(c.co.copy())
+            for e in c.link_edges:
+                w=e.other_vert(c)
+                if w.index not in seen:seen.add(w.index);stack.append(w)
+        center=sum(comp,Vector())/len(comp);scale=max((p-center).length for p in comp) or 1
+        h=bmesh.new();vs=[h.verts.new((p-center)/scale) for p in comp]
+        r=bmesh.ops.convex_hull(h,input=vs,use_existing_faces=False)
+        bmesh.ops.delete(h,geom=list({g for g in r['geom_interior']+r['geom_unused'] if isinstance(g,bmesh.types.BMVert)}),context='VERTS')
+        h.verts.ensure_lookup_table();base=len(out.v)
+        out.v.extend(tuple(center+p.co*scale) for p in h.verts)
+        for f in h.faces:out.face([base+q.index for q in f.verts],[(0,0)]*len(f.verts),False)
+        h.free()
+    bm.free()
+
+def derive(level,span):
+    """Closed collision/simulation derivatives, exported apart from display meshes, then removed."""
+    cfg=SPEC['derivatives'];made=[];records=[]
+    kind='simulation' if level=='muscle' else 'collision'
+    mat=material('Derivative diagnostic','#6f8f9a',.6)
+    for o in [o for o in bpy.context.scene.objects if o.type=='MESH']:
+        eid=o['entityId']
+        if level=='muscle':
+            d=o.copy();d.data=o.data.copy();bpy.context.collection.objects.link(d)
+            m=d.modifiers.new('Simulation domain','REMESH');m.mode='VOXEL';m.voxel_size=cfg['muscleSimulationDomain']['voxelSizeM'];m.use_smooth_shade=False;evaluated(d,m)
+            method=f"voxel remesh {cfg['muscleSimulationDomain']['voxelSizeM']} m"
+        elif eid in SPEC['topology']['openings']:
+            d=o.copy();d.data=o.data.copy();bpy.context.collection.objects.link(d)
+            m=d.modifiers.new('Collision shell','SOLIDIFY');m.thickness=span*cfg['collision']['shellThicknessFractionOfSpan'];m.offset=0;m.use_rim=True;m.use_even_offset=True;evaluated(d,m)
+            method='solidified shell of named opening'
+        else:
+            mesh=Mesh();hull_components(o,mesh);mesh_data=bpy.data.meshes.new(eid+'--'+kind);mesh_data.from_pydata(mesh.v,[],mesh.f);mesh_data.update()
+            d=bpy.data.objects.new(eid+'--'+kind,mesh_data);bpy.context.collection.objects.link(d)
+            method='convex hull per connected component'
+        d.name=eid+'--'+kind;d.data.materials.clear();d.data.materials.append(mat)
+        for key in list(d.keys()):del d[key]
+        d['derivedFrom']=eid;d['derivative']=kind;d['metersPerUnit']=1.0
+        stats=mesh_stats(d)
+        if stats['boundaryEdges'] or stats['nonManifoldEdges'] or stats['degenerateFaces'] or stats['looseVertices']:
+            raise SystemExit(f'Derivative {d.name} is not a closed manifold: {summarize(stats)}')
+        made.append(d);records.append({'object':d.name,'derivedFrom':eid,'method':method,'components':stats['components'],'triangles':stats['triangles'],'closedVolumeM3':stats['closedVolumeM3']})
+    display=[o for o in bpy.context.scene.objects if o not in made]
+    for o in display:o.select_set(False)
+    for o in made:o.select_set(True)
+    path=DERIVED/f'{level}-{kind}.glb'
+    bpy.ops.export_scene.gltf(filepath=str(path),export_format='GLB',use_selection=True,export_extras=True,export_yup=True,export_animations=False,export_cameras=False,export_lights=False,export_materials='NONE',export_normals=False,export_texcoords=False)
+    for o in made:bpy.data.objects.remove(o)
+    bpy.data.materials.remove(mat)
+    derivatives[level]={'kind':kind,'file':str(path.relative_to(STAGE)),'bytes':path.stat().st_size,'sha256':sha(path),'objects':records}
 
 def preview(level,span):
     # Normalize only the disposable preview scene, after metric GLB and blend saves.
@@ -237,11 +292,15 @@ def preview(level,span):
 for level,builder in [('muscle',build_muscle),('fascicle',build_fascicle),('fiber',build_fiber),('sarcomere',build_sarcomere)]:
     levels[level]={'representations':{}}
     for lod in ['context','detail']:
-        info=builder(lod=='detail');levels[level].update(info);levels[level]['representations'][lod]=export(level,lod)
+        info=builder(lod=='detail');extra=decimate_context() if level=='muscle' and lod=='context' else {'derivation':'Source surface topology retained.' if level=='muscle' else 'Generated representative geometry.'}
+        levels[level].update(info);levels[level]['representations'][lod]={**export(level,lod),**extra,'topology':gate(level,lod)}
         if lod=='detail':
+            derive(level,info['spanM'])
             bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE/'blender'/f'{level}.blend'),compress=True)
-            preview(level,info['spanM'])
-manifest={'id':SPEC['id'],'version':SPEC['version'],'status':SPEC['status'],'metersPerAssetUnit':1,'sourceSpace':'glTF right-handed Y-up, meters; muscle translation retained separately','levels':levels,'entities':list(entities.values()),'provenance':{'blenderVersion':bpy.app.version_string,'generator':'scripts/blender/build-muscle-pilot.py','generatorSHA256':sha(Path(__file__)),'specSHA256':sha(SOURCE/'spec.json'),'sourceHashes':sources,'license':'Source muscle/bone CC-BY-4.0; generated microstructure and texture MIT','referenceURL':SPEC['references'][0]['url'],'registration':'Representative microstructure is not spatially registered to the source muscle'},'validation':'Requires independent byte, bounds, identity and browser checks. No anatomical expert review or full phase completion is claimed.'}
+            if PREVIEWS:preview(level,info['spanM'])
+modules={f'scripts/blender/{n}':sha(Path(__file__).parent/n) for n in ['muscle_geometry.py','blender_topology.py']}
+manifest={'id':SPEC['id'],'version':SPEC['version'],'status':SPEC['status'],'metersPerAssetUnit':1,'sourceSpace':'glTF right-handed Y-up, meters; muscle translation retained separately','levels':levels,'entities':list(entities.values()),'provenance':{'blenderVersion':bpy.app.version_string,'generator':'scripts/blender/build-muscle-pilot.py','generatorSHA256':sha(Path(__file__)),'generatorModules':modules,'specSHA256':sha(SPEC_PATH),'sourceHashes':sources,'license':'Source muscle/bone CC-BY-4.0; generated microstructure and texture MIT','referenceURL':SPEC['references'][0]['url'],'registration':'Representative microstructure is not spatially registered to the source muscle'},'validation':'Requires independent byte, bounds, identity and browser checks. No anatomical expert review or full phase completion is claimed.'}
 (OUT/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
-(SOURCE/'build-receipt.json').write_text(json.dumps({'manifestSHA256':sha(OUT/'manifest.json'),'blenderVersion':bpy.app.version_string,'blenderFiles':{p.name:sha(p) for p in sorted((SOURCE/'blender').glob('*.blend'))},'previews':{p.name:sha(p) for p in sorted(PREVIEW.glob('*-blender.png'))}},indent=2)+'\n')
-print('MUSCLE_PILOT_EXPORTED',json.dumps({k:v['representations']['detail']['triangles'] for k,v in levels.items()}))
+(SOURCE/'topology-report.json').write_text(json.dumps({'schemaVersion':1,'policy':SPEC['topology'],'levels':topology_report},indent=2)+'\n')
+(DERIVED/'derivatives.json').write_text(json.dumps({'schemaVersion':1,'policy':SPEC['derivatives'],'levels':derivatives},indent=2)+'\n')
+print('MUSCLE_PILOT_EXPORTED',json.dumps({k:{lod:v['representations'][lod]['triangles'] for lod in v['representations']} for k,v in levels.items()}))

@@ -1,40 +1,16 @@
-TAP version 13
-# Subtest: tissue GLBs match hashes, contain finite metric geometry and preserve every entity across LODs
-ok 1 - tissue GLBs match hashes, contain finite metric geometry and preserve every entity across LODs
-  ---
-  duration_ms: 418.680083
-  type: 'test'
-  ...
-# Subtest: source anatomy stays separate from representative cells and manifests reject unit or identity drift
-ok 2 - source anatomy stays separate from representative cells and manifests reject unit or identity drift
-  ---
-  duration_ms: 2.312956
-  type: 'test'
-  ...
-# Subtest: independent GLB inspection rejects corrupted headers, indices and physical metadata
-ok 3 - independent GLB inspection rejects corrupted headers, indices and physical metadata
-  ---
-  duration_ms: 3.26574
-  type: 'test'
-  ...
-# Subtest: tissue recordings preserve scale, selection and playhead while rejecting incompatible packages before loading
-ok 4 - tissue recordings preserve scale, selection and playhead while rejecting incompatible packages before loading
-  ---
-  duration_ms: 2.62639
-  type: 'test'
-  ...
-# Subtest: exported filament endpoints remain anchored while shortening changes overlap, not filament lengths
-ok 5 - exported filament endpoints remain anchored while shortening changes overlap, not filament lengths
-  ---
-  duration_ms: 164.673254
-  type: 'test'
-  ...
-1..5
-# tests 5
-# suites 0
-# pass 5
-# fail 0
-# cancelled 0
-# skipped 0
-# todo 0
-# duration_ms 798.644848
+✔ tissue GLBs match hashes, contain finite metric geometry and preserve every entity across LODs (268.359074ms)
+✔ muscle context LOD is a real reduced derivative that keeps identity and silhouette (4.773944ms)
+✔ generated display meshes are closed except named openings; source surfaces keep their topology (218.340387ms)
+✔ collision and simulation derivatives are separate, hash-bound and watertight in their GLB bytes (150.566769ms)
+✔ source anatomy stays separate from representative cells and manifests reject unit or identity drift (1.871063ms)
+✔ independent GLB inspection rejects corrupted headers, indices and physical metadata (2.312462ms)
+✔ tissue recordings preserve scale, selection and playhead while rejecting incompatible packages before loading (4.049133ms)
+✔ exported filament endpoints remain anchored while shortening changes overlap, not filament lengths (123.888752ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 899.760682

@@ -1,6 +1,6 @@
 {
   "id": "muscle-pilot",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "name": "Vastus lateralis multiscale anatomy pilot",
   "status": "representative_visual_prototype",
   "engine": "Three.js 0.159 GLTFLoader",
@@ -21,12 +21,12 @@
     },
     "sarcomere": {
       "unit": "m",
-      "restLengthM": 0.0000025,
-      "minimumLengthM": 0.000002,
-      "maximumLengthM": 0.0000032,
-      "thickLengthM": 0.0000016,
-      "thinLengthM": 0.000001,
-      "thickLatticePitchM": 0.000000045,
+      "restLengthM": 2.5e-06,
+      "minimumLengthM": 2e-06,
+      "maximumLengthM": 3.2e-06,
+      "thickLengthM": 1.6e-06,
+      "thinLengthM": 1e-06,
+      "thickLatticePitchM": 4.5e-08,
       "registration": "Representative cropped filament lattice, selected dimensions; no donor registration or resolved atomic structures",
       "motion": "Symmetric Z-disc and attached thin-filament translation; thick filaments and M line stay fixed. No calcium, ATP, force, titin or cross-bridge state."
     },
@@ -56,7 +56,7 @@
     "intentionalOpenSurfaces": [
       "perimysium window",
       "sarcolemma window",
-      "cropped specimen ends"
+      "capillary inspection window"
     ],
     "browserBudgetTargetMs": 33.3,
     "targetBudgetIsMeasuredGate": true
@@ -82,5 +82,51 @@
     "Human-calibrated insulin response",
     "Clinical anatomical review",
     "Complete P2 including brain region package"
-  ]
+  ],
+  "topology": {
+    "note": "Generated meshes must be closed 2-manifolds except named inspection windows. BodyParts3D source surfaces keep their original, non-watertight topology and are never repaired in place.",
+    "sourceSurfaces": [
+      "FJ1442",
+      "FJ3365",
+      "FJ3381"
+    ],
+    "openings": {
+      "pilot-perimysium": {
+        "name": "perimysium longitudinal teaching window",
+        "loopsPerComponent": 1
+      },
+      "pilot-sarcolemma": {
+        "name": "sarcolemma longitudinal inspection window",
+        "loopsPerComponent": 1
+      },
+      "pilot-fiber-capillary": {
+        "name": "capillary longitudinal inspection window",
+        "loopsPerComponent": 1
+      }
+    },
+    "knownUnresolved": [
+      "Crossing Z-disc links and M-line links entering their lattice node spheres interpenetrate as separate closed components; no boolean union or intersection test is applied. Coincident duplicate faces are rejected by the GLB byte check."
+    ]
+  },
+  "lod": {
+    "muscleContext": {
+      "method": "Blender Decimate (collapse) of each source surface",
+      "ratio": 0.35,
+      "claim": "Display-only derivative; source bytes and topology remain in the detail representation."
+    }
+  },
+  "derivatives": {
+    "note": "Closed collision/simulation derivatives, kept separate from display meshes and never loaded as anatomy.",
+    "muscleSimulationDomain": {
+      "method": "Voxel remesh of each source surface",
+      "voxelSizeM": 0.003,
+      "claim": "Watertight derivative for volume/collision experiments; not the source surface and not donor-validated."
+    },
+    "collision": {
+      "closedMeshes": "convex hull per connected component",
+      "namedOpenings": "solidified shell",
+      "shellThicknessFractionOfSpan": 0.004,
+      "claim": "Coarse collision proxies; not a validated mechanical domain."
+    }
+  }
 }
