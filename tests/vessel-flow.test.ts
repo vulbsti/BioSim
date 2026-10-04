@@ -38,6 +38,8 @@ test('simulated organ flows set vessel flow and speed; exercise speeds the leg, 
  assert.ok(aorta.speed>.05&&aorta.speed<1.5,`aortic mean speed ${aorta.speed} m/s`);
  assert.ok(Math.abs(at('Pulmonary trunk',true).flow-beds.lungs)/beds.lungs<.02);
  const restLeg=at('Right femoral artery').speed,restPortal=at('Hepatic portal vein').flow;
+ // With the portal vein at its published adult calibre, resting portal speed is in the physiological range.
+ assert.ok(at('Hepatic portal vein').speed>.1&&at('Hepatic portal vein').speed<.25,`portal speed ${at('Hepatic portal vein').speed} m/s`);
  const moving=createBody();applyAction(moving,{kind:'environment',values:{exercise:.7}});advance(moving,300);flow.setFlows(bedFlows(moving));
  assert.ok(at('Right femoral artery').speed>restLeg*1.5);
  const fed=createBody();applyAction(fed,{kind:'meal',meal:{carbs:60,protein:20,fat:15,water:250,sodium:500}});advance(fed,900);flow.setFlows(bedFlows(fed));

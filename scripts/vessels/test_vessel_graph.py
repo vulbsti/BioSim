@@ -72,5 +72,24 @@ class Extraction(unittest.TestCase):
         self.assertNotIn("kidneys", last["share"])
 
 
+class Calibre(unittest.TestCase):
+    def test_inflating_about_the_centerline_changes_radius_and_nothing_else(self):
+        import importlib.util
+        from pathlib import Path
+        spec = importlib.util.spec_from_file_location("calibrated", Path(__file__).parent / "build-calibrated-vessels.py")
+        calibrated = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(calibrated)
+        mesh = tube([0, 0, 0], [0.06, 0.01, 0], 0.0035)
+        path, radii = calibrated.centerline(mesh["v"], mesh["f"])
+        wider = calibrated.inflate(mesh["v"], path, 1.5)
+        after, wide = calibrated.centerline(wider, mesh["f"])
+        self.assertAlmostEqual(calibrated.lumen_radius(wide) / calibrated.lumen_radius(radii), 1.5, delta=0.05)
+        # The widened vessel's centerline still lies on the original straight axis.
+        axis = np.array([0.06, 0.01, 0]) / np.linalg.norm([0.06, 0.01, 0])
+        inner = after[len(after) // 5: len(after) - len(after) // 5]
+        self.assertLess(np.linalg.norm(inner - np.outer(inner @ axis, axis), axis=1).max(), 0.001)
+        self.assertAlmostEqual(np.ptp(wider[:, 0]), np.ptp(mesh["v"][:, 0]), delta=0.0015)
+
+
 if __name__ == "__main__":
     unittest.main()

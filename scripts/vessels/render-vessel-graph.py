@@ -11,6 +11,9 @@ from pathlib import Path
 import bpy
 import numpy as np
 
+sys.path.insert(0, str(Path(__file__).parent))
+import atlas_io
+
 ROOT = Path(__file__).resolve().parents[2]
 MODELS = ROOT / "public/models"
 OUT = Path(sys.argv[sys.argv.index("--") + 1]) if "--" in sys.argv else ROOT / "outputs/vessels"
@@ -52,19 +55,13 @@ def main():
     graph = json.loads((MODELS / "vessel-graph.json").read_text())
     used = {s["part"] for s in graph["segments"]}
     glass = {k: material(f"wall-{k}", c, 0.16) for k, c in (("arterial", (0.9, 0.5, 0.45)), ("venous", (0.45, 0.6, 0.95)))}
-    for manifest in ("atlas.json", "expansion.json", "reconstructed-vessels.json"):
-        atlas = json.loads((MODELS / manifest).read_text())
-        chunks = [(MODELS / Path(c["url"]).name).read_bytes() for c in atlas["chunks"]]
-        for p in atlas["parts"]:
-            if p["id"] not in used:
-                continue
-            b = chunks[p["chunk"]]
-            v = blender(np.frombuffer(b, np.float32, p["vertexCount"] * 3, p["positions"]))
-            f = np.frombuffer(b, np.uint32, p["indexCount"], p["indices"]).reshape(-1, 3)
-            mesh = bpy.data.meshes.new(p["id"])
-            mesh.from_pydata(v.tolist(), [], f.tolist())
-            mesh.materials.append(glass[p["system"]])
-            bpy.context.scene.collection.objects.link(bpy.data.objects.new(p["id"], mesh))
+    for p, v, f in atlas_io.meshes(("atlas.json", "expansion.json", "reconstructed-vessels.json")):
+        if p["id"] not in used:
+            continue
+        mesh = bpy.data.meshes.new(p["id"])
+        mesh.from_pydata(blender(v).tolist(), [], f.tolist())
+        mesh.materials.append(glass[p["system"]])
+        bpy.context.scene.collection.objects.link(bpy.data.objects.new(p["id"], mesh))
     # One curve object per colour keeps the scene small.
     curves = {}
     for s in graph["segments"]:

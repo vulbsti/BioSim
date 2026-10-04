@@ -44,3 +44,13 @@ Requested after review of the first commit: build the missing supply to the brai
 - With the brain attached, the shortest-path tree fed the basilar artery backwards from the carotids through the posterior communicating arteries. Two changes fixed it: path cost is now length over radius to the fourth, and communicating arteries are used only when a territory has no other route.
 - Verified: reproducible binary, aortic root carries all systemic beds, all four segments carry brain flow, 38 of 38 browser tests, Cycles render shows the four segments joined at both ends.
 - Not done: external carotids; calibre correction of thin source vessels (portal vein, vertebrals), which is the proposed next asset fix.
+
+## Follow-up, same day: calibre ledger
+
+Requested: fix the portal vein speed "the ideal way", by correcting the asset.
+
+- Ledger holds only values with a citation. One entry so far: main portal vein 10.72 mm (Chau et al. 2023, abstract only; the uncertainty type was not verified from the full text, and the ledger says so).
+- The source portal vein measured 7.14 mm. Radial factor 1.50; largest vertex move 2.56 mm; re-measured 10.72 mm.
+- Source normals and triangles are reused, since radial scaling keeps surface directions. The archived atlas files are untouched; the loaders swap the mesh by ID.
+- Verified: resting portal speed 17.9 cm/s (was 39.8), flow conservation unchanged, all suites pass.
+- Not done: no collision check of the widened vein against the neighbouring hepatic artery and bile duct; superior mesenteric vein, splenic vein and vertebral arteries are still at source calibre for lack of a cited mean (and, for the vertebrals, bone canals).

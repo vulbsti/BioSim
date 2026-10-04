@@ -13,7 +13,13 @@ export function combineAtlases(base:Atlas,addition:Atlas):Atlas {
  for(const [name,group] of [['heart',index.groups.heart],['brain',index.groups.brain],['liver',index.groups.liver]] as const){const c=merged.concepts.find(c=>c.name===name);if(c)c.elements=[...new Set([...c.elements,...group])];}
  return merged;
 }
+/** Swap in calibre-adjusted meshes by ID. The archived source records and buffers stay as shipped. */
+export function applyReplacements(atlas:Atlas,replacement:Atlas):Atlas {
+ const swap=new Map(replacement.parts.map(p=>[p.id,{...p,chunk:p.chunk+atlas.chunks.length}]));
+ for(const id of swap.keys())if(!atlas.parts.some(p=>p.id===id))throw new Error(`Replacement for unknown anatomy mesh: ${id}`);
+ return {...atlas,parts:atlas.parts.map(p=>{const r=swap.get(p.id);return r?{...r,system:p.system}:p;}),chunks:[...atlas.chunks,...replacement.chunks]};
+}
 export async function loadAtlas(signal?:AbortSignal):Promise<Atlas>{
- const [base,addition,lungs,reconstructed]=await Promise.all(['/models/atlas.json','/models/expansion.json','/models/lung-surfaces.json','/models/reconstructed-vessels.json'].map(async url=>{const r=await fetch(url,{signal});if(!r.ok)throw new Error('The anatomy catalogue could not be loaded.');return r.json() as Promise<Atlas>;}));
- return combineAtlases(combineAtlases(combineAtlases(base,addition),lungs),reconstructed);
+ const [base,addition,lungs,reconstructed,calibrated]=await Promise.all(['/models/atlas.json','/models/expansion.json','/models/lung-surfaces.json','/models/reconstructed-vessels.json','/models/calibrated-vessels.json'].map(async url=>{const r=await fetch(url,{signal});if(!r.ok)throw new Error('The anatomy catalogue could not be loaded.');return r.json() as Promise<Atlas>;}));
+ return applyReplacements(combineAtlases(combineAtlases(combineAtlases(base,addition),lungs),reconstructed),calibrated);
 }

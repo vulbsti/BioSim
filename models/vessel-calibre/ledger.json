@@ -1,0 +1,16 @@
+{
+  "purpose": "Published adult lumen calibres for named vessels. A packaged vessel whose measured calibre differs from the cited mean by more than `tolerance` is re-inflated about its own centerline to that mean. Add a vessel only with a citable measurement.",
+  "tolerance": 0.25,
+  "vessels": [
+    {
+      "name": "Hepatic portal vein",
+      "diameterMm": 10.72,
+      "reportedUncertaintyMm": 0.47,
+      "population": "Healthy adults, pooled across imaging studies",
+      "note": "The same review reports a larger pooled value on CT (13.28 mm); ultrasound values lie close to the pooled mean. The uncertainty is quoted as reported; its type (SD, SE or CI) was not verified from the full text.",
+      "citation": "Chau P, Yoon JS, Moses D, Pather N. A systematic review and meta-analysis of portal vein morphometry in pediatric and adult populations: Drawing the line between normal and abnormal findings. European Journal of Radiology 2023;168:111016.",
+      "doi": "10.1016/j.ejrad.2023.111016",
+      "accessed": "2026-10-04, abstract only"
+    }
+  ]
+}

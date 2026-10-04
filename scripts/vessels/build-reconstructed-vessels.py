@@ -19,6 +19,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 sys.path.insert(0, str(Path(__file__).parent))
+import atlas_io
 import vessel_graph as vg
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -30,14 +31,7 @@ FORK_RADIUS = 0.75
 
 
 def source_parts():
-    atlas = json.loads((MODELS / "atlas.json").read_text())
-    chunks = {}
-    for p in atlas["parts"]:
-        if p["chunk"] not in chunks:
-            chunks[p["chunk"]] = (MODELS / Path(atlas["chunks"][p["chunk"]]["url"]).name).read_bytes()
-        b = chunks[p["chunk"]]
-        yield p, np.frombuffer(b, np.float32, p["vertexCount"] * 3, p["positions"]).reshape(-1, 3).astype(float), \
-            np.frombuffer(b, np.uint32, p["indexCount"], p["indices"]).reshape(-1, 3).astype(np.int64)
+    return atlas_io.meshes(("atlas.json",))
 
 
 def ends_of(v, f):

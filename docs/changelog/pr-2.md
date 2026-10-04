@@ -10,9 +10,11 @@ How: `scripts/vessels/vessel_graph.py` (numpy and scipy, no Blender) resamples e
 
 Second commit: the source atlas has no internal carotid between the common carotid and the skull base, and its vertebral arteries stop short of the subclavians, so the brain's arteries were a detached island. Four reconstructed neck arteries (`public/models/reconstructed-vessels.*`, `RECON-` IDs, labelled as reconstructed in the interface) now close those gaps, and the aortic root carries the whole cardiac output. Tree routing changed to least hydraulic resistance (length over radius to the fourth), with communicating arteries treated as anastomoses so the basilar artery fills from the vertebrals.
 
+Third commit: a calibre ledger (`models/vessel-calibre/ledger.json`) with cited adult lumen diameters, and a build step that re-inflates out-of-range source vessels about their own centerlines into a replacement package applied by mesh ID. First entry: the hepatic portal vein, 7.14 mm widened to the pooled adult mean of 10.72 mm, which brings resting portal speed from about 40 cm/s to about 18 cm/s.
+
 ## Changes
 
-- `public/models/vessel-graph.json` (1.2 MB): 3,659 segments with mesh ID, junction kind, radius, polyline and bed shares. 1,767 touching-surface junctions, 32 inferred bridges (end gap at most 10 mm), 17 detached roots (small peripheral islands), 26 meshes skipped as copies, none unreached.
+- `public/models/vessel-graph.json` (1.2 MB): 3,665 segments with mesh ID, junction kind, radius, polyline and bed shares. 1,770 touching-surface junctions, 32 inferred bridges (end gap at most 10 mm), 17 detached roots (small peripheral islands), 26 meshes skipped as copies, none unreached.
 - `public/models/reconstructed-vessels.{json,bin,bin.gz}` and `docs/reconstructed-vessels-provenance.json`: four generated neck arteries (7,296 triangles) with rules, lengths, radii and bone clearances.
 - `app/atlas-loader.ts`, `app/simulation/BodyMap.tsx`: load the fourth package and label reconstructed parts when selected. Mesh count is now 2,277.
 - `docs/brain-vessel-coverage.json`: regenerated; 182 candidates.
@@ -29,7 +31,7 @@ Run on the author's machine; the repo has no CI.
 
 - `npm run check`: passes.
 - Unit suites: physiology 18, anatomy 8 (two new in `tests/vessel-flow.test.ts`, including that all four neck arteries carry brain flow), multiscale 11, tissue 9, circulation 6, P4 21. All pass.
-- `npm run test:vessels`: 2 pass (straight tube centred with its radius; trunk with two branches, an overlaid duplicate and an adjacent vein).
+- `npm run test:vessels`: 3 pass, including radial inflation on a synthetic tube. First two: (straight tube centred with its radius; trunk with two branches, an overlaid duplicate and an adjacent vein).
 - `npx playwright test`: 38 of 38 pass, including the new "blood beads ride the vessel graph" test.
 - Cycles render on uxserver (Blender 5.2.2, RTX 2070, OptiX): four views of centerlines inside the source meshes, inspected by eye. Outputs are in the ignored `outputs/vessels/`.
 

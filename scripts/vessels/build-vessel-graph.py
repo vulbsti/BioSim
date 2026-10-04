@@ -10,29 +10,22 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent))
+import atlas_io
 import vessel_graph as vg
 
-ROOT = Path(__file__).resolve().parents[2]
-MODELS = ROOT / "public/models"
+MODELS = atlas_io.MODELS
 
 
-def load(manifest):
-    atlas = json.loads((MODELS / manifest).read_text())
-    chunks = [(MODELS / Path(c["url"]).name).read_bytes() for c in atlas["chunks"]]
-    for p in atlas["parts"]:
+def load(manifests):
+    for p, v, f in atlas_io.meshes(manifests):
         # "Hepatovenous segment" meshes are liver territories, not vessel lumens.
         if p["system"] in ("arterial", "venous") and not p["name"].startswith("Hepatovenous segment"):
-            b = chunks[p["chunk"]]
-            yield {
-                "id": p["id"], "name": p["name"], "system": p["system"],
-                "v": np.frombuffer(b, np.float32, p["vertexCount"] * 3, p["positions"]).reshape(-1, 3).astype(float),
-                "f": np.frombuffer(b, np.uint32, p["indexCount"], p["indices"]).reshape(-1, 3).astype(np.int64),
-            }
+            yield {"id": p["id"], "name": p["name"], "system": p["system"], "v": v, "f": f}
 
 
 def main():
     manifests = ["atlas.json", "expansion.json", "reconstructed-vessels.json"]
-    parts = [p for m in manifests for p in load(m)]
+    parts = list(load(manifests))
     g = vg.build(parts, log=lambda *a: print(*a, file=sys.stderr))
     P, R = g["positions"], g["radii"]
     segments = []
@@ -45,7 +38,7 @@ def main():
             "points": np.round(P[n] * 10000).astype(int).ravel().tolist(),
             "share": {k: float(f"{v:.6g}") for k, v in sorted(s["share"].items())},
         })
-    source = {m: hashlib.sha256((MODELS / m).read_bytes()).hexdigest() for m in manifests}
+    source = {m: hashlib.sha256((MODELS / m).read_bytes()).hexdigest() for m in manifests + [atlas_io.REPLACEMENTS]}
     code = hashlib.sha256((Path(__file__).parent / "vessel_graph.py").read_bytes()).hexdigest()
     out = {
         "version": "vessel-graph-1",

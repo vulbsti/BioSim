@@ -4,19 +4,23 @@ import {readFileSync} from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 import {BufferAttribute,BufferGeometry,Vector3} from 'three';
 import type {Atlas,Part} from '../app/anatomy';
-import {combineAtlases} from '../app/atlas-loader';
+import {applyReplacements,combineAtlases} from '../app/atlas-loader';
 import {createAnatomyIndex,partOpacity,type PhysicalViewState} from '../app/physical/anatomy-view';
 import {createTracerRoute,tracerKind} from '../app/physical/flow-routes';
 import {cardiacContraction,respiratoryCycle,motionRates} from '../app/physical/motion';
 import {applyAction,advance,createBody} from '../app/simulation/engine';
 import {auditBrainVessels} from '../app/simulation/brain-coverage';
 const read=(file:string)=>JSON.parse(readFileSync(new URL(`../public/models/${file}`,import.meta.url),'utf8')) as Atlas;
-const base=read('atlas.json'),expansion=read('expansion.json'),lungs=read('lung-surfaces.json'),reconstructed=read('reconstructed-vessels.json'),atlas=combineAtlases(combineAtlases(combineAtlases(base,expansion),lungs),reconstructed);
+const base=read('atlas.json'),expansion=read('expansion.json'),lungs=read('lung-surfaces.json'),reconstructed=read('reconstructed-vessels.json'),calibrated=read('calibrated-vessels.json'),atlas=applyReplacements(combineAtlases(combineAtlases(combineAtlases(base,expansion),lungs),reconstructed),calibrated);
 
 test('source additions preserve base identity and have valid, finite geometry and complete concepts',()=>{
  assert.equal(atlas.parts.length,2277);assert.equal(new Set(atlas.parts.map(p=>p.id)).size,2277);
- assert.equal(atlas.triangles,2555534);assert.deepEqual(atlas.parts.slice(0,2234).map(p=>[p.id,p.positions,p.chunk]),base.parts.map(p=>[p.id,p.positions,p.chunk]));
- for(const addition of [expansion,lungs,reconstructed]){
+ assert.equal(atlas.triangles,2555534);const adjusted=new Set(calibrated.parts.map(p=>p.id)),kept=(p:Part)=>!adjusted.has(p.id);
+ assert.deepEqual(atlas.parts.slice(0,2234).filter(kept).map(p=>[p.id,p.positions,p.chunk]),base.parts.filter(kept).map(p=>[p.id,p.positions,p.chunk]));
+ // A calibre-adjusted mesh keeps its identity and topology, is flagged, and reads from the replacement package.
+ for(const r of calibrated.parts){const now=atlas.parts.find(p=>p.id===r.id)!,was=base.parts.find(p=>p.id===r.id)!;assert.equal(now.sourceVersion,'calibre-adjusted');assert.deepEqual([now.name,now.vertexCount,now.indexCount,now.system],[was.name,was.vertexCount,was.indexCount,was.system]);assert.equal(atlas.chunks[now.chunk].url,'/models/calibrated-vessels.bin');}
+ assert.throws(()=>applyReplacements(base,reconstructed),/unknown anatomy mesh/);
+ for(const addition of [expansion,lungs,reconstructed,calibrated]){
   const buffers=addition.chunks.map(c=>{const raw=readFileSync(new URL(`../public${c.url}`,import.meta.url));assert.equal(raw.length,c.bytes);assert.deepEqual(gunzipSync(readFileSync(new URL(`../public${c.gzip}`,import.meta.url))),raw);return raw;});
   for(const p of addition.parts){const b=buffers[p.chunk];assert.ok(p.indices+p.indexCount*4<=b.length);const pos=new Float32Array(b.buffer,b.byteOffset+p.positions,p.vertexCount*3),idx=new Uint32Array(b.buffer,b.byteOffset+p.indices,p.indexCount);
    for(let i=0;i<pos.length;i++){assert.ok(Number.isFinite(pos[i]));assert.ok(pos[i]>=p.bounds[0][i%3]-1e-6&&pos[i]<=p.bounds[1][i%3]+1e-6);}
