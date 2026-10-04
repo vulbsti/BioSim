@@ -199,6 +199,7 @@ def classify(name, system):
     return "venous"
 
 
+ANASTOMOSES = re.compile(r"communicating artery", re.I)
 DISTRIBUTING_PORTAL = re.compile(r"(left|right) portal vein", re.I)
 BEDS = (
     ("heart", r"coronary|cardiac vein|coronary sinus|interventricular|ventricular branch|marginal branch|conus branch|diagonal branch"),
@@ -315,11 +316,17 @@ def build(parts, step=STEP, sample=SAMPLE, contact=CONTACT, bridge=BRIDGE, log=l
             joined[end] = touched[end] = touched[n] = True
     log("contact junctions", sum(k == "contact" for *_, k in E))
 
+    anastomosis = np.array([bool(ANASTOMOSES.search(p["name"])) for p in parts])
+
     def grow(roots):
         nb = [[] for _ in range(len(P))]
         for a, b, kind in E:
-            # Short paths through wide vessels are preferred, so the tree follows trunks.
-            w = np.linalg.norm(P[a] - P[b]) / max(1e-4, (R[a] + R[b]) / 2)
+            # Blood takes the path of least hydraulic resistance: length over radius to the fourth.
+            w = np.linalg.norm(P[a] - P[b]) / max(2e-4, (R[a] + R[b]) / 2) ** 4
+            # Communicating arteries balance pressure between territories and carry little net
+            # flow, so a territory is not supplied through one while another route exists.
+            if anastomosis[owner[a]] or anastomosis[owner[b]]:
+                w *= 1e6
             nb[a].append((b, w, kind))
             nb[b].append((a, w, kind))
         cost, parent, via = np.full(len(P), np.inf), np.full(len(P), -1), {}

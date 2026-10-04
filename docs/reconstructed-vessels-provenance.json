@@ -1,0 +1,73 @@
+{
+  "scope": "Four reconstructed arterial segments closing gaps in the packaged atlas between the aortic branches and the intracranial arteries. Each is a cubic Hermite tube between two existing source vessel ends, matching their end directions and radii. No imaging or registration was used; the course between the ends is plausible, not measured.",
+  "rules": {
+    "sides": 16,
+    "ringSpacingMm": 1.5,
+    "overlapMm": 4.0,
+    "boneClearanceMm": 1.0,
+    "internalCarotidStartRadius": "0.75 x common carotid end radius",
+    "vertebralOrigin": "subclavian centerline point nearest the downward continuation of the source vertebral artery's axis"
+  },
+  "segments": [
+    {
+      "id": "RECON-ICA-L",
+      "name": "Cervical part of left internal carotid artery",
+      "joins": [
+        "FJ3483",
+        "FJ1682M"
+      ],
+      "lengthMm": 72.6,
+      "radiusMm": [
+        2.83,
+        1.85
+      ],
+      "minimumBoneClearanceMm": 9.88
+    },
+    {
+      "id": "RECON-VA-L",
+      "name": "Prevertebral part of left vertebral artery",
+      "joins": [
+        "FJ3479",
+        "FJ1725M"
+      ],
+      "lengthMm": 78.4,
+      "radiusMm": [
+        1.56,
+        1.56
+      ],
+      "minimumBoneClearanceMm": 0.64
+    },
+    {
+      "id": "RECON-ICA-R",
+      "name": "Cervical part of right internal carotid artery",
+      "joins": [
+        "FJ3564",
+        "FJ1682"
+      ],
+      "lengthMm": 72.9,
+      "radiusMm": [
+        2.92,
+        1.87
+      ],
+      "minimumBoneClearanceMm": 9.44
+    },
+    {
+      "id": "RECON-VA-R",
+      "name": "Prevertebral part of right vertebral artery",
+      "joins": [
+        "FJ3579",
+        "FJ1725"
+      ],
+      "lengthMm": 71.0,
+      "radiusMm": [
+        1.56,
+        1.56
+      ],
+      "minimumBoneClearanceMm": -0.24
+    }
+  ],
+  "generator": "4213a3b336e6df3919b1e922c997f84058a4a59c2a017a26a42189e3148d3536",
+  "extractor": "fed190373826a7eac5177d9b1c2dbfc0ee3a2dc7c1c9436c85e71a7bdd00b207",
+  "sourceAtlas": "c359f4bcd2cba90b7411d66d5e9fc04dc81294d46cd5c1e8b212c824f2e5bbee",
+  "binarySHA256": "27db73648e178f4aba61f7533ddb61a300aacd84934cf38b47c44505d3f4546c"
+}

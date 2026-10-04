@@ -31,7 +31,7 @@ def load(manifest):
 
 
 def main():
-    manifests = ["atlas.json", "expansion.json"]
+    manifests = ["atlas.json", "expansion.json", "reconstructed-vessels.json"]
     parts = [p for m in manifests for p in load(m)]
     g = vg.build(parts, log=lambda *a: print(*a, file=sys.stderr))
     P, R = g["positions"], g["radii"]

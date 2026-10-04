@@ -52,7 +52,7 @@ def main():
     graph = json.loads((MODELS / "vessel-graph.json").read_text())
     used = {s["part"] for s in graph["segments"]}
     glass = {k: material(f"wall-{k}", c, 0.16) for k, c in (("arterial", (0.9, 0.5, 0.45)), ("venous", (0.45, 0.6, 0.95)))}
-    for manifest in ("atlas.json", "expansion.json"):
+    for manifest in ("atlas.json", "expansion.json", "reconstructed-vessels.json"):
         atlas = json.loads((MODELS / manifest).read_text())
         chunks = [(MODELS / Path(c["url"]).name).read_bytes() for c in atlas["chunks"]]
         for p in atlas["parts"]:

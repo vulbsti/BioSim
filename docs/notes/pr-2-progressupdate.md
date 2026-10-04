@@ -34,3 +34,13 @@ Written 2026-10-04. Step 1 of the simulation-driven assets plan (blood flow, the
 - The left renal trunk attaches through the right renal trunk rather than directly to the aorta.
 - Nutrient colouring on the portal route still switches on absorption as before; concentration-driven colour is step 3.
 - No device performance measurement beyond the existing software-rendered browser runs.
+
+## Follow-up, same day: neck arteries
+
+Requested after review of the first commit: build the missing supply to the brain.
+
+- Measured the gaps: 61 mm between each common carotid and the intracranial internal carotid; the vertebral arteries begin inside C6, about 45 mm above the subclavians.
+- Generated four tubes along cubic curves between the source vessel ends. The first vertebral route approached C6 from the side and cut the transverse process; it now leaves the subclavian where the source vessel's axis, continued downward, passes closest, and rises along that axis. A relaxation step eases any point within 1 mm of bone away from it.
+- With the brain attached, the shortest-path tree fed the basilar artery backwards from the carotids through the posterior communicating arteries. Two changes fixed it: path cost is now length over radius to the fourth, and communicating arteries are used only when a territory has no other route.
+- Verified: reproducible binary, aortic root carries all systemic beds, all four segments carry brain flow, 38 of 38 browser tests, Cycles render shows the four segments joined at both ends.
+- Not done: external carotids; calibre correction of thin source vessels (portal vein, vertebrals), which is the proposed next asset fix.

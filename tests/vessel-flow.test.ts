@@ -5,7 +5,7 @@ import type {Atlas} from '../app/anatomy';
 import {bedFlows,createVesselFlow,BEAD_INTERVAL,type Bed,type VesselGraph} from '../app/physical/vessel-flow';
 import {advance,applyAction,createBody} from '../app/simulation/engine';
 const read=<T>(file:string)=>JSON.parse(readFileSync(new URL(`../public/models/${file}`,import.meta.url),'utf8')) as T;
-const graph=read<VesselGraph>('vessel-graph.json'),parts=[...read<Atlas>('atlas.json').parts,...read<Atlas>('expansion.json').parts];
+const graph=read<VesselGraph>('vessel-graph.json'),parts=[...read<Atlas>('atlas.json').parts,...read<Atlas>('expansion.json').parts,...read<Atlas>('reconstructed-vessels.json').parts];
 const ids=new Map(parts.map((p,i)=>[p.id,i])),named=(name:string)=>(s:{part:string})=>parts[ids.get(s.part)!].name===name;
 
 test('vessel graph conserves bed flow at every junction and reaches each bed exactly once',()=>{
@@ -30,8 +30,11 @@ test('simulated organ flows set vessel flow and speed; exercise speeds the leg, 
  const rest=createBody();advance(rest,60);flow.setFlows(bedFlows(rest));
  const beds=bedFlows(rest),systemic=beds.heart+beds.brain+beds.kidneys+beds.gut+beds.liver+beds.peripheral;
  assert.ok(Math.abs(systemic-rest.cardiacOutput/60000)<1e-9,'beds partition cardiac output');
- // The intracranial arteries are a detached island in the source, so the aortic root carries the rest.
- const aorta=at('Ascending aorta',true);assert.ok(Math.abs(aorta.flow-(systemic-beds.brain))/systemic<.01);
+ // Every systemic bed, the brain included, is supplied through the aortic root.
+ const aorta=at('Ascending aorta',true);assert.ok(Math.abs(aorta.flow-systemic)/systemic<.01);
+ // The brain is fed by both internal carotids and both vertebral arteries through the reconstructed neck segments.
+ const neck=['Cervical part of left internal carotid artery','Cervical part of right internal carotid artery','Prevertebral part of left vertebral artery','Prevertebral part of right vertebral artery'].map(name=>graph.segments.reduce((q,s,i)=>q+(named(name)(s)&&!named(name)(graph.segments[s.parent!])?flow.segments[i].flow:0),0));
+ assert.ok(neck.every(q=>q>.01*beds.brain),`neck supply ${neck.map(q=>(q/beds.brain).toFixed(3))}`);assert.ok(Math.abs(neck.reduce((a,q)=>a+q,0)-beds.brain)/beds.brain<.02);
  assert.ok(aorta.speed>.05&&aorta.speed<1.5,`aortic mean speed ${aorta.speed} m/s`);
  assert.ok(Math.abs(at('Pulmonary trunk',true).flow-beds.lungs)/beds.lungs<.02);
  const restLeg=at('Right femoral artery').speed,restPortal=at('Hepatic portal vein').flow;

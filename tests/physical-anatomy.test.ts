@@ -11,12 +11,12 @@ import {cardiacContraction,respiratoryCycle,motionRates} from '../app/physical/m
 import {applyAction,advance,createBody} from '../app/simulation/engine';
 import {auditBrainVessels} from '../app/simulation/brain-coverage';
 const read=(file:string)=>JSON.parse(readFileSync(new URL(`../public/models/${file}`,import.meta.url),'utf8')) as Atlas;
-const base=read('atlas.json'),expansion=read('expansion.json'),lungs=read('lung-surfaces.json'),atlas=combineAtlases(combineAtlases(base,expansion),lungs);
+const base=read('atlas.json'),expansion=read('expansion.json'),lungs=read('lung-surfaces.json'),reconstructed=read('reconstructed-vessels.json'),atlas=combineAtlases(combineAtlases(combineAtlases(base,expansion),lungs),reconstructed);
 
 test('source additions preserve base identity and have valid, finite geometry and complete concepts',()=>{
- assert.equal(atlas.parts.length,2273);assert.equal(new Set(atlas.parts.map(p=>p.id)).size,2273);
- assert.equal(atlas.triangles,2548238);assert.deepEqual(atlas.parts.slice(0,2234).map(p=>[p.id,p.positions,p.chunk]),base.parts.map(p=>[p.id,p.positions,p.chunk]));
- for(const addition of [expansion,lungs]){
+ assert.equal(atlas.parts.length,2277);assert.equal(new Set(atlas.parts.map(p=>p.id)).size,2277);
+ assert.equal(atlas.triangles,2555534);assert.deepEqual(atlas.parts.slice(0,2234).map(p=>[p.id,p.positions,p.chunk]),base.parts.map(p=>[p.id,p.positions,p.chunk]));
+ for(const addition of [expansion,lungs,reconstructed]){
   const buffers=addition.chunks.map(c=>{const raw=readFileSync(new URL(`../public${c.url}`,import.meta.url));assert.equal(raw.length,c.bytes);assert.deepEqual(gunzipSync(readFileSync(new URL(`../public${c.gzip}`,import.meta.url))),raw);return raw;});
   for(const p of addition.parts){const b=buffers[p.chunk];assert.ok(p.indices+p.indexCount*4<=b.length);const pos=new Float32Array(b.buffer,b.byteOffset+p.positions,p.vertexCount*3),idx=new Uint32Array(b.buffer,b.byteOffset+p.indices,p.indexCount);
    for(let i=0;i<pos.length;i++){assert.ok(Number.isFinite(pos[i]));assert.ok(pos[i]>=p.bounds[0][i%3]-1e-6&&pos[i]<=p.bounds[1][i%3]+1e-6);}
@@ -39,7 +39,7 @@ test('display corrections retain actual heart, liver, brain and lung surfaces th
 });
 
 test('cranial venous additions never become cerebral arterial territory associations',()=>{
- const audit=auditBrainVessels(atlas);assert.equal(audit.vessels.length,178);assert.equal(audit.missingVenousGeometry,false);
+ const audit=auditBrainVessels(atlas);assert.equal(audit.vessels.length,182);assert.equal(audit.missingVenousGeometry,false);
  const venous=audit.vessels.filter(p=>p.system==='venous');assert.equal(venous.length,27);
  for(const v of venous)assert.ok(v.nodes.every(n=>!/-(aca|pca|ica|frontal|visual|lateral)$/.test(n)),v.name);
  const saved=JSON.parse(readFileSync(new URL('../docs/brain-vessel-coverage.json',import.meta.url),'utf8'));assert.deepEqual(saved.vessels,audit.vessels);
