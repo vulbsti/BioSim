@@ -7,6 +7,7 @@ import type {Atlas,SystemId} from '../anatomy';
 import type {BodyState} from '../simulation/types';
 import {cardiacContraction,respiratoryCycle,motionRates} from './motion';
 import {createTracerRoute,type TracerRoute} from './flow-routes';
+import {bedFlows,createVesselFlow,type Bed,type VesselFlow,type VesselGraph} from './vessel-flow';
 import {decodeModelResponse} from '../model-download';
 import {PointerTap} from '../pointer-tap';
 import {createAnatomyIndex,cutawayAt,partOpacity,tissueColor,type PhysicalViewState} from './anatomy-view';
@@ -66,12 +67,23 @@ export default function PhysicalScene({atlas,body,motion,view,onSelect,onProgres
   };
   const materialCache=new Map<string,T.Material>();
   const routes:TracerRoute[]=[];
-  const tracerPositions=new Float32Array(4000*3),tracerColors=new Float32Array(4000*3),tracerGeometry=new T.BufferGeometry();
-  tracerGeometry.setAttribute('position',new T.BufferAttribute(tracerPositions,3));tracerGeometry.setAttribute('color',new T.BufferAttribute(tracerColors,3));tracerGeometry.setDrawRange(0,0);geometries.push(tracerGeometry);
-  const tracerMaterial=new T.PointsMaterial({size:4.5,sizeAttenuation:false,vertexColors:true,transparent:true,opacity:.85,depthTest:false,depthWrite:false});
-  tracerMaterial.onBeforeCompile=shader=>{shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>','#include <clipping_planes_fragment>\nfloat r=distance(gl_PointCoord,vec2(0.5)); if(r>0.5) discard;');};materials.push(tracerMaterial);
+  const tracerLimit=16000,tracerPositions=new Float32Array(tracerLimit*3),tracerColors=new Float32Array(tracerLimit*3),tracerSizes=new Float32Array(tracerLimit),tracerGeometry=new T.BufferGeometry();
+  tracerGeometry.setAttribute('position',new T.BufferAttribute(tracerPositions,3));tracerGeometry.setAttribute('color',new T.BufferAttribute(tracerColors,3));tracerGeometry.setAttribute('beadSize',new T.BufferAttribute(tracerSizes,1));tracerGeometry.setDrawRange(0,0);geometries.push(tracerGeometry);
+  // Bead diameters are in metres: size is 1/tan(fov/2), so attenuation yields true screen size.
+  const tracerMaterial=new T.PointsMaterial({size:1/Math.tan(T.MathUtils.degToRad(31/2)),sizeAttenuation:true,vertexColors:true,transparent:true,opacity:.9,depthTest:false,depthWrite:false});
+  tracerMaterial.onBeforeCompile=shader=>{shader.vertexShader='attribute float beadSize;\n'+shader.vertexShader.replace('gl_PointSize = size;','gl_PointSize = size * beadSize;').replace('#include <fog_vertex>','#include <fog_vertex>\ngl_PointSize = clamp(gl_PointSize, 1.6, 11.0);');shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>','#include <clipping_planes_fragment>\nfloat r=distance(gl_PointCoord,vec2(0.5)); if(r>0.5) discard;');};materials.push(tracerMaterial);
   const tracers=new T.Points(tracerGeometry,tracerMaterial);tracers.frustumCulled=false;tracers.renderOrder=5;scene.add(tracers);
   const heartCenter=new T.Vector3(.022,1.32,.036),tracerPoint=new T.Vector3();
+  let vessels:VesselFlow|null=null,bedFlow:Record<Bed,number>|null=null,aorta=-1,femoral=-1;
+  const beadColor={arterial:new T.Color('#ffac91'),venous:new T.Color('#88bfff'),'pulmonary-arterial':new T.Color('#88bfff'),'pulmonary-venous':new T.Color('#ffac91'),portal:new T.Color('#b79bd8')},nutrientColor=new T.Color('#efcc78');
+  const loadVessels=async()=>{
+   const response=await fetch('/models/vessel-graph.json',{signal:abort.signal});if(!response.ok)throw new Error('The vessel paths could not be loaded.');
+   const graph=await response.json() as VesselGraph,ids=new Map(atlas.parts.map((p,i)=>[p.id,i]));if(disposed)return;
+   vessels=createVesselFlow(graph,ids);
+   // Reported probes: the aortic root and the right femoral artery.
+   aorta=vessels.segments.findIndex(s=>s.circuit==='arterial'&&s.parent<0&&atlas.parts[s.part]?.name==='Ascending aorta');femoral=vessels.segments.findIndex(s=>atlas.parts[s.part]?.name==='Right femoral artery');
+   el.dataset.vesselSegments=String(vessels.segments.length);
+  };
   const load=async(ci:number)=>{
    const chunk=atlas.chunks[ci],compressed=!!chunk.gzip&&typeof DecompressionStream!=='undefined';
    const response=await fetch(compressed?chunk.gzip!:chunk.url,{signal:abort.signal}),buffer=await decodeModelResponse(response,chunk.bytes,compressed);if(disposed)return;
@@ -103,7 +115,7 @@ export default function PhysicalScene({atlas,body,motion,view,onSelect,onProgres
    lastState=null;dirty=true;
   };
   let loaded=0;
-  (async()=>{try{let cursor=0;await Promise.all(Array.from({length:3},async()=>{while(cursor<atlas.chunks.length){await load(cursor++);if(!disposed)onProgress(Math.round(++loaded/atlas.chunks.length*100));}}));if(!disposed){ready=true;el.dataset.ready='true';dirty=true;}}catch(e){if(!disposed)onError(e instanceof Error?e.message:'Could not load anatomy.');}})();
+  (async()=>{try{let cursor=0;await Promise.all([loadVessels(),...Array.from({length:3},async()=>{while(cursor<atlas.chunks.length){await load(cursor++);if(!disposed)onProgress(Math.round(++loaded/atlas.chunks.length*100));}})]);if(!disposed){ready=true;el.dataset.ready='true';dirty=true;}}catch(e){if(!disposed)onError(e instanceof Error?e.message:'Could not load anatomy.');}})();
   const fit=()=>{
    const v=latest.current;selectedBounds.makeEmpty();
    if(v.region==='selection'||v.isolate)atlas.parts.forEach((p,i)=>{if(v.selected.includes(p.id))selectedBounds.union(bounds[i]);});
@@ -142,36 +154,54 @@ export default function PhysicalScene({atlas,body,motion,view,onSelect,onProgres
   const cycleReadout=document.createElement('div');cycleReadout.className='physical-cycle-readout';cycleReadout.setAttribute('aria-label','Anatomical motion phases');
   cycleReadout.innerHTML='<div><span>HEART</span><strong></strong><i><b></b></i></div><div><span>BREATH</span><strong></strong><i><b></b></i></div>';
   el.appendChild(cycleReadout);const phaseText=cycleReadout.querySelectorAll('strong'),phaseBars=cycleReadout.querySelectorAll('b');
-  let lastPhysiology=physiology.current,lastFrame=performance.now(),heartPhase=0,breathPhase=0,flowPhase=0,gutPhase=0,swallowUntil=-1,displayTime=0,previousMotion=animate.current,previousIntake=body.carbIn+body.proteinIn+body.fatIn+body.waterIn;
+  let lastPhysiology=physiology.current,lastFrame=performance.now(),heartPhase=0,breathPhase=0,gutPhase=0,swallowUntil=-1,displayTime=0,previousMotion=animate.current,previousIntake=body.carbIn+body.proteinIn+body.fatIn+body.waterIn;
   const updateMotion=(dt:number)=>{
    if(previousMotion!==animate.current){previousMotion=animate.current;dirty=true;}
    const current=physiology.current,rates=motionRates(current),intake=current.carbIn+current.proteinIn+current.fatIn+current.waterIn;
    if(intake>previousIntake+.001)swallowUntil=displayTime+9;if(intake<previousIntake)swallowUntil=-1;previousIntake=intake;
-   if(animate.current){displayTime+=dt;heartPhase=(heartPhase+dt*rates.heartHz)%1;breathPhase=(breathPhase+dt*rates.breathHz)%1;flowPhase+=dt*rates.bloodSpeed*.24*(.6+cardiacContraction(heartPhase)*1.2);gutPhase+=dt*.85;}
+   if(animate.current){displayTime+=dt;heartPhase=(heartPhase+dt*rates.heartHz)%1;breathPhase=(breathPhase+dt*rates.breathHz)%1;gutPhase+=dt*.85;}
    const breathing=respiratoryCycle(breathPhase);uniforms.heartContraction.value=cardiacContraction(heartPhase);uniforms.lungInflation.value=breathing.inflation*rates.lungExcursion;uniforms.gutPhase.value=gutPhase;uniforms.gutActivity.value=rates.digesting;
    let count=0;const v=latest.current;
    phaseText[0].textContent=heartPhase<.36?'Systole · ejecting':'Diastole · filling';phaseText[1].textContent=breathing.inhaling?'Inhaling':'Exhaling';
    phaseBars[0].style.transform=`scaleX(${cardiacContraction(heartPhase)})`;phaseBars[1].style.transform=`scaleX(${breathing.inflation})`;
    cycleReadout.hidden=v.preset==='surface'||v.preset==='skeleton'||v.preset==='nerves';
-   const counts={blood:0,air:0,food:0,portal:0,mix:0};
+   const counts={blood:0,air:0,food:0,portal:0,mix:0},slice=uniforms.slicePlane.value;
+   if(vessels){
+    // Bed flows ease toward the solver's values so a step change does not teleport beads.
+    const target=bedFlows(current),ease=bedFlow?1-Math.exp(-dt/1.2):1;bedFlow??={...target};
+    for(const bed of Object.keys(target) as Bed[])bedFlow[bed]+=(target[bed]-bedFlow[bed])*ease;
+    vessels.setFlows(bedFlow);
+    // The systolic envelope averages .18 over a beat, so arterial beads keep their mean speed.
+    if(animate.current)vessels.advance(dt*(.5+cardiacContraction(heartPhase)*.5/.18),dt);
+    const absorbing=current.digestionRates.carbs+current.digestionRates.protein>=.0001;
+    vessels.beads(s=>s.part>=0&&visualData[s.part*4]>=.5,(x,y,z,s)=>{
+     if(slice.x*x+slice.y*y+slice.z*z+slice.w<0)return;
+     const nutrient=s.circuit==='portal'&&absorbing,color=nutrient?nutrientColor:beadColor[s.circuit];
+     tracerPositions[count*3]=x;tracerPositions[count*3+1]=y;tracerPositions[count*3+2]=z;color.toArray(tracerColors,count*3);tracerSizes[count]=s.bead;count++;
+     if(nutrient)counts.portal++;else counts.blood++;
+    },tracerLimit-600);
+    el.dataset.cardiacOutput=(current.cardiacOutput).toFixed(3);
+    if(aorta>=0)el.dataset.aortaFlow=(vessels.segments[aorta].flow*60000).toFixed(3);
+    if(femoral>=0){el.dataset.femoralFlow=(vessels.segments[femoral].flow*60000).toFixed(4);el.dataset.femoralSpeed=(vessels.segments[femoral].speed*100).toFixed(3);}
+   }
    for(const route of routes){
-    if(visualData[route.part*4]<.5||route.kind==='portal'&&current.digestionRates.carbs+current.digestionRates.protein<.0001||route.kind==='mix'&&rates.digesting<.01||route.kind==='food'&&displayTime>swallowUntil||route.kind==='air'&&!['dissection','organs'].includes(v.preset)&&!v.isolate)continue;
-    const number=route.kind==='blood'||route.kind==='portal'?Math.max(2,Math.min(18,Math.round(route.length*45))):route.kind==='air'?7:4;
+    if(visualData[route.part*4]<.5||route.kind==='mix'&&rates.digesting<.01||route.kind==='food'&&displayTime>swallowUntil||route.kind==='air'&&!['dissection','organs'].includes(v.preset)&&!v.isolate)continue;
+    const number=route.kind==='air'?7:4;
     for(let n=0;n<number;n++){
-     let t=(flowPhase+n/number)%1,direction=1;
+     let t=0,direction=1;
      // The same parcels retrace smoothly during expiration; there is no phase-boundary jump.
      if(route.kind==='air'){t=(breathing.inflation*.8+n/number)%1;direction=breathing.inhaling?1:-1;}
      if(route.kind==='food'||route.kind==='mix')t=(displayTime*(route.kind==='food'?.2:.075)+n/number)%1;
-     for(let tail=0;tail<4&&count<4000;tail++){
+     for(let tail=0;tail<4&&count<tracerLimit;tail++){
       const offset=tail*.0025/Math.max(.03,route.length)*(route.kind==='air'?breathing.flow:1);
       const at=((t-direction*offset)%1+1)%1;route.curve.getPointAt(at,tracerPoint);
-      if(uniforms.slicePlane.value.dot(new T.Vector4(tracerPoint.x,tracerPoint.y,tracerPoint.z,1))<0)continue;
+      if(slice.x*tracerPoint.x+slice.y*tracerPoint.y+slice.z*tracerPoint.z+slice.w<0)continue;
       tracerPoint.toArray(tracerPositions,count*3);const fade=1-tail*.22;
-      tracerColors[count*3]=route.color.r*fade;tracerColors[count*3+1]=route.color.g*fade;tracerColors[count*3+2]=route.color.b*fade;count++;counts[route.kind]++;
+      tracerSizes[count]=.005;tracerColors[count*3]=route.color.r*fade;tracerColors[count*3+1]=route.color.g*fade;tracerColors[count*3+2]=route.color.b*fade;count++;counts[route.kind]++;
      }
     }
    }
-   tracerGeometry.setDrawRange(0,count);tracerGeometry.attributes.position.needsUpdate=true;tracerGeometry.attributes.color.needsUpdate=true;
+   tracerGeometry.setDrawRange(0,count);tracerGeometry.attributes.position.needsUpdate=true;tracerGeometry.attributes.color.needsUpdate=true;tracerGeometry.attributes.beadSize.needsUpdate=true;
    el.dataset.motion=animate.current?'playing':'paused';el.dataset.tracers=String(count);for(const [kind,n] of Object.entries(counts))el.dataset[kind+'Tracers']=String(n);el.dataset.heartHz=rates.heartHz.toFixed(3);el.dataset.breathHz=rates.breathHz.toFixed(3);
   };
   const draw=()=>{

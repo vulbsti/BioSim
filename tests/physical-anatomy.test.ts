@@ -45,14 +45,12 @@ test('cranial venous additions never become cerebral arterial territory associat
  const saved=JSON.parse(readFileSync(new URL('../docs/brain-vessel-coverage.json',import.meta.url),'utf8'));assert.deepEqual(saved.vessels,audit.vessels);
 });
 
-test('display routes handle Float32 boundary drift and distinguish pulmonary direction and oxygen color',()=>{
+test('display routes handle Float32 boundary drift; blood is left to the vessel graph',()=>{
  const geometry=new BufferGeometry();geometry.setAttribute('position',new BufferAttribute(new Float32Array([0,1.15,0,0,1.4,0,0,1.6,0]),3));
- const part={name:'Left pulmonary artery',bounds:[[0,1.1500001,0],[0,1.6,0]]} as Part;
- const artery=createTracerRoute(part,0,geometry)!,vein=createTracerRoute({...part,name:'Left superior pulmonary vein'},0,geometry)!;
- assert.ok(artery.curve.getPointAt(0).distanceTo(new Vector3(.022,1.32,.036))<artery.curve.getPointAt(1).distanceTo(new Vector3(.022,1.32,.036)));
- assert.ok(vein.color.r>vein.color.b);assert.ok(artery.color.b>artery.color.r);
- for(let i=0;i<=100;i++)assert.ok(artery.curve.getPointAt(i/100).toArray().every(Number.isFinite));
- assert.equal(tracerKind('Right renal artery'),'blood');assert.equal(tracerKind('Right anterior cerebral vein'),null);
+ const route=createTracerRoute({name:'Trachea',bounds:[[0,1.1500001,0],[0,1.6,0]]} as Part,0,geometry)!;
+ for(let i=0;i<=100;i++)assert.ok(route.curve.getPointAt(i/100).toArray().every(Number.isFinite));
+ assert.ok(route.curve.getPointAt(0).y>route.curve.getPointAt(1).y);
+ assert.equal(tracerKind('Right renal artery'),null);assert.equal(tracerKind('Left main bronchus'),'air');
 });
 
 test('cycles remain continuous and exercise and a meal drive visual rates from the solver',()=>{
@@ -60,21 +58,21 @@ test('cycles remain continuous and exercise and a meal drive visual rates from t
  assert.ok(Math.abs(respiratoryCycle(.4-1e-6).inflation-respiratoryCycle(.4+1e-6).inflation)<1e-8);
  assert.ok(Math.abs(respiratoryCycle(1-1e-6).inflation-respiratoryCycle(0).inflation)<1e-8);
  const s=createBody(),rest=motionRates(s);applyAction(s,{kind:'environment',values:{exercise:.65}});advance(s,300);const moving=motionRates(s);
- assert.ok(moving.heartHz>rest.heartHz);assert.ok(moving.breathHz>rest.breathHz);assert.ok(moving.bloodSpeed>rest.bloodSpeed);assert.ok(moving.lungExcursion>rest.lungExcursion);
+ assert.ok(moving.heartHz>rest.heartHz);assert.ok(moving.breathHz>rest.breathHz);assert.ok(moving.lungExcursion>rest.lungExcursion);
  const meal=createBody();assert.equal(motionRates(meal).digesting,0);applyAction(meal,{kind:'meal',meal:{carbs:60,protein:20,fat:15,water:250,sodium:500}});assert.ok(motionRates(meal).digesting>0);advance(meal,300);assert.ok(meal.digestionRates.carbs+meal.digestionRates.protein>0);
 });
 
 
 test('every chosen source route samples finitely and includes both main bronchi',()=>{
- const buffers=new Map<number,Buffer>();let air=0,blood=0;
+ const buffers=new Map<number,Buffer>();let air=0;
  for(const p of atlas.parts){if(!tracerKind(p.name))continue;
   if(!buffers.has(p.chunk))buffers.set(p.chunk,readFileSync(new URL(`../public${atlas.chunks[p.chunk].url}`,import.meta.url)));
   const b=buffers.get(p.chunk)!,geometry=new BufferGeometry();geometry.setAttribute('position',new BufferAttribute(new Float32Array(b.buffer,b.byteOffset+p.positions,p.vertexCount*3),3));
   const route=createTracerRoute(p,0,geometry);assert.ok(route,p.name);
   for(let i=0;i<=30;i++)assert.ok(route.curve.getPointAt(i/30).toArray().every(Number.isFinite),p.name);
-  if(route.kind==='air')air++;if(route.kind==='blood')blood++;
+  if(route.kind==='air')air++;
  }
- assert.equal(air,3);assert.ok(blood>30);
+ assert.equal(air,3);
  const s=createBody();s.heartRate=0;s.respiratoryRate=0;s.tidalVolume=0;s.cardiacOutput=0;const rates=motionRates(s);
- assert.equal(rates.heartHz+rates.breathHz+rates.lungExcursion+rates.bloodSpeed,0);
+ assert.equal(rates.heartHz+rates.breathHz+rates.lungExcursion,0);
 });
