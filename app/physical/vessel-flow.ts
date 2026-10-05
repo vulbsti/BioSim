@@ -4,8 +4,8 @@ export type Circuit='arterial'|'venous'|'pulmonary-arterial'|'pulmonary-venous'|
 export type Bed='heart'|'brain'|'kidneys'|'gut'|'liver'|'hepatic'|'peripheral'|'lungs';
 export type Junction='source'|'contact'|'inferred'|'detached';
 export interface VesselGraph {version:string;segments:{part:string;circuit:Circuit;away:boolean;parent:number|null;junction:Junction;radiusMm:number;points:number[];share:Partial<Record<Bed,number>>}[]}
-/** `bead` is the displayed bead diameter, m: a little under the lumen, within readable limits. */
-export interface FlowSegment {part:number;circuit:Circuit;away:boolean;parent:number;points:Float32Array;along:Float32Array;length:number;area:number;share:[Bed,number][];bead:number;flow:number;speed:number;transit:number;clock:number}
+/** `bead` is the displayed bead diameter, m: a little under the lumen, within readable limits. `level` is the carried substance level set by setLevels. */
+export interface FlowSegment {part:number;circuit:Circuit;away:boolean;parent:number;points:Float32Array;along:Float32Array;length:number;area:number;share:[Bed,number][];radius:number;bead:number;level:number;flow:number;speed:number;transit:number;clock:number}
 
 /** Seconds between beads released at a root. */
 export const BEAD_INTERVAL=.12;
@@ -31,17 +31,34 @@ export function createVesselFlow(graph:VesselGraph,partIndex:Map<string,number>)
   for(let i=0;i<s.points.length;i++)points[i]=s.points[i]/10000;
   for(let i=1;i<n;i++)along[i]=along[i-1]+Math.hypot(points[i*3]-points[i*3-3],points[i*3+1]-points[i*3-2],points[i*3+2]-points[i*3-1]);
   const radius=s.radiusMm/1000;
-  return {part:partIndex.get(s.part)??-1,circuit:s.circuit,away:s.away,parent:s.parent??-1,points,along,length:along[n-1],area:Math.PI*radius*radius,share:Object.entries(s.share) as [Bed,number][],bead:Math.min(.008,Math.max(.0012,radius*1.3)),flow:0,speed:0,transit:0,clock:NaN};
+  return {part:partIndex.get(s.part)??-1,circuit:s.circuit,away:s.away,parent:s.parent??-1,points,along,length:along[n-1],area:Math.PI*radius*radius,share:Object.entries(s.share) as [Bed,number][],radius,bead:Math.min(.008,Math.max(.0012,radius*1.3)),level:1,flow:0,speed:0,transit:0,clock:NaN};
  });
  const pulsed=(s:FlowSegment)=>s.circuit==='arterial'||s.circuit==='pulmonary-arterial';
  /** Segment flows (m³/s) and speeds (m/s) for the current bed flows. Parents precede children. */
+ let current:Record<Bed,number>|null=null;
  const setFlows=(beds:Record<Bed,number>)=>{
+  current=beds;
   for(const s of segments){
    s.flow=0;for(const [bed,share] of s.share)s.flow+=beds[bed]*share;
    s.speed=s.flow/s.area;
    const up=s.parent>=0?segments[s.parent]:null;
    // Transit time between the root and this segment's root-side end, at displayed speeds.
    s.transit=up&&up.away===s.away?up.transit+up.length/Math.max(MIN_DISPLAY_SPEED,up.speed):0;
+  }
+ };
+ /**
+  * Substance level carried in each segment. Arteries carry arterial blood everywhere. A vein
+  * carries the blood of the beds it drains, mixed in proportion to their flows, so a merged vein
+  * shows the blend of its tributaries. Portal tributaries carry gut blood; the trunk and its
+  * hepatic branches carry the portal compartment.
+  */
+ const setLevels=(l:{bed:Record<Bed,number>;arterial:number;venous:number;lungs:number;portal:number;gut:number})=>{
+  for(const s of segments){
+   if(s.circuit==='arterial')s.level=l.arterial;
+   else if(s.circuit==='pulmonary-arterial')s.level=l.venous;
+   else if(s.circuit==='pulmonary-venous')s.level=l.lungs;
+   else if(s.circuit==='portal')s.level=s.away||(s.share.find(([bed])=>bed==='gut')?.[1]??0)>=.5?l.portal:l.gut;
+   else{let mixed=0;if(current)for(const [bed,share] of s.share)mixed+=current[bed]*share*l.bed[bed];s.level=s.flow>0?mixed/s.flow:l.venous;}
   }
  };
  let pulsedTime=0,steadyTime=0;
@@ -76,6 +93,6 @@ export function createVesselFlow(graph:VesselGraph,partIndex:Map<string,number>)
   }
   return count;
  };
- return {segments,setFlows,advance,beads};
+ return {segments,setFlows,setLevels,advance,beads};
 }
 export type VesselFlow=ReturnType<typeof createVesselFlow>;

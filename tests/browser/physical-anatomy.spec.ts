@@ -46,6 +46,26 @@ test('blood beads ride the vessel graph at simulated flow, and exercise speeds t
  await expect.poll(()=>read('data-aorta-flow'),{timeout:30000}).toBeGreaterThan(aorta*1.5);
 });
 
+test('running the simulation changes the body: stores fill, and a meal colours blood and organs by glucose',async({page})=>{
+ test.setTimeout(240000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});
+ const read=async(name:string)=>Number(await scene.getAttribute(name)),callouts=page.locator('.physical-callouts');
+ const hour=async(shown:string)=>{await page.getByRole('button',{name:'Advance one hour'}).click();await expect(page.getByLabel('Elapsed simulation time',{exact:true})).toHaveText(shown);};
+ await expect(callouts).toContainText('BLADDER');await expect(callouts).toContainText('0 mL');const glycogen=await read('data-glycogen');
+ // At rest nothing about the flows changes, but time passes: urine collects and glycogen is spent.
+ await hour('01:00:00');
+ await expect.poll(()=>read('data-simulated-time')).toBe(3600);await expect.poll(()=>read('data-bladder')).toBeGreaterThan(20);expect(await read('data-glycogen')).toBeLessThan(glycogen);
+ await expect(page.locator('.physical-clock')).toHaveText('SIMULATED 01:00:00');
+ await page.getByLabel('Colour the body by').selectOption('glucose');await expect(scene).toHaveAttribute('data-lens','glucose');
+ await expect.poll(()=>read('data-level-portal')).toBeLessThan(1.05);
+ await page.getByRole('button',{name:'Introduce meal',exact:false}).click();
+ await hour('02:00:00');
+ // Absorbed glucose reaches the portal vein first, the liver takes most of it, and arterial blood rises less.
+ await expect.poll(()=>read('data-level-portal'),{timeout:30000}).toBeGreaterThan(1.4);
+ const arterial=await read('data-level-arterial');expect(arterial).toBeGreaterThan(1.1);expect(arterial).toBeLessThan(await read('data-level-portal'));
+ expect(await read('data-tint-liver')).toBeGreaterThan(0);await expect(callouts).toContainText(/LIVER\s*glycogen [\d.]+ g\s*takes up/);
+ await page.getByLabel('Colour the body by').selectOption('oxygen');await expect.poll(()=>read('data-level-venous')).toBeLessThan(.85);
+});
+
 test('reduced motion, thyroid isolation, section controls and mobile expansion work',async({page})=>{
  test.setTimeout(120000);await page.emulateMedia({reducedMotion:'reduce'});await page.setViewportSize({width:390,height:844});await page.goto('/');
  const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});await expect(scene).toHaveAttribute('data-motion','paused');
