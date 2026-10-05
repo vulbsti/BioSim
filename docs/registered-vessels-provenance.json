@@ -1,0 +1,320 @@
+{
+  "scope": "Neck artery segments whose course is registered from imaging. Each replaces, by ID, the reconstructed segment of the same name in reconstructed-vessels.json; a reconstructed segment with no entry here is still the smooth curve described in reconstructed-vessels-provenance.json. The course comes from one scan of one person warped onto the atlas, so it is a real anatomical course, not this atlas subject's own. Calibre is from the ledger, not the scan.",
+  "scan": {
+    "subject": "s0504",
+    "dataset": "TotalSegmentator CT dataset v3.0.0, https://doi.org/10.5281/zenodo.6802613, CC BY 4.0",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "ctSHA256": "1d3a329bf3d97b003a37a6ce69db7350bd7b8a7e5b9cbf635a91b5dbda5a9deb",
+    "voxelMm": [
+      1.5,
+      1.5,
+      1.5
+    ],
+    "method": {
+      "segmentation": "TotalSegmentator tasks total and headneck_bones_vessels (open models)",
+      "vertebralArteries": "least-cost path through contrast from the subclavian label to the C2-C3 level, centred with VMTK centerlines on the path's lumen mask",
+      "carotids": "VMTK centerline of the common and internal carotid labels joined across the unlabelled fork by a least-cost path",
+      "fork": "first path voxel above the common carotid label",
+      "extractor": "8fd9d3c7feced977f068c334b1a9f5bbfe9f6551e2f524cf7199ed151ff2e45f",
+      "landmarkRules": "3bbe20b4c34458ef0e039d16ff47e8639e71c344ee5e66eb62c40ac5e2dd72e1"
+    },
+    "quality": {
+      "left carotid": {
+        "unlabelledVoxelsBridged": 15,
+        "medianHU": 422.0
+      },
+      "left vertebral": {
+        "voxels": 67,
+        "medianHU": 388.0,
+        "minimumHU": 271.0,
+        "voxelsInsideBoneLabel": 18
+      },
+      "right carotid": {
+        "unlabelledVoxelsBridged": 6,
+        "medianHU": 411.0
+      },
+      "right vertebral": {
+        "voxels": 59,
+        "medianHU": 413.0,
+        "minimumHU": 270.0,
+        "voxelsInsideBoneLabel": 14
+      }
+    }
+  },
+  "registration": {
+    "method": "thin-plate spline (scipy RBFInterpolator, affine part included) from scan to atlas on paired landmarks; smoothing chosen to predict left-out landmarks best",
+    "smoothing": 0.0,
+    "landmarks": 19,
+    "leftOutResidualMm": {
+      "median": 2.71,
+      "rootMeanSquare": 3.54,
+      "greatest": 8.96
+    },
+    "fittedResidualMm": {
+      "median": 0.0,
+      "rootMeanSquare": 0.0,
+      "greatest": 0.0
+    },
+    "affineOnlyResidualMm": {
+      "median": 3.63,
+      "rootMeanSquare": 4.07,
+      "greatest": 8.09
+    },
+    "perLandmarkMm": {
+      "C1": {
+        "leftOut": 2.73,
+        "fitted": 0.0,
+        "affineOnly": 3.58
+      },
+      "C2": {
+        "leftOut": 2.71,
+        "fitted": 0.0,
+        "affineOnly": 6.17
+      },
+      "C3": {
+        "leftOut": 1.92,
+        "fitted": 0.0,
+        "affineOnly": 3.24
+      },
+      "C4": {
+        "leftOut": 1.56,
+        "fitted": 0.0,
+        "affineOnly": 1.13
+      },
+      "C5": {
+        "leftOut": 0.27,
+        "fitted": 0.0,
+        "affineOnly": 1.52
+      },
+      "C6": {
+        "leftOut": 1.54,
+        "fitted": 0.0,
+        "affineOnly": 1.66
+      },
+      "C7": {
+        "leftOut": 3.64,
+        "fitted": 0.0,
+        "affineOnly": 5.06
+      },
+      "T1": {
+        "leftOut": 2.81,
+        "fitted": 0.0,
+        "affineOnly": 1.02
+      },
+      "T2": {
+        "leftOut": 2.01,
+        "fitted": 0.0,
+        "affineOnly": 3.63
+      },
+      "cricoid cartilage": {
+        "leftOut": 0.92,
+        "fitted": 0.0,
+        "affineOnly": 3.32
+      },
+      "foramen magnum": {
+        "leftOut": 8.96,
+        "fitted": 0.0,
+        "affineOnly": 8.09
+      },
+      "hyoid": {
+        "leftOut": 7.34,
+        "fitted": 0.0,
+        "affineOnly": 4.57
+      },
+      "left vertebral artery at C3": {
+        "leftOut": 3.76,
+        "fitted": 0.0,
+        "affineOnly": 4.25
+      },
+      "left vertebral artery at C4": {
+        "leftOut": 1.74,
+        "fitted": 0.0,
+        "affineOnly": 4.29
+      },
+      "left vertebral artery at C5": {
+        "leftOut": 1.61,
+        "fitted": 0.0,
+        "affineOnly": 3.91
+      },
+      "right vertebral artery at C3": {
+        "leftOut": 2.91,
+        "fitted": 0.0,
+        "affineOnly": 4.68
+      },
+      "right vertebral artery at C4": {
+        "leftOut": 2.85,
+        "fitted": 0.0,
+        "affineOnly": 3.91
+      },
+      "right vertebral artery at C5": {
+        "leftOut": 3.63,
+        "fitted": 0.0,
+        "affineOnly": 3.43
+      },
+      "thyroid cartilage": {
+        "leftOut": 2.39,
+        "fitted": 0.0,
+        "affineOnly": 3.15
+      }
+    },
+    "droppedAsOutliersMm": {
+      "left carotid canal entry": 21.4,
+      "right carotid canal entry": 19.42
+    },
+    "withoutAtlasCounterpart": [
+      "left vertebral artery at C6",
+      "right vertebral artery at C6"
+    ]
+  },
+  "rules": {
+    "sides": 16,
+    "ringSpacingMm": 1.5,
+    "overlapMm": 4.0,
+    "requiredClearanceMm": 0.5,
+    "easedToClearanceMm": 0.75,
+    "calibreTaperMm": 8.0,
+    "greatestJoinInsetMm": 10.0,
+    "narrowestRadiusMm": 0.8,
+    "narrowing": "where the atlas's bone leaves less room than the ledger calibre plus the eased clearance, the registered lumen is narrowed to fit, never below narrowestRadiusMm",
+    "clearance": "exact distance from every packaged wall vertex to the bone surface; vertebrae are C1 to T2, bone is every skeletal mesh of the neck",
+    "joinInset": "the source vertebral artery's lower tip is partly sunk in bone, so the registered segment joins its centerline this far above the tip, at the lowest point with room for the wall"
+  },
+  "segments": [
+    {
+      "id": "RECON-ICA-L",
+      "name": "Cervical part of left internal carotid artery",
+      "label": "registered from imaging",
+      "scan": "s0504",
+      "dataset": "TotalSegmentator CT dataset v3.0.0, https://doi.org/10.5281/zenodo.6802613, CC BY 4.0",
+      "licence": "CC BY 4.0",
+      "lengthMm": 73.3,
+      "radiusMm": {
+        "least": 1.85,
+        "median": 3.26,
+        "greatest": 3.78,
+        "source": "calibre ledger; eased to the source vessel's own radius over the last 8 mm at a join",
+        "ledger": [
+          {
+            "vessel": "Common carotid artery",
+            "diameterMm": 6.52,
+            "doi": "10.1161/01.STR.0000206440.48756.f7"
+          },
+          {
+            "vessel": "Internal carotid artery, cervical part",
+            "diameterMm": 5.11,
+            "doi": "10.1161/01.STR.0000206440.48756.f7"
+          }
+        ]
+      },
+      "commonToInternalCarotidAtMm": 47.8,
+      "endMissBeforePinningMm": [
+        11.16,
+        18.15
+      ],
+      "joinInsetMm": 0.0,
+      "minimumVertebraClearanceMm": 19.88,
+      "minimumBoneClearanceMm": 6.57
+    },
+    {
+      "id": "RECON-VA-L",
+      "name": "Prevertebral part of left vertebral artery",
+      "label": "registered from imaging",
+      "scan": "s0504",
+      "dataset": "TotalSegmentator CT dataset v3.0.0, https://doi.org/10.5281/zenodo.6802613, CC BY 4.0",
+      "licence": "CC BY 4.0",
+      "lengthMm": 61.8,
+      "radiusMm": {
+        "least": 1.44,
+        "median": 1.75,
+        "greatest": 1.75,
+        "source": "calibre ledger; eased to the source vessel's own radius over the last 8 mm at a join",
+        "ledger": [
+          {
+            "vessel": "Left vertebral artery, extracranial part",
+            "diameterMm": 3.49,
+            "doi": "10.5603/FM.a2019.0071"
+          }
+        ]
+      },
+      "endMissBeforePinningMm": [
+        20.75,
+        1.13
+      ],
+      "joinInsetMm": 1.0,
+      "minimumVertebraClearanceMm": 0.75,
+      "minimumBoneClearanceMm": 0.75
+    },
+    {
+      "id": "RECON-ICA-R",
+      "name": "Cervical part of right internal carotid artery",
+      "label": "registered from imaging",
+      "scan": "s0504",
+      "dataset": "TotalSegmentator CT dataset v3.0.0, https://doi.org/10.5281/zenodo.6802613, CC BY 4.0",
+      "licence": "CC BY 4.0",
+      "lengthMm": 81.1,
+      "radiusMm": {
+        "least": 1.87,
+        "median": 3.26,
+        "greatest": 3.89,
+        "source": "calibre ledger; eased to the source vessel's own radius over the last 8 mm at a join",
+        "ledger": [
+          {
+            "vessel": "Common carotid artery",
+            "diameterMm": 6.52,
+            "doi": "10.1161/01.STR.0000206440.48756.f7"
+          },
+          {
+            "vessel": "Internal carotid artery, cervical part",
+            "diameterMm": 5.11,
+            "doi": "10.1161/01.STR.0000206440.48756.f7"
+          }
+        ]
+      },
+      "commonToInternalCarotidAtMm": 60.6,
+      "endMissBeforePinningMm": [
+        14.88,
+        17.9
+      ],
+      "joinInsetMm": 0.0,
+      "minimumVertebraClearanceMm": 13.51,
+      "minimumBoneClearanceMm": 2.0
+    },
+    {
+      "id": "RECON-VA-R",
+      "name": "Prevertebral part of right vertebral artery",
+      "label": "registered from imaging",
+      "scan": "s0504",
+      "dataset": "TotalSegmentator CT dataset v3.0.0, https://doi.org/10.5281/zenodo.6802613, CC BY 4.0",
+      "licence": "CC BY 4.0",
+      "lengthMm": 63.3,
+      "radiusMm": {
+        "least": 1.38,
+        "median": 1.6,
+        "greatest": 1.6,
+        "source": "calibre ledger; eased to the source vessel's own radius over the last 8 mm at a join",
+        "ledger": [
+          {
+            "vessel": "Right vertebral artery, extracranial part",
+            "diameterMm": 3.2,
+            "doi": "10.5603/FM.a2019.0071"
+          }
+        ]
+      },
+      "endMissBeforePinningMm": [
+        14.9,
+        1.23
+      ],
+      "joinInsetMm": 4.9,
+      "minimumVertebraClearanceMm": 0.75,
+      "minimumBoneClearanceMm": 0.75
+    }
+  ],
+  "keptReconstructed": {},
+  "generator": "18b284d604917d4b1d653705a6a96ac51cbfdb7f11da50a4d1028e01211715aa",
+  "landmarkRules": "3bbe20b4c34458ef0e039d16ff47e8639e71c344ee5e66eb62c40ac5e2dd72e1",
+  "scanExtract": "643afd8583dbf1281fa28f67b5c05ffc996adb0f50f5916bc82b55802938bf91",
+  "ledger": "2fb5d8062b16be79a9e137dd9e0e72cf4da613b1dc6cfcaeca40648c324e0850",
+  "sourceAtlas": "c359f4bcd2cba90b7411d66d5e9fc04dc81294d46cd5c1e8b212c824f2e5bbee",
+  "binarySHA256": "ffd19ea0ed40bb5822f9505deeef6b67881bbeb75124621bc1a07fe4163bbe84"
+}
