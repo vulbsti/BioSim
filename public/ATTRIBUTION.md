@@ -38,6 +38,18 @@ BodyParts3D, Copyright © 2008 The Database Center for Life Science. STL convers
 
 Five lobe surfaces (FMA7333, FMA7337, FMA7370, FMA7371, FMA7383) retain all 204,408 source triangles. Adaptations: same unit/axis/translation conversion, welded vertices, recalculated and quantized normals, binary packing, display colors, and illustrative breathing deformation. No registration warp was applied. These older lung surfaces are approximately aligned overlays; they do not establish exact correspondence with the 4.0 airways. Pinned URLs, hashes, bounds, and a cross-version trachea comparison are recorded in `docs/lung-surface-provenance.json`.
 
+## Neck artery courses registered from imaging
+
+Wasserthal J. et al., *TotalSegmentator CT dataset* v3.0.0, University Hospital Basel. Licensed under Creative Commons Attribution 4.0 International.
+
+- Dataset: https://doi.org/10.5281/zenodo.6802613 (version record https://doi.org/10.5281/zenodo.22688904)
+- License terms: https://creativecommons.org/licenses/by/4.0/
+- Publication: Wasserthal et al. (2023), TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images. *Radiology: Artificial Intelligence* 5(5). https://doi.org/10.1148/ryai.230024
+- Subject used: `s0504` (one CT angiogram of the neck). No image data is redistributed.
+- Packaged derivatives: `models/registered-vessels.json`, `registered-vessels.bin`, `registered-vessels.bin.gz`.
+
+Adaptations: the scan was segmented with TotalSegmentator's open `total` and `headneck_bones_vessels` models (Apache-2.0); the vertebral arteries were traced through the contrast and all four artery centerlines extracted with VMTK (BSD). Only those centerlines and 23 landmark positions leave the scan. The centerlines were warped onto the BodyParts3D atlas by a thin-plate spline on 19 paired landmarks, moved to end exactly on the atlas vessels they join, eased off atlas bone, and swept into tubes whose calibre comes from published adult values, not from the scan. The four resulting segments are the course of one person's arteries fitted to a different person's skeleton. They are not BodyParts3D geometry and not a measurement of the atlas subject. Landmark residuals, end corrections and bone clearances are in `docs/registered-vessels-provenance.json` in the repository.
+
 ## Viewer adaptations
 
 The physiology renderer applies tissue colors, transparency, anterior display cuts, optional section planes, and temporary illustrative heart/lung/diaphragm/digestive deformation. It also corrects display grouping for hepatovenous liver segments and cerebral ventricles, and includes the source ventricular wall in heart selection. Source identities and archived base buffers remain unchanged. Tracer paths are approximate visual guides and do not establish vessel junctions.

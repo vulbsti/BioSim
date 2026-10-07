@@ -1,4 +1,4 @@
-"""Read packaged atlas meshes for the vessel scripts, with calibre-adjusted replacements applied."""
+"""Read packaged atlas meshes for the vessel scripts, with replacement packages applied by mesh ID."""
 import json
 from pathlib import Path
 
@@ -7,6 +7,7 @@ import numpy as np
 MODELS = Path(__file__).resolve().parents[2] / "public/models"
 SOURCES = ("atlas.json", "expansion.json")
 REPLACEMENTS = "calibrated-vessels.json"
+REGISTERED = "registered-vessels.json"
 
 
 def read(manifest):
@@ -24,7 +25,7 @@ def read(manifest):
 
 def meshes(manifests, replaced=True):
     """Meshes of several packages; a replacement with the same ID takes the source mesh's place."""
-    swap = {p["id"]: (p, v, f) for p, v, f in read(REPLACEMENTS)} if replaced and (MODELS / REPLACEMENTS).exists() else {}
+    swap = {p["id"]: (p, v, f) for package in (REPLACEMENTS, REGISTERED) if replaced and (MODELS / package).exists() for p, v, f in read(package)}
     for manifest in manifests:
         for p, v, f in read(manifest):
             yield swap.get(p["id"], (p, v, f))

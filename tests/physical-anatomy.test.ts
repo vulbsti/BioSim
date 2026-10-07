@@ -11,7 +11,7 @@ import {cardiacContraction,respiratoryCycle,motionRates} from '../app/physical/m
 import {applyAction,advance,createBody} from '../app/simulation/engine';
 import {auditBrainVessels} from '../app/simulation/brain-coverage';
 const read=(file:string)=>JSON.parse(readFileSync(new URL(`../public/models/${file}`,import.meta.url),'utf8')) as Atlas;
-const base=read('atlas.json'),expansion=read('expansion.json'),lungs=read('lung-surfaces.json'),reconstructed=read('reconstructed-vessels.json'),calibrated=read('calibrated-vessels.json'),atlas=applyReplacements(combineAtlases(combineAtlases(combineAtlases(base,expansion),lungs),reconstructed),calibrated);
+const base=read('atlas.json'),expansion=read('expansion.json'),lungs=read('lung-surfaces.json'),reconstructed=read('reconstructed-vessels.json'),calibrated=read('calibrated-vessels.json'),registered=read('registered-vessels.json'),atlas=applyReplacements(applyReplacements(combineAtlases(combineAtlases(combineAtlases(base,expansion),lungs),reconstructed),calibrated),registered);
 
 test('source additions preserve base identity and have valid, finite geometry and complete concepts',()=>{
  assert.equal(atlas.parts.length,2277);assert.equal(new Set(atlas.parts.map(p=>p.id)).size,2277);
@@ -19,8 +19,15 @@ test('source additions preserve base identity and have valid, finite geometry an
  assert.deepEqual(atlas.parts.slice(0,2234).filter(kept).map(p=>[p.id,p.positions,p.chunk]),base.parts.filter(kept).map(p=>[p.id,p.positions,p.chunk]));
  // A calibre-adjusted mesh keeps its identity and topology, is flagged, and reads from the replacement package.
  for(const r of calibrated.parts){const now=atlas.parts.find(p=>p.id===r.id)!,was=base.parts.find(p=>p.id===r.id)!;assert.equal(now.sourceVersion,'calibre-adjusted');assert.deepEqual([now.name,now.vertexCount,now.indexCount,now.system],[was.name,was.vertexCount,was.indexCount,was.system]);assert.equal(atlas.chunks[now.chunk].url,'/models/calibrated-vessels.bin');}
+ // A neck segment registered from imaging takes its reconstructed segment's place by ID and name, is flagged, and reads from its own package.
+ for(const r of registered.parts){const now=atlas.parts.find(p=>p.id===r.id)!,was=reconstructed.parts.find(p=>p.id===r.id)!;assert.equal(now.sourceVersion,'registered-from-imaging');assert.deepEqual([now.name,now.system],[was.name,'arterial']);assert.equal(atlas.chunks[now.chunk].url,'/models/registered-vessels.bin');}
+ // Any segment left out of the registered package is still the reconstructed curve.
+ for(const r of reconstructed.parts)assert.equal(atlas.parts.find(p=>p.id===r.id)!.sourceVersion,registered.parts.some(p=>p.id===r.id)?'registered-from-imaging':'reconstructed');
+ const provenance=JSON.parse(readFileSync(new URL('../docs/registered-vessels-provenance.json',import.meta.url),'utf8'));
+ assert.deepEqual(provenance.segments.map((s:{id:string})=>s.id).sort(),registered.parts.map(p=>p.id).sort());
+ for(const s of provenance.segments){assert.equal(s.label,'registered from imaging');assert.equal(s.licence,'CC BY 4.0');assert.ok(s.scan&&s.minimumVertebraClearanceMm>=.5,`${s.id} clears vertebrae by ${s.minimumVertebraClearanceMm} mm`);}
  assert.throws(()=>applyReplacements(base,reconstructed),/unknown anatomy mesh/);
- for(const addition of [expansion,lungs,reconstructed,calibrated]){
+ for(const addition of [expansion,lungs,reconstructed,calibrated,registered]){
   const buffers=addition.chunks.map(c=>{const raw=readFileSync(new URL(`../public${c.url}`,import.meta.url));assert.equal(raw.length,c.bytes);assert.deepEqual(gunzipSync(readFileSync(new URL(`../public${c.gzip}`,import.meta.url))),raw);return raw;});
   for(const p of addition.parts){const b=buffers[p.chunk];assert.ok(p.indices+p.indexCount*4<=b.length);const pos=new Float32Array(b.buffer,b.byteOffset+p.positions,p.vertexCount*3),idx=new Uint32Array(b.buffer,b.byteOffset+p.indices,p.indexCount);
    for(let i=0;i<pos.length;i++){assert.ok(Number.isFinite(pos[i]));assert.ok(pos[i]>=p.bounds[0][i%3]-1e-6&&pos[i]<=p.bounds[1][i%3]+1e-6);}
