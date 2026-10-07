@@ -1,0 +1,288 @@
+{
+ "blender": "5.2.2 LTS",
+ "unit": "nm",
+ "molecules": [
+  {
+   "id": "glucose",
+   "triangles": 1776,
+   "vertices": 1224,
+   "meshRadiusNm": 0.392
+  },
+  {
+   "id": "aminoAcids",
+   "triangles": 1456,
+   "vertices": 996,
+   "meshRadiusNm": 0.463
+  },
+  {
+   "id": "lipids",
+   "triangles": 3256,
+   "vertices": 2316,
+   "meshRadiusNm": 1.178
+  },
+  {
+   "id": "oxygen",
+   "triangles": 664,
+   "vertices": 348,
+   "meshRadiusNm": 0.1558
+  },
+  {
+   "id": "carbonDioxide",
+   "triangles": 1008,
+   "vertices": 534,
+   "meshRadiusNm": 0.2139
+  },
+  {
+   "id": "epinephrine",
+   "triangles": 1924,
+   "vertices": 1326,
+   "meshRadiusNm": 0.5054
+  },
+  {
+   "id": "norepinephrine",
+   "triangles": 1732,
+   "vertices": 1188,
+   "meshRadiusNm": 0.4859
+  },
+  {
+   "id": "cortisol",
+   "triangles": 4096,
+   "vertices": 2868,
+   "meshRadiusNm": 0.7226
+  },
+  {
+   "id": "thyroid",
+   "triangles": 2944,
+   "vertices": 1974,
+   "meshRadiusNm": 0.7108
+  },
+  {
+   "id": "aldosterone",
+   "triangles": 4008,
+   "vertices": 2796,
+   "meshRadiusNm": 0.7185
+  },
+  {
+   "id": "melatonin",
+   "triangles": 2496,
+   "vertices": 1722,
+   "meshRadiusNm": 0.4809
+  },
+  {
+   "id": "testosterone",
+   "triangles": 3488,
+   "vertices": 2466,
+   "meshRadiusNm": 0.6473
+  },
+  {
+   "id": "calcitriol",
+   "triangles": 5104,
+   "vertices": 3612,
+   "meshRadiusNm": 0.9837
+  },
+  {
+   "id": "trh",
+   "triangles": 3720,
+   "vertices": 2556,
+   "meshRadiusNm": 0.6694
+  },
+  {
+   "id": "gnrh",
+   "triangles": 3860,
+   "vertices": 3180,
+   "meshRadiusNm": 1.1167
+  },
+  {
+   "id": "angiotensin",
+   "triangles": 3372,
+   "vertices": 2772,
+   "meshRadiusNm": 1.2537
+  },
+  {
+   "id": "adh",
+   "triangles": 3372,
+   "vertices": 2772,
+   "meshRadiusNm": 1.2852
+  },
+  {
+   "id": "cck",
+   "triangles": 3504,
+   "vertices": 2880,
+   "meshRadiusNm": 1.3057
+  },
+  {
+   "id": "insulin",
+   "triangles": 1612,
+   "vertices": 780,
+   "meshRadiusNm": 2.0703
+  },
+  {
+   "id": "glucagon",
+   "triangles": 984,
+   "vertices": 494,
+   "meshRadiusNm": 2.9737
+  },
+  {
+   "id": "crh",
+   "triangles": 1060,
+   "vertices": 528,
+   "meshRadiusNm": 2.5195
+  },
+  {
+   "id": "acth",
+   "triangles": 900,
+   "vertices": 446,
+   "meshRadiusNm": 1.9849
+  },
+  {
+   "id": "tsh",
+   "triangles": 4200,
+   "vertices": 2034,
+   "meshRadiusNm": 4.2611
+  },
+  {
+   "id": "renin",
+   "triangles": 4200,
+   "vertices": 1922,
+   "meshRadiusNm": 3.6728
+  },
+  {
+   "id": "anp",
+   "triangles": 900,
+   "vertices": 450,
+   "meshRadiusNm": 1.8757
+  },
+  {
+   "id": "gastrin",
+   "triangles": 900,
+   "vertices": 450,
+   "meshRadiusNm": 1.8355
+  },
+  {
+   "id": "secretin",
+   "triangles": 900,
+   "vertices": 450,
+   "meshRadiusNm": 2.2513
+  },
+  {
+   "id": "glp1",
+   "triangles": 900,
+   "vertices": 452,
+   "meshRadiusNm": 2.2665
+  },
+  {
+   "id": "ghrelin",
+   "triangles": 900,
+   "vertices": 450,
+   "meshRadiusNm": 2.0789
+  },
+  {
+   "id": "leptin",
+   "triangles": 4012,
+   "vertices": 1930,
+   "meshRadiusNm": 2.6917
+  },
+  {
+   "id": "gh",
+   "triangles": 4200,
+   "vertices": 1960,
+   "meshRadiusNm": 3.4261
+  },
+  {
+   "id": "igf1",
+   "triangles": 1968,
+   "vertices": 960,
+   "meshRadiusNm": 2.8185
+  },
+  {
+   "id": "lh",
+   "triangles": 4200,
+   "vertices": 2058,
+   "meshRadiusNm": 4.4361
+  },
+  {
+   "id": "fsh",
+   "triangles": 4200,
+   "vertices": 2006,
+   "meshRadiusNm": 4.3044
+  },
+  {
+   "id": "inhibin",
+   "triangles": 4200,
+   "vertices": 2028,
+   "meshRadiusNm": 3.8614
+  },
+  {
+   "id": "pth",
+   "triangles": 1160,
+   "vertices": 580,
+   "meshRadiusNm": 3.0064
+  },
+  {
+   "id": "albumin",
+   "triangles": 2600,
+   "vertices": 1102,
+   "meshRadiusNm": 4.9958
+  },
+  {
+   "id": "igg",
+   "triangles": 2630,
+   "vertices": 993,
+   "meshRadiusNm": 9.1997
+  },
+  {
+   "id": "fibrinogen",
+   "triangles": 3852,
+   "vertices": 1385,
+   "meshRadiusNm": 22.8376
+  },
+  {
+   "id": "sodium",
+   "triangles": 320,
+   "vertices": 162,
+   "meshRadiusNm": 0.102
+  },
+  {
+   "id": "potassium",
+   "triangles": 320,
+   "vertices": 162,
+   "meshRadiusNm": 0.138
+  },
+  {
+   "id": "chloride",
+   "triangles": 320,
+   "vertices": 162,
+   "meshRadiusNm": 0.181
+  },
+  {
+   "id": "calcium",
+   "triangles": 320,
+   "vertices": 162,
+   "meshRadiusNm": 0.1
+  },
+  {
+   "id": "bicarbonate",
+   "triangles": 436,
+   "vertices": 276,
+   "meshRadiusNm": 0.2159
+  },
+  {
+   "id": "redCell",
+   "triangles": 616,
+   "vertices": 352,
+   "meshRadiusNm": 3910.0002
+  },
+  {
+   "id": "platelet",
+   "triangles": 320,
+   "vertices": 162,
+   "meshRadiusNm": 1250.0001
+  },
+  {
+   "id": "whiteCell",
+   "triangles": 1280,
+   "vertices": 642,
+   "meshRadiusNm": 4574.3042
+  }
+ ]
+}

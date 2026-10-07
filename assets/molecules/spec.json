@@ -1,0 +1,533 @@
+{
+  "id": "blood-molecules",
+  "version": "0.2.0",
+  "licenses": {
+    "pubchem": {
+      "name": "PubChem (NCBI, U.S. public domain data)",
+      "url": "https://www.ncbi.nlm.nih.gov/home/about/policies/"
+    },
+    "pdb": {
+      "name": "CC0 1.0 (wwPDB archive)",
+      "url": "https://www.rcsb.org/pages/usage-policy"
+    },
+    "computed": {
+      "name": "MIT (original geometry from published dimensions)",
+      "url": "https://opensource.org/license/mit"
+    }
+  },
+  "molecules": [
+    {
+      "id": "glucose",
+      "name": "Glucose",
+      "kind": "substance",
+      "db": "pubchem",
+      "ref": "5793",
+      "style": "ball-stick"
+    },
+    {
+      "id": "aminoAcids",
+      "name": "Amino acids",
+      "kind": "substance",
+      "db": "pubchem",
+      "ref": "5961",
+      "style": "ball-stick",
+      "note": "The model lumps all amino acids. Shown: L-glutamine, the most abundant free amino acid in plasma."
+    },
+    {
+      "id": "lipids",
+      "name": "Lipids",
+      "kind": "substance",
+      "db": "pubchem",
+      "ref": "985",
+      "style": "ball-stick",
+      "note": "The model lumps all lipids. Shown: palmitic acid, a common circulating fatty acid."
+    },
+    {
+      "id": "oxygen",
+      "name": "Oxygen",
+      "kind": "substance",
+      "db": "pubchem",
+      "ref": "977",
+      "style": "ball-stick"
+    },
+    {
+      "id": "carbonDioxide",
+      "name": "Carbon dioxide",
+      "kind": "substance",
+      "db": "pubchem",
+      "ref": "280",
+      "style": "ball-stick"
+    },
+    {
+      "id": "epinephrine",
+      "name": "Epinephrine",
+      "kind": "hormone",
+      "db": "pubchem",
+      "ref": "5816",
+      "style": "ball-stick"
+    },
+    {
+      "id": "norepinephrine",
+      "name": "Norepinephrine",
+      "kind": "hormone",
+      "db": "pubchem",
+      "ref": "439260",
+      "style": "ball-stick"
+    },
+    {
+      "id": "cortisol",
+      "name": "Cortisol",
+      "kind": "hormone",
+      "db": "pubchem",
+      "ref": "5754",
+      "style": "ball-stick"
+    },
+    {
+      "id": "thyroid",
+      "name": "T3 / T4 activity",
+      "kind": "hormone",
+      "db": "pubchem",
+      "ref": "5920",
+      "style": "ball-stick",
+      "note": "Shown: triiodothyronine (T3), the active form."
+    },
+    {
+      "id": "aldosterone",
+      "name": "Aldosterone",
+      "kind": "hormone",
+      "db": "pubchem",
+      "ref": "5839",
+      "style": "ball-stick"
+    },
+    {
+      "id": "melatonin",
+      "name": "Melatonin",
+      "kind": "hormone",
+      "db": "pubchem",
+      "ref": "896",
+      "style": "ball-stick"
+    },
+    {
+      "id": "testosterone",
+      "name": "Testosterone",
+      "kind": "hormone",
+      "db": "pubchem",
+      "ref": "6013",
+      "style": "ball-stick"
+    },
+    {
+      "id": "calcitriol",
+      "name": "Calcitriol",
+      "kind": "hormone",
+      "db": "pubchem",
+      "ref": "5280453",
+      "style": "ball-stick"
+    },
+    {
+      "id": "trh",
+      "name": "TRH",
+      "kind": "hormone",
+      "db": "pubchem",
+      "ref": "638678",
+      "style": "ball-stick"
+    },
+    {
+      "id": "gnrh",
+      "name": "GnRH activity",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "1YY1",
+      "chains": [
+        "A"
+      ],
+      "style": "sticks"
+    },
+    {
+      "id": "angiotensin",
+      "name": "Angiotensin II",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "1N9V",
+      "chains": [
+        "A"
+      ],
+      "style": "sticks"
+    },
+    {
+      "id": "adh",
+      "name": "ADH / vasopressin",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "7DW9",
+      "chains": [
+        "C"
+      ],
+      "style": "sticks",
+      "note": "Arginine vasopressin as bound to the V2 receptor; the receptor is not shown."
+    },
+    {
+      "id": "cck",
+      "name": "CCK",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "7EZM",
+      "chains": [
+        "P"
+      ],
+      "style": "sticks",
+      "note": "Shown: CCK-8, the active C-terminal fragment, as bound to the CCK-A receptor."
+    },
+    {
+      "id": "insulin",
+      "name": "Insulin",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "3I40",
+      "chains": [
+        "A",
+        "B"
+      ],
+      "style": "surface"
+    },
+    {
+      "id": "glucagon",
+      "name": "Glucagon",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "1GCN",
+      "chains": [
+        "A"
+      ],
+      "style": "surface",
+      "note": "Porcine glucagon; the sequence is identical to human."
+    },
+    {
+      "id": "crh",
+      "name": "CRH",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "6P9X",
+      "chains": [
+        "P"
+      ],
+      "style": "surface",
+      "note": "As bound to the CRF1 receptor; the receptor is not shown."
+    },
+    {
+      "id": "acth",
+      "name": "ACTH",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "8GY7",
+      "chains": [
+        "M"
+      ],
+      "style": "surface",
+      "note": "The receptor-binding N-terminal segment resolved in the MC2R complex; the rest of ACTH(1-39) has no deposited structure."
+    },
+    {
+      "id": "tsh",
+      "name": "TSH",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "7T9I",
+      "chains": [
+        "A",
+        "B"
+      ],
+      "style": "surface",
+      "note": "Native human TSH as bound to its receptor; the receptor is not shown."
+    },
+    {
+      "id": "renin",
+      "name": "Renin activity",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "2REN",
+      "chains": [
+        "A"
+      ],
+      "style": "surface"
+    },
+    {
+      "id": "anp",
+      "name": "ANP",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "9BCQ",
+      "chains": [
+        "C"
+      ],
+      "style": "surface",
+      "note": "As bound to the GC-A receptor; the receptor is not shown."
+    },
+    {
+      "id": "gastrin",
+      "name": "Gastrin",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "7F8W",
+      "chains": [
+        "E"
+      ],
+      "style": "surface",
+      "note": "Gastrin-17 as bound to the CCK-B receptor; the receptor is not shown."
+    },
+    {
+      "id": "secretin",
+      "name": "Secretin",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "6WZG",
+      "chains": [
+        "P"
+      ],
+      "style": "surface",
+      "note": "As bound to the secretin receptor; the receptor is not shown."
+    },
+    {
+      "id": "glp1",
+      "name": "GLP-1",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "3IOL",
+      "chains": [
+        "B"
+      ],
+      "style": "surface",
+      "note": "As bound to the GLP-1 receptor extracellular domain; the receptor is not shown."
+    },
+    {
+      "id": "ghrelin",
+      "name": "Ghrelin",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "7F9Y",
+      "chains": [
+        "C"
+      ],
+      "style": "surface",
+      "note": "The segment resolved in the ghrelin receptor complex; the receptor is not shown."
+    },
+    {
+      "id": "leptin",
+      "name": "Leptin",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "1AX8",
+      "chains": [
+        "A"
+      ],
+      "style": "surface"
+    },
+    {
+      "id": "gh",
+      "name": "Growth hormone",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "1HGU",
+      "chains": [
+        "A"
+      ],
+      "style": "surface"
+    },
+    {
+      "id": "igf1",
+      "name": "IGF-1",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "1IMX",
+      "chains": [
+        "A"
+      ],
+      "style": "surface"
+    },
+    {
+      "id": "lh",
+      "name": "LH",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "1HCN",
+      "chains": [
+        "A",
+        "B"
+      ],
+      "style": "surface",
+      "standIn": true,
+      "note": "No LH structure is deposited. Shown: human chorionic gonadotropin, which shares LH's alpha subunit, binds the same receptor and has a closely related beta subunit."
+    },
+    {
+      "id": "fsh",
+      "name": "FSH",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "1FL7",
+      "chains": [
+        "A",
+        "B"
+      ],
+      "style": "surface"
+    },
+    {
+      "id": "inhibin",
+      "name": "Inhibin B",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "2ARV",
+      "chains": [
+        "A",
+        "B"
+      ],
+      "style": "surface",
+      "standIn": true,
+      "note": "No inhibin B structure is deposited. Shown: activin A, a related dimer of the same TGF-beta family built from inhibin beta chains."
+    },
+    {
+      "id": "pth",
+      "name": "PTH",
+      "kind": "hormone",
+      "db": "pdb",
+      "ref": "1ET1",
+      "chains": [
+        "A"
+      ],
+      "style": "surface",
+      "note": "Shown: PTH(1-34), the biologically active fragment."
+    },
+    {
+      "id": "albumin",
+      "name": "Albumin",
+      "kind": "protein",
+      "db": "pdb",
+      "ref": "1AO6",
+      "chains": [
+        "A"
+      ],
+      "style": "surface"
+    },
+    {
+      "id": "igg",
+      "name": "Antibody (IgG)",
+      "kind": "protein",
+      "db": "pdb",
+      "ref": "1HZH",
+      "chains": [
+        "H",
+        "K",
+        "L",
+        "M"
+      ],
+      "style": "surface",
+      "note": "One intact human IgG1 antibody (b12). Plasma IgG is a mixture of many antibodies with this overall shape."
+    },
+    {
+      "id": "fibrinogen",
+      "name": "Fibrinogen",
+      "kind": "protein",
+      "db": "pdb",
+      "ref": "3GHG",
+      "chains": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "style": "surface",
+      "note": "The crystallised core of one fibrinogen molecule; flexible regions that did not resolve are missing."
+    },
+    {
+      "id": "sodium",
+      "name": "Sodium ion",
+      "kind": "ion",
+      "db": "computed",
+      "ref": "Na+",
+      "style": "ion",
+      "radiusA": 1.02,
+      "color": "#b08cf0",
+      "citation": "Shannon RD. Acta Cryst A 1976;32:751-767 (effective ionic radius, six-coordinate)",
+      "url": "https://doi.org/10.1107/S0567739476001551"
+    },
+    {
+      "id": "potassium",
+      "name": "Potassium ion",
+      "kind": "ion",
+      "db": "computed",
+      "ref": "K+",
+      "style": "ion",
+      "radiusA": 1.38,
+      "color": "#8f5fd6",
+      "citation": "Shannon RD. Acta Cryst A 1976;32:751-767 (effective ionic radius, six-coordinate)",
+      "url": "https://doi.org/10.1107/S0567739476001551"
+    },
+    {
+      "id": "chloride",
+      "name": "Chloride ion",
+      "kind": "ion",
+      "db": "computed",
+      "ref": "Cl-",
+      "style": "ion",
+      "radiusA": 1.81,
+      "color": "#58c66a",
+      "citation": "Shannon RD. Acta Cryst A 1976;32:751-767 (effective ionic radius, six-coordinate)",
+      "url": "https://doi.org/10.1107/S0567739476001551"
+    },
+    {
+      "id": "calcium",
+      "name": "Calcium ion",
+      "kind": "ion",
+      "db": "computed",
+      "ref": "Ca2+",
+      "style": "ion",
+      "radiusA": 1.0,
+      "color": "#9fb8a8",
+      "citation": "Shannon RD. Acta Cryst A 1976;32:751-767 (effective ionic radius, six-coordinate)",
+      "url": "https://doi.org/10.1107/S0567739476001551"
+    },
+    {
+      "id": "bicarbonate",
+      "name": "Bicarbonate",
+      "kind": "ion",
+      "db": "pubchem",
+      "ref": "769",
+      "style": "ball-stick"
+    },
+    {
+      "id": "redCell",
+      "name": "Red blood cell",
+      "kind": "cell",
+      "db": "computed",
+      "ref": "Evans-Fung biconcave profile",
+      "style": "cell",
+      "shape": "red-cell",
+      "citation": "Evans E, Fung YC. Improved measurements of the erythrocyte geometry. Microvasc Res 1972;4:335-347 (R0 3.91 um, C0 0.81, C2 7.83, C4 -4.39 um)",
+      "url": "https://doi.org/10.1016/0026-2862(72)90069-6",
+      "note": "Average resting shape: 7.82 um across, 0.81 um thick at the centre, 2.57 um at the rim. The profile coefficients are those widely reproduced from the paper and were not re-checked against its full text. Real red cells deform as they flow."
+    },
+    {
+      "id": "platelet",
+      "name": "Platelet",
+      "kind": "cell",
+      "db": "computed",
+      "ref": "resting discoid",
+      "style": "cell",
+      "shape": "platelet",
+      "citation": "Moskalensky AE et al. Determination of volume, shape and refractive index of individual blood platelets (arXiv 0807.4673): diameter 2 to 4 um, thickness 0.5 to 2 um. Drawn 2.5 by 0.9 um.",
+      "url": "https://arxiv.org/abs/0807.4673",
+      "note": "Resting discoid shape as a smooth lens; surface detail is not modelled."
+    },
+    {
+      "id": "whiteCell",
+      "name": "White blood cell",
+      "kind": "cell",
+      "db": "computed",
+      "ref": "neutrophil-sized sphere, 8.85 um",
+      "style": "cell",
+      "shape": "white-cell",
+      "citation": "Neutrophil diameter in suspension, average 8.85 um (Wikipedia, Neutrophil; tertiary source)",
+      "url": "https://en.wikipedia.org/wiki/Neutrophil",
+      "note": "A ruffled sphere the size of a neutrophil. The five white cell types are not distinguished."
+    }
+  ]
+}

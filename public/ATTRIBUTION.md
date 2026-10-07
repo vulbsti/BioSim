@@ -86,3 +86,9 @@ The optional fixed-length activation experiment adapts the fast-twitch mouse-mus
 ## Calibre-adjusted vessels
 
 `models/calibrated-vessels.json`, `calibrated-vessels.bin` and `calibrated-vessels.bin.gz` are BodyParts3D meshes whose vertices were moved radially about their own centerlines to a published adult calibre. They are derivatives of the BodyParts3D source and remain under its terms. The measurements they follow are cited in `models/vessel-calibre/ledger.json` in the repository.
+
+## Blood molecules
+
+`models/molecules/molecules.glb` holds 47 models of what blood contains: the 36 species the body model carries, three plasma proteins, five ions and three blood cells. Small-molecule coordinates are PubChem3D conformers from PubChem (National Center for Biotechnology Information, U.S. public domain data, https://www.ncbi.nlm.nih.gov/home/about/policies/). Peptide and protein coordinates are chains from the wwPDB archive via RCSB PDB, released under CC0 1.0 (https://www.rcsb.org/pages/usage-policy). The accession, chains, experimental method and download hash of every structure are in `assets/molecules/ledger.json` in the repository.
+
+Meshes were generated from those coordinates with `scripts/molecules/build.py` in Blender and are original MIT geometry. LH and inhibin B have no deposited structure and are shown as human chorionic gonadotropin (PDB 1HCN) and activin A (PDB 2ARV), labelled as stand-ins. Blood cells and ions are generated from published dimensions (red cell profile: Evans and Fung, Microvascular Research 1972; ionic radii: Shannon, Acta Crystallographica A 1976; platelet and neutrophil sizes as cited in the ledger). Resting concentrations and cell counts used to draw true numbers are compiled, with every source and conversion, in `assets/molecules/blood-reference.json`; most come from the ABIM Laboratory Test Reference Ranges (January 2026).
