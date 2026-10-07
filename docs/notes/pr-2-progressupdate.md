@@ -54,3 +54,13 @@ Requested: fix the portal vein speed "the ideal way", by correcting the asset.
 - Source normals and triangles are reused, since radial scaling keeps surface directions. The archived atlas files are untouched; the loaders swap the mesh by ID.
 - Verified: resting portal speed 17.9 cm/s (was 39.8), flow conservation unchanged, all suites pass.
 - Not done: no collision check of the widened vein against the neighbouring hepatic artery and bile duct; superior mesenteric vein, splenic vein and vertebral arteries are still at source calibre for lack of a cited mean (and, for the vertebrals, bone canals).
+
+## Follow-up, 2026-10-05: showing the model's state on the body
+
+Raised in review: pressing Run changed nothing on the body, and loose dots sat on organ surfaces.
+
+- Cause: the 3D view read 8 of the model's values (heart rate, breathing rate and depth, organ flows, cardiac output, food present, absorbing). At rest all 8 are constant. The dots were beads of vessels inside organs, drawn with depth testing off.
+- Measured before building: after a meal the model's portal glucose rises about 1.8x and arterial about 1.2x at 30 minutes, and none of it was drawn.
+- Built: substance lens (blood against resting arterial, organs against their own rest), flow-weighted venous mixing on the vessel graph, organ uptake labels from the transport step's exchange records, store labels, bladder swelling, simulated clock and a one-hour trend, depth-tested beads lifted by the vessel radius.
+- Performance: recomputing tints every frame made the software-rendered browser test take over four minutes. Tints are now recomputed only when the solver hands over a new state or the lens changes.
+- Not done: hormones as a lens (the body model has one global level per hormone, not per compartment); a tracked bolus front; scrubbing back in time; anything below organ resolution.

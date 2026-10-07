@@ -12,6 +12,21 @@ The numerical simulation and anatomical animation have separate playback control
 
 Use layer presets, source-name search, exact structure selection, focus, isolation, hidden-part restoration, and sagittal/coronal/axial section controls. Expand opens a keyboard-contained dialog with Escape support. Section planes expose open source surfaces; they do not reconstruct internal cut faces.
 
+## Seeing the simulation's state on the body
+
+The body model computes far more than motion. It tracks glucose, amino acids, lipids, oxygen and carbon dioxide in 28 well-mixed compartments (blood and tissue for each organ, arterial, venous and portal blood, lymph), and the stores they feed. The body view reads those directly.
+
+- **Colour by a substance.** *Colour by* switches from flow speed to one of the five transported substances. Blood beads and vessel walls take the colour of the concentration in the compartment that vessel carries, against resting arterial blood, on a log scale from half (blue) through resting (pale) to double (amber). Arteries carry arterial blood everywhere. A vein carries the blood of the beds it drains, mixed in proportion to their flows, so a merged vein shows the blend of its tributaries. Portal tributaries carry gut blood, and the portal trunk and its hepatic branches carry the portal compartment. Because arteries and veins share one scale, the difference between them is what each organ took up or added.
+- **Organs.** Each organ is tinted by its own level against its own resting level: tissue where the model tracks it, otherwise the organ's blood (oxygen and carbon dioxide).
+- **Exchange.** With a substance chosen, labels pinned to the heart, brain, liver, gut, kidneys and muscle state what the organ's tissue is taking from its blood per minute, read from the transport step's own exchange records (tissue consumption and production for the gases).
+- **Stores and outputs.** Labels show stomach and intestinal contents, liver glycogen, urine rate and bladder volume, and the bladder mesh swells toward a 500 mL fill.
+- **Simulated time.** The stage shows the simulated clock, and the colour legend plots the chosen substance's arterial and portal level over the last simulated hour.
+- **Beads stay in their vessels.** Beads are depth-tested and lifted toward the camera by just over their vessel's radius, so a vessel's own wall does not hide them but organs and bone in front do. Vessels inside an opaque organ are hidden until the organ is translucent, isolated or cut.
+
+At rest the flows are steady, so with *Flow speed* chosen a running simulation still looks the same. What changes at rest is the clock, the bladder and the glycogen label. A meal or exercise changes the colours.
+
+This is a display of a compartment model. Every part of one organ has the same colour because the model has one value for it; it does not say where inside the liver glucose is. The colour scale, the bladder swelling and the label positions are display choices. Hormones are not yet a colour option.
+
 ## Source geometry and assembly
 
 | Package | Meshes | Triangles | Contents |
@@ -37,7 +52,7 @@ The 3.0 lung contours fill a missing surface representation in the 4.0 package. 
 
 These animations visualize model state; they do not feed force, volume, energy, or transport back into the solver. Cardiac contraction uses a smooth illustrative systolic envelope for 36% of a cycle. Inspiration occupies 40% of a display breath with cosine easing. These timing fractions, deformation amplitudes and gut wave speeds are display choices, not individually calibrated physiology. The direction of lung/diaphragm motion follows the qualitative mechanism in [OpenStax's breathing overview](https://openstax.org/books/anatomy-and-physiology-2e/pages/22-3-the-process-of-breathing).
 
-Airway and gut tracer curves average source vertices in 24 cross-section bins along the longest mesh axis; they are readable paths, not validated lumen centerlines. Trails and blood beads deliberately remain visible through tissues. Cardiac and lung deformation does not currently enforce mesh contact, chamber-specific contractions, valve motion, or conservation of displayed volume. Picking uses the undeformed source surface and can differ slightly from the animated surface. Endocrine activities are numerical relative signals; the 3D view does not yet simulate hormone parcels circulating to receptors.
+Airway and gut tracer curves average source vertices in 24 cross-section bins along the longest mesh axis; they are readable paths, not validated lumen centerlines. Airway and gut trails and blood beads are hidden by tissue in front of them. Cardiac and lung deformation does not currently enforce mesh contact, chamber-specific contractions, valve motion, or conservation of displayed volume. Picking uses the undeformed source surface and can differ slightly from the animated surface. Endocrine activities are numerical relative signals; the 3D view does not yet simulate hormone parcels circulating to receptors.
 
 ## Vessel graph and blood flow
 

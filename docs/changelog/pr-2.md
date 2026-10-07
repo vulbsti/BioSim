@@ -12,6 +12,8 @@ Second commit: the source atlas has no internal carotid between the common carot
 
 Third commit: a calibre ledger (`models/vessel-calibre/ledger.json`) with cited adult lumen diameters, and a build step that re-inflates out-of-range source vessels about their own centerlines into a replacement package applied by mesh ID. First entry: the hepatic portal vein, 7.14 mm widened to the pooled adult mean of 10.72 mm, which brings resting portal speed from about 40 cm/s to about 18 cm/s.
 
+Fourth commit: the body view now shows the simulation's state, not only its rates. A *Colour by* control tints blood, vessel walls and organs by glucose, oxygen, carbon dioxide, amino acids or lipids from the model's own compartments; organ labels show stores (stomach, liver glycogen, bladder, urine) and what each organ takes from its blood per minute; the stage shows the simulated clock and the last simulated hour of the chosen substance; the bladder swells as it fills; and beads are depth-tested so they no longer float on organ surfaces.
+
 ## Changes
 
 - `public/models/vessel-graph.json` (1.2 MB): 3,665 segments with mesh ID, junction kind, radius, polyline and bed shares. 1,770 touching-surface junctions, 32 inferred bridges (end gap at most 10 mm), 17 detached roots (small peripheral islands), 26 meshes skipped as copies, none unreached.
@@ -25,6 +27,8 @@ Third commit: a calibre ledger (`models/vessel-calibre/ledger.json`) with cited 
 - `app/physical/motion.ts`: removed the unused global `bloodSpeed`.
 - `docs/PHYSICAL_ANATOMY.md`: new "Vessel graph and blood flow" section with method and limits.
 
+- `app/physical/body-lens.ts`: compartment levels, organ levels and organ uptake for display. `app/physical/vessel-flow.ts`: per-segment substance level with flow-weighted venous mixing. `PhysicalScene.tsx`: lens tinting through the per-part texture, depth-tested lifted beads, organ labels, clock, trend line, bladder swelling.
+
 ## Testing
 
 Run on the author's machine; the repo has no CI.
@@ -32,7 +36,8 @@ Run on the author's machine; the repo has no CI.
 - `npm run check`: passes.
 - Unit suites: physiology 18, anatomy 8 (two new in `tests/vessel-flow.test.ts`, including that all four neck arteries carry brain flow), multiscale 11, tissue 9, circulation 6, P4 21. All pass.
 - `npm run test:vessels`: 3 pass, including radial inflation on a synthetic tube. First two: (straight tube centred with its radius; trunk with two branches, an overlaid duplicate and an adjacent vein).
-- `npx playwright test`: 38 of 38 pass, including the new "blood beads ride the vessel graph" test.
+- `npx playwright test`: 39 of 39 pass, including "blood beads ride the vessel graph" and "running the simulation changes the body".
+- `tests/body-lens.test.ts` (2, in `npm run test:anatomy`, now 10): after a meal portal > hepatic > arterial > resting, the liver takes up most, and the inferior vena cava's level lies between the beds it drains.
 - Cycles render on uxserver (Blender 5.2.2, RTX 2070, OptiX): four views of centerlines inside the source meshes, inspected by eye. Outputs are in the ignored `outputs/vessels/`.
 
 ## Known limits
