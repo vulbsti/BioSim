@@ -1,0 +1,265 @@
+{
+  "schemaVersion": 2,
+  "blenderVersion": "4.4.3",
+  "blendPath": "assets/multiscale/muscle-pilot/blender/muscle.blend",
+  "blendSHA256": "aaa16afe778f4bbb78ef3dd5bd49f63158b41c86e99bdd12d34aec765d65e3b5",
+  "sceneUnitSystem": "METRIC",
+  "sceneScaleLength": 1,
+  "topologyPolicyApplied": true,
+  "topologyFailures": [],
+  "objects": [
+    {
+      "name": "FJ1442",
+      "type": "MESH",
+      "entityId": "FJ1442",
+      "kind": "muscle",
+      "evidence": "source-surface",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 1091,
+        "edges": 2576,
+        "polygons": 1470,
+        "triangles": 1470,
+        "components": 47,
+        "boundaryEdges": 742,
+        "boundaryLoops": 90,
+        "loopsPerComponent": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          44
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "selfIntersectingFacePairs": 31,
+        "boundaryWeldToleranceM": 4.82670164596948e-10,
+        "coincidentBoundaryVertexPairs": 508,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Muscle tissue"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.037787746638059616,
+          -0.03977390006184578,
+          -0.23511749505996704
+        ],
+        "max": [
+          0.03778775408864021,
+          0.03977390006184578,
+          0.23491546511650085
+        ]
+      },
+      "topologyVerdict": {
+        "status": "source-preserved",
+        "reasons": []
+      },
+      "normalsConsistency": {
+        "totalFaces": 1470,
+        "inconsistentFaces": 35,
+        "fraction": 0.023809523809523808
+      }
+    },
+    {
+      "name": "FJ3365",
+      "type": "MESH",
+      "entityId": "FJ3365",
+      "kind": "bone",
+      "evidence": "source-surface",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 480,
+        "edges": 1417,
+        "polygons": 930,
+        "triangles": 930,
+        "components": 1,
+        "boundaryEdges": 44,
+        "boundaryLoops": 8,
+        "loopsPerComponent": [
+          8
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "selfIntersectingFacePairs": 0,
+        "boundaryWeldToleranceM": 4.843677969173939e-10,
+        "coincidentBoundaryVertexPairs": 15,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Cortical bone"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          -0.028119754046201706,
+          -0.014661900699138641,
+          -0.18489950895309448
+        ],
+        "max": [
+          0.08994995057582855,
+          0.04774690046906471,
+          0.28069350123405457
+        ]
+      },
+      "topologyVerdict": {
+        "status": "source-preserved",
+        "reasons": []
+      },
+      "normalsConsistency": {
+        "totalFaces": 930,
+        "inconsistentFaces": 0,
+        "fraction": 0
+      }
+    },
+    {
+      "name": "FJ3381",
+      "type": "MESH",
+      "entityId": "FJ3381",
+      "kind": "bone",
+      "evidence": "source-surface",
+      "metersPerUnit": 1,
+      "location": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "parent": null,
+      "mesh": {
+        "vertices": 176,
+        "edges": 486,
+        "polygons": 304,
+        "triangles": 304,
+        "components": 1,
+        "boundaryEdges": 60,
+        "boundaryLoops": 8,
+        "loopsPerComponent": [
+          8
+        ],
+        "nonManifoldEdges": 0,
+        "looseEdges": 0,
+        "looseVertices": 0,
+        "degenerateFaces": 0,
+        "selfIntersectingFacePairs": 3,
+        "boundaryWeldToleranceM": 6.12686096138961e-11,
+        "coincidentBoundaryVertexPairs": 23,
+        "closedVolumeM3": null,
+        "hasUV": true,
+        "materials": [
+          "Cortical bone"
+        ]
+      },
+      "worldBounds": {
+        "min": [
+          0.019556250423192978,
+          -0.025449899956583977,
+          -0.19156351685523987
+        ],
+        "max": [
+          0.06122345104813576,
+          -0.0037148999981582165,
+          -0.15225350856781006
+        ]
+      },
+      "topologyVerdict": {
+        "status": "source-preserved",
+        "reasons": []
+      },
+      "normalsConsistency": {
+        "totalFaces": 304,
+        "inconsistentFaces": 0,
+        "fraction": 0
+      }
+    }
+  ]
+}

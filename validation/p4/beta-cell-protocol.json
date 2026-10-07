@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "lockedOn": "2026-09-29",
+  "experiment": "B3-beta-cell-secretion-structure-reproduction",
+  "scope": "Numerical reproduction of the beta-cell secretion subsystem's equation STRUCTURE from the Dalla Man 2007 / Breda 2001 family (S=gamma*Ipo; dIpo/dt=-gamma*Ipo+Spo split into dynamic dG/dt and static (G-h) terms; dY/dt with a floor branch). Numeric constants are declared engineering placeholders, not fitted or verified literature values (see models/dallaman2007/parameters.json). This protocol fixes comparisons and tolerances before generating the SciPy reference and before writing the TypeScript-vs-reference test assertions.",
+  "unitsAndConventions": {
+    "time": "minutes internally in both implementations; the TypeScript public API additionally accepts wall-clock seconds per call and converts explicitly",
+    "G": "mg/dL",
+    "dGdt": "mg/dL/min",
+    "S": "pmol/kg/min, and pmol/min after multiplying by the declared 70 kg reference body mass",
+    "Ipo": "pmol/kg",
+    "Y": "pmol/kg/min"
+  },
+  "parametersUsed": "models/dallaman2007/parameters.json (gamma=0.5 /min, K=1.0 pmol/kg per mg/dL, alpha=0.05 /min, beta=0.03 pmol/kg/min per mg/dL, Sb=0.5 pmol/kg/min, Gb=h=91.76 mg/dL, bodyMassKg=70). All status=\"unverified\" except Gb.",
+  "scenarios": [
+    {
+      "id": "basal-hold",
+      "description": "Glucose held exactly at Gb for 60 minutes. Exercises the stationary steady state.",
+      "glucoseMgDl_of_t_minutes": "G(t) = Gb for all t in [0, 60]",
+      "durationMinutes": 60,
+      "sampleIntervalSeconds": 1,
+      "expectedQualitative": "S(t) = Sb for all t (stationary to floating-point precision); Y(t) = 0; Ipo(t) = Sb/gamma."
+    },
+    {
+      "id": "step-plus80",
+      "description": "An idealized step from Gb to Gb+80 mg/dL, ramped linearly over the first 1-second sample (a true instantaneous step has an undefined derivative; the 1-second ramp keeps dG/dt finite and matches the caller's declared 1 Hz glucose sampling), then held for the remainder of 60 minutes.",
+      "glucoseMgDl_of_t_minutes": "G(t) = Gb + 80 * clamp(t / (1/60), 0, 1) for t in [0, 60]  (i.e. linear ramp over the first simulated second, then constant Gb+80)",
+      "durationMinutes": 60,
+      "sampleIntervalSeconds": 1,
+      "expectedQualitative": "A first-phase secretion spike during the ramp second (K*dG/dt term dominates), decaying toward a new elevated steady state as Y relaxes toward beta*80 with time constant 1/alpha minutes."
+    },
+    {
+      "id": "ogtt-like",
+      "description": "A smooth, analytically-defined OGTT-like glucose excursion: a gamma-shaped rise from Gb, peaking at exactly 160 mg/dL at t=37.5 minutes (within the declared 30-45 minute peak window), returning close to Gb by t=120 minutes.",
+      "glucoseMgDl_of_t_minutes": "G(t) = Gb + (160 - Gb) * (t/37.5)^4 * exp(4 * (1 - t/37.5)) for t in [0, 120]; G(0) = Gb by construction (0^4 = 0)",
+      "durationMinutes": 120,
+      "sampleIntervalSeconds": 1,
+      "expectedQualitative": "Both dynamic (rate-of-rise) and static (level-above-threshold) components contribute on the way up; only the static component (decaying) contributes on the way down once dG/dt <= 0."
+    }
+  ],
+  "referenceSolver": {
+    "tool": "work/p1/venv/bin/python scripts/reference-beta-cell.py",
+    "method": "scipy.integrate.solve_ivp, method='Radau' (implicit, stiff-capable; the system is not stiff at these rate constants but Radau is used for a high-order, independent cross-check), with a 'BDF' second solver as a cross-check, both rtol=1e-11, atol=1e-14",
+    "glucoseInput": "Evaluated analytically at any t from the scenario formula above (not interpolated from discrete samples), so the reference has no sampling error in G or dG/dt.",
+    "independence": "The reference script re-derives the ODE right-hand side directly from the scenario formulas and models/dallaman2007/parameters.json; it does not import or call the TypeScript implementation."
+  },
+  "typescriptSolver": {
+    "tool": "app/simulation/beta-cell.ts advanceBetaCell()",
+    "method": "Fixed-step RK4, 8 substeps per 1-second advanceBetaCell() call (i.e. one RK4 step per 0.125-second sub-interval), linearly interpolating G between the previous and current 1 Hz samples and holding dG/dt constant across the call (consistent with the linear interpolation of G)",
+    "callPattern": "One advanceBetaCell() call per simulated second, matching the stated 1 Hz glucose sampling of the caller."
+  },
+  "toleranceTsVsReference": {
+    "relative": 0.0005,
+    "absolutePmolKgMin": 1e-6,
+    "appliesTo": "S(t) (pmol/kg/min) at every scenario sample point, and Ipo(t), Y(t) at the same points",
+    "rationale": "Both integrators solve the same smooth, non-stiff, low-order (2-state) linear-in-the-forcing ODE; an 8-substep-per-second fixed RK4 is expected to track a high-order adaptive solver to well under 0.05% given the minute-scale time constants (1/gamma=2 min, 1/alpha=20 min) are far larger than the 0.125 s TS substep."
+  },
+  "referenceEndpoints": {
+    "note": "Not yet generated at the time this protocol was locked. scripts/reference-beta-cell.py writes them to validation/p4/beta-cell-reference.json, which records scenario definitions, sampled outputs, solver settings, a parameter hash and a script hash, generated strictly after this protocol file existed."
+  },
+  "humanValidation": {
+    "status": "not_applicable_by_design",
+    "reason": "This package reproduces a published model's equation structure with declared-unverified engineering constants (see models/dallaman2007/parameters.json). It is a numerical self-consistency check between two independent integrators of the SAME declared equations and parameters, not a comparison against human secretion data. No human acceptance bounds are set or implied by passing this protocol."
+  },
+  "references": [
+    {"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2769591/", "use": "Confirms the dynamic/static secretion structure and the Gb=91.76 mg/dL default; read in full 2026-09-29."},
+    {"url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4179313/", "use": "Confirms the dynamic/static (kG, beta, h, delay) secretion structure; read in full 2026-09-29."},
+    {"path": "models/dallaman2007/parameters.json", "use": "Pins every numeric constant used by both the TypeScript and Python implementations, with per-parameter verification status."}
+  ]
+}

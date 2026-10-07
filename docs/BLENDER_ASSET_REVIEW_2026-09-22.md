@@ -111,3 +111,72 @@ Acceptance requires: calibration and transform checks; measured-feature comparis
 6. Run a clean-room reproducibility build and retain the new receipt before replacing canonical assets.
 
 Until these gates pass, keep the manifest status `representative_visual_prototype` and the current disclaimers. Raising polygon count or rendering quality alone would not close the anatomical gap.
+
+## Sprint 1 remediation — package 0.3.0 (2026-09-29)
+
+This addresses the tooling items in the recommended order above. It does not change the asset claim: the status remains `representative_visual_prototype`, and no anatomical or biological review verdict is set.
+
+| Gate | Change | Evidence | Still open |
+|---|---|---|---|
+| 6 Topology | Tube geometry moved to `scripts/blender/muscle_geometry.py`; closed tubes and links share seam vertices, with the UV split kept per corner. M-line links are trimmed into new lattice-node spheres so collinear links no longer share coincident end caps. The audit classifies every boundary loop against `spec.topology` and exits nonzero on any unclassified opening. | `topology-report.json`; `validation/p2/blender-audit/`; 10 Blender-free Python regression tests; Node tests weld the runtime GLB bytes by exact position and count edge uses | Crossing Z-disc links and M-line links entering their node spheres still interpenetrate as separate closed components; no union or intersection test |
+| 8 LOD (partial) | Muscle `context` is a 0.35 decimation of each source surface: 944 versus 2,704 triangles, with the same entity IDs and bounds within 2% of span. Every level's context is now lighter than its detail. | `manifest.json`, tissue tests | Screen-space error targets and device frame-time measurements |
+| Collision/simulation | Closed derivatives kept outside the runtime package: a 3 mm voxel-remeshed muscle/femur/patella domain (FJ1442 about 499 cm³ in three components) and per-component convex-hull or solidified-shell collision proxies for the fascicle, fiber and sarcomere. | `derivatives/derivatives.json`; GLB edge check | Not a validated mechanical/perfusion domain; no deformation contract yet |
+| 10 Reproducibility | `npm run build:tissue` builds twice into fresh staging roots with the pinned Blender, audits both, requires byte-identical GLBs/manifest/reports/derivatives, compares entity identity with the canonical package and promotes by rename. It never writes `.blend1` backups. | `build-receipt.json` (schema 2) | `.blend` bytes are not reproducible (embedded pointers); they are compared semantically |
+| 2 Parameter ledger (schema) | `parameter-ledger.json` gives every spec dimension an evidence class, source, locator, uncertainty and separate anatomy/physiology review fields. All 14 entries are honestly marked `representative-choice`, review `pending`. | Ledger test | Real measurements, citations with locators, named reviewers |
+| 9 Diagnostics | `npm run render:diagnostics` produces turntable, cross/longitudinal sections, wireframe, normals and scale-bar renders under locked color management. | `validation/p2/diagnostics/` | Reference-image overlays require licensed reference imaging |
+
+Gates 1–5 (claim, reference, registration, morphology, ultrastructure) and gate 7 (dynamics) are unchanged. They need licensed human imaging and expert reviewers, not more tooling.
+
+## Sprint 1 remediation — follow-up (0.3.1, 2026-09-29)
+
+Closes the four items the Sprint 1 remediation left open: the interpenetrating Z-disc/M-line lattice, the unquantified muscle-normals backfacing, the missing µ glyph, and the illegible sarcomere wireframe tile. No anatomical claim changed; `status` remains `representative_visual_prototype`.
+
+### 1. Sarcomere lattice interpenetration — resolved by union
+
+`pilot-z-left`/`pilot-z-right` (crossing horizontal/vertical links) and `pilot-m-line` (links entering their lattice-node spheres) are now each an exact Blender Boolean `UNION` of their component tubes/spheres (`union_components` in `scripts/blender/build-muscle-pilot.py`), computed in a unit-normalized frame for float robustness with nm-scale coordinates, then scaled back. A single dense flat lattice made every ring's coplanar link/link (or link/sphere) crossings numerically ill-conditioned for the exact solver; the fix keeps ring segment counts even (so bounding extents stay exactly symmetric, which the sliding-length tests require to float precision) but gives every ring a small constant angular phase (`Mesh.tube`/`Mesh.link` gained a `phase` parameter) so no ring vertex lands exactly on the shared symmetry plane. One further near-tangent configuration at exactly `phase = pi/segments` still left a sub-picometre sliver pair at one Z-disc lattice crossing (invisible to Blender's own index-based topology check, caught only by the independent GLB byte-level check); a small additional phase offset clears it. A generic pure-Python `weld()` (grid-hashed vertex clustering + degenerate/duplicate-face drop, unit-tested in `test_muscle_geometry.py`) runs as a real-world-tolerance safety net after the Blender-side cleanup.
+
+Before (committed 0.3.0) / after (0.3.1), from `topology-report.json`:
+
+| Entity | Before: components | Before: triangles (context/detail) | After: components | After: self-intersecting face pairs | After: triangles (context/detail) |
+|---|---:|---:|---:|---:|---:|
+| `pilot-z-left` | 30 | 720 / 960 | 1 | 0 | 9,268 / 9,452 |
+| `pilot-z-right` | 30 | 720 / 960 | 1 | 0 | 9,268 / 9,452 |
+| `pilot-m-line` | 251 | 5,836 / 8,208 | 1 | 0 | 13,256 / 12,168 |
+
+Sarcomere level totals: context 16,580 → 41,096 triangles (675,100 → 1,095,144 bytes); detail 51,368 → 72,312 triangles (2,359,688 → 2,618,084 bytes). Both stay well inside `spec.policy.maximumTrianglesPerLevel` (180,000) and `maximumBytesPerGLB` (6,000,000). Full two-build reproducible pipeline (`npm run build:tissue`, both staging builds plus audits, determinism compare and promotion): ~75–100 s.
+
+A per-entity self-intersection check was added to the topology audit/gate: `scripts/blender/blender_topology.py` builds a `mathutils.bvhtree.BVHTree` from each entity's own bmesh and calls `tree.overlap(tree)`, excluding face pairs that share a vertex (expected touching, e.g. adjacent quads on the same tube). `muscle_geometry.classify()` fails any generated entity with nonzero `selfIntersectingFacePairs` unless it is declared in the new `spec.topology.selfIntersection.allowlist` with a `maxPairs` and a `reason`. `pilot-thick-filaments` is allowlisted (detail LOD only, ≤15,000 pairs; the observed count is 10,626): its sparse illustrative myosin heads are short links protruding from the thick-filament tube surface and are not unioned into it — out of this remediation's scope, which covers only the Z-disc and M-line lattices, and now tracked explicitly rather than silently invisible. A separate, non-failing `crossEntityOverlaps` report (pairwise BVH overlap between different entities) is written at the top level of `topology-report.json`; it shows, as expected, that thin filaments overlap their anchoring Z-disc and the thick-filament array overlaps the M-line lattice by anchoring design (e.g. detail: `pilot-thin-left|pilot-z-left` 1,509 pairs, `pilot-m-line|pilot-thick-filaments` 2,560 pairs), and that the muscle level's FJ1442/FJ3365/FJ3381 source surfaces touch near the knee joint. `spec.topology.knownUnresolved` was rewritten to describe the two things that remain open (source-surface backfacing, and the anchoring cross-entity overlaps) instead of the now-fixed interpenetration.
+
+`tests/tissue.test.ts`'s `'exported filament endpoints remain anchored…'` test (Z-disc bound midpoint at exactly `±length/2`, thin filaments anchored) and the sliding/`slidingSide` invariants were kept passing throughout — the even-segment-count-plus-phase construction was chosen specifically so the Z-disc bound symmetry stays exact after boolean union.
+
+### 2. Muscle normals "pink patches" — quantified as real backfacing on the source, fixed only in derivatives
+
+The pink/magenta patches are exactly what the diagnostic's own shader defines them as: backfacing faces (`geo.outputs['Backfacing']` mixes in magenta). A new `winding_consistency()` (`scripts/blender/blender_topology.py`) quantifies this without modifying the mesh: it duplicates each source surface into a throwaway bmesh, runs `bmesh.ops.recalc_face_normals` (Blender's own "Recalculate Outside" logic), and counts faces whose normal flipped versus the object's current (committed) winding.
+
+Results, recorded per object in `topology-report.json` and the saved-scene audits:
+
+| Source surface | context: inconsistent / total | detail: inconsistent / total |
+|---|---:|---:|
+| FJ1442 (vastus lateralis) | 3 / 514 (0.58%) | 35 / 1,470 (2.38%) |
+| FJ3365 (femur) | 0 / 324 | 0 / 930 |
+| FJ3381 (patella) | 0 / 106 | 0 / 304 |
+
+So the inconsistent winding is real and specific to the muscle surface (FJ1442); the femur and patella are already consistently wound. Per policy, the source surfaces are never modified in place — `build_muscle`'s detail representation keeps the untouched BodyParts3D topology and winding. The two *derived* muscle representations are now made explicitly outward-normals-consistent instead: `decimate_context()` (the muscle context LOD) and the muscle simulation-domain voxel-remesh derivative both call the new `make_normals_consistent()` (a throwaway-bmesh `recalc_face_normals` written back to that derivative's own mesh) after their respective modifier evaluates. The diagnostics' normals render also now bakes an explicit two-line legend (camera-parented color swatch + text, using the same µ-capable font as the scale bar) reading "backfacing (inconsistent winding)" / "front-facing: color = normal * 0.5 + 0.5" directly into `normals.png`, so the color coding is unambiguous without an external caption; the render receipt (`diagnostics.json`) also records the legend as structured data.
+
+### 3. µ glyph — bundled Latin font loaded for diagnostic text
+
+Blender's own bundled `datafiles/fonts` in 4.4.3 only ships complex-script Noto variable fonts (Kannada, Gurmukhi, Khmer, Telugu, Thai, Tamil, Malayalam, Georgian, Arabic, Armenian, emoji) — none cover Latin-1 Supplement (U+00B5 MICRO SIGN), so this is not the "find one under Blender's datafiles" case as first suspected; the running system's DejaVu Sans (`/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf`), which does have the glyph, is loaded instead via `bpy.data.fonts.load()` in `render-diagnostics.py`, with a couple of alternate fallback paths (Liberation Sans, Noto Sans) if DejaVu is absent. The scale-bar and legend text curve objects now use this font. Verified visually (Read tool on the rendered PNGs) and confirmed in `diagnostics.json` (`scaleBar.labelFont`): fiber-level labels now read "10 µm" with a correct micro sign glyph instead of "10 um".
+
+### 4. Sarcomere wireframe legibility — zoomed crop tile added, thinner lines
+
+`render-diagnostics.py`'s wireframe shader line width dropped from 1.6px to 1.1px, and a second render, `wireframe-crop.png`, is added for every level: same camera direction and target as the full wireframe shot, but `ortho_scale` reduced to 10% of the full view. Verified visually on the sarcomere lattice, where individual thick/thin filaments and diagonal myosin-head cross-bridges are now distinguishable at the 160×160 contact-sheet tile size, versus the previous saturated cyan silhouette; the fiber level's packed myofibrils are similarly legible as individual lines. `render-diagnostics.mjs`'s `expectedFiles` list and the contact-sheet grid (which sizes itself from however many renders exist) both pick this up automatically.
+
+### Verification run (2026-09-29)
+
+`npm run build:tissue` (two-build determinism, byte-identical outputs, zero topology-gate failures) · `npm run render:diagnostics` (all four levels, contact sheets visually reviewed) · `npm run test:blender-geometry` (15 pure-Python tests, no Blender) · `npx tsx --test tests/tissue.test.ts` (9/9) · `npm run verify:tissue` (9/9) · `npx playwright test tests/browser/tissue.spec.ts tests/browser/sarcomere.spec.ts` (9/9). All passed.
+
+### Still open
+
+- `pilot-thick-filaments`' sparse illustrative myosin heads still interpenetrate their own thick-filament tube (allowlisted, not unioned; out of this remediation's declared scope).
+- FJ1442's backfacing faces are quantified but, per policy, not repaired in the source-preserved detail representation (only its derived context LOD and the simulation-domain derivative are corrected).
+- No reference-image overlay, anatomical review, or measured-parameter evidence was added; gates 1–5 and 7 remain as stated above.

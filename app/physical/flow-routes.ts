@@ -1,19 +1,15 @@
 import {Box3,BufferGeometry,CatmullRomCurve3,Color,Vector3} from 'three';
 import type {Part} from '../anatomy';
 
-export type TracerKind='blood'|'air'|'food'|'portal'|'mix';
-export type TracerRoute={part:number;curve:CatmullRomCurve3;kind:TracerKind;outward:boolean;color:Color;length:number};
-const heart=new Vector3(.022,1.32,.036),liver=new Vector3(-.065,1.16,.005);
-const arteries=/^(ascending aorta|arch of aorta|descending thoracic aorta|abdominal aorta|pulmonary trunk|(?:left|right) (?:pulmonary|common carotid|internal carotid|vertebral|renal|common iliac|femoral|brachial|radial|subclavian) artery)$/i;
-const veins=/^(superior vena cava|inferior vena cava|(?:left|right) (?:internal jugular|renal|common iliac|femoral|brachial|subclavian) vein|(?:left|right) (?:superior|inferior) pulmonary vein)$/i;
+export type TracerKind='air'|'food'|'mix';
+export type TracerRoute={part:number;curve:CatmullRomCurve3;kind:TracerKind;color:Color;length:number};
+/** Airway and gut lumen illustrations. Blood follows the extracted vessel graph (vessel-flow.ts). */
 export function tracerKind(name:string):TracerKind|null {
- if(/^(hepatic portal vein|pre-hepatic portal vein|superior mesenteric vein|trunk of (left|right) portal vein)$/i.test(name))return 'portal';
  if(/^(trachea|left main bronchus|right main bronchus(?: proper)?)$/i.test(name))return 'air';
  if(/^esophagus$/i.test(name))return 'food';
- if(/^(stomach|duodenum)$/i.test(name))return 'mix';
- return arteries.test(name)||veins.test(name)?'blood':null;
+ return /^(stomach|duodenum)$/i.test(name)?'mix':null;
 }
-/** Readability paths sampled from mesh cross sections, not validated vessel centerlines or junctions. */
+/** Readability paths sampled from mesh cross sections, not validated lumen centerlines. */
 export function createTracerRoute(p:Part,part:number,g:BufferGeometry):TracerRoute|null {
  const kind=tracerKind(p.name);if(!kind)return null;
  const box=new Box3(new Vector3().fromArray(p.bounds[0]),new Vector3().fromArray(p.bounds[1]));
@@ -26,13 +22,8 @@ export function createTracerRoute(p:Part,part:number,g:BufferGeometry):TracerRou
   bins[b].sum.add(point);bins[b].n++;
  }
  let points=bins.filter(b=>b.n).map(b=>b.sum.multiplyScalar(1/b.n));if(points.length<2)return null;
- const outward=arteries.test(p.name),target=kind==='portal'?liver:heart;
- const startsFarther=points[0].distanceTo(target)>points.at(-1)!.distanceTo(target);
- if(kind==='blood'||kind==='portal'){
-  if(startsFarther===(kind==='blood'&&outward))points.reverse();
- }else if(points[0].y<points.at(-1)!.y)points.reverse();
- const oxygenRich=outward!==/pulmonary/i.test(p.name);
- const color=kind==='air'?'#a9e7ed':kind==='blood'?(oxygenRich?'#ffac91':'#88bfff'):'#efcc78';
+ if(points[0].y<points.at(-1)!.y)points.reverse();
+ const color=kind==='air'?'#a9e7ed':'#efcc78';
  const curve=new CatmullRomCurve3(points,false,'centripetal');
- return {part,curve,kind,outward,color:new Color(color),length:curve.getLength()};
+ return {part,curve,kind,color:new Color(color),length:curve.getLength()};
 }

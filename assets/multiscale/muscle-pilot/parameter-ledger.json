@@ -1,0 +1,475 @@
+{
+  "schemaVersion": 1,
+  "package": "muscle-pilot",
+  "packageVersion": "0.3.1",
+  "policy": {
+    "evidenceClasses": [
+      "measured-this-specimen",
+      "literature-measured",
+      "literature-constrained-representative",
+      "representative-choice",
+      "artistic-teaching"
+    ],
+    "rules": [
+      "Every numeric value under spec.levels has exactly one ledger entry with an equal value.",
+      "Entries above representative-choice require a source locator (figure, table or page) and a stated uncertainty.",
+      "Review verdicts are set only by named human reviewers with a date; automated checks never set 'approved'."
+    ],
+    "reviewStatuses": [
+      "pending",
+      "approved",
+      "rejected",
+      "not-applicable"
+    ]
+  },
+  "entries": [
+    {
+      "id": "muscle-pilot.fascicle.diameterM",
+      "specPointer": "/levels/fascicle/diameterM",
+      "value": 0.0004,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology/pages/10-2-skeletal-muscle",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "not-applicable",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.fascicle.lengthM",
+      "specPointer": "/levels/fascicle/lengthM",
+      "value": 0.0012,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology/pages/10-2-skeletal-muscle",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "not-applicable",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.fascicle.fiberDiameterM",
+      "specPointer": "/levels/fascicle/fiberDiameterM",
+      "value": 5e-05,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology/pages/10-2-skeletal-muscle",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "not-applicable",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.fascicle.fiberCount",
+      "specPointer": "/levels/fascicle/fiberCount",
+      "value": 37,
+      "unit": "1",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology/pages/10-2-skeletal-muscle",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "not-applicable",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.sarcomere.restLengthM",
+      "specPointer": "/levels/sarcomere/restLengthM",
+      "value": 2.5e-06,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology-2e/pages/10-3-muscle-fiber-contraction-and-relaxation",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.sarcomere.minimumLengthM",
+      "specPointer": "/levels/sarcomere/minimumLengthM",
+      "value": 2e-06,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology-2e/pages/10-3-muscle-fiber-contraction-and-relaxation",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.sarcomere.maximumLengthM",
+      "specPointer": "/levels/sarcomere/maximumLengthM",
+      "value": 3.2e-06,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology-2e/pages/10-3-muscle-fiber-contraction-and-relaxation",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.sarcomere.thickLengthM",
+      "specPointer": "/levels/sarcomere/thickLengthM",
+      "value": 1.6e-06,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology-2e/pages/10-3-muscle-fiber-contraction-and-relaxation",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.sarcomere.thinLengthM",
+      "specPointer": "/levels/sarcomere/thinLengthM",
+      "value": 1e-06,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology-2e/pages/10-3-muscle-fiber-contraction-and-relaxation",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.sarcomere.thickLatticePitchM",
+      "specPointer": "/levels/sarcomere/thickLatticePitchM",
+      "value": 4.5e-08,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology-2e/pages/10-3-muscle-fiber-contraction-and-relaxation",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.fiber.diameterM",
+      "specPointer": "/levels/fiber/diameterM",
+      "value": 5e-05,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology/pages/10-2-skeletal-muscle",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "not-applicable",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.fiber.lengthM",
+      "specPointer": "/levels/fiber/lengthM",
+      "value": 0.00024,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology/pages/10-2-skeletal-muscle",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "not-applicable",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.fiber.myofibrilDiameterM",
+      "specPointer": "/levels/fiber/myofibrilDiameterM",
+      "value": 1.2e-06,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology/pages/10-2-skeletal-muscle",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "not-applicable",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    },
+    {
+      "id": "muscle-pilot.fiber.sarcomereRepeatM",
+      "specPointer": "/levels/fiber/sarcomereRepeatM",
+      "value": 2.5e-06,
+      "unit": "m",
+      "evidenceClass": "representative-choice",
+      "context": {
+        "species": "Homo sapiens (intended)",
+        "tissue": "skeletal muscle, vastus lateralis (intended)",
+        "ageAndState": "unspecified adult, resting"
+      },
+      "source": {
+        "citation": "https://openstax.org/books/anatomy-and-physiology/pages/10-2-skeletal-muscle",
+        "locator": null,
+        "supports": "qualitative organization only; the number itself is a chosen illustrative value"
+      },
+      "extraction": "author choice for a teaching prototype; not measured or digitized",
+      "uncertainty": null,
+      "authoringTransform": "used directly by scripts/blender/build-muscle-pilot.py",
+      "review": {
+        "anatomy": {
+          "status": "pending",
+          "reviewer": null,
+          "date": null
+        },
+        "physiology": {
+          "status": "not-applicable",
+          "reviewer": null,
+          "date": null
+        }
+      }
+    }
+  ]
+}

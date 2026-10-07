@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "blenderVersion": "4.4.3",
+  "blendPath": "assets/multiscale/muscle-pilot/blender/fascicle.blend",
+  "blendSHA256": "bdc8b9d398772585f64c8d6f54cc9caf45fe179c57546191c7c91f88b1098615",
+  "level": "fascicle",
+  "colorManagement": {
+    "displayDevice": "sRGB",
+    "viewTransform": "Standard",
+    "look": "None",
+    "exposure": 0.0,
+    "gamma": 1.0,
+    "sequencerColorspace": "sRGB",
+    "filmTransparent": false,
+    "worldColor": [
+      0.05000000074505806,
+      0.05999999865889549,
+      0.07000000029802322
+    ],
+    "cyclesSeed": 0,
+    "denoising": false,
+    "threadsMode": "FIXED",
+    "threads": 4
+  },
+  "camera": {
+    "type": "ORTHO",
+    "orthoScale": 1.0525690777002268,
+    "elevationDeg": 22.0
+  },
+  "samples": 12,
+  "size": 360,
+  "scaleBar": {
+    "lengthM": 0.0005,
+    "label": "500 \u00b5m",
+    "labelFont": "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+  },
+  "renders": [
+    {
+      "file": "turntable-00.png",
+      "kind": "turntable",
+      "sha256": "46d6200173a8b651b954e2f961e8504f91b41bc3f6ae231d2850a5261403c478",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-01.png",
+      "kind": "turntable",
+      "sha256": "a4cb137844dd869bcb175f2302d54db538c5d0d0486a8176928ebc53125f3f96",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-02.png",
+      "kind": "turntable",
+      "sha256": "5aef9f597c5871c9598bfba5e3052346cec299233d4521cc5aeaba0b9a10a08d",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-03.png",
+      "kind": "turntable",
+      "sha256": "1333a95dac87fa0f5b8b57cb11d0b67b531602d60549baccf57e2be9397fba8c",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-04.png",
+      "kind": "turntable",
+      "sha256": "a30a0aeb34aac261f24f02a84442dbc0c1296ed6b2e7eccfcff121926a497cb0",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-05.png",
+      "kind": "turntable",
+      "sha256": "2903ae93d000aa9afe3637a27afa4ac67b58c8b0f4b3d4c5663e0d8d9dae9a47",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-06.png",
+      "kind": "turntable",
+      "sha256": "2019b256009272f099edc0337946e99fefd3b6531fdec9b7b5fa5dbcbec3df50",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "turntable-07.png",
+      "kind": "turntable",
+      "sha256": "aa17028a3bfa5821f21c37ecea603964ef86d119e9312a34eb2635cc4bc5b967",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "section-cross.png",
+      "kind": "section",
+      "sha256": "b97c8bad11496060705fad864584f0c20d76c670543794672ad961741532701f",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "section-longitudinal.png",
+      "kind": "section",
+      "sha256": "d8f2f3e0ffe53ff59e405f507c8758f1e260287a8148892bbc5c1a60d459f621",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "wireframe.png",
+      "kind": "wireframe",
+      "sha256": "1aa4794e3f4906e358384a4784d2b22a6cfa61556d3afd3bd7468a9a07be6568",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "wireframe-crop.png",
+      "kind": "wireframe-crop",
+      "sha256": "e90cff74207efb6d4ad3638e57c676ed63dfc0168fcc193f12a7d0a98fc3c6b1",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "file": "normals.png",
+      "kind": "normals",
+      "sha256": "9a9dc3a2b51392022c94f17a9fb69331e38704af1e346fc727e1dabbaaa78dc2",
+      "width": 360,
+      "height": 360,
+      "legend": [
+        {
+          "color": [
+            1.0,
+            0.1,
+            0.6,
+            1
+          ],
+          "meaning": "backfacing (inconsistent winding)"
+        },
+        {
+          "color": [
+            0.75,
+            0.85,
+            0.95,
+            1
+          ],
+          "meaning": "front-facing: color = normal * 0.5 + 0.5"
+        }
+      ]
+    },
+    {
+      "file": "contact-sheet.png",
+      "kind": "contact-sheet",
+      "sha256": "e60e1ea21cd94e4fc9ca1f74dac7a04b6e775d1f61aab3b07899b775e9627103",
+      "width": 640,
+      "height": 640
+    }
+  ],
+  "normalizationScale": 719.42440517219
+}

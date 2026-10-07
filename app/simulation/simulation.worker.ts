@@ -3,7 +3,7 @@ import { advance, applyAction, createBody, schedule, MODEL_VERSION } from "./eng
 import { scenarios } from "./scenarios";
 import type { Action, BodyState } from "./types";
 import { parseRecording } from "./recording";
-import { setMultiscaleMeal } from "./multiscale-meal";
+import { setMultiscaleMeal, setMusclePatch } from "./multiscale-meal";
 
 let state = createBody(),
   running = false,
@@ -101,6 +101,13 @@ self.onmessage = (e: MessageEvent) => {
         fraction = 0;
         break;
         }
+      case "muscle-patch":
+        // Refinement changes who owns part of the muscle state; a comparison fork would mix owners.
+        setMusclePatch(state, Number(m.fraction));
+        reference = null;
+        running = false;
+        fraction = 0;
+        break;
       case "export":
         self.postMessage({
           download: {

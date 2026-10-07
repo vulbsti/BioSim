@@ -1,0 +1,2893 @@
+{
+  "schemaVersion": 2,
+  "policy": {
+    "note": "Generated meshes must be closed 2-manifolds except named inspection windows. BodyParts3D source surfaces keep their original, non-watertight topology and are never repaired in place.",
+    "sourceSurfaces": [
+      "FJ1442",
+      "FJ3365",
+      "FJ3381"
+    ],
+    "openings": {
+      "pilot-perimysium": {
+        "name": "perimysium longitudinal teaching window",
+        "loopsPerComponent": 1
+      },
+      "pilot-sarcolemma": {
+        "name": "sarcolemma longitudinal inspection window",
+        "loopsPerComponent": 1
+      },
+      "pilot-fiber-capillary": {
+        "name": "capillary longitudinal inspection window",
+        "loopsPerComponent": 1
+      }
+    },
+    "selfIntersection": {
+      "note": "Per-entity self-intersecting face pairs, from a BVH self-overlap test (mathutils.bvhtree.BVHTree.overlap against itself) that excludes face pairs sharing a vertex (expected touching, e.g. adjacent quads on the same tube). Generated (non-source-surface) entities must report zero unless listed here with a reason.",
+      "allowlist": {
+        "pilot-thick-filaments": {
+          "maxPairs": 15000,
+          "reason": "Detail LOD only: sparse illustrative myosin heads are short links protruding from each thick-filament tube surface and are not boolean-unioned into it. Out of scope for this remediation, which unions only the Z-disc lattice links (pilot-z-left/right) and the M-line links/nodes (pilot-m-line); tracked here rather than silently ignored."
+        }
+      }
+    },
+    "knownUnresolved": [
+      "BodyParts3D source surfaces FJ1442/FJ3365/FJ3381 contain backfacing (inconsistently wound) faces -- see the winding-consistency counts recorded per object by scripts/blender/audit-muscle-pilot.py. Source topology and winding are preserved unmodified; only the derived muscle-context decimate LOD and the muscle simulation-domain derivative are made normals-consistent.",
+      "Thin filaments intentionally overlap their anchoring Z-disc lattice, and the thick-filament array intentionally overlaps the M-line lattice, by anchoring design; the build reports these as informational crossEntityOverlaps in topology-report.json and they are not required to resolve."
+    ]
+  },
+  "levels": {
+    "muscle": {
+      "context": {
+        "FJ1442": {
+          "verdict": {
+            "status": "source-derived-lod",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 485,
+            "polygons": 514,
+            "triangles": 514,
+            "components": 3,
+            "boundaryEdges": 372,
+            "boundaryLoops": 40,
+            "nonManifoldEdges": 0,
+            "looseEdges": 57,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 57,
+            "boundaryWeldToleranceM": 4.834656890172828e-10,
+            "coincidentBoundaryVertexPairs": 28,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "1": 2,
+              "38": 1
+            }
+          },
+          "normalsConsistency": {
+            "totalFaces": 514,
+            "inconsistentFaces": 3,
+            "fraction": 0.005836575875486381
+          }
+        },
+        "FJ3365": {
+          "verdict": {
+            "status": "source-derived-lod",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 173,
+            "polygons": 324,
+            "triangles": 324,
+            "components": 1,
+            "boundaryEdges": 36,
+            "boundaryLoops": 8,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 4.851971204023936e-10,
+            "coincidentBoundaryVertexPairs": 3,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "8": 1
+            }
+          },
+          "normalsConsistency": {
+            "totalFaces": 324,
+            "inconsistentFaces": 0,
+            "fraction": 0.0
+          }
+        },
+        "FJ3381": {
+          "verdict": {
+            "status": "source-derived-lod",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 67,
+            "polygons": 106,
+            "triangles": 106,
+            "components": 1,
+            "boundaryEdges": 40,
+            "boundaryLoops": 7,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 3,
+            "boundaryWeldToleranceM": 6.12178944627085e-11,
+            "coincidentBoundaryVertexPairs": 5,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "7": 1
+            }
+          },
+          "normalsConsistency": {
+            "totalFaces": 106,
+            "inconsistentFaces": 0,
+            "fraction": 0.0
+          }
+        }
+      },
+      "detail": {
+        "FJ1442": {
+          "verdict": {
+            "status": "source-preserved",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 1091,
+            "polygons": 1470,
+            "triangles": 1470,
+            "components": 47,
+            "boundaryEdges": 742,
+            "boundaryLoops": 90,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 31,
+            "boundaryWeldToleranceM": 4.82670164596948e-10,
+            "coincidentBoundaryVertexPairs": 508,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "1": 46,
+              "44": 1
+            }
+          },
+          "normalsConsistency": {
+            "totalFaces": 1470,
+            "inconsistentFaces": 35,
+            "fraction": 0.023809523809523808
+          }
+        },
+        "FJ3365": {
+          "verdict": {
+            "status": "source-preserved",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 480,
+            "polygons": 930,
+            "triangles": 930,
+            "components": 1,
+            "boundaryEdges": 44,
+            "boundaryLoops": 8,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 4.843677969173939e-10,
+            "coincidentBoundaryVertexPairs": 15,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "8": 1
+            }
+          },
+          "normalsConsistency": {
+            "totalFaces": 930,
+            "inconsistentFaces": 0,
+            "fraction": 0.0
+          }
+        },
+        "FJ3381": {
+          "verdict": {
+            "status": "source-preserved",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 176,
+            "polygons": 304,
+            "triangles": 304,
+            "components": 1,
+            "boundaryEdges": 60,
+            "boundaryLoops": 8,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 3,
+            "boundaryWeldToleranceM": 6.12686096138961e-11,
+            "coincidentBoundaryVertexPairs": 23,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "8": 1
+            }
+          },
+          "normalsConsistency": {
+            "totalFaces": 304,
+            "inconsistentFaces": 0,
+            "fraction": 0.0
+          }
+        }
+      }
+    },
+    "fascicle": {
+      "context": {
+        "pilot-fascicle-capillaries": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 70,
+            "polygons": 90,
+            "triangles": 120,
+            "components": 5,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.323285359130032e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.1005447410351174e-13,
+            "componentsByBoundaryLoops": {
+              "0": 5
+            }
+          }
+        },
+        "pilot-fiber-00": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.3318785029473553e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.493750145598551e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-01": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500001230681213e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-02": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.250000123068121e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-03": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500001230681213e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-04": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.250000123068121e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-05": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500000194119635e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-06": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.250000019411963e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-07": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500001285513303e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-08": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500001285513307e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-09": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2499999994380676e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-10": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2499999994380684e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-11": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.249999999438068e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-12": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.249999999438068e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-13": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500000067490247e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-14": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500000067490247e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-15": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500000067490243e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-16": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500000067490247e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-17": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.250000208446905e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-18": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500002084469047e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-19": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500001085774425e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-20": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500001957839485e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-21": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.250000108577443e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-22": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.249999941344131e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-23": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500001957839485e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-24": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2499999413441303e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-25": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.249999941344131e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-26": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500001957839473e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-27": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2499999413441307e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-28": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.250000108577442e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-29": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.250000195783948e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-30": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500001085774425e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-31": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500003175862703e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-32": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2499998177140993e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-33": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2499998177140993e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-34": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2499998177141e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-35": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2499998177140993e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-36": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 38,
+            "polygons": 48,
+            "triangles": 72,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.2500003175862715e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-perimysium": {
+          "verdict": {
+            "status": "classified-openings",
+            "reasons": [],
+            "opening": "perimysium longitudinal teaching window"
+          },
+          "stats": {
+            "vertices": 100,
+            "polygons": 72,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 54,
+            "boundaryLoops": 1,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.244610454949144e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "1": 1
+            }
+          }
+        }
+      },
+      "detail": {
+        "pilot-fascicle-capillaries": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 110,
+            "polygons": 150,
+            "triangles": 200,
+            "components": 5,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.3233167858075782e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3761215780467406e-13,
+            "componentsByBoundaryLoops": {
+              "0": 5
+            }
+          }
+        },
+        "pilot-fiber-00": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.3318785029473553e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.581720080660724e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-01": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293714892416004e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-02": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371489241601e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-03": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371489241601e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-04": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293714892416008e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-05": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293714521485126e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-06": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815773780321e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293714521485126e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-07": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371563212885e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-08": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371563212885e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-09": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371500034419e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-10": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293715000344195e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-11": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371500034419e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-12": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371500034419e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-13": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293715038188456e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-14": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293715038188464e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-15": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293715038188464e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-16": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371503818846e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-17": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293715753260876e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-18": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815772856739e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293715753260884e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-19": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371505877358e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-20": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371626996392e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-21": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371505877358e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-22": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293713990922547e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-23": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293716269963935e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-24": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293713990922543e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-25": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371399092254e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-26": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293716269963927e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-27": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293713990922543e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-28": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371505877358e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-29": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293716269963935e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-30": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371505877359e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-31": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293717117163566e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-32": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293714098850872e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-33": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293714098850872e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-34": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293714098850872e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-35": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815774703904e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.329371409885088e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-fiber-36": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 74,
+            "polygons": 96,
+            "triangles": 144,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.2020815775627489e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3293717117163566e-12,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-perimysium": {
+          "verdict": {
+            "status": "classified-openings",
+            "reasons": [],
+            "opening": "perimysium longitudinal teaching window"
+          },
+          "stats": {
+            "vertices": 196,
+            "polygons": 144,
+            "triangles": 288,
+            "components": 1,
+            "boundaryEdges": 102,
+            "boundaryLoops": 1,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.244916777003707e-12,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "1": 1
+            }
+          }
+        }
+      }
+    },
+    "fiber": {
+      "context": {
+        "pilot-erythrocytes": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 234,
+            "polygons": 288,
+            "triangles": 432,
+            "components": 9,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 2.172457450683643e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 1.8677926933521536e-16,
+            "componentsByBoundaryLoops": {
+              "0": 9
+            }
+          }
+        },
+        "pilot-fiber-capillary": {
+          "verdict": {
+            "status": "classified-openings",
+            "reasons": [],
+            "opening": "capillary longitudinal inspection window"
+          },
+          "stats": {
+            "vertices": 33,
+            "polygons": 20,
+            "triangles": 40,
+            "components": 1,
+            "boundaryEdges": 24,
+            "boundaryLoops": 1,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 2.6820474809883853e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "1": 1
+            }
+          }
+        },
+        "pilot-glut4-sites": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 624,
+            "polygons": 768,
+            "triangles": 1152,
+            "components": 24,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.5208980709909815e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 3.615528976591092e-17,
+            "componentsByBoundaryLoops": {
+              "0": 24
+            }
+          }
+        },
+        "pilot-mitochondria": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 720,
+            "polygons": 864,
+            "triangles": 1296,
+            "components": 36,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 2.277703871467622e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 9.89403083951342e-17,
+            "componentsByBoundaryLoops": {
+              "0": 36
+            }
+          }
+        },
+        "pilot-myofibrils": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 7238,
+            "polygons": 9306,
+            "triangles": 12408,
+            "components": 517,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 2.542188901553652e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 1.1992136761304102e-13,
+            "componentsByBoundaryLoops": {
+              "0": 517
+            }
+          }
+        },
+        "pilot-myonuclei": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 416,
+            "polygons": 480,
+            "triangles": 800,
+            "components": 8,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.9701900929159623e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 5.117332469472081e-16,
+            "componentsByBoundaryLoops": {
+              "0": 8
+            }
+          }
+        },
+        "pilot-sarcolemma": {
+          "verdict": {
+            "status": "classified-openings",
+            "reasons": [],
+            "opening": "sarcolemma longitudinal inspection window"
+          },
+          "stats": {
+            "vertices": 75,
+            "polygons": 48,
+            "triangles": 96,
+            "components": 1,
+            "boundaryEdges": 52,
+            "boundaryLoops": 1,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 2.4888371488579903e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "1": 1
+            }
+          }
+        }
+      },
+      "detail": {
+        "pilot-erythrocytes": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 1026,
+            "polygons": 1152,
+            "triangles": 2016,
+            "components": 9,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 2.172457450683643e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.3708808410930447e-16,
+            "componentsByBoundaryLoops": {
+              "0": 9
+            }
+          }
+        },
+        "pilot-fiber-capillary": {
+          "verdict": {
+            "status": "classified-openings",
+            "reasons": [],
+            "opening": "capillary longitudinal inspection window"
+          },
+          "stats": {
+            "vertices": 63,
+            "polygons": 40,
+            "triangles": 80,
+            "components": 1,
+            "boundaryEdges": 44,
+            "boundaryLoops": 1,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 2.6820644441861315e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "1": 1
+            }
+          }
+        },
+        "pilot-glut4-sites": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 624,
+            "polygons": 768,
+            "triangles": 1152,
+            "components": 24,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.5208980709909815e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 3.615528976591092e-17,
+            "componentsByBoundaryLoops": {
+              "0": 24
+            }
+          }
+        },
+        "pilot-mitochondria": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 1152,
+            "polygons": 1440,
+            "triangles": 2160,
+            "components": 36,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 2.27792495447547e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 1.1192059854216347e-16,
+            "componentsByBoundaryLoops": {
+              "0": 36
+            }
+          }
+        },
+        "pilot-myofibrils": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 13442,
+            "polygons": 18612,
+            "triangles": 24816,
+            "components": 517,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 2.5424309242509456e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 1.3847325912586897e-13,
+            "componentsByBoundaryLoops": {
+              "0": 517
+            }
+          }
+        },
+        "pilot-myonuclei": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 656,
+            "polygons": 768,
+            "triangles": 1280,
+            "components": 8,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.9706219877312543e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 5.330704276046564e-16,
+            "componentsByBoundaryLoops": {
+              "0": 8
+            }
+          }
+        },
+        "pilot-sarcolemma": {
+          "verdict": {
+            "status": "classified-openings",
+            "reasons": [],
+            "opening": "sarcolemma longitudinal inspection window"
+          },
+          "stats": {
+            "vertices": 147,
+            "polygons": 96,
+            "triangles": 192,
+            "components": 1,
+            "boundaryEdges": 100,
+            "boundaryLoops": 1,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 2.4888371488579903e-13,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": null,
+            "componentsByBoundaryLoops": {
+              "1": 1
+            }
+          }
+        }
+      }
+    },
+    "sarcomere": {
+      "context": {
+        "pilot-m-line": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 6490,
+            "polygons": 4444,
+            "triangles": 13256,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 6.032611349037047e-16,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 5.889154578173285e-23,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-thick-filaments": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 1274,
+            "polygons": 1638,
+            "triangles": 2184,
+            "components": 91,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.7141743482251476e-15,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.1278241309128223e-20,
+            "componentsByBoundaryLoops": {
+              "0": 91
+            }
+          }
+        },
+        "pilot-thin-left": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 2136,
+            "polygons": 2670,
+            "triangles": 3560,
+            "components": 178,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.1729507540369234e-15,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 5.184446899934861e-21,
+            "componentsByBoundaryLoops": {
+              "0": 178
+            }
+          }
+        },
+        "pilot-thin-right": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 2136,
+            "polygons": 2670,
+            "triangles": 3560,
+            "components": 178,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.1729507540369234e-15,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 5.184446899934863e-21,
+            "componentsByBoundaryLoops": {
+              "0": 178
+            }
+          }
+        },
+        "pilot-z-left": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 4300,
+            "polygons": 2084,
+            "triangles": 9268,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 6.78869617018936e-16,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 4.441714039593975e-22,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-z-right": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 4300,
+            "polygons": 2084,
+            "triangles": 9268,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 6.78869617018936e-16,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 4.441713805909521e-22,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        }
+      },
+      "detail": {
+        "pilot-m-line": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 5946,
+            "polygons": 4232,
+            "triangles": 12168,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 6.037876747655725e-16,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 7.472904816079187e-23,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-thick-filaments": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 17290,
+            "polygons": 22386,
+            "triangles": 29848,
+            "components": 1183,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 10626,
+            "boundaryWeldToleranceM": 1.7265084385750157e-15,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 2.4358459587046382e-20,
+            "componentsByBoundaryLoops": {
+              "0": 1183
+            }
+          }
+        },
+        "pilot-thin-left": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 3204,
+            "polygons": 4272,
+            "triangles": 5696,
+            "components": 178,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.173330543201201e-15,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 6.16738538255003e-21,
+            "componentsByBoundaryLoops": {
+              "0": 178
+            }
+          }
+        },
+        "pilot-thin-right": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 3204,
+            "polygons": 4272,
+            "triangles": 5696,
+            "components": 178,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 1.173330543201201e-15,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 6.167385382550034e-21,
+            "componentsByBoundaryLoops": {
+              "0": 178
+            }
+          }
+        },
+        "pilot-z-left": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 4400,
+            "polygons": 3808,
+            "triangles": 9452,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 6.78863082097338e-16,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 4.80558643370393e-22,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        },
+        "pilot-z-right": {
+          "verdict": {
+            "status": "closed",
+            "reasons": []
+          },
+          "stats": {
+            "vertices": 4400,
+            "polygons": 3808,
+            "triangles": 9452,
+            "components": 1,
+            "boundaryEdges": 0,
+            "boundaryLoops": 0,
+            "nonManifoldEdges": 0,
+            "looseEdges": 0,
+            "looseVertices": 0,
+            "degenerateFaces": 0,
+            "selfIntersectingFacePairs": 0,
+            "boundaryWeldToleranceM": 6.78863082097338e-16,
+            "coincidentBoundaryVertexPairs": 0,
+            "closedVolumeM3": 4.805586570614767e-22,
+            "componentsByBoundaryLoops": {
+              "0": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  "crossEntityOverlaps": {
+    "note": "Informational only, never failing: intersecting face pairs between DIFFERENT entities in the same level/lod (e.g. thin filaments anchored inside their Z disc by design).",
+    "byLevel": {
+      "muscle": {
+        "context": {
+          "FJ1442|FJ3365": 99,
+          "FJ1442|FJ3381": 23,
+          "FJ3365|FJ3381": 10
+        },
+        "detail": {
+          "FJ1442|FJ3365": 155,
+          "FJ1442|FJ3381": 27,
+          "FJ3365|FJ3381": 25
+        }
+      },
+      "fascicle": {
+        "context": {},
+        "detail": {}
+      },
+      "fiber": {
+        "context": {
+          "pilot-glut4-sites|pilot-sarcolemma": 288
+        },
+        "detail": {
+          "pilot-glut4-sites|pilot-sarcolemma": 320
+        }
+      },
+      "sarcomere": {
+        "context": {
+          "pilot-m-line|pilot-thick-filaments": 1920,
+          "pilot-thin-left|pilot-z-left": 1226,
+          "pilot-thin-right|pilot-z-right": 1228
+        },
+        "detail": {
+          "pilot-m-line|pilot-thick-filaments": 2560,
+          "pilot-thin-left|pilot-z-left": 1509,
+          "pilot-thin-right|pilot-z-right": 1509
+        }
+      }
+    }
+  }
+}

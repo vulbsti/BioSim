@@ -1,0 +1,54 @@
+{
+  "purpose": "Published adult lumen calibres for named vessels. A packaged vessel whose measured calibre differs from the cited mean by more than `tolerance` is re-inflated about its own centerline to that mean. Add a vessel only with a citable measurement. Entries whose name is not a packaged mesh's exact name set the calibre of the registered neck segments (scripts/vessels/build-registered-vessels.py) and leave source meshes alone.",
+  "tolerance": 0.25,
+  "vessels": [
+    {
+      "name": "Hepatic portal vein",
+      "diameterMm": 10.72,
+      "reportedUncertaintyMm": 0.47,
+      "population": "Healthy adults, pooled across imaging studies",
+      "note": "The same review reports a larger pooled value on CT (13.28 mm); ultrasound values lie close to the pooled mean. The uncertainty is quoted as reported; its type (SD, SE or CI) was not verified from the full text.",
+      "citation": "Chau P, Yoon JS, Moses D, Pather N. A systematic review and meta-analysis of portal vein morphometry in pediatric and adult populations: Drawing the line between normal and abnormal findings. European Journal of Radiology 2023;168:111016.",
+      "doi": "10.1016/j.ejrad.2023.111016",
+      "accessed": "2026-10-04, abstract only"
+    },
+    {
+      "name": "Common carotid artery",
+      "diameterMm": 6.52,
+      "reportedUncertaintyMm": 0.98,
+      "population": "Men among 500 consecutive adult patients (age 52 +/- 15 years), duplex ultrasound",
+      "note": "Men's mean, as the atlas subject is male; women measured 6.10 +/- 0.80 mm. The uncertainty is quoted as reported and reads as a standard deviation.",
+      "citation": "Krejza J, Arkuszewski M, Kasner SE, Weigele J, Ustymowicz A, Hurst RW, Cucchiara BL, Messe SR. Carotid artery diameter in men and women and the relation to body and neck size. Stroke 2006;37(4):1103-1105.",
+      "doi": "10.1161/01.STR.0000206440.48756.f7",
+      "accessed": "2026-10-05, abstract only"
+    },
+    {
+      "name": "Internal carotid artery, cervical part",
+      "diameterMm": 5.11,
+      "reportedUncertaintyMm": 0.87,
+      "population": "Men among 500 consecutive adult patients (age 52 +/- 15 years), duplex ultrasound",
+      "note": "Men's mean; women measured 4.66 +/- 0.78 mm. The source atlas's own internal carotid is narrower (about 3.7 mm where the registered segment joins it) and is not adjusted here.",
+      "citation": "Krejza J, Arkuszewski M, Kasner SE, Weigele J, Ustymowicz A, Hurst RW, Cucchiara BL, Messe SR. Carotid artery diameter in men and women and the relation to body and neck size. Stroke 2006;37(4):1103-1105.",
+      "doi": "10.1161/01.STR.0000206440.48756.f7",
+      "accessed": "2026-10-05, abstract only"
+    },
+    {
+      "name": "Left vertebral artery, extracranial part",
+      "diameterMm": 3.49,
+      "population": "34 men among 70 adults aged 28 to 75, CT angiography",
+      "note": "Measured 5 mm before the artery pierces the dura, not at the prevertebral part this value is applied to; no prevertebral measurement was verified. The abstract gives no uncertainty. Women measured 3.00 mm.",
+      "citation": "Spasojevic G, Vujmilovic S, Vujkovic Z, Gajanin R, Malobabic S, Ponorac N, Preradovic L. Internal carotid and vertebral arteries diameters and their interrelationships to sex and left/right side. Folia Morphologica 2020;79(2):219-225.",
+      "doi": "10.5603/FM.a2019.0071",
+      "accessed": "2026-10-05, abstract only"
+    },
+    {
+      "name": "Right vertebral artery, extracranial part",
+      "diameterMm": 3.2,
+      "population": "34 men among 70 adults aged 28 to 75, CT angiography",
+      "note": "Measured 5 mm before the artery pierces the dura, not at the prevertebral part this value is applied to; no prevertebral measurement was verified. The abstract gives no uncertainty. Women measured 2.82 mm.",
+      "citation": "Spasojevic G, Vujmilovic S, Vujkovic Z, Gajanin R, Malobabic S, Ponorac N, Preradovic L. Internal carotid and vertebral arteries diameters and their interrelationships to sex and left/right side. Folia Morphologica 2020;79(2):219-225.",
+      "doi": "10.5603/FM.a2019.0071",
+      "accessed": "2026-10-05, abstract only"
+    }
+  ]
+}

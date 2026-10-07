@@ -27,3 +27,20 @@ export function inspectTissueGLB(bytes){
  for(const image of json.images??[]){if(image.uri||!['image/png','image/jpeg'].includes(image.mimeType)||!json.bufferViews[image.bufferView])fail('Unembedded texture');const view=json.bufferViews[image.bufferView];if(view.buffer!==0||(view.byteOffset??0)+view.byteLength>bin.length)fail('Invalid image buffer');}
  return {bytes:bytes.length,triangles,vertices,primitives,entityIds:ids.sort(),boundsM:bounds,entityBoundsM,spanM:Math.max(...bounds.max.map((n,i)=>n-bounds.min[i])),minimumNormalLength,maximumNormalLength,embeddedImages:json.images?.length??0,generator:json.asset?.generator};
 }
+/** Edge topology read from GLB bytes alone: vertices welded by exact position, edges counted per mesh node.
+ * @param {Buffer} bytes
+ * @returns {{name:string,extras:Record<string,any>,triangles:number,boundaryEdges:number,nonManifoldEdges:number}[]} */
+export function glbEdgeTopology(bytes){
+ const length=bytes.readUInt32LE(12),json=JSON.parse(bytes.subarray(20,20+length).toString('utf8')),binStart=20+length+8;
+ const read=(id,width)=>{const a=json.accessors[id],v=json.bufferViews[a.bufferView],start=binStart+(v.byteOffset??0)+(a.byteOffset??0),size=a.componentType===5126||a.componentType===5125?4:a.componentType===5123?2:1,stride=v.byteStride??width*size;
+  const fn=a.componentType===5126?'readFloatLE':a.componentType===5125?'readUInt32LE':a.componentType===5123?'readUInt16LE':'readUInt8';return Array.from({length:a.count},(_,i)=>Array.from({length:width},(_,j)=>bytes[fn](start+i*stride+j*size)));};
+ return json.nodes.filter(n=>n.mesh!==undefined).map(node=>{
+  const uses=new Map();let triangles=0;
+  for(const p of json.meshes[node.mesh].primitives){
+   const keys=read(p.attributes.POSITION,3).map(v=>v.join(',')),index=read(p.indices,1).map(([i])=>i);
+   for(let t=0;t<index.length;t+=3){triangles++;for(let k=0;k<3;k++){const a=keys[index[t+k]],b=keys[index[t+(k+1)%3]],e=a<b?a+'|'+b:b+'|'+a;uses.set(e,(uses.get(e)??0)+1);}}
+  }
+  let boundaryEdges=0,nonManifoldEdges=0;for(const n of uses.values()){if(n===1)boundaryEdges++;else if(n>2)nonManifoldEdges++;}
+  return {name:node.name,extras:node.extras??{},triangles,boundaryEdges,nonManifoldEdges};
+ });
+}

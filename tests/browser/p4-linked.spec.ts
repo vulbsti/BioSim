@@ -78,3 +78,26 @@ for(const width of [320,390])test(`linked body observations fit ${width}px`,asyn
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  await page.getByRole('region',{name:'Linked body experiment'}).screenshot({path:`test-results/p4-linked-${width}.png`});
 });
+
+test('a refined muscle patch runs in the body worker and exports conserved shell state',async({page})=>{
+ test.setTimeout(120000);
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/');
+ await page.getByLabel('Physical insulin sensitivity').selectOption('1');
+ await page.getByLabel('Refined muscle patch').selectOption('0.05');
+ await expect(page.getByLabel('Refined muscle patch')).toHaveValue('0.05');
+ await page.getByRole('button',{name:'Introduce meal',exact:false}).click();
+ await page.getByRole('button',{name:'Advance five minutes'}).click();
+ await expect(page.getByLabel('Elapsed simulation time',{exact:true})).toHaveText('00:05:00',{timeout:60000});
+ const run=await recording(page,'Export run'),m=run.data.state.multiscaleMeal;
+ expect(m.patchFraction).toBe(0.05);
+ expect(m.patchInsulinMol).toHaveLength(4);
+ expect(m.patchUptakeG).toBeGreaterThan(0);
+ expect(m.patchInsulinMol[0]/1).toBeGreaterThan(m.patchInsulinMol[3]/7*1);
+ await page.getByLabel('Refined muscle patch').selectOption('0');
+ await expect(page.getByLabel('Refined muscle patch')).toHaveValue('0');
+ const coarse=await recording(page,'Export run');
+ expect(coarse.data.state.multiscaleMeal.patchFraction).toBe(0);
+ expect(coarse.data.state.multiscaleMeal.muscleUptakeG).toBeCloseTo(m.muscleUptakeG+m.patchUptakeG,12);
+ expect(errors).toEqual([]);
+});

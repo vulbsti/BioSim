@@ -10,5 +10,5 @@ export function respiratoryCycle(phase:number):{inflation:number;inhaling:boolea
  return {inflation:inhaling?(1-Math.cos(local*Math.PI))/2:(1+Math.cos(local*Math.PI))/2,inhaling,flow:Math.sin(local*Math.PI)};
 }
 export function motionRates(s:BodyState){
- return {heartHz:Math.max(0,s.heartRate/60),breathHz:Math.max(0,s.respiratoryRate/60),bloodSpeed:Math.min(4,Math.max(0,s.cardiacOutput/5.04)),lungExcursion:Math.min(.065,Math.max(0,s.tidalVolume/500*.022)),digesting:Math.min(1,(s.stomach.carbs+s.stomach.protein+s.stomach.fat+s.gut.carbs+s.gut.protein+s.gut.fat)/50)};
+ return {heartHz:Math.max(0,s.heartRate/60),breathHz:Math.max(0,s.respiratoryRate/60),lungExcursion:Math.min(.065,Math.max(0,s.tidalVolume/500*.022)),digesting:Math.min(1,(s.stomach.carbs+s.stomach.protein+s.stomach.fat+s.gut.carbs+s.gut.protein+s.gut.fat)/50)};
 }

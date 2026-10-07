@@ -17,9 +17,9 @@ import {
   transportSubstances,
   updateBloodMeasurements,
 } from "./transport";
-import { advanceMultiscaleMeal, createMultiscaleMeal } from "./multiscale-meal";
+import { advanceMultiscaleMeal, createMultiscaleMeal, muscleGlucosePools } from "./multiscale-meal";
 
-export const MODEL_VERSION = "atlas-physiology-0.3.0-p4-experimental";
+export const MODEL_VERSION = "atlas-physiology-0.4.0-m1-experimental";
 export const INPUT_BOUNDS: Record<keyof Inputs, [number, number]> = {
   exercise: [0, 1],
   oxygen: [0.1, 0.3],
@@ -377,14 +377,20 @@ function metabolize(s: BodyState, dt: number) {
             0.08,
             0.9,
           );
-    let carb = Math.min(glucoseTissue.amounts.glucose, ((demand * carbShare) / 746) * dt),
+    // Experimental muscle draws carbohydrate from its intracellular pools in proportion to their share.
+    const pools =
+      id === "muscle" && s.multiscaleMeal.enabled
+        ? muscleGlucosePools(s).map((p) => ({ ...p, c: c[p.id] }))
+        : [{ id: glucoseTissue.id, share: 1, c: glucoseTissue }];
+    const wanted = pools.map((p) => Math.min(p.c.amounts.glucose, ((demand * carbShare * p.share) / 746) * dt));
+    let carb = wanted.reduce((a, b) => a + b, 0),
       lipid = Math.min(tissue.amounts.lipids, ((demand * (1 - carbShare)) / 2010) * dt);
     // The brain bed has no fatty-acid oxidation; ketone support remains future work.
     const needed = carb * 746 + lipid * 2010,
       oxygenScale = needed > 0 ? Math.min(1, blood.amounts.oxygen / needed) : 1;
     carb *= oxygenScale;
     lipid *= oxygenScale;
-    transfer(s, glucoseTissue.id, "oxidized substrate", "glucose", carb, "reaction");
+    pools.forEach((p, i) => transfer(s, p.id, "oxidized substrate", "glucose", wanted[i] * oxygenScale, "reaction"));
     transfer(s, tissue.id, "oxidized substrate", "lipids", lipid, "reaction");
     const usedOxygen = transfer(
       s,

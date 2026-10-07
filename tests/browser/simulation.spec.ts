@@ -137,8 +137,10 @@ test("transport inventory, local gradients, oxygen rates and cumulative exports 
   await page.getByRole("button", { name: "Export run" }).click();
   const download = await downloadPromise;
   const run = JSON.parse(await readFile((await download.path())!, "utf8"));
-  expect(Object.keys(run.state.transport.compartments)).toHaveLength(24);
-  expect(run.state.transport.compartments["muscle-cell"].amounts.glucose).toBe(0);
+  // 24 physiological pools plus four refined-patch shells that stay empty in a coarse run.
+  expect(Object.keys(run.state.transport.compartments)).toHaveLength(28);
+  for (const id of ["muscle-cell", "muscle-cell-r0", "muscle-cell-r1", "muscle-cell-r2", "muscle-cell-r3"])
+    expect(run.state.transport.compartments[id].amounts.glucose).toBe(0);
   expect(
     run.state.transport.cumulativeFluxes.some(
       (f: { from: string; to: string; substance: string; amount: number }) =>
@@ -163,6 +165,6 @@ test("brain vessel coverage exposes unresolved meshes and filters by source name
   await page.getByLabel("Find a source brain vessel").fill("central sulcus");
   await expect(page.locator(".coverage-list article")).toHaveCount(4);
   await expect(
-    page.getByRole("button", { name: /Inspect all 178 source vessel candidates in 3D/ }),
+    page.getByRole("button", { name: /Inspect all 182 source vessel candidates in 3D/ }),
   ).toBeVisible();
 });
