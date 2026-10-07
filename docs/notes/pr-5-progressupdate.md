@@ -30,3 +30,14 @@ Approved order: simulation first, Blender geometry after.
 - A plain radial sink in real distance was rejected: at end systole it would collapse every cavity vertex nearer than about 2.4 cm to the centre. Normalising by the cavity's radius in each direction avoids that.
 - The rig is built offline because heart parts and cavities can arrive in different chunks at load.
 - Not done: leaflet hinges, conduction system, chordae (the Blender step); twist and long-axis shortening; pressure-volume loop display.
+
+## Follow-up, same day: valves and conduction system in Blender
+
+- Rendered the source valves first. All eleven leaflets and cusps are closed, and the atrioventricular leaflet meshes include their chordae, so no chordae were built. The earlier statement that chordae were missing was wrong.
+- Tried and rejected for the mitral and tricuspid leaflets: one straight hinge per leaflet (the ring is C-shaped, so the flap angle was wrong); finding the closing edge by contact (the source leaflets sit 3 to 5 mm apart in the middle); defining the leaflet by distance from the ring alone (chordae that start near the ring were turned as if they were leaflet). Kept: the leaflet is the sheet within 0.45 of the annulus radius below the ring; every point turns about the ring point it hangs from, as far as it needs to lie 15 degrees off the flow.
+- Tried and rejected for the cusps: squeezing toward a rim circle by azimuth (tore faces at the axis); holding vertices by distance to the vessel mesh (BodyParts3D vessels are solid with an end cap at the valve, so the free face read as attached); ray casts to the wall (same cap). Kept: each vertex closes half its gap to the cusp's own outermost surface at the same place along the chord and along the vessel.
+- The fitted plane of the atrioventricular ring was not flat enough to trust; the valve axis is the line between the two cavity centres.
+- Blender's sphere primitive gave different triangle indices on each run; the nodes are now built directly, and two builds are byte-identical.
+- In the app the first rig made the aortic cusps spiky: the cavity radius was taken from the single best-matching cavity vertex and jumped between neighbours. It is now a direction-weighted average.
+- Mistake made while working: a script of mine opened a file for writing before reading it and twice left a shared file empty for a short time (docs/PHYSICAL_ANATOMY.md, then PhysicalScene.tsx). Both were restored.
+- Not done: review by an anatomist; Bachmann's bundle and separate internodal tracts; electrical simulation of conduction; folding the Blender build into the pinned 4.4.3 pipeline; twist and long-axis shortening.

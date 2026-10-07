@@ -50,3 +50,22 @@ Results at rest (72 beats/min, 70 mL, 93 mmHg): left ventricle 124 to 54 mL, eje
 Verification: heart 4/4; heart motion 3/3; body lens 3/3; physical anatomy 6/6; vessel flow 2/2; physiology 18/18; meal pathway 26/26; circulation 6/6; browser `physical-anatomy.spec.ts` 7/7 (run with the molecule thread's uncommitted edits also in the working tree).
 
 Limits: parameter values are representative, not read from a source file or fitted. Motion is radial about each cavity's centre: no twist, no long-axis shortening, and the leaflets move with the wall but do not open or close. Vessel beads on the coronary arteries do not move with the wall. The beat does not feed back into the body model.
+
+## Added 2026-10-07: valves open and close, and a conduction system
+
+Before: the leaflets rode with the wall but never moved, and the heart had no conduction system.
+
+After: every valve's leaflets swing between closed and open with the simulated valve state, and ten new heart parts trace the conduction system and light in order as the impulse passes.
+
+- `scripts/heart/build-heart-package.py`, `scripts/heart/heart_source.py`: the Blender build. Outputs `assets/heart/valves.{json,bin}` (per-vertex move from closed to open), `public/models/heart-conduction.{json,bin}`, `docs/heart-package-provenance.json`, `assets/heart/blender/heart.blend` (leaflets with an "open" shape key, conduction meshes) and `assets/heart/previews/`.
+- `scripts/heart/build-heart-motion.ts`: the rig now covers the conduction parts and carries the leaflet moves; cavity radius is averaged over direction so it varies smoothly.
+- `app/atlas-loader.ts`, `app/anatomy.ts`: the conduction package joins the atlas as heart parts.
+- `app/physical/heart-motion.ts`, `PhysicalScene.tsx`: leaflet motion in the vertex shader, valve easing, conduction glow.
+
+Results: clear opening radius, closed to open: mitral 4.85 to 11.62 mm, tricuspid 3.95 to 11.59 mm, aortic 1.71 to 9.07 mm, pulmonary 1.37 to 10.92 mm. Two Blender builds give identical valve and conduction binaries.
+
+Verification: heart 4/4; heart motion 6/6; body lens 3/3; physical anatomy 6/6; vessel flow 2/2; meal mark 5/5; physiology 18/18; browser `physical-anatomy.spec.ts` 7/7.
+
+Correction to the note above: the source does contain chordae. They are part of the mitral and tricuspid leaflet meshes.
+
+Limits: open shapes and conduction courses are constructed, not from imaging, and not reviewed by an anatomist. Open mitral and tricuspid leaflets are faceted where the sheet meets its chordae. A cusp's wall-side face moves about a millimetre. Conduction timing is fixed intervals around the model's two onsets, not an electrical simulation. The Blender build was run with 5.2.2 on uxserver, not the 4.4.3 pinned for the muscle package, and is not part of `build-package.mjs`.

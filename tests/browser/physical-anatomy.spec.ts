@@ -73,16 +73,23 @@ test('running the simulation changes the body: stores fill, and a meal colours b
 });
 
 test('each heart chamber follows its simulated volume through the phases of the beat',async({page})=>{
- test.setTimeout(150000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});
+ // Samples a live animation under software rendering, so the limits are generous for a loaded machine.
+ test.setTimeout(300000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:90000});
  const number=async(name:string)=>Number(await scene.getAttribute(name));
  // The solved beat matches the resting body state and sits in textbook ranges.
  expect(await number('data-heart-ef')).toBeGreaterThan(.5);expect(await number('data-heart-ef')).toBeLessThan(.7);expect(await number('data-heart-lv-edv')).toBeGreaterThan(100);expect(await number('data-heart-systolic')).toBeGreaterThan(100);expect(await number('data-heart-diastolic')).toBeLessThan(85);
- const phases=new Set<string>();let low=1,high=0,atrialLow=1;
+ const phases=new Set<string>(),stages=new Set<string>();let low=1,high=0,atrialLow=1,mitral=[1,0],aortic=[1,0],both=0;
  await expect.poll(async()=>{
-  const lv=await number('data-fill-lv');low=Math.min(low,lv);high=Math.max(high,lv);atrialLow=Math.min(atrialLow,await number('data-fill-la'));phases.add((await scene.getAttribute('data-heart-phase'))!);
-  return phases.size>=4&&low<.7&&high>.95&&atrialLow<.85;
- },{timeout:60000,intervals:[130]}).toBe(true);
+  const d=await scene.evaluate((e:HTMLElement)=>({...e.dataset}));const lv=Number(d.fillLv),m=Number(d.valveMitral),a=Number(d.valveAortic);
+  low=Math.min(low,lv);high=Math.max(high,lv);atrialLow=Math.min(atrialLow,Number(d.fillLa));phases.add(d.heartPhase!);for(const stage of (d.conduction??'').split(' '))if(stage)stages.add(stage);
+  mitral=[Math.min(mitral[0],m),Math.max(mitral[1],m)];aortic=[Math.min(aortic[0],a),Math.max(aortic[1],a)];if(m>.6&&a>.6)both++;
+  // Chambers empty and fill, the leaflets of both left valves swing fully, and the impulse is seen at several stages.
+  return phases.size>=4&&low<.7&&high>.95&&atrialLow<.85&&mitral[0]<.2&&mitral[1]>.8&&aortic[0]<.2&&aortic[1]>.8&&stages.size>=3;
+ },{timeout:150000,intervals:[110]}).toBe(true);
+ expect(both).toBe(0);
  await expect(page.locator('.physical-cycle-readout')).toContainText(/(Ejection|Filling|Isovolumic contraction|Isovolumic relaxation|Atrial contraction) · LV \d+ mL/);
+ // The modelled conduction system is part of the atlas and can be isolated by name.
+ await page.getByLabel('Search physical anatomy').fill('cardiac conduction system');await page.locator('.physical-results').getByRole('button').first().click();await expect(scene).toHaveAttribute('data-visible-parts','10');
 });
 test('reduced motion, thyroid isolation, section controls and mobile expansion work',async({page})=>{
  test.setTimeout(120000);await page.emulateMedia({reducedMotion:'reduce'});await page.setViewportSize({width:390,height:844});await page.goto('/');

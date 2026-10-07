@@ -1,0 +1,282 @@
+{
+ "builder": "scripts/heart/build-heart-package.py",
+ "blender": "5.2.2 LTS",
+ "status": "constructed; not from imaging; not reviewed by an anatomist",
+ "sourcePose": "All eleven source leaflets and cusps are in the closed pose. The atrioventricular leaflet meshes include their chordae.",
+ "parameters": {
+  "attachedMm": 1.2,
+  "sheetDepth": 0.45,
+  "hingeZone": 0.25,
+  "openMarginDeg": 15,
+  "maxHingeDeg": 80,
+  "cuspThickness": 0.5,
+  "tubeSides": 8,
+  "radiusMm": {
+   "his": 1.0,
+   "branch": 0.8,
+   "fascicle": 0.7,
+   "purkinje": 0.45,
+   "internodal": 0.6
+  },
+  "nodeMm": {
+   "sa": [
+    7.0,
+    2.0,
+    1.3
+   ],
+   "av": [
+    3.0,
+    1.5,
+    0.8
+   ]
+  },
+  "septalMm": 14,
+  "offSeptumCost": 4
+ },
+ "valves": {
+  "mitral": {
+   "leaflets": {
+    "Anterior leaflet of mitral valve": {
+     "id": "FJ2420",
+     "lengthMm": 19.66,
+     "medianTurnDeg": 46.6,
+     "ringVertices": 124,
+     "tipVertices": 98,
+     "freeEdgeVertices": 140,
+     "maxMoveMm": 19.88
+    },
+    "Posterior leaflet of mitral valve": {
+     "id": "FJ2432",
+     "lengthMm": 17.75,
+     "medianTurnDeg": 54.8,
+     "ringVertices": 139,
+     "tipVertices": 108,
+     "freeEdgeVertices": 121,
+     "maxMoveMm": 19.68
+    }
+   },
+   "annulusRadiusMm": 16.99,
+   "kind": "atrioventricular",
+   "clearRadiusMm": {
+    "closed": 4.85,
+    "open": 11.62
+   },
+   "openAreaShareOfAnnulus": 0.468
+  },
+  "tricuspid": {
+   "leaflets": {
+    "Anterior leaflet of tricuspid valve": {
+     "id": "FJ2421",
+     "lengthMm": 16.83,
+     "medianTurnDeg": 49.9,
+     "ringVertices": 144,
+     "tipVertices": 101,
+     "freeEdgeVertices": 121,
+     "maxMoveMm": 18.59
+    },
+    "Posterior leaflet of tricuspid valve": {
+     "id": "FJ2433",
+     "lengthMm": 22.67,
+     "medianTurnDeg": 35.0,
+     "ringVertices": 170,
+     "tipVertices": 78,
+     "freeEdgeVertices": 131,
+     "maxMoveMm": 16.8
+    },
+    "Septal leaflet of tricuspid valve": {
+     "id": "FJ2436",
+     "lengthMm": 21.42,
+     "medianTurnDeg": 32.3,
+     "ringVertices": 141,
+     "tipVertices": 174,
+     "freeEdgeVertices": 136,
+     "maxMoveMm": 13.91
+    }
+   },
+   "annulusRadiusMm": 19.68,
+   "kind": "atrioventricular",
+   "clearRadiusMm": {
+    "closed": 3.95,
+    "open": 11.59
+   },
+   "openAreaShareOfAnnulus": 0.347
+  },
+  "aortic": {
+   "leaflets": {
+    "Anterior cusp of aortic valve": {
+     "id": "FJ2435",
+     "maxMoveMm": 7.0,
+     "stillShare": 0.014
+    },
+    "Left posterior cusp of aortic valve": {
+     "id": "FJ2426",
+     "maxMoveMm": 6.5,
+     "stillShare": 0.01
+    },
+    "Right posterior cusp of aortic valve": {
+     "id": "FJ2431",
+     "maxMoveMm": 6.57,
+     "stillShare": 0.051
+    }
+   },
+   "annulusRadiusMm": 11.02,
+   "kind": "semilunar",
+   "clearRadiusMm": {
+    "closed": 1.71,
+    "open": 9.07
+   },
+   "openAreaShareOfAnnulus": 0.678
+  },
+  "pulmonary": {
+   "leaflets": {
+    "Left anterior cusp of pulmonary valve": {
+     "id": "FJ2417",
+     "maxMoveMm": 8.34,
+     "stillShare": 0.01
+    },
+    "Posterior cusp of pulmonary valve": {
+     "id": "FJ2427",
+     "maxMoveMm": 8.06,
+     "stillShare": 0.009
+    },
+    "Right anterior cusp of pulmonary valve": {
+     "id": "FJ2434",
+     "maxMoveMm": 9.0,
+     "stillShare": 0.009
+    }
+   },
+   "annulusRadiusMm": 13.32,
+   "kind": "semilunar",
+   "clearRadiusMm": {
+    "closed": 1.37,
+    "open": 10.92
+   },
+   "openAreaShareOfAnnulus": 0.672
+  }
+ },
+ "conduction": {
+  "parts": {
+   "COND-SA": {
+    "name": "Sinoatrial node",
+    "stage": "sa",
+    "vertices": 130
+   },
+   "COND-INTERNODAL": {
+    "name": "Internodal atrial conduction path",
+    "stage": "atrial",
+    "vertices": 402
+   },
+   "COND-AV": {
+    "name": "Atrioventricular node",
+    "stage": "av",
+    "vertices": 130
+   },
+   "COND-HIS": {
+    "name": "Atrioventricular bundle (of His)",
+    "stage": "his",
+    "vertices": 50
+   },
+   "COND-LBB": {
+    "name": "Left bundle branch",
+    "stage": "branch",
+    "vertices": 210
+   },
+   "COND-LF-A": {
+    "name": "Left anterior fascicle",
+    "stage": "fascicle",
+    "vertices": 90
+   },
+   "COND-LF-P": {
+    "name": "Left posterior fascicle",
+    "stage": "fascicle",
+    "vertices": 330
+   },
+   "COND-PURKINJE-L": {
+    "name": "Left ventricular Purkinje fibres",
+    "stage": "purkinje",
+    "vertices": 1806
+   },
+   "COND-RBB": {
+    "name": "Right bundle branch",
+    "stage": "branch",
+    "vertices": 554
+   },
+   "COND-PURKINJE-R": {
+    "name": "Right ventricular Purkinje fibres",
+    "stage": "purkinje",
+    "vertices": 2092
+   }
+  },
+  "landmarksM": {
+   "superiorVenaCavaEntry": [
+    -0.019159,
+    1.35617,
+    0.013604
+   ],
+   "inferiorVenaCavaEntry": [
+    -0.014014,
+    1.26643,
+    0.015753
+   ],
+   "sinoatrialNode": [
+    -0.025686,
+    1.354411,
+    0.020056
+   ],
+   "coronarySinusMouth": [
+    -0.004321,
+    1.294091,
+    0.013577
+   ],
+   "atrioventricularNode": [
+    -0.00095,
+    1.301461,
+    0.015788
+   ],
+   "bundleFork": [
+    0.008813,
+    1.303651,
+    0.017328
+   ],
+   "leftBranchStart": [
+    0.014584,
+    1.304941,
+    0.015775
+   ],
+   "rightBranchStart": [
+    0.003043,
+    1.302361,
+    0.01888
+   ],
+   "leftAnteriorFascicleEnd": [
+    0.041919,
+    1.286601,
+    0.043228
+   ],
+   "leftPosteriorFascicleEnd": [
+    0.067491,
+    1.275271,
+    0.023427
+   ],
+   "rightBranchEnd": [
+    0.02986,
+    1.274191,
+    0.066805
+   ]
+  },
+  "purkinjeFibres": {
+   "left": 7,
+   "right": 6
+  },
+  "notModelled": [
+   "Bachmann's bundle and other interatrial paths",
+   "the three separate internodal tracts",
+   "septal fascicle of the left bundle",
+   "the subendocardial Purkinje network beyond the fibres drawn"
+  ]
+ },
+ "outputs": {
+  "assets/heart/valves.bin": "53df70d09dc2f752021cc3496a811ea96c8b89209190c41050f8eb2442f72997",
+  "public/models/heart-conduction.bin": "3cfecaca39daccdaf7d6b6826261e3bbd1124ad81469bf8e681e757ed95015de"
+ }
+}

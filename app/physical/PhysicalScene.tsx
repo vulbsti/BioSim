@@ -6,8 +6,8 @@ import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import type {Atlas,SystemId} from '../anatomy';
 import {NUTRIENTS,type BodyState} from '../simulation/types';
 import {cardiacContraction,respiratoryCycle,motionRates} from './motion';
-import {heartCycle,CHAMBERS,type HeartCycle} from '../simulation/heart';
-import {chamberFill,heartPhaseName,type HeartRig} from './heart-motion';
+import {heartCycle,CHAMBERS,VALVES,type HeartCycle} from '../simulation/heart';
+import {chamberFill,conductionGlow,easeValves,heartPhaseName,leafletKind,type ConductionStage,type HeartRig} from './heart-motion';
 import {createTracerRoute,type TracerRoute} from './flow-routes';
 import {createBodyLens,fates,lenses,nutrientNames,tint,tintColor,type Lens} from './body-lens';
 import {createBody} from '../simulation/engine';
@@ -48,7 +48,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
   const rim=new T.DirectionalLight(0xbfdadf,2.5);rim.position.set(1,2,-3);scene.add(rim);
   const width=T.MathUtils.ceilPowerOfTwo(atlas.parts.length),visualData=new Float32Array(width*4),visualTexture=new T.DataTexture(visualData,width,1,T.RGBAFormat,T.FloatType);
   visualTexture.needsUpdate=true;
-  const uniforms={partVisual:{value:visualTexture},visualWidth:{value:width},dissect:{value:1},slicePlane:{value:new T.Vector4(0,0,0,1)},heartContraction:{value:0},chamberCenter:{value:CHAMBERS.map(()=>new T.Vector3())},chamberFill:{value:[1,1,1,1]},lungInflation:{value:0},gutPhase:{value:0},gutActivity:{value:0},bladderFill:{value:0}};
+  const uniforms={partVisual:{value:visualTexture},visualWidth:{value:width},dissect:{value:1},slicePlane:{value:new T.Vector4(0,0,0,1)},heartContraction:{value:0},chamberCenter:{value:CHAMBERS.map(()=>new T.Vector3())},chamberFill:{value:[1,1,1,1]},valveOpen:{value:[0,0,0,0]},lungInflation:{value:0},gutPhase:{value:0},gutActivity:{value:0},bladderFill:{value:0}};
   const geometries:T.BufferGeometry[]=[],materials:T.Material[]=[],pickers:(T.Mesh|undefined)[]=[],batches:{mesh:T.Mesh;ranges:{part:number;offset:number;count:number}[];source:Uint32Array;visible:T.BufferAttribute;ghost:boolean}[]=[];
   const bounds=atlas.parts.map(p=>new T.Box3(new T.Vector3().fromArray(p.bounds[0]),new T.Vector3().fromArray(p.bounds[1])));
   const selectedBounds=new T.Box3(),center=new T.Vector3(),size=new T.Vector3();
@@ -59,8 +59,8 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    m.forceSinglePass=true;
    m.onBeforeCompile=shader=>{
     Object.assign(shader.uniforms,uniforms);
-    shader.vertexShader='attribute float partIndex; uniform sampler2D partVisual; uniform float visualWidth; varying vec4 partStyle; varying vec3 anatomyPosition; attribute float motionKind; attribute vec3 motionCenter; uniform float heartContraction; uniform vec3 chamberCenter[4]; uniform float chamberFill[4]; uniform float lungInflation; uniform float gutPhase; uniform float gutActivity; uniform float bladderFill;\n'+shader.vertexShader;
-    shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\npartStyle = texture2D(partVisual, vec2((partIndex + 0.5) / visualWidth, 0.5)); anatomyPosition = position; if(motionKind > 0.5 && motionKind < 1.5) transformed = motionCenter + (position-motionCenter) * (1.0-0.042*heartContraction); if(motionKind > 9.5) { float pair = motionKind - 10.0; int ca = int(floor(pair / 4.0 + 0.01)); int cb = int(pair - 4.0 * float(ca) + 0.01); float ra = max(motionCenter.x, 1.0); float rb = max(motionCenter.y, 1.0); vec3 pa = chamberCenter[ca] + (position - chamberCenter[ca]) * pow(ra*ra*ra - 1.0 + chamberFill[ca], 1.0/3.0) / ra; vec3 pb = chamberCenter[cb] + (position - chamberCenter[cb]) * pow(rb*rb*rb - 1.0 + chamberFill[cb], 1.0/3.0) / rb; transformed = mix(pb, pa, motionCenter.z); } if(motionKind > 1.5 && motionKind < 2.5) { transformed.xz = motionCenter.xz + (position.xz-motionCenter.xz)*(1.0+lungInflation); transformed.y -= lungInflation*0.12; } if(motionKind > 2.5 && motionKind < 3.5) transformed.y -= lungInflation*0.2; if(motionKind > 4.5 && motionKind < 5.5) transformed = motionCenter + (position-motionCenter) * (0.8+0.45*bladderFill); else if(motionKind > 3.5) transformed += normal * (0.0009 * gutActivity * sin(position.y*85.0-gutPhase));');
+    shader.vertexShader='attribute float partIndex; uniform sampler2D partVisual; uniform float visualWidth; varying vec4 partStyle; varying vec3 anatomyPosition; attribute float motionKind; attribute vec3 motionCenter; uniform float heartContraction; uniform vec3 chamberCenter[4]; uniform float chamberFill[4]; uniform float valveOpen[4]; uniform float lungInflation; uniform float gutPhase; uniform float gutActivity; uniform float bladderFill;\n'+shader.vertexShader;
+    shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\npartStyle = texture2D(partVisual, vec2((partIndex + 0.5) / visualWidth, 0.5)); anatomyPosition = position; if(motionKind > 0.5 && motionKind < 1.5) transformed = motionCenter + (position-motionCenter) * (1.0-0.042*heartContraction); if(motionKind > 9999.5) { float code = motionKind - 10000.0; float combo = floor(code / 1000.0 + 0.0005); float rho = 1.0 + (code - combo * 1000.0) * 0.003; int valve = int(floor(combo / 4.0 + 0.01)); int chamber = int(combo - 4.0 * float(valve) + 0.01); vec3 opened = position + motionCenter * valveOpen[valve]; transformed = chamberCenter[chamber] + (opened - chamberCenter[chamber]) * pow(rho*rho*rho - 1.0 + chamberFill[chamber], 1.0/3.0) / rho; } else if(motionKind > 9.5) { float pair = motionKind - 10.0; int ca = int(floor(pair / 4.0 + 0.01)); int cb = int(pair - 4.0 * float(ca) + 0.01); float ra = max(motionCenter.x, 1.0); float rb = max(motionCenter.y, 1.0); vec3 pa = chamberCenter[ca] + (position - chamberCenter[ca]) * pow(ra*ra*ra - 1.0 + chamberFill[ca], 1.0/3.0) / ra; vec3 pb = chamberCenter[cb] + (position - chamberCenter[cb]) * pow(rb*rb*rb - 1.0 + chamberFill[cb], 1.0/3.0) / rb; transformed = mix(pb, pa, motionCenter.z); } if(motionKind > 1.5 && motionKind < 2.5) { transformed.xz = motionCenter.xz + (position.xz-motionCenter.xz)*(1.0+lungInflation); transformed.y -= lungInflation*0.12; } if(motionKind > 2.5 && motionKind < 3.5) transformed.y -= lungInflation*0.2; if(motionKind > 4.5 && motionKind < 5.5) transformed = motionCenter + (position-motionCenter) * (0.8+0.45*bladderFill); else if(motionKind > 3.5) transformed += normal * (0.0009 * gutActivity * sin(position.y*85.0-gutPhase));');
     shader.fragmentShader='varying vec4 partStyle; varying vec3 anatomyPosition; uniform float dissect; uniform vec4 slicePlane;\n'+shader.fragmentShader;
     const cut=system==='muscular'?'if(dissect > 0.5 && (anatomyPosition.y > 1.49 || (anatomyPosition.y > 0.84 && anatomyPosition.y < 1.49 && abs(anatomyPosition.x) < 0.19 && anatomyPosition.z > -0.065))) discard;':system==='skeletal'?'if(dissect > 0.5 && (anatomyPosition.y > 1.585 || (anatomyPosition.y > 0.93 && anatomyPosition.y < 1.45 && abs(anatomyPosition.x) < 0.18 && anatomyPosition.z > 0.025))) discard;':'';
     shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>',`#include <clipping_planes_fragment>\nif(partStyle.r < 0.005 ${ghost?'|| partStyle.r > 0.995':'|| partStyle.r < 0.995'}) discard; if(dot(vec4(anatomyPosition,1.0),slicePlane) < 0.0) discard; ${cut}`);
@@ -84,7 +84,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
   // Concentrations are read against a resting body, so the scale means the same thing in every run.
   const bodyLens=createBodyLens(createBody()),lensColor=new T.Color(),vesselOfPart=new Int32Array(atlas.parts.length).fill(-1);
   const beadColor={arterial:new T.Color('#ffac91'),venous:new T.Color('#88bfff'),'pulmonary-arterial':new T.Color('#88bfff'),'pulmonary-venous':new T.Color('#ffac91'),portal:new T.Color('#b79bd8')},nutrientColor=new T.Color('#efcc78');
-  let heartRig:{rig:HeartRig;data:Float32Array}|null=null,beat:HeartCycle|null=null,beatState:BodyState|null=null;
+  let heartRig:{rig:HeartRig;data:Float32Array}|null=null,beat:HeartCycle|null=null,beatState:BodyState|null=null,conductionParts:{i:number;stage:ConductionStage}[]|null=null;
   const loadHeart=async()=>{
    const [index,data]=await Promise.all(['json','bin'].map(kind=>fetch(`/models/heart-motion.${kind}`,{signal:abort.signal})));if(!index.ok||!data.ok)throw new Error('The heart motion data could not be loaded.');
    const rig=await index.json() as HeartRig,values=new Float32Array(await data.arrayBuffer());if(disposed)return;
@@ -114,8 +114,14 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
     const motionKind=index.groups.heart.has(p.id)&&['cardiac','arterial','venous'].includes(system)?1:p.id.startsWith('BP3D3-')?2:/^diaphragm$/i.test(p.name)?3:/^urinary bladder$/i.test(p.name)?5:system==='digestive'&&!index.groups.liver.has(p.id)&&!/pancrea|bile|biliary|duct/.test(p.name.toLowerCase())?4:0;
     const motionCenter=motionKind===1?heartCenter:bounds[i].getCenter(new T.Vector3()),centers=new Float32Array(p.vertexCount*3);for(let v=0;v<p.vertexCount;v++)motionCenter.toArray(centers,v*3);
     // Rigged heart parts carry their two chambers in the kind, and per vertex how far out from each cavity they sit.
-    const rigged=motionKind===1?heartRig?.rig.parts[p.id]:undefined;if(rigged&&rigged.count===p.vertexCount)centers.set(heartRig!.data.subarray(rigged.offset*3,(rigged.offset+rigged.count)*3));
-    g.setAttribute('motionKind',new T.BufferAttribute(new Float32Array(p.vertexCount).fill(rigged?10+rigged.a*4+rigged.b:motionKind),1));g.setAttribute('motionCenter',new T.BufferAttribute(centers,3));const route=createTracerRoute(p,i,g);if(route)routes.push(route);
+    const rigged=motionKind===1?heartRig?.rig.parts[p.id]:undefined,kinds=new Float32Array(p.vertexCount).fill(rigged?10+rigged.a*4+rigged.b:motionKind);
+    if(rigged&&rigged.count===p.vertexCount){
+     const rig=heartRig!.data.subarray(rigged.offset*3,(rigged.offset+rigged.count)*3);
+     // A leaflet carries its move from closed to open per vertex, and its valve, chamber and radius in the kind.
+     if(rigged.valve!==undefined&&rigged.delta!==undefined){centers.set(heartRig!.data.subarray((heartRig!.rig.vertices+rigged.delta)*3,(heartRig!.rig.vertices+rigged.delta+rigged.count)*3));for(let v=0;v<p.vertexCount;v++)kinds[v]=leafletKind(rigged.valve,rigged.a,rig[v*3]);}
+     else centers.set(rig);
+    }
+    g.setAttribute('motionKind',new T.BufferAttribute(kinds,1));g.setAttribute('motionCenter',new T.BufferAttribute(centers,3));const route=createTracerRoute(p,i,g);if(route)routes.push(route);
     const group=groups.get(system)??{geometries:[],indices:[]};group.geometries.push(g);group.indices.push(i);groups.set(system,group);
    });
    for(const [system,group] of groups){
@@ -208,6 +214,8 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    // The beat the body state implies is solved when the state changes; each chamber then follows its own volume.
    if(beatState!==current){beatState=current;beat=heartCycle(current);const b=beat.summary;el.dataset.heartEf=b.ejectionFraction.toFixed(3);el.dataset.heartLvEdv=b.endDiastolic.lv.toFixed(1);el.dataset.heartLvEsv=b.endSystolic.lv.toFixed(1);el.dataset.heartSystolic=b.peak.aorta.toFixed(1);el.dataset.heartDiastolic=b.aorticDiastolic.toFixed(1);}
    const fill=chamberFill(beat!,heartPhase,uniforms.chamberFill.value),phaseName=heartPhaseName(beat!,heartPhase);CHAMBERS.forEach((k,i)=>{el.dataset['fill'+k[0].toUpperCase()+k.slice(1)]=fill[i].toFixed(3);});el.dataset.heartPhase=phaseName;
+   // Leaflets swing toward the simulated valve states.
+   const valves=easeValves(beat!,heartPhase,animate.current?dt:0,uniforms.valveOpen.value);VALVES.forEach((k,i)=>{el.dataset['valve'+k[0].toUpperCase()+k.slice(1)]=valves[i].toFixed(3);});
    phaseText[0].textContent=`${phaseName} · LV ${(fill[1]*beat!.summary.endDiastolic.lv).toFixed(0)} mL`;phaseText[1].textContent=breathing.inhaling?'Inhaling':'Exhaling';
    phaseBars[0].style.transform=`scaleX(${Math.min(1,(1-fill[1])/Math.max(.01,1-beat!.summary.endSystolic.lv/beat!.summary.endDiastolic.lv))})`;phaseBars[1].style.transform=`scaleX(${breathing.inflation})`;
    cycleReadout.hidden=v.preset==='surface'||v.preset==='skeleton'||v.preset==='nerves';
@@ -289,6 +297,9 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
     if(aorta>=0)el.dataset.aortaFlow=(vessels.segments[aorta].flow*60000).toFixed(3);
     if(femoral>=0){el.dataset.femoralFlow=(vessels.segments[femoral].flow*60000).toFixed(4);el.dataset.femoralSpeed=(vessels.segments[femoral].speed*100).toFixed(3);}
    }
+   // The modelled conduction system lights stage by stage as the impulse passes.
+   conductionParts??=atlas.parts.flatMap((p,i)=>p.stage?[{i,stage:p.stage as ConductionStage}]:[]);
+   if(conductionParts.length){let lit='';for(const c of conductionParts){const glow=conductionGlow(c.stage,heartPhase,current.heartRate);visualData[c.i*4+2]=.5+.5*glow;visualData[c.i*4+3]=1;if(glow>.5&&!lit.includes(c.stage))lit+=(lit?' ':'')+c.stage;}visualTexture.needsUpdate=true;el.dataset.conduction=lit;}
    for(const route of routes){
     if(visualData[route.part*4]<.5||route.kind==='mix'&&rates.digesting<.01||route.kind==='food'&&displayTime>swallowUntil||route.kind==='air'&&!['dissection','organs'].includes(v.preset)&&!v.isolate)continue;
     const number=route.kind==='air'?7:4;
