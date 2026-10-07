@@ -323,7 +323,7 @@ export default function Simulator({
   onCirculation: () => void;
   onBodyRun?: (run: BodyRunObservation) => void;
 }) {
-  const { state: s, running, speed, reference, error, send } = useSimulation();
+  const { state: s, running, speed, reference, timeline, error, send } = useSimulation();
   const importFile = useRef<HTMLInputElement>(null);
   const [view, setView] = useState<View>("body"),
     [organ, setOrgan] = useState<Organ>("heart"),
@@ -582,13 +582,46 @@ export default function Simulator({
         </button>
         <span className={`run-status ${running ? "active" : ""}`}>
           <i />
-          {running ? "SIMULATING" : "PAUSED"}
+          {timeline.viewing !== null ? "LOOKING BACK" : running ? "SIMULATING" : "PAUSED"}
         </span>
         <button className="export-button" onClick={() => send({ type: "export" })}>
           <ArrowDownToLine size={15} />
           <span>Export run</span>
         </button>
       </section>
+      {timeline.times.length > 1 && (
+        <section className={`sim-timeline ${timeline.viewing !== null ? "viewing" : ""}`} aria-label="Look back in the run">
+          <span>LOOK BACK</span>
+          <input
+            type="range"
+            aria-label="Look back in simulated time"
+            min={0}
+            max={timeline.times.length - 1}
+            step={1}
+            value={timeline.viewing === null ? timeline.times.length - 1 : timeline.times.indexOf(timeline.viewing)}
+            onChange={(e) => {
+              const i = Number(e.target.value);
+              send({ type: "view", time: i >= timeline.times.length - 1 ? null : timeline.times[i] });
+            }}
+          />
+          {timeline.viewing === null ? (
+            <small>Drag to see an earlier moment. The run pauses while you look.</small>
+          ) : (
+            <>
+              <strong aria-label="Moment shown">
+                {formatTime(timeline.viewing)} of {formatTime(timeline.now)}
+              </strong>
+              <button onClick={() => send({ type: "view", time: null })}>Return to now</button>
+              <button
+                title="Drops everything after this moment and ends a comparison fork"
+                onClick={() => send({ type: "continue" })}
+              >
+                Continue from here
+              </button>
+            </>
+          )}
+        </section>
+      )}
       {error && (
         <div className="sim-error" role="alert">
           {error}

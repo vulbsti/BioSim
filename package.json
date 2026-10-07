@@ -10,7 +10,7 @@
     "build": "vite build",
     "build:vercel": "vite build",
     "check": "tsc --noEmit",
-    "test:physiology": "tsx --test tests/physiology.test.ts",
+    "test:physiology": "tsx --test tests/physiology.test.ts tests/timeline.test.ts",
     "test:browser": "playwright test",
     "test:browser:production": "playwright test --config playwright.production.config.ts",
     "audit:brain": "tsx scripts/audit-brain-vessels.ts",
