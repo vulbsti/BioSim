@@ -72,6 +72,18 @@ test('running the simulation changes the body: stores fill, and a meal colours b
  await expect(callouts).toContainText(/LIVER\s*glycogen [\d.]+ g\s*[\d.]+ g of this meal/);
 });
 
+test('each heart chamber follows its simulated volume through the phases of the beat',async({page})=>{
+ test.setTimeout(150000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});
+ const number=async(name:string)=>Number(await scene.getAttribute(name));
+ // The solved beat matches the resting body state and sits in textbook ranges.
+ expect(await number('data-heart-ef')).toBeGreaterThan(.5);expect(await number('data-heart-ef')).toBeLessThan(.7);expect(await number('data-heart-lv-edv')).toBeGreaterThan(100);expect(await number('data-heart-systolic')).toBeGreaterThan(100);expect(await number('data-heart-diastolic')).toBeLessThan(85);
+ const phases=new Set<string>();let low=1,high=0,atrialLow=1;
+ await expect.poll(async()=>{
+  const lv=await number('data-fill-lv');low=Math.min(low,lv);high=Math.max(high,lv);atrialLow=Math.min(atrialLow,await number('data-fill-la'));phases.add((await scene.getAttribute('data-heart-phase'))!);
+  return phases.size>=4&&low<.7&&high>.95&&atrialLow<.85;
+ },{timeout:60000,intervals:[130]}).toBe(true);
+ await expect(page.locator('.physical-cycle-readout')).toContainText(/(Ejection|Filling|Isovolumic contraction|Isovolumic relaxation|Atrial contraction) · LV \d+ mL/);
+});
 test('reduced motion, thyroid isolation, section controls and mobile expansion work',async({page})=>{
  test.setTimeout(120000);await page.emulateMedia({reducedMotion:'reduce'});await page.setViewportSize({width:390,height:844});await page.goto('/');
  const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});await expect(scene).toHaveAttribute('data-motion','paused');

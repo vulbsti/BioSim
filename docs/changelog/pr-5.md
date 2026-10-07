@@ -33,3 +33,20 @@ Typecheck; physiology 18/18; anatomy 11/11; meal pathway 26/26 (5 new); multisca
 - The model moves only net amounts between blood and tissue, so arterial glucose is about two thirds meal-derived at 30 minutes, faster than tracer studies report. The label itself exchanges in both directions.
 - Glucose made from labelled amino acids is not labelled; that carbon is counted as burned protein.
 - The colour follows carbohydrate only. Protein and fat appear in the strip.
+
+## Added 2026-10-07: the heart beats chamber by chamber
+
+Before: the whole heart squeezed 4% toward one point on a fixed easing curve, and the readout said "Systole" for the first 36% of every beat.
+
+After: a four-chamber heart model solves the beat the body state implies, and each chamber's mesh follows its own simulated volume. The atria contract before the ventricles, the ventricular wall thickens as the cavities empty, and the readout names the phase (isovolumic contraction, ejection, isovolumic relaxation, filling, atrial contraction) with the left ventricle's volume.
+
+- `app/simulation/heart.ts`: time-varying elastance chambers, diode valves, two-circuit loop; solved to a steady beat per operating point and kept.
+- `scripts/heart/build-heart-motion.ts`, `public/models/heart-motion.{json,bin}`: the rig, 84 heart meshes and 41,279 vertices; `npm run build:heart`.
+- `app/physical/heart-motion.ts`, `PhysicalScene.tsx`: the vertex motion and the phase readout.
+- `tests/heart.test.ts`, `tests/heart-motion.test.ts` (in `test:anatomy`), one new browser test.
+
+Results at rest (72 beats/min, 70 mL, 93 mmHg): left ventricle 124 to 54 mL, ejection fraction 0.56, aortic pressure 115/73 mmHg, right ventricle peak 24 mmHg, left ventricular end-diastolic pressure 8.5 mmHg, atrial contraction 22% of filling. Source cavity meshes: 98, 117, 84 and 52 mL (left ventricle, right ventricle, right atrium, left atrium). Each cavity mesh's volume equals the simulated share within 1e-4.
+
+Verification: heart 4/4; heart motion 3/3; body lens 3/3; physical anatomy 6/6; vessel flow 2/2; physiology 18/18; meal pathway 26/26; circulation 6/6; browser `physical-anatomy.spec.ts` 7/7 (run with the molecule thread's uncommitted edits also in the working tree).
+
+Limits: parameter values are representative, not read from a source file or fitted. Motion is radial about each cavity's centre: no twist, no long-axis shortening, and the leaflets move with the wall but do not open or close. Vessel beads on the coronary arteries do not move with the wall. The beat does not feed back into the body model.
