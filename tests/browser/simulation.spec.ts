@@ -165,6 +165,6 @@ test("brain vessel coverage exposes unresolved meshes and filters by source name
   await page.getByLabel("Find a source brain vessel").fill("central sulcus");
   await expect(page.locator(".coverage-list article")).toHaveCount(4);
   await expect(
-    page.getByRole("button", { name: /Inspect all 178 source vessel candidates in 3D/ }),
+    page.getByRole("button", { name: /Inspect all 182 source vessel candidates in 3D/ }),
   ).toBeVisible();
 });

@@ -1,5 +1,5 @@
 {
-  "source": "BodyParts3D reference assembly: atlas.json + expansion.json + lung-surfaces.json",
+  "source": "BodyParts3D reference assembly: atlas.json + expansion.json + lung-surfaces.json + reconstructed-vessels.json",
   "scope": "Arterial / venous meshes intersecting the source brain bounding box, plus named carotid / vertebral, cerebral, communicating, and cerebellar vessels. Bounding-box overlap is a candidate rule, not proof of intracranial anatomy.",
   "vessels": [
     {
@@ -2077,11 +2077,59 @@
       "side": null,
       "sideEvidence": "Laterality unresolved in source names",
       "basis": "Exact source name matches a schematic node. This establishes a label association, not a geometric connection."
+    },
+    {
+      "id": "RECON-ICA-L",
+      "name": "Cervical part of left internal carotid artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-ica"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "RECON-VA-L",
+      "name": "Prevertebral part of left vertebral artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "L-vertebral"
+      ],
+      "side": "L",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "RECON-ICA-R",
+      "name": "Cervical part of right internal carotid artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-ica"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
+    },
+    {
+      "id": "RECON-VA-R",
+      "name": "Prevertebral part of right vertebral artery",
+      "system": "arterial",
+      "status": "grouped territory",
+      "nodes": [
+        "R-vertebral"
+      ],
+      "side": "R",
+      "sideEvidence": "Source mesh name",
+      "basis": "Source terminology assigns a coarse vascular territory. Its separate branch flow and parent junction have not been resolved."
     }
   ],
   "counts": {
     "exact-name link": 83,
-    "grouped territory": 62,
+    "grouped territory": 66,
     "unresolved": 31,
     "adjacent circulation": 2
   },

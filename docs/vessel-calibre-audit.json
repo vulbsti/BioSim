@@ -1,0 +1,21 @@
+{
+  "scope": "Packaged vessels compared with models/vessel-calibre/ledger.json. Adjusted meshes keep their source ID, vertex count, triangles and normals; only vertex positions move, radially from the mesh's own centerline. The archived source package is unchanged.",
+  "tolerance": 0.25,
+  "vessels": [
+    {
+      "id": "FJ1853",
+      "name": "Hepatic portal vein",
+      "sourceDiameterMm": 7.14,
+      "citedDiameterMm": 10.72,
+      "doi": "10.1016/j.ejrad.2023.111016",
+      "adjusted": true,
+      "radialFactor": 1.5022,
+      "resultDiameterMm": 10.72,
+      "largestVertexMoveMm": 2.56
+    }
+  ],
+  "ledger": "2fb5d8062b16be79a9e137dd9e0e72cf4da613b1dc6cfcaeca40648c324e0850",
+  "generator": "cddfce1497991ec7ffc82121e398456955522101144c4ff2d51620cfd465dd32",
+  "extractor": "fed190373826a7eac5177d9b1c2dbfc0ee3a2dc7c1c9436c85e71a7bdd00b207",
+  "binarySHA256": "fd172c5bc6611718a998e4c188ae15815ce5271c5bdaef9d25de8ae9192ff484"
+}

@@ -9,7 +9,7 @@ export const presets:{id:AnatomyPreset;name:string;description:string}[]=[
  {id:'organs',name:'Organs',description:'Viscera, airways and glands · surrounding skeleton for orientation'},
  {id:'muscles',name:'Muscles',description:'Superficial and deep muscle geometry · rotate to see attachments'},
  {id:'skeleton',name:'Skeleton',description:'Bones, cartilage and connective structures'},
- {id:'vessels',name:'Vessels',description:'Source arterial and venous geometry · no inferred junctions'},
+ {id:'vessels',name:'Vessels',description:'Source arterial and venous geometry · flow on extracted centerlines'},
  {id:'nerves',name:'Nerves',description:'Brain, spinal cord and available peripheral nerves'},
  {id:'surface',name:'Surface',description:'Adult male body surface · source proportions'},
 ];

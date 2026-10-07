@@ -6,14 +6,20 @@ export function combineAtlases(base:Atlas,addition:Atlas):Atlas {
  for(const p of addition.parts){if(ids.has(p.id))throw new Error(`Duplicate anatomy source mesh: ${p.id}`);ids.add(p.id);}
  const concepts=new Map<string,Concept>(base.concepts.map(c=>[c.id,{...c,elements:[...c.elements]}]));
  for(const c of addition.concepts){const previous=concepts.get(c.id);concepts.set(c.id,previous?{...previous,elements:[...new Set([...previous.elements,...c.elements])]}:{...c,elements:[...c.elements]});}
- const merged:Atlas={...base,version:'BodyParts3D reference assembly (4.0 / 4.3 / 3.0 lung surfaces)',parts:[...base.parts.map(p=>({...p})),...addition.parts.map(p=>({...p,chunk:p.chunk+base.chunks.length}))],concepts:[...concepts.values()],chunks:[...base.chunks,...addition.chunks],triangles:base.triangles+addition.triangles};
+ const merged:Atlas={...base,version:'BodyParts3D reference assembly (4.0 / 4.3 / 3.0 lung surfaces) with reconstructed neck arteries',parts:[...base.parts.map(p=>({...p})),...addition.parts.map(p=>({...p,chunk:p.chunk+base.chunks.length}))],concepts:[...concepts.values()],chunks:[...base.chunks,...addition.chunks],triangles:base.triangles+addition.triangles};
  const index=createAnatomyIndex(merged);
  for(const p of merged.parts)p.system=index.system.get(p.id)!;
  // Explicit curated corrections are documented; do not change the archived manifest.
  for(const [name,group] of [['heart',index.groups.heart],['brain',index.groups.brain],['liver',index.groups.liver]] as const){const c=merged.concepts.find(c=>c.name===name);if(c)c.elements=[...new Set([...c.elements,...group])];}
  return merged;
 }
+/** Swap in replacement meshes by ID (calibre-adjusted, or registered from imaging). The archived source records and buffers stay as shipped. */
+export function applyReplacements(atlas:Atlas,replacement:Atlas):Atlas {
+ const swap=new Map(replacement.parts.map(p=>[p.id,{...p,chunk:p.chunk+atlas.chunks.length}]));
+ for(const id of swap.keys())if(!atlas.parts.some(p=>p.id===id))throw new Error(`Replacement for unknown anatomy mesh: ${id}`);
+ return {...atlas,parts:atlas.parts.map(p=>{const r=swap.get(p.id);return r?{...r,system:p.system}:p;}),chunks:[...atlas.chunks,...replacement.chunks]};
+}
 export async function loadAtlas(signal?:AbortSignal):Promise<Atlas>{
- const [base,addition,lungs]=await Promise.all(['/models/atlas.json','/models/expansion.json','/models/lung-surfaces.json'].map(async url=>{const r=await fetch(url,{signal});if(!r.ok)throw new Error('The anatomy catalogue could not be loaded.');return r.json() as Promise<Atlas>;}));
- return combineAtlases(combineAtlases(base,addition),lungs);
+ const [base,addition,lungs,reconstructed,calibrated,registered]=await Promise.all(['/models/atlas.json','/models/expansion.json','/models/lung-surfaces.json','/models/reconstructed-vessels.json','/models/calibrated-vessels.json','/models/registered-vessels.json'].map(async url=>{const r=await fetch(url,{signal});if(!r.ok)throw new Error('The anatomy catalogue could not be loaded.');return r.json() as Promise<Atlas>;}));
+ return applyReplacements(applyReplacements(combineAtlases(combineAtlases(combineAtlases(base,addition),lungs),reconstructed),calibrated),registered);
 }
