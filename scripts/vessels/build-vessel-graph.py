@@ -38,7 +38,7 @@ def main():
             "points": np.round(P[n] * 10000).astype(int).ravel().tolist(),
             "share": {k: float(f"{v:.6g}") for k, v in sorted(s["share"].items())},
         })
-    source = {m: hashlib.sha256((MODELS / m).read_bytes()).hexdigest() for m in manifests + [atlas_io.REPLACEMENTS]}
+    source = {m: hashlib.sha256((MODELS / m).read_bytes()).hexdigest() for m in manifests + [atlas_io.REPLACEMENTS, atlas_io.REGISTERED]}
     code = hashlib.sha256((Path(__file__).parent / "vessel_graph.py").read_bytes()).hexdigest()
     out = {
         "version": "vessel-graph-1",
