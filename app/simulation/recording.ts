@@ -18,7 +18,7 @@ import {
   PATCH_SHELLS,
 } from "./multiscale-meal";
 import { HORMONES, SUBSTANCES, type BodyState, type Sample } from "./types";
-import { gasResiduals, totalSubstance } from "./transport";
+import { gasResiduals, markedTotal, totalSubstance } from "./transport";
 import { STATE, initialCirculation } from "../circulation/model";
 
 export type Recording = {
@@ -225,6 +225,14 @@ function validateState(value: unknown): asserts value is BodyState {
       if (amount < -1e-10) throw new Error("Negative transported substance.");
   }
   validateMultiscaleMeal(s);
+  const mark = s.transport.mark,
+    labelled = markedTotal(s);
+  if (!Number.isInteger(mark.at) || mark.at < -1 || mark.at > s.time) throw new Error("Invalid marked meal time.");
+  for (const pool of Object.values(mark.pools))
+    if (Object.values(pool).some((v) => v < -1e-9)) throw new Error("Negative marked meal balance.");
+  for (const [key, eaten] of Object.entries(mark.eaten))
+    if (eaten < 0 || !close(labelled[key as keyof typeof labelled], eaten, 1e-6))
+      throw new Error("Marked meal label is not conserved.");
   for (const [species, amount] of [
     ["glucose", s.glucoseMass],
     ["aminoAcids", s.aminoAcids],
@@ -257,6 +265,12 @@ export function parseRecording(text: string): Recording {
   const P4 = "atlas-physiology-0.3.0-p4-experimental";
   if (!object(data) || ![MODEL_VERSION, P4, "atlas-physiology-0.2.0"].includes(data.model as string))
     throw new Error(`Expected a ${MODEL_VERSION} recording.`);
+  // Recordings made before meals were labelled resume with no meal marked.
+  for (const key of ["state", "reference"] as const) {
+    const state = data[key];
+    if (object(state) && object(state.transport) && !Object.hasOwn(state.transport, "mark"))
+      state.transport.mark = createBody().transport.mark;
+  }
   if (data.model === P4) {
     // The 0.3 synthetic circuit cannot be re-expressed in body-coupled units; only coarse runs migrate.
     const template = createBody();

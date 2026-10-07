@@ -1,10 +1,14 @@
 import {Color} from 'three';
-import type {BodyState,Organ,Substance} from '../simulation/types';
+import {NUTRIENTS,type BodyState,type Nutrient,type Organ,type Substance} from '../simulation/types';
 import type {Bed} from './vessel-flow';
 
-/** What the body view colours by: vessel speed only, or one transported substance. */
-export type Lens='flow'|Substance;
-export const lenses:{id:Lens;name:string;unit:string}[]=[{id:'flow',name:'Flow speed',unit:''},{id:'glucose',name:'Glucose',unit:'g'},{id:'oxygen',name:'Oxygen',unit:'mL'},{id:'carbonDioxide',name:'Carbon dioxide',unit:'mL'},{id:'aminoAcids',name:'Amino acids',unit:'g'},{id:'lipids',name:'Lipids',unit:'g'}];
+/** What the body view colours by: vessel speed only, one transported substance, or the latest meal's carbohydrate. */
+export type Lens='flow'|Substance|'meal';
+export const lenses:{id:Lens;name:string;unit:string}[]=[{id:'flow',name:'Flow speed',unit:''},{id:'glucose',name:'Glucose',unit:'g'},{id:'oxygen',name:'Oxygen',unit:'mL'},{id:'carbonDioxide',name:'Carbon dioxide',unit:'mL'},{id:'aminoAcids',name:'Amino acids',unit:'g'},{id:'lipids',name:'Lipids',unit:'g'},{id:'meal',name:'This meal',unit:'g'}];
+/** Where a marked meal can be, in the order it travels. */
+export const fates=['stomach','intestine','blood','tissues','stored','burned','excreted'] as const;
+export type Fate=(typeof fates)[number];
+export const nutrientNames:Record<Nutrient,string>={glucose:'Carbohydrate',aminoAcids:'Protein',lipids:'Fat'};
 export type BloodLevels={bed:Record<Bed,number>;arterial:number;venous:number;lungs:number;portal:number;gut:number};
 const PERIPHERAL:Organ[]=['muscle','skin','adipose','endocrine'],COOL=new Color('#3f78ff'),REST=new Color('#ece7dc'),WARM=new Color('#ffa516');
 
@@ -53,6 +57,32 @@ export function createBodyLens(rest:BodyState){
   }
   return net*60;
  };
- return {levels,organ,uptake};
+ const marked=(s:BodyState,id:string)=>{const c=s.transport.compartments[id];return c?s.transport.mark.pools[id].glucose/c.volume:0;};
+ const meal=(s:BodyState,id:string)=>marked(s,id)/amount(rest,'arterial','glucose');
+ /**
+  * The latest meal's glucose in each blood compartment, as a multiple of resting arterial glucose:
+  * 0 where none has arrived, 1 where the meal alone supplies as much as resting blood holds.
+  */
+ const mealLevels=(s:BodyState):BloodLevels=>{
+  const flow=(id:Organ)=>s.flows.find(f=>f.id===id)?.flow??0,total=PERIPHERAL.reduce((a,id)=>a+flow(id),0);
+  const peripheral=total>0?PERIPHERAL.reduce((a,id)=>a+flow(id)*meal(s,`${id}-blood`),0)/total:meal(s,'muscle-blood');
+  return {arterial:meal(s,'arterial'),venous:meal(s,'venous'),lungs:meal(s,'lungs-blood'),portal:meal(s,'portal'),gut:meal(s,'gut-blood'),
+   bed:{heart:meal(s,'heart-blood'),brain:meal(s,'brain-blood'),kidneys:meal(s,'kidneys-blood'),gut:meal(s,'gut-blood'),liver:meal(s,'liver-blood'),hepatic:meal(s,'liver-blood'),peripheral,lungs:meal(s,'lungs-blood')}};
+ };
+ /** The meal's glucose in an organ's tissue, as a multiple of that tissue's resting glucose. */
+ const mealOrgan=(s:BodyState,id:Organ)=>{
+  const where=amount(rest,`${id}-tissue`,'glucose')>0?`${id}-tissue`:`${id}-blood`,resting=amount(rest,where,'glucose');
+  return resting>0?marked(s,where)/resting:0;
+ };
+ /** Grams of the meal's carbohydrate an organ holds now, in its blood, tissue and cells. */
+ const mealHeld=(s:BodyState,id:Organ)=>Object.values(s.transport.compartments).reduce((a,c)=>a+(c.organ===id?s.transport.mark.pools[c.id].glucose:0),0);
+ /** Grams of each of the meal's nutrients in each place. Every row sums to what the meal contained. */
+ const mealFate=(s:BodyState)=>{
+  const p=s.transport.mark.pools,sum=(kind:'blood'|'tissue',key:Nutrient)=>Object.values(s.transport.compartments).reduce((a,c)=>a+((kind==='blood'?c.kind!=='tissue':c.kind==='tissue')?p[c.id][key]:0),0);
+  return Object.fromEntries(NUTRIENTS.map(key=>[key,{stomach:p.stomach[key],intestine:p['intestinal lumen'][key],blood:sum('blood',key),tissues:sum('tissue',key),stored:p['hepatic glycogen'][key]+p['fat reserve'][key]+p['protein reserve'][key],burned:p['oxidized substrate'][key]+p.gluconeogenesis[key],excreted:p.urine[key]}])) as Record<Nutrient,Record<Fate,number>>;
+ };
+ /** Share of the meal's carbohydrate still inside the stomach and the small intestine, 0 to 1. */
+ const mealLumen=(s:BodyState)=>{const m=s.transport.mark,eaten=m.eaten.glucose;return eaten>0?{stomach:m.pools.stomach.glucose/eaten,intestine:m.pools['intestinal lumen'].glucose/eaten}:{stomach:0,intestine:0};};
+ return {levels,organ,uptake,mealLevels,mealOrgan,mealHeld,mealFate,mealLumen};
 }
 export type BodyLens=ReturnType<typeof createBodyLens>;

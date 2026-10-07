@@ -36,3 +36,18 @@ test('veins carry the flow-weighted blend of the beds they drain',()=>{
  const cava=flow.segments.filter((s,i)=>parts[ids.get(graph.segments[i].part)!].name==='Inferior vena cava'&&s.share.length>=3).sort((a,b)=>b.flow-a.flow)[0];
  const mixed=cava.share.map(([bed])=>l.bed[bed]);assert.ok(cava.level>Math.min(...mixed)&&cava.level<Math.max(...mixed),`${cava.level} within ${mixed}`);
 });
+
+test('the meal lens shows only what came from the latest meal, and its fates add up to the meal',()=>{
+ const rest=createBody(),none=lens.mealLevels(rest);assert.deepEqual([none.arterial,none.portal,lens.mealOrgan(rest,'liver'),lens.mealHeld(rest,'liver')],[0,0,0,0]);
+ const fed=createBody();applyAction(fed,{kind:'meal',meal:{carbs:60,protein:20,fat:15,water:250,sodium:500}});advance(fed,1800);
+ const l=lens.mealLevels(fed),total=lens.levels(fed,'glucose');
+ // The meal's part of each blood level is below the whole level, and falls from portal to liver to arteries.
+ assert.ok(l.portal>l.bed.hepatic&&l.bed.hepatic>l.arterial&&l.arterial>.2,JSON.stringify(l));assert.ok(l.portal<total.portal&&l.arterial<total.arterial);
+ assert.ok(lens.mealOrgan(fed,'liver')>0&&lens.mealHeld(fed,'muscle')>lens.mealHeld(fed,'heart'));
+ // Five minutes in, most of the meal is still in the stomach; by half an hour the intestine holds a good part.
+ const early=createBody();applyAction(early,{kind:'meal',meal:{carbs:60,protein:20,fat:15,water:250,sodium:500}});assert.deepEqual(lens.mealLumen(early),{stomach:1,intestine:0});advance(early,300);
+ assert.ok(lens.mealLumen(early).stomach>.8&&lens.mealLumen(fed).stomach<.5&&lens.mealLumen(fed).intestine>lens.mealLumen(early).intestine);
+ const fate=lens.mealFate(fed);
+ for(const [key,eaten] of [['glucose',60],['aminoAcids',20],['lipids',15]] as const)assert.ok(Math.abs(Object.values(fate[key]).reduce((a,b)=>a+b,0)-eaten)<1e-9,key);
+ assert.ok(fate.glucose.stomach>fate.glucose.blood&&fate.glucose.stored>0&&fate.glucose.burned>0&&fate.lipids.stored<fate.glucose.stored);
+});
