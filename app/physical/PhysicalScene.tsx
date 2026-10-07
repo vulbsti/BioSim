@@ -13,6 +13,8 @@ import {createBodyLens,fates,lenses,nutrientNames,tint,tintColor,type Lens} from
 import {createBody} from '../simulation/engine';
 import {bedFlows,createVesselFlow,type Bed,type VesselFlow,type VesselGraph} from './vessel-flow';
 import {decodeModelResponse} from '../model-download';
+import {loadMolecules} from './molecule-pack';
+import {createDive,type Dive} from './dive/dive-layer';
 import {PointerTap} from '../pointer-tap';
 import {createAnatomyIndex,cutawayAt,partOpacity,tissueColor,type PhysicalViewState} from './anatomy-view';
 
@@ -175,6 +177,20 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
   const up=(e:PointerEvent)=>{if(!tap.up(e.pointerId,e.clientX,e.clientY)||!ready)return;const i=pick(e.clientX,e.clientY);if(i>=0)pickCallback.current(atlas.parts[i].id);};
   const cancel=(e:PointerEvent)=>{tap.cancel(e.pointerId);hovered.hidden=true;};
   for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.addEventListener(name,handler);
+  // The dive into a vessel's blood is an enrichment: if its models fail to load, the body view works without it and the reason is recorded.
+  let dive:Dive|null=null;
+  loadMolecules(abort.signal).then(pack=>{
+   if(disposed){pack.geometries.forEach(g=>g.dispose());return;}
+   dive=createDive(el,renderer,pack,software,{rest:createBody(),body:()=>physiology.current,atClosest:()=>camera.position.distanceTo(controls.target)<=controls.minDistance*1.03,changed:()=>{dirty=true;hovered.hidden=true;controls.enabled=!dive?.active();},
+    // The vessel under the pointer is the flow segment whose centerline passes nearest the picked surface point.
+    vesselAt:(x,y)=>{
+     const i=ready?pick(x,y):-1,hit=i<0||!vessels?null:raycaster.intersectObject(pickers[i]!,false)[0];if(!hit||!vessels)return null;
+     let best=-1,gap=Infinity;
+     vessels.segments.forEach((s,k)=>{if(s.flow<=0)return;for(let n=0;n<s.points.length;n+=3){const d=Math.hypot(s.points[n]-hit.point.x,s.points[n+1]-hit.point.y,s.points[n+2]-hit.point.z)-s.radius;if(d<gap){gap=d;best=k;}}});
+     if(best<0||gap>.002)return null;const s=vessels.segments[best];return {name:atlas.parts[s.part>=0?s.part:i].name,radius:s.radius,speed:s.speed,circuit:s.circuit};
+    }});
+   el.dataset.diveSpecies=String(pack.entries.length);
+  }).catch(e=>{if(disposed)return;el.dataset.diveError=e instanceof Error?e.message:'unavailable';console.warn('Blood models unavailable; the dive into a vessel is off.',e);});
   const lensLegend=document.createElement('div');lensLegend.className='physical-lens-legend';lensLegend.hidden=true;lensLegend.setAttribute('aria-label','Substance colour scale');
   lensLegend.innerHTML='<strong></strong><i></i><div class="scale"><span>½×</span><span>resting arterial</span><span>2×</span></div><p></p><svg viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"><polyline class="portal"/><polyline class="arterial"/></svg><div><span>last simulated hour</span><span><b class="arterial">arterial</b> <b class="portal">portal</b></span></div><small>Organs are compared with their own resting level.</small>';
   el.appendChild(lensLegend);const lensTitle=lensLegend.querySelector('strong')!,lensValues=lensLegend.querySelector('p')!,lensScale=lensLegend.querySelectorAll('.scale span'),lensNote=lensLegend.querySelector('small')!;
@@ -324,6 +340,8 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    const now=performance.now();frame=requestAnimationFrame(draw);
    if(!active||disposed||!ready){lastFrame=now;return;}
    if(gpuFence){if(gl.clientWaitSync(gpuFence,0,0)===gl.TIMEOUT_EXPIRED)return;gl.deleteSync(gpuFence);gpuFence=null;}
+   if(dive?.active()){if(now-lastRender<1000/(software?12:30))return;dive.frame(now);lastRender=lastFrame=now;if(canFence){gpuFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();}return;}
+   dive?.hint(camera.position.distanceTo(controls.target)<.6);
    const v=latest.current;
    if(lastLens!==shown.current){lastLens=shown.current;dirty=true;}
    if(!dirty&&v===lastState&&previousMotion===animate.current&&lastPhysiology===physiology.current&&(!animate.current||now-lastRender<1000/(software?12:30)))return;
@@ -346,7 +364,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    }
    updateMotion(dt);controls.update();if(!dirty&&!animate.current)return;renderer.render(scene,camera);lastRender=now;if(canFence){gpuFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();}dirty=false;
   };resize();draw();
-  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();intersection.disconnect();controls.dispose();for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.removeEventListener(name,handler);geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());visualTexture.dispose();environment?.dispose();if(gpuFence)gl.deleteSync(gpuFence);renderer.dispose();renderer.domElement.remove();hovered.remove();cycleReadout.remove();lensLegend.remove();mealFate.remove();callouts.remove();clock.remove();};
+  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();intersection.disconnect();controls.dispose();for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.removeEventListener(name,handler);dive?.dispose();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());visualTexture.dispose();environment?.dispose();if(gpuFence)gl.deleteSync(gpuFence);renderer.dispose();renderer.domElement.remove();hovered.remove();cycleReadout.remove();lensLegend.remove();mealFate.remove();callouts.remove();clock.remove();};
  },[atlas,onProgress,onError]);
  return <div className="physical-canvas" ref={host} data-testid="physical-scene"/>;
 }
