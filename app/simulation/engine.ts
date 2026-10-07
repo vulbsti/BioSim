@@ -15,6 +15,8 @@ import {
   syncNutrientTotals,
   transfer,
   transportSubstances,
+  carryMark,
+  markMeal,
   updateBloodMeasurements,
 } from "./transport";
 import { advanceMultiscaleMeal, createMultiscaleMeal, muscleGlucosePools } from "./multiscale-meal";
@@ -209,6 +211,7 @@ export function applyAction(s: BodyState, action: Action, label?: string) {
   if (action.kind === "meal") {
     const m = action.meal;
     for (const k of ["carbs", "protein", "fat", "water"] as const) s.stomach[k] += m[k];
+    markMeal(s, m);
     // Sodium is a rapidly mixed extracellular pool; gut sodium transit is not resolved.
     s.sodium += m.sodium / 22.99;
     s.waterIn += m.water;
@@ -246,6 +249,7 @@ export function schedule(s: BodyState, at: number, action: Action, label: string
   s.queue.sort((a, b) => a.at - b.at || a.id - b.id);
 }
 
+const NUTRIENT_OF = { carbs: "glucose", protein: "aminoAcids", fat: "lipids" } as const;
 function digest(s: BodyState, dt: number) {
   const h = s.hormones,
     vagal = clamp(s.parasympathetic / 0.7, 0.25, 1.4);
@@ -256,6 +260,7 @@ function digest(s: BodyState, dt: number) {
   const tau = (35 * (1 + 0.14 * (h.cck - 1) + 0.1 * (h.glp1 - 1))) / vagal;
   for (const k of ["carbs", "protein", "fat", "water"] as const) {
     const amount = s.stomach[k] * -Math.expm1(-dt / (k === "water" ? 12 : tau));
+    if (k !== "water") carryMark(s, "stomach", "intestinal lumen", NUTRIENT_OF[k], amount, s.stomach[k]);
     s.stomach[k] -= amount;
     s.gut[k] += amount;
   }
@@ -266,6 +271,7 @@ function digest(s: BodyState, dt: number) {
   };
   for (const k of ["carbs", "protein", "fat"] as const) {
     const p = specs[k],
+      lumen = s.gut[k],
       amount = Math.min(s.gut[k], ((p.v * p.e * s.gut[k]) / (p.km + s.gut[k])) * dt);
     s.gut[k] -= amount;
     s.digestionRates[k] = amount / dt;
@@ -273,9 +279,10 @@ function digest(s: BodyState, dt: number) {
       s,
       "intestinal lumen",
       k === "fat" ? "lymph" : "portal",
-      k === "carbs" ? "glucose" : k === "protein" ? "aminoAcids" : "lipids",
+      NUTRIENT_OF[k],
       amount,
       "absorption",
+      lumen,
     );
   }
   const water = s.gut.water * -Math.expm1(-dt / 15);
@@ -293,7 +300,7 @@ function metabolize(s: BodyState, dt: number) {
     ((dt * 0.12 * h.glucagon) / Math.sqrt(h.insulin)) * clamp((120 - g) / 30, 0, 4),
   );
   s.glycogen -= release;
-  transfer(s, "hepatic glycogen", "liver-tissue", "glucose", release, "reaction");
+  transfer(s, "hepatic glycogen", "liver-tissue", "glucose", release, "reaction", s.glycogen + release);
   const synthesisDemand =
     0.008 * Math.max(0, h.cortisol - 1) +
     0.09 * clamp((95 - s.glycogen) / 95, 0, 1) * clamp((100 - g) / 15, 0, 2);
@@ -347,7 +354,7 @@ function metabolize(s: BodyState, dt: number) {
     (((0.08 + 0.24 * exercise) * dt) / Math.sqrt(h.insulin)) * clamp(1 + (15 - s.lipids) / 5, 0, 3),
   );
   s.fatStore -= lipidRelease;
-  transfer(s, "fat reserve", "adipose-tissue", "lipids", lipidRelease, "reaction");
+  transfer(s, "fat reserve", "adipose-tissue", "lipids", lipidRelease, "reaction", s.fatStore + lipidRelease);
   const weights: Record<string, number> = {
     heart: 0.1,
     brain: 0.2,

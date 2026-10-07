@@ -4,10 +4,10 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {RoomEnvironment} from 'three/examples/jsm/environments/RoomEnvironment.js';
 import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import type {Atlas,SystemId} from '../anatomy';
-import type {BodyState} from '../simulation/types';
+import {NUTRIENTS,type BodyState} from '../simulation/types';
 import {cardiacContraction,respiratoryCycle,motionRates} from './motion';
 import {createTracerRoute,type TracerRoute} from './flow-routes';
-import {createBodyLens,lenses,tint,tintColor,type Lens} from './body-lens';
+import {createBodyLens,fates,lenses,nutrientNames,tint,tintColor,type Lens} from './body-lens';
 import {createBody} from '../simulation/engine';
 import {bedFlows,createVesselFlow,type Bed,type VesselFlow,type VesselGraph} from './vessel-flow';
 import {decodeModelResponse} from '../model-download';
@@ -160,8 +160,12 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
   const cancel=(e:PointerEvent)=>{tap.cancel(e.pointerId);hovered.hidden=true;};
   for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.addEventListener(name,handler);
   const lensLegend=document.createElement('div');lensLegend.className='physical-lens-legend';lensLegend.hidden=true;lensLegend.setAttribute('aria-label','Substance colour scale');
-  lensLegend.innerHTML='<strong></strong><i></i><div><span>½×</span><span>resting arterial</span><span>2×</span></div><p></p><svg viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"><polyline class="portal"/><polyline class="arterial"/></svg><div><span>last simulated hour</span><span><b class="arterial">arterial</b> <b class="portal">portal</b></span></div><small>Organs are compared with their own resting level.</small>';
-  el.appendChild(lensLegend);const lensTitle=lensLegend.querySelector('strong')!,lensValues=lensLegend.querySelector('p')!;let lensWas=false,tintedState:BodyState|null=null,tintedLens:Lens|null=null;
+  lensLegend.innerHTML='<strong></strong><i></i><div class="scale"><span>½×</span><span>resting arterial</span><span>2×</span></div><p></p><svg viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"><polyline class="portal"/><polyline class="arterial"/></svg><div><span>last simulated hour</span><span><b class="arterial">arterial</b> <b class="portal">portal</b></span></div><small>Organs are compared with their own resting level.</small>';
+  el.appendChild(lensLegend);const lensTitle=lensLegend.querySelector('strong')!,lensValues=lensLegend.querySelector('p')!,lensScale=lensLegend.querySelectorAll('.scale span'),lensNote=lensLegend.querySelector('small')!;
+  // Where the marked meal is now: one bar per nutrient, split by place.
+  const mealFate=document.createElement('div');mealFate.className='physical-meal-fate';mealFate.hidden=true;mealFate.setAttribute('aria-label','Where the latest meal is now');
+  mealFate.innerHTML=`<strong></strong>${NUTRIENTS.map(key=>`<div data-nutrient="${key}"><span></span><i>${fates.map(f=>`<b class="${f}"></b>`).join('')}</i></div>`).join('')}<p>${fates.map(f=>`<span><b class="${f}"></b>${f}</span>`).join('')}</p>`;
+  el.appendChild(mealFate);const fateTitle=mealFate.querySelector('strong')!,fateRows=NUTRIENTS.map(key=>{const row=mealFate.querySelector(`[data-nutrient="${key}"]`)!;return {key,text:row.querySelector('span')!,parts:[...row.querySelectorAll('b')] as HTMLElement[]};});let lensWas=false,tintedState:BodyState|null=null,tintedLens:Lens|null=null;
   // Labels pinned to organs: what each store holds now, and what each organ takes from its blood.
   const callouts=document.createElement('div');callouts.className='physical-callouts';callouts.setAttribute('aria-label','Live organ stores and exchange');el.appendChild(callouts);
   const clock=document.createElement('div');clock.className='physical-clock';clock.setAttribute('aria-label','Simulated time shown on the body');el.appendChild(clock);
@@ -202,42 +206,58 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
     vessels.setFlows(bedFlow);
     // The systolic envelope averages .18 over a beat, so arterial beads keep their mean speed.
     if(animate.current)vessels.advance(dt*(.5+cardiacContraction(heartPhase)*.5/.18),dt);
-    const absorbing=current.digestionRates.carbs+current.digestionRates.protein>=.0001,substance=shown.current==='flow'?null:shown.current;
+    const absorbing=current.digestionRates.carbs+current.digestionRates.protein>=.0001,meal=shown.current==='meal',substance=shown.current==='flow'||shown.current==='meal'?null:shown.current,tinted=meal||!!substance;
+    // The meal lens is linear from none to 1.5 times what resting blood holds; substances are log ratios.
+    const shade=(level:number)=>meal?Math.min(1,Math.max(0,level/1.5)):tint(level);
     // Levels and tints change only when the solver hands over a new state or the lens changes.
     const restyle=tintedState!==current||tintedLens!==shown.current;tintedState=current;tintedLens=shown.current;
-    if(substance&&restyle)vessels.setLevels(bodyLens.levels(current,substance));
+    if(tinted&&restyle)vessels.setLevels(substance?bodyLens.levels(current,substance):bodyLens.mealLevels(current));
     vessels.beads(s=>s.part>=0&&visualData[s.part*4]>=.5,(x,y,z,s)=>{
      if(slice.x*x+slice.y*y+slice.z*z+slice.w<0)return;
-     const nutrient=!substance&&s.circuit==='portal'&&absorbing,color=substance?tintColor(tint(s.level),lensColor):nutrient?nutrientColor:beadColor[s.circuit];
+     const nutrient=!tinted&&s.circuit==='portal'&&absorbing,color=tinted?tintColor(shade(s.level),lensColor):nutrient?nutrientColor:beadColor[s.circuit];
      tracerPositions[count*3]=x;tracerPositions[count*3+1]=y;tracerPositions[count*3+2]=z;color.toArray(tracerColors,count*3);tracerSizes[count]=s.bead;tracerLifts[count]=s.radius*1.25+.0008;count++;
      if(nutrient)counts.portal++;else counts.blood++;
     },tracerLimit-600);
     // Tint organs by their own level and vessel walls by the blood they carry.
-    if(restyle&&(substance||lensWas)){
-     const organTint=new Map<string,number>();
+    if(restyle&&(tinted||lensWas)){
+     const organTint=new Map<string,number>(),lumen=meal?bodyLens.mealLumen(current):null;
      atlas.parts.forEach((p,i)=>{
       let value=.5,on=0;
-      if(substance){
+      if(tinted){
        const organ=index.organ.get(p.id),segment=vesselOfPart[i];
-       if(segment>=0){value=tint(vessels!.segments[segment].level)*.5+.5;on=1;}
-       else if(organ){if(!organTint.has(organ))organTint.set(organ,tint(bodyLens.organ(current,organ,substance)));value=organTint.get(organ)!*.5+.5;on=1;}
+       if(segment>=0){value=shade(vessels!.segments[segment].level)*.5+.5;on=1;}
+       // The stomach and small intestine show how much of the meal is still inside them.
+       else if(lumen&&organ==='gut'&&/^(stomach|duodenum|.* part of (jejunum|ileum))$/i.test(p.name)){value=(/^stomach$/i.test(p.name)?lumen.stomach:lumen.intestine)*.5+.5;on=1;}
+       else if(organ){if(!organTint.has(organ))organTint.set(organ,shade(substance?bodyLens.organ(current,organ,substance):bodyLens.mealOrgan(current,organ)));value=organTint.get(organ)!*.5+.5;on=1;}
       }
       visualData[i*4+2]=value;visualData[i*4+3]=on;
      });
-     visualTexture.needsUpdate=true;dirty=true;lensWas=!!substance;
-     if(substance){const l=bodyLens.levels(current,substance);for(const [name,value] of [['Arterial',l.arterial],['Portal',l.portal],['Venous',l.venous]] as const)el.dataset['level'+name]=value.toFixed(3);for(const [organ,value] of organTint)el.dataset['tint'+organ[0].toUpperCase()+organ.slice(1)]=value.toFixed(3);
-      lensValues.textContent=`Arterial ${l.arterial.toFixed(2)}×  ·  Portal ${l.portal.toFixed(2)}×  ·  Venous ${l.venous.toFixed(2)}×`;lensTitle.textContent=lenses.find(x=>x.id===substance)!.name.toUpperCase();}
+     visualTexture.needsUpdate=true;dirty=true;lensWas=tinted;
+     if(tinted){const l=substance?bodyLens.levels(current,substance):bodyLens.mealLevels(current);for(const [name,value] of [['Arterial',l.arterial],['Portal',l.portal],['Venous',l.venous]] as const)el.dataset['level'+name]=value.toFixed(3);for(const [organ,value] of organTint)el.dataset['tint'+organ[0].toUpperCase()+organ.slice(1)]=value.toFixed(3);
+      lensValues.textContent=`Arterial ${l.arterial.toFixed(2)}×  ·  Portal ${l.portal.toFixed(2)}×  ·  Venous ${l.venous.toFixed(2)}×`;lensTitle.textContent=meal?'THIS MEAL · CARBOHYDRATE':lenses.find(x=>x.id===substance)!.name.toUpperCase();
+      [meal?'none':'½×',meal?'':'resting arterial',meal?'1.5× resting blood glucose':'2×'].forEach((text,i)=>{lensScale[i].textContent=text;});lensLegend.dataset.kind=meal?'meal':'level';
+      lensNote.textContent=meal?'Only glucose that came from the latest meal is coloured.':'Organs are compared with their own resting level.';}
     }
-    lensLegend.hidden=!substance;el.dataset.lens=shown.current;
+    lensLegend.hidden=!tinted;mealFate.hidden=!meal;el.dataset.lens=shown.current;
+    if(meal&&restyle){
+     const mark=current.transport.mark,fate=bodyLens.mealFate(current);
+     fateTitle.textContent=mark.at<0?'NO MEAL YET · ADD A MEAL TO FOLLOW IT':`WHERE THE MEAL IS · EATEN ${formatTime(current.time-mark.at)} AGO`;el.dataset.mealAt=String(mark.at);
+     for(const row of fateRows){
+      const eaten=mark.eaten[row.key];row.text.textContent=`${nutrientNames[row.key]} ${eaten.toFixed(0)} g`;
+      fates.forEach((f,i)=>{row.parts[i].style.flexGrow=String(eaten>0?Math.max(0,fate[row.key][f])/eaten:0);row.parts[i].title=`${f} ${fate[row.key][f].toFixed(1)} g`;});
+     }
+     for(const f of fates)el.dataset['meal'+f[0].toUpperCase()+f.slice(1)]=fate.glucose[f].toFixed(3);
+     const lumen=bodyLens.mealLumen(current);el.dataset.tintStomach=lumen.stomach.toFixed(3);el.dataset.tintIntestine=lumen.intestine.toFixed(3);
+    }
     // Every substance's last simulated hour is kept, so the passage of simulated time is visible
     // whichever one is chosen.
     if(restyle)for(const [id,trend] of trends){
      if(trend.length&&current.time<trend.at(-1)!.time)trend.length=0;
      if(trend.length&&current.time-trend.at(-1)!.time<15)continue;
-     const l=bodyLens.levels(current,id as Exclude<Lens,'flow'>);trend.push({time:current.time,arterial:l.arterial,portal:l.portal});while(trend.length>1&&current.time-trend[0].time>3600)trend.shift();
+     const l=id==='meal'?bodyLens.mealLevels(current):bodyLens.levels(current,id as Exclude<Lens,'flow'|'meal'>);trend.push({time:current.time,arterial:l.arterial,portal:l.portal});while(trend.length>1&&current.time-trend[0].time>3600)trend.shift();
     }
-    if(substance&&restyle){
-     const trend=trends.get(substance)!,line=(pick:(p:{arterial:number;portal:number})=>number)=>trend.map(p=>`${(200-(current.time-p.time)/18).toFixed(1)},${(20-tint(pick(p))*18).toFixed(1)}`).join(' ');
+    if(tinted&&restyle){
+     const trend=trends.get(shown.current)!,y=(level:number)=>meal?38-shade(level)*36:20-shade(level)*18,line=(pick:(p:{arterial:number;portal:number})=>number)=>trend.map(p=>`${(200-(current.time-p.time)/18).toFixed(1)},${y(pick(p)).toFixed(1)}`).join(' ');
      lensLegend.querySelector('polyline.arterial')!.setAttribute('points',line(p=>p.arterial));lensLegend.querySelector('polyline.portal')!.setAttribute('points',line(p=>p.portal));
     }
     if(restyle){clock.textContent=`SIMULATED ${formatTime(current.time)}`;el.dataset.simulatedTime=String(Math.round(current.time));el.dataset.bladder=current.bladder.toFixed(1);el.dataset.glycogen=current.glycogen.toFixed(2);}
@@ -245,12 +265,12 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
     for(const tag of tags){
      projected.copy(tag.anchor.at).project(camera);
      const visible=visualData[tag.anchor.part*4]>=.5&&projected.z<1&&Math.abs(projected.x)<.92&&Math.abs(projected.y)<.9;
-     const hide=!visible||(!tag.store&&!substance);if(tag.node.hidden!==hide)tag.node.hidden=hide;if(hide)continue;
+     const hide=!visible||(!tag.store&&!tinted);if(tag.node.hidden!==hide)tag.node.hidden=hide;if(hide)continue;
      const place=`translate(${((projected.x+1)/2*el.clientWidth+tag.shift[0]).toFixed(1)}px,${((1-projected.y)/2*el.clientHeight+tag.shift[1]).toFixed(1)}px)`;if(tag.placed!==place)tag.node.style.transform=tag.placed=place;
      // Text follows the solver's state, not the frame rate.
      if(!restyle)continue;
      tag.store$.textContent=tag.store?tag.store(current):'';
-     if(substance&&tag.organ){const net=bodyLens.uptake(current,tag.organ,substance);tag.flux$.textContent=Math.abs(net)<5e-4?'no net exchange':`${net>0?'takes up':'releases'} ${Math.abs(net).toFixed(Math.abs(net)<1?3:1)} ${unit}/min`;tag.node.dataset.uptake=net.toFixed(4);}else tag.flux$.textContent='';
+     if(substance&&tag.organ){const net=bodyLens.uptake(current,tag.organ,substance);tag.flux$.textContent=Math.abs(net)<5e-4?'no net exchange':`${net>0?'takes up':'releases'} ${Math.abs(net).toFixed(Math.abs(net)<1?3:1)} ${unit}/min`;tag.node.dataset.uptake=net.toFixed(4);}else if(meal&&tag.organ){const held=bodyLens.mealHeld(current,tag.organ);tag.flux$.textContent=`${held.toFixed(held<1?2:1)} g of this meal`;tag.node.dataset.held=held.toFixed(4);}else tag.flux$.textContent='';
     }
     el.dataset.cardiacOutput=(current.cardiacOutput).toFixed(3);
     if(aorta>=0)el.dataset.aortaFlow=(vessels.segments[aorta].flow*60000).toFixed(3);
@@ -302,7 +322,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    }
    updateMotion(dt);controls.update();if(!dirty&&!animate.current)return;renderer.render(scene,camera);lastRender=now;if(canFence){gpuFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();}dirty=false;
   };resize();draw();
-  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();intersection.disconnect();controls.dispose();for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.removeEventListener(name,handler);geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());visualTexture.dispose();environment?.dispose();if(gpuFence)gl.deleteSync(gpuFence);renderer.dispose();renderer.domElement.remove();hovered.remove();cycleReadout.remove();lensLegend.remove();callouts.remove();clock.remove();};
+  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();intersection.disconnect();controls.dispose();for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.removeEventListener(name,handler);geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());visualTexture.dispose();environment?.dispose();if(gpuFence)gl.deleteSync(gpuFence);renderer.dispose();renderer.domElement.remove();hovered.remove();cycleReadout.remove();lensLegend.remove();mealFate.remove();callouts.remove();clock.remove();};
  },[atlas,onProgress,onError]);
  return <div className="physical-canvas" ref={host} data-testid="physical-scene"/>;
 }

@@ -1,7 +1,10 @@
 import {
+  NUTRIENTS,
   SUBSTANCES,
   type BodyState,
   type Compartment,
+  type MealMark,
+  type Nutrient,
   type Organ,
   type Substance,
   type TransportFlux,
@@ -28,6 +31,53 @@ export const concentration = (c: Compartment, species: Substance) =>
 export const oxygenContent = (pressure: number) =>
   (0.201 * Math.pow(pressure, 2.7)) / (Math.pow(pressure, 2.7) + Math.pow(26.8, 2.7)) +
   0.00003 * pressure;
+/** Places outside the compartments that can hold labelled meal nutrients. */
+export const MARK_FATES = [
+  "stomach",
+  "intestinal lumen",
+  "hepatic glycogen",
+  "fat reserve",
+  "protein reserve",
+  "oxidized substrate",
+  "gluconeogenesis",
+  "urine",
+] as const;
+const unmarked = (): Record<Nutrient, number> => ({ glucose: 0, aminoAcids: 0, lipids: 0 });
+const createMark = (ids: string[]): MealMark => ({
+  at: -1,
+  eaten: unmarked(),
+  pools: Object.fromEntries([...ids, ...MARK_FATES].map((id) => [id, unmarked()])),
+});
+/** The newest meal takes the mark: earlier labels are dropped, and only this meal's grams are labelled. */
+export function markMeal(s: BodyState, meal: { carbs: number; protein: number; fat: number }) {
+  const mark = s.transport.mark;
+  for (const pool of Object.values(mark.pools)) Object.assign(pool, unmarked());
+  mark.at = s.time;
+  mark.eaten = { glucose: meal.carbs, aminoAcids: meal.protein, lipids: meal.fat };
+  mark.pools.stomach = { ...mark.eaten };
+}
+/**
+ * Moves the meal label with `amount` leaving `from`, in proportion to the labelled share of the
+ * source, whose size before the move is `sourceSize`. The label never changes an amount.
+ */
+export function carryMark(
+  s: BodyState,
+  from: string,
+  to: string,
+  species: Substance,
+  amount: number,
+  sourceSize: number,
+) {
+  const mark = s.transport.mark;
+  if (mark.at < 0 || isGas(species) || amount <= 0 || sourceSize <= 0) return;
+  const source = mark.pools[from],
+    sink = mark.pools[to],
+    key = species as Nutrient;
+  if (!source || source[key] <= 0) return;
+  const moved = Math.min(source[key], (amount * source[key]) / sourceSize);
+  source[key] -= moved;
+  if (sink) sink[key] += moved;
+}
 export function createTransport(): TransportState {
   const compartments: Record<string, Compartment> = {};
   const add = (
@@ -83,6 +133,7 @@ export function createTransport(): TransportState {
     compartments,
     fluxes: [],
     cumulativeFluxes: [],
+    mark: createMark(Object.keys(compartments)),
     metabolism: Object.fromEntries(
       beds.map((b) => [
         b.id,
@@ -99,6 +150,12 @@ export function createTransport(): TransportState {
 }
 export function totalSubstance(s: BodyState, species: Substance) {
   return Object.values(s.transport.compartments).reduce((a, c) => a + c.amounts[species], 0);
+}
+/** Labelled grams of each nutrient over every pool; equals what the marked meal contained. */
+export function markedTotal(s: BodyState) {
+  const total = unmarked();
+  for (const pool of Object.values(s.transport.mark.pools)) for (const key of NUTRIENTS) total[key] += pool[key];
+  return total;
 }
 export function syncNutrientTotals(s: BodyState) {
   s.glucoseMass = totalSubstance(s, "glucose");
@@ -138,8 +195,26 @@ export function logFlux(
     }
   }
 }
-/** Transfers never create material; null source/sink is an explicitly recorded system boundary. */
+/**
+ * Transfers never create material; null source/sink is an explicitly recorded system boundary.
+ * `reservoir` is the size of a source outside the compartments before this transfer, so the meal
+ * label leaves it in proportion.
+ */
 export function transfer(
+  s: BodyState,
+  from: string,
+  to: string,
+  species: Substance,
+  requested: number,
+  mechanism: TransportFlux["mechanism"],
+  reservoir = 0,
+) {
+  const a = s.transport.compartments[from];
+  carryMark(s, from, to, species, Math.max(0, a ? Math.min(a.amounts[species], requested) : requested), a ? a.amounts[species] : reservoir);
+  return move(s, from, to, species, requested, mechanism);
+}
+/** A transfer of amounts only; the caller accounts for the meal label. */
+function move(
   s: BodyState,
   from: string,
   to: string,
@@ -201,8 +276,17 @@ export function transportSubstances(s: BodyState, dt: number) {
         to: e.to,
         species,
         amount: concentration(c[e.from], species) * e.flow * (isGas(species) ? 1 : 0.6) * subdt,
+        size: c[e.from].amounts[species],
       })),
     );
+    // Labels are read from the same old state as the amounts, then applied with them.
+    const marks = moves.map((m) => m.size > 0 ? (s.transport.mark.pools[m.from][m.species as Nutrient] ?? 0) / m.size : 0);
+    moves.forEach((move, i) => {
+      if (marks[i] <= 0 || s.transport.mark.at < 0) return;
+      const pools = s.transport.mark.pools, key = move.species as Nutrient;
+      pools[move.from][key] -= move.amount * marks[i];
+      pools[move.to][key] += move.amount * marks[i];
+    });
     for (const move of moves) {
       c[move.from].amounts[move.species] -= move.amount;
       c[move.to].amounts[move.species] += move.amount;
@@ -220,8 +304,19 @@ export function transportSubstances(s: BodyState, dt: number) {
         // Exact two-pool exchange prevents overshoot when permeability exceeds compartment turnover.
         const lambda =
           ps * (1 / distributionVolume(blood, species) + 1 / distributionVolume(tissue, species));
-        const amount = Math.abs(rate) * (lambda ? -Math.expm1(-lambda * subdt) / lambda : subdt);
-        transfer(
+        const span = lambda ? -Math.expm1(-lambda * subdt) / lambda : subdt,
+          amount = Math.abs(rate) * span;
+        // The label crosses in both directions and settles on its own gradient, as a tracer does
+        // even when the net movement is zero. It is read before the amounts move.
+        const pools = s.transport.mark.pools,
+          labelled =
+            s.transport.mark.at < 0
+              ? 0
+              : (pools[blood.id][species] / distributionVolume(blood, species) -
+                  pools[tissue.id][species] / distributionVolume(tissue, species)) *
+                ps *
+                span;
+        move(
           s,
           rate >= 0 ? blood.id : tissue.id,
           rate >= 0 ? tissue.id : blood.id,
@@ -229,6 +324,8 @@ export function transportSubstances(s: BodyState, dt: number) {
           amount,
           "exchange",
         );
+        pools[blood.id][species] -= labelled;
+        pools[tissue.id][species] += labelled;
       }
     transfer(
       s,

@@ -63,7 +63,13 @@ test('running the simulation changes the body: stores fill, and a meal colours b
  await expect.poll(()=>read('data-level-portal'),{timeout:30000}).toBeGreaterThan(1.4);
  const arterial=await read('data-level-arterial');expect(arterial).toBeGreaterThan(1.1);expect(arterial).toBeLessThan(await read('data-level-portal'));
  expect(await read('data-tint-liver')).toBeGreaterThan(0);await expect(callouts).toContainText(/LIVER\s*glycogen [\d.]+ g\s*takes up/);
- await page.getByLabel('Colour the body by').selectOption('oxygen');await expect.poll(()=>read('data-level-venous')).toBeLessThan(.85);
+ await page.getByLabel('Colour the body by').selectOption('oxygen');await expect.poll(()=>read('data-level-venous')).toBeLessThan(.85); // The meal lens colours only what came from the meal: the portal vein carries more of it than the arteries.
+ await page.getByLabel('Colour the body by').selectOption('meal');await expect(scene).toHaveAttribute('data-lens','meal');
+ await expect.poll(()=>read('data-level-portal')).toBeGreaterThan(.2);expect(await read('data-level-arterial')).toBeLessThan(await read('data-level-portal'));expect(await read('data-level-arterial')).toBeGreaterThan(.05);
+ const fate=page.locator('.physical-meal-fate');await expect(fate).toContainText('EATEN 01:00:00 AGO');await expect(fate).toContainText(/Carbohydrate \d+ g/);
+ const parts=await Promise.all(['Stomach','Intestine','Blood','Tissues','Stored','Burned','Excreted'].map(f=>read('data-meal-'+f.toLowerCase())));
+ const eaten=Number((await fate.locator('[data-nutrient="glucose"] span').textContent())!.match(/(\d+) g/)![1]);expect(Math.abs(parts.reduce((a,b)=>a+b,0)-eaten)).toBeLessThan(.01);expect(parts[4]).toBeGreaterThan(1);
+ await expect(callouts).toContainText(/LIVER\s*glycogen [\d.]+ g\s*[\d.]+ g of this meal/);
 });
 
 test('reduced motion, thyroid isolation, section controls and mobile expansion work',async({page})=>{

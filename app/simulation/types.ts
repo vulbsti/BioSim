@@ -73,6 +73,19 @@ export type HormoneFlux = { target: number; secretion: number; clearance: number
 export type Flow = { id: Organ; name: string; flow: number; oxygenUse: number; venousO2: number };
 export const SUBSTANCES = ["glucose", "aminoAcids", "lipids", "oxygen", "carbonDioxide"] as const;
 export type Substance = (typeof SUBSTANCES)[number];
+/** Substances a meal delivers; gases are not followed. */
+export const NUTRIENTS = ["glucose", "aminoAcids", "lipids"] as const;
+export type Nutrient = (typeof NUTRIENTS)[number];
+/**
+ * Label on the most recent meal's nutrients. `pools` holds the labelled grams in every compartment
+ * and in each place outside them (stomach, lumen, reserves, oxidation, urine), so their sum per
+ * nutrient always equals `eaten`. `at` is the meal's time, or -1 before any meal.
+ */
+export type MealMark = {
+  at: number;
+  eaten: Record<Nutrient, number>;
+  pools: Record<string, Record<Nutrient, number>>;
+};
 export type Compartment = {
   id: string;
   name: string;
@@ -100,6 +113,7 @@ export type TransportState = {
   compartments: Record<string, Compartment>;
   fluxes: TransportFlux[];
   cumulativeFluxes: TransportFlux[];
+  mark: MealMark;
   metabolism: Record<string, MetabolicRate>;
   oxygenAbsorbed: number;
   oxygenConsumed: number;
