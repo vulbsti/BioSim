@@ -72,6 +72,27 @@ test('running the simulation changes the body: stores fill, and a meal colours b
  await expect(callouts).toContainText(/LIVER\s*glycogen [\d.]+ g\s*[\d.]+ g of this meal/);
 });
 
+test('hormones colour the structures that release them by family, and one can be followed to where it acts',async({page})=>{
+ test.setTimeout(240000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:90000});
+ await page.getByLabel('Colour the body by').selectOption('hormones');await expect(scene).toHaveAttribute('data-lens','hormones');
+ const panel=scene.locator('.physical-hormones');await expect(panel).toBeVisible();await expect(panel.locator('button')).toHaveCount(32);await expect(panel.locator('section')).toHaveCount(8);
+ // At rest nothing has left baseline far enough to be labelled.
+ await expect(scene.locator('.physical-hormone-tags > div:not([hidden])')).toHaveCount(0);
+ await page.getByRole('button',{name:'Introduce meal',exact:false}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();
+ await page.getByRole('button',{name:'Organs',exact:true}).click();await page.getByRole('button',{name:'Abdomen',exact:true}).click();
+ // After a meal the pancreas shows insulin and the gut its own hormones, each named on the structure.
+ await expect(scene).toHaveAttribute('data-site-pancreas','insulin',{timeout:60000});await expect(scene).toHaveAttribute('data-site-stomach','gastrin');
+ expect(['cck','glp1','secretin']).toContain(await scene.getAttribute('data-site-intestine'));
+ await expect(scene.locator('.physical-hormone-tags')).toContainText(/PANCREAS\s*Insulin [\d.]+×/);await expect(panel.locator('button[data-hormone="insulin"] em')).toHaveText(/[\d.]+×/);
+ await expect(scene.locator('.physical-callouts')).toBeHidden();
+ // Choosing insulin leaves only its source and its target coloured, and says which is which.
+ await panel.locator('button[data-hormone="insulin"]').click();await expect(scene).toHaveAttribute('data-hormone-chosen','insulin',{timeout:30000});
+ await expect(scene).toHaveAttribute('data-site-liver','insulin');expect(await scene.getAttribute('data-site-stomach')).toBeNull();
+ await expect(scene.locator('.physical-hormone-tags')).toContainText(/LIVER\s*acts here · Insulin/);await expect(panel.locator('button[data-hormone="insulin"]')).toHaveAttribute('aria-pressed','true');
+ await panel.locator('button[data-hormone=""]').click();await expect(scene).toHaveAttribute('data-site-stomach','gastrin',{timeout:30000});
+ // Another colour option puts the store labels back.
+ await page.getByLabel('Colour the body by').selectOption('flow');await expect(panel).toBeHidden();await expect(scene.locator('.physical-callouts')).toBeVisible();
+});
 test('each heart chamber follows its simulated volume through the phases of the beat',async({page})=>{
  // Samples a live animation under software rendering, so the limits are generous for a loaded machine.
  test.setTimeout(300000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:90000});

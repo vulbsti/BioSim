@@ -2,9 +2,9 @@ import {Color} from 'three';
 import {NUTRIENTS,type BodyState,type Nutrient,type Organ,type Substance} from '../simulation/types';
 import type {Bed} from './vessel-flow';
 
-/** What the body view colours by: vessel speed only, one transported substance, or the latest meal's carbohydrate. */
-export type Lens='flow'|Substance|'meal';
-export const lenses:{id:Lens;name:string;unit:string}[]=[{id:'flow',name:'Flow speed',unit:''},{id:'glucose',name:'Glucose',unit:'g'},{id:'oxygen',name:'Oxygen',unit:'mL'},{id:'carbonDioxide',name:'Carbon dioxide',unit:'mL'},{id:'aminoAcids',name:'Amino acids',unit:'g'},{id:'lipids',name:'Lipids',unit:'g'},{id:'meal',name:'This meal',unit:'g'}];
+/** What the body view colours by: vessel speed only, one transported substance, the latest meal's carbohydrate, or hormones by family. */
+export type Lens='flow'|Substance|'meal'|'hormones';
+export const lenses:{id:Lens;name:string;unit:string}[]=[{id:'flow',name:'Flow speed',unit:''},{id:'glucose',name:'Glucose',unit:'g'},{id:'oxygen',name:'Oxygen',unit:'mL'},{id:'carbonDioxide',name:'Carbon dioxide',unit:'mL'},{id:'aminoAcids',name:'Amino acids',unit:'g'},{id:'lipids',name:'Lipids',unit:'g'},{id:'meal',name:'This meal',unit:'g'},{id:'hormones',name:'Hormones',unit:''}];
 /** Where a marked meal can be, in the order it travels. */
 export const fates=['stomach','intestine','blood','tissues','stored','burned','excreted'] as const;
 export type Fate=(typeof fates)[number];

@@ -14,3 +14,11 @@ Written 2026-10-07. Step 2 of the list (marked meal, scrub back in time, pumping
 - Playing the past forward as an animation without changing the run.
 - Rewinding a comparison fork together with the run.
 - Saving the timeline in an exported run.
+
+## Follow-up, 2026-10-08: hormone colour option (T6.2)
+
+- The task asked for a distinct colour per hormone. Thirty-one distinct hues are not achievable, so colour encodes eight families and the name is always written. This is a deliberate departure from the task as written.
+- The palette was run through a validator against the stage background before use; all five checks pass, with the worst adjacent colour-vision pair at 8.4.
+- Rejected: colouring blood beads by a mix of elevated hormones. A bead has no stable identity in the bead callback, so colours would flicker, and the model has no per-vessel hormone level to show anyway.
+- Per-part colour needed a second meaning for the style texture's fourth channel: 1 is the warm and cool lens, 2 and above is a hormone family.
+- Not done: hormone molecular structures (T6.3, the molecule thread's area); per-compartment hormone transport.
