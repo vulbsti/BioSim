@@ -10,15 +10,18 @@ import {useExcitation} from './use-excitation';
 import './tissue.css';
 import type {BodyRunObservation} from '../simulation/body-observation';
 import {multiscaleMealReadout} from '../simulation/multiscale-meal';
-import {glucose} from '../simulation/engine';
+import {createBody,glucose} from '../simulation/engine';
+import {countInWords,segmentVolumeL,tissueUptake} from './uptake';
 const titles={muscle:'Right vastus lateralis',fascicle:'A bundle of muscle fibers',fiber:'Inside a muscle fiber',sarcomere:'The sliding filaments'};
 const subtitles={muscle:'SOURCE ANATOMY / THIGH',fascicle:'REPRESENTATIVE / TISSUE SEGMENT',fiber:'REPRESENTATIVE / CELL SEGMENT',sarcomere:'REPRESENTATIVE / FILAMENT LATTICE'};
 const defaults={muscle:'FJ1442',fascicle:'pilot-fiber-00',fiber:'pilot-myofibrils',sarcomere:'pilot-thick-filaments'};
 const levelNames={muscle:'Muscle',fascicle:'Fascicle',fiber:'Muscle fiber',sarcomere:'Sarcomere'};
 const clock=(s:number)=>`${Math.floor(s/60).toString().padStart(2,'0')}:${Math.floor(s%60).toString().padStart(2,'0')}`;
-export default function TissueExplorer({onBack,onAnatomy,onMolecular,bodyRun}:{bodyRun?:BodyRunObservation;onBack:()=>void;onAnatomy:(query:string)=>void;onMolecular:()=>void}){
+export default function TissueExplorer({onBack,onAnatomy,onMolecular,bodyRun,body,initialLevel}:{bodyRun?:BodyRunObservation;
+ /** The body run, whether or not the physical meal pathway is on: it drives the capillary-to-fibre glucose in the fascicle. */
+ body?:BodyRunObservation;initialLevel?:TissueLevel;onBack:()=>void;onAnatomy:(query:string)=>void;onMolecular:()=>void}){
  const [manifest,setManifest]=useState<TissueManifest|null>(null),[error,setError]=useState(''),[sceneError,setSceneError]=useState(''),[ready,setReady]=useState(false);
- const [level,setLevel]=useState<TissueLevel>('muscle'),[lod,setLOD]=useState<TissueLOD>('detail'),[selection,setSelection]=useState({...defaults}),[showSheath,setShowSheath]=useState(true),[showBone,setShowBone]=useState(false),[section,setSection]=useState<TissueView['section']>('none'),[slice,setSlice]=useState(.5),[reset,setReset]=useState(0),[angle,setAngle]=useState<TissueView['angle']>('oblique');
+ const [level,setLevel]=useState<TissueLevel>(initialLevel??'muscle'),[lod,setLOD]=useState<TissueLOD>('detail'),[selection,setSelection]=useState({...defaults}),[showSheath,setShowSheath]=useState(true),[showBone,setShowBone]=useState(false),[section,setSection]=useState<TissueView['section']>('none'),[slice,setSlice]=useState(.5),[reset,setReset]=useState(0),[angle,setAngle]=useState<TissueView['angle']>(initialLevel==='fascicle'?'end':'oblique');
  const [metrics,setMetrics]=useState<SceneMetrics|null>(null),[result,setResult]=useState<ExperimentResult|null>(null),[signalError,setSignalError]=useState(''),[signal,setSignal]=useState(false),[time,setTime]=useState(0),[playing,setPlaying]=useState(false),[speed,setSpeed]=useState(60),[notice,setNotice]=useState(''),[noticeError,setNoticeError]=useState(false);
  const file=useRef<HTMLInputElement>(null);
  const [sarcomereLength,setSarcomereLength]=useState<number>(SARCOMERE.rest);
@@ -36,7 +39,10 @@ export default function TissueExplorer({onBack,onAnatomy,onMolecular,bodyRun}:{b
  const changeLevel=(next:TissueLevel)=>{setLevel(next);setSection('none');setSlice(.5);};
  const linked=bodyRun?multiscaleMealReadout(bodyRun.state):null;
  const glut4=linked?.surfaceGlut4Percent??sample?.values.glut4??4;
- const view=useMemo<TissueView>(()=>({selected:selection[level],showSheath,showBone,section,slice,reset,angle,signal:!!bodyRun||signal,glut4,sarcomereLength:displayLength,excitation:!bodyRun&&excitation.sample?{boundTroponinUM:excitation.sample.boundTroponinUM,postStrokeUM:excitation.sample.postStrokeUM}:undefined}),[selection,level,showSheath,showBone,section,slice,reset,angle,signal,glut4,displayLength,excitation.sample,!!bodyRun]);
+ // Glucose leaving the capillaries for the fibres, from the body run, scaled to this fascicle segment.
+ const resting=useMemo(()=>createBody(),[]),fascicle=manifest?.levels.fascicle,flow=fascicle?.layout;
+ const uptake=useMemo(()=>{if(!body||level!=='fascicle'||!fascicle||!flow)return null;const radius=Math.max(...flow.fiberCentersM.map(p=>Math.hypot(p[0],p[2])))+flow.fiberRadiusM;return tissueUptake(body.state,resting,segmentVolumeL(radius,fascicle.spanM));},[body?.state,level,fascicle,flow,resting]);
+ const view=useMemo<TissueView>(()=>({uptake:uptake?{dotsPerSecond:uptake.dotsPerSecond,direction:Math.sign(uptake.netGPerMin),capillaryLevel:uptake.capillaryLevel,mealShare:uptake.mealShare}:undefined,selected:selection[level],showSheath,showBone,section,slice,reset,angle,signal:!!bodyRun||signal,glut4,sarcomereLength:displayLength,excitation:!bodyRun&&excitation.sample?{boundTroponinUM:excitation.sample.boundTroponinUM,postStrokeUM:excitation.sample.postStrokeUM}:undefined}),[selection,level,showSheath,showBone,section,slice,reset,angle,signal,glut4,displayLength,excitation.sample,!!bodyRun,uptake?.dotsPerSecond,uptake?.capillaryLevel,uptake?.mealShare,uptake&&Math.sign(uptake.netGPerMin)]);
  const save=()=>{if(!manifest)return;try{const text=exportTissueView(manifest,{level,lod,selection,showSheath,showBone,section,slice,angle,signal,time,sarcomereLength,excitation:excitation.view});const url=URL.createObjectURL(new Blob([text],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='human-atlas-tissue-view.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setNoticeError(false);setNotice('Specimen selection and mechanism playheads saved.');}catch(e){setNoticeError(true);setNotice((e as Error).message);}};
  return <div className="tissue-app">
   <header className="tissue-header"><button className="tissue-brand" onClick={onBack}><span><Activity size={22}/></span><b>Human Atlas<small>TISSUE EXPLORER</small></b></button><button className="tissue-back" onClick={onBack}><ArrowLeft size={14}/> Whole-body physiology</button><button className="tissue-back tissue-molecular-link" onClick={onMolecular}>Molecular lab <ArrowRight size={14}/></button></header>
@@ -46,7 +52,8 @@ export default function TissueExplorer({onBack,onAnatomy,onMolecular,bodyRun}:{b
     <section className="tissue-workspace">
      <div className="tissue-viewer"><div className="tissue-view-heading"><div><span className="tissue-eyebrow">{subtitles[level]}</span><h2>{titles[level]}</h2></div><span className="tissue-ready" role="status">{sceneError?'Unavailable':ready?<><i/> Specimen ready</>:'Loading specimen…'}</span></div>
       <div className="tissue-stage">
-       <TissueScene asset={manifest.levels[level].representations[lod]} level={level} view={view} onSelect={id=>setSelection(s=>({...s,[level]:id}))} onReady={()=>setReady(true)} onError={setSceneError} onMetrics={setMetrics}/>
+       <TissueScene asset={manifest.levels[level].representations[lod]} level={level} view={view} onSelect={id=>setSelection(s=>({...s,[level]:id}))} onReady={()=>setReady(true)} onError={setSceneError} onMetrics={setMetrics} flow={flow}/>
+       {uptake&&body&&<div className="tissue-uptake" aria-label="Glucose leaving capillary blood"><span>GLUCOSE · CAPILLARY TO FIBRE</span><strong>{uptake.netGPerMin>=0?'Muscle takes up':'Muscle releases'} {(Math.abs(uptake.netGPerMin)*1000).toFixed(1)} mg/min</strong><small>whole muscle · body run at {clock(body.state.time)}</small><small>{uptake.dotsPerSecond>0?`Each crossing dot is about ${countInWords(uptake.moleculesPerDot)} molecules in this segment`:'No net movement right now'}</small><small>Capillary blood {uptake.capillaryLevel.toFixed(2)}× resting · {(uptake.mealShare*100).toFixed(0)}% of tissue glucose from the latest meal (gold dots)</small></div>}
        {sceneError&&<div className="tissue-stage-error" role="alert">{sceneError}</div>}
        {!ready&&!sceneError&&<div className="tissue-stage-loading" role="status"><Box size={30}/><span>Loading {level} geometry</span></div>}
        <div className="tissue-stage-caption"><span>{level==='muscle'?'BodyParts3D / FJ1442':'Illustrative microstructure'}</span><small>{level==='muscle'?'Original source surface':'Not registered to the source donor'}</small></div>

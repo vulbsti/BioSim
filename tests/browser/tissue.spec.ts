@@ -38,3 +38,18 @@ for(const width of [320,390])test(`tissue inspection and controls fit ${width}px
 test('failed tissue asset produces a visible error with usable navigation',async({page})=>{
  await page.route('**/muscle-detail.glb',r=>r.fulfill({status:503,body:'Unavailable'}));await page.goto('/#tissue');await expect(page.getByRole('alert')).toContainText('specimen could not be loaded');await expect(page.getByRole('button',{name:'Whole-body physiology',exact:true})).toBeEnabled();
 });
+
+test('the meal route leads into the fascicle, where glucose crosses from capillaries to fibres at the simulated rate',async({page})=>{
+ test.setTimeout(300000);await page.goto('/');const body=page.getByTestId('physical-scene');await expect(body).toHaveAttribute('data-ready','true',{timeout:90000});
+ await page.getByRole('button',{name:'Introduce meal',exact:false}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();
+ await expect(page.getByLabel('Elapsed simulation time',{exact:true})).toHaveText('00:10:00',{timeout:30000});
+ await page.getByLabel('Colour the body by').selectOption('meal');await body.getByRole('button',{name:'Show route to muscle'}).click();await expect(body).toHaveAttribute('data-route','on',{timeout:30000});
+ await body.getByRole('link',{name:/Zoom into the muscle tissue/}).click();
+ // The tissue explorer opens on the fascicle, linked to the same body run.
+ const scene=page.getByTestId('tissue-scene');await ready(page,39);
+ const readout=page.locator('.tissue-uptake');await expect(readout).toContainText(/Muscle takes up [\d.]+ mg\/min/);await expect(readout).toContainText('body run at 10:00');await expect(readout).toContainText(/Each crossing dot is about [\d.]+ (million|billion|trillion) molecules/);
+ const number=async(name:string)=>Number(await scene.getAttribute(name));
+ expect(await number('data-uptake-stream')).toBe(50);await expect.poll(()=>number('data-uptake-rate'),{timeout:30000}).toBeGreaterThan(1);await expect.poll(()=>number('data-uptake-crossing'),{timeout:30000}).toBeGreaterThan(0);
+ // Other levels of the specimen carry no dots.
+ await page.getByRole('button',{name:'Enter muscle fiber',exact:true}).click();await ready(page,7);expect(await scene.getAttribute('data-uptake-rate')).toBeNull();await expect(readout).toHaveCount(0);
+});

@@ -219,7 +219,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
   el.appendChild(lensLegend);const lensTitle=lensLegend.querySelector('strong')!,lensValues=lensLegend.querySelector('p')!,lensScale=lensLegend.querySelectorAll('.scale span'),lensNote=lensLegend.querySelector('small')!;
   // Where the marked meal is now: one bar per nutrient, split by place.
   const mealFate=document.createElement('div');mealFate.className='physical-meal-fate';mealFate.hidden=true;mealFate.setAttribute('aria-label','Where the latest meal is now');
-  mealFate.innerHTML=`<strong></strong>${NUTRIENTS.map(key=>`<div data-nutrient="${key}"><span></span><i>${fates.map(f=>`<b class="${f}"></b>`).join('')}</i></div>`).join('')}<p>${fates.map(f=>`<span><b class="${f}"></b>${f}</span>`).join('')}</p><button type="button" aria-pressed="false">Show route to muscle</button><ol class="physical-route-list" hidden></ol>`;
+  mealFate.innerHTML=`<strong></strong>${NUTRIENTS.map(key=>`<div data-nutrient="${key}"><span></span><i>${fates.map(f=>`<b class="${f}"></b>`).join('')}</i></div>`).join('')}<p>${fates.map(f=>`<span><b class="${f}"></b>${f}</span>`).join('')}</p><button type="button" aria-pressed="false">Show route to muscle</button><a class="physical-route-zoom" href="#tissue/fascicle" hidden>Zoom into the muscle tissue →</a><ol class="physical-route-list" hidden></ol>`;
   // The meal's route to the thigh muscle: a line along real vessels, travelling markers, and a label at each station.
   const routeButton=mealFate.querySelector('button')!,routeList=mealFate.querySelector('ol')!,routeTagHost=document.createElement('div');routeTagHost.className='physical-route-tags';routeTagHost.setAttribute('aria-label','Meal carbohydrate at each station of the route');el.appendChild(routeTagHost);
   const routeTags:{id:RouteStation;at:T.Vector3;node:HTMLDivElement;text:Element;placed:string}[]=[];let mealRoute:{route:MealRoute;lines:T.Object3D[];segments:Set<unknown>;parts:Set<number>;path:number[];lengths:number[]}|null=null,routeOn=false,tintedRoute=false;
@@ -329,7 +329,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
     }
     if(mealRoute){
      for(const line of mealRoute.lines)if(line.visible!==showRoute){line.visible=showRoute;dirty=true;}
-     if(restyle){const amounts=routeAmounts(current);for(const tag of routeTags){const g=amounts[tag.id];tag.text.textContent=`${g.toFixed(g<1?2:1)} g`;el.dataset['route'+tag.id[0].toUpperCase()+tag.id.slice(1)]=g.toFixed(3);}routeButton.setAttribute('aria-pressed',String(routeOn));routeButton.textContent=routeOn?'Hide route to muscle':'Show route to muscle';el.dataset.route=showRoute?'on':'off';routeList.hidden=!showRoute;}
+     if(restyle){const amounts=routeAmounts(current);for(const tag of routeTags){const g=amounts[tag.id];tag.text.textContent=`${g.toFixed(g<1?2:1)} g`;el.dataset['route'+tag.id[0].toUpperCase()+tag.id.slice(1)]=g.toFixed(3);}routeButton.setAttribute('aria-pressed',String(routeOn));routeButton.textContent=routeOn?'Hide route to muscle':'Show route to muscle';el.dataset.route=showRoute?'on':'off';routeList.hidden=!showRoute;(mealFate.querySelector('a') as HTMLElement).hidden=!showRoute;}
      for(const tag of routeTags){
       projected.copy(tag.at).project(camera);
       const hide=!showRoute||projected.z>=1||Math.abs(projected.x)>.97||Math.abs(projected.y)>.95;if(tag.node.hidden!==hide)tag.node.hidden=hide;if(hide)continue;
