@@ -178,7 +178,8 @@ test("looking back shows an earlier moment everywhere, returns to now, and can c
   await expect(slider).toHaveCount(0);
   await page.getByRole("button", { name: "Introduce meal", exact: false }).click();
   await page.getByRole("button", { name: "Advance one hour" }).click();
-  await expect(elapsed).toHaveText("01:00:00");
+  // An hour is advanced in 120 recorded steps, which takes a few seconds on a busy machine.
+  await expect(elapsed).toHaveText("01:00:00", { timeout: 30000 });
   // One hour leaves a moment every 30 simulated seconds.
   await expect(slider).toHaveAttribute("max", "120");
   await expect(scene).toHaveAttribute("data-ready", "true", { timeout: 90000 });
