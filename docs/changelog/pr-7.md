@@ -46,3 +46,17 @@ Results, 25 minutes after a 60 g carbohydrate meal: pancreas shows insulin at 3.
 Verification: hormone lens 3/3; body lens 3/3; heart motion 6/6; physical anatomy 6/6; browser `physical-anatomy.spec.ts` 8/8 (1 new).
 
 Limits: the model keeps one body-wide level per hormone, so blood has one tint everywhere and nothing shows a hormone travelling. Fat, muscle, bone, vessels and nerves have no single structure in the atlas: leptin has no source shown, angiotensin II has none, and several targets are omitted. Family colours on adjacent structures (pancreas yellow beside adrenal orange) are separable only with the labels. Labels of neighbouring structures can overlap.
+
+## Added 2026-10-08: the meal's route from stomach to muscle
+
+Before: the meal colour showed how much of the meal each place held, but not the path between them.
+
+After: in *This meal*, *Show route to muscle* draws one path from the stomach to the left thigh muscle along the real vessels, with markers travelling it, only its vessels carrying beads, and eight numbered stations listing the grams of the meal there now.
+
+- `app/physical/meal-route.ts` (new): builds the route from the vessel graph and reads station amounts from the meal label.
+- `app/physical/PhysicalScene.tsx`, `physical.css`: the tube and dashed lines, travelling markers, numbered markers, the station list and the toggle.
+- `tests/meal-route.test.ts` (new, in `test:anatomy`), one new test in `tests/browser/physical-anatomy.spec.ts`.
+
+Results: the route is 2.38 m long. Thirty minutes after a 60 g carbohydrate meal the stations hold 28.0 g (stomach), 18.0 g (small intestine), 0.21 g (portal vein), 5.7 g (liver), 0.86 g (vena cava), 0.19 g (lungs), 0.29 g (aorta) and 2.0 g (muscle).
+
+Limits: one route among many. Station amounts are the model compartment's (all arterial blood, all muscle), not that vessel's or that muscle's alone. Stretches through the liver, heart, lungs and into the muscle are straight lines, because the graph has no vessels inside those organs. The pulmonary stretch uses one left lung artery and the nearest left pulmonary vein. In the thigh the graph reaches the supplying branch through the source mesh named "Set of perforating arteries", where anatomy has the deep femoral artery.

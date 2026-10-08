@@ -10,6 +10,7 @@ import {heartCycle,CHAMBERS,VALVES,type HeartCycle} from '../simulation/heart';
 import {chamberFill,conductionGlow,easeValves,heartPhaseName,leafletKind,type ConductionStage,type HeartRig} from './heart-motion';
 import {createTracerRoute,type TracerRoute} from './flow-routes';
 import {createBodyLens,fates,lenses,nutrientNames,tint,tintColor,type Lens} from './body-lens';
+import {buildMealRoute,routeAmounts,type MealRoute,type RouteStation} from './meal-route';
 import {HORMONE_FAMILIES,HORMONE_SITES,hormoneLabel,hormoneShades,mostChanged,type HormoneSite} from './hormone-lens';
 import {hormoneInfo} from '../simulation/endocrine';
 import {createBody} from '../simulation/engine';
@@ -98,6 +99,26 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    const response=await fetch('/models/vessel-graph.json',{signal:abort.signal});if(!response.ok)throw new Error('The vessel paths could not be loaded.');
    const graph=await response.json() as VesselGraph,ids=new Map(atlas.parts.map((p,i)=>[p.id,i]));if(disposed)return;
    vessels=createVesselFlow(graph,ids);
+   // One path a meal can take from the stomach to the thigh, drawn on request in the meal lens.
+   try{
+    const centreOf=(pattern:RegExp)=>{const box=new T.Box3();atlas.parts.forEach((p,i)=>{if(pattern.test(p.name))box.union(bounds[i]);});if(box.isEmpty())throw new Error(`No structure matches ${pattern}.`);return box.getCenter(new T.Vector3()).toArray() as [number,number,number];};
+    const route=buildMealRoute(graph,id=>{const i=ids.get(id);return i===undefined?undefined:atlas.parts[i].name;},centreOf),flow=vessels;
+    // Vessel stretches are thin tubes so they read at any zoom; stretches through an organ are dashed lines.
+    const gold=new T.MeshBasicMaterial({color:0xffd27a,depthTest:false,transparent:true,opacity:.92});materials.push(gold);
+    const lines:T.Object3D[]=route.legs.filter(l=>l.kind==='vessel').map(l=>{
+     const along:T.Vector3[]=[];for(let k=0;k<l.points.length;k+=3){const point=new T.Vector3(l.points[k],l.points[k+1],l.points[k+2]);if(!along.length||along.at(-1)!.distanceTo(point)>.004||k===l.points.length-3)along.push(point);}
+     const g=new T.TubeGeometry(new T.CatmullRomCurve3(along,false,'centripetal'),Math.max(8,along.length*2),.0014,6);geometries.push(g);return new T.Mesh(g,gold);
+    });
+    {const pairs=route.legs.filter(l=>l.kind==='through').flatMap(l=>{const out:number[]=[];for(let k=3;k<l.points.length;k+=3)out.push(...l.points.slice(k-3,k+3));return out;});
+     const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(pairs,3));geometries.push(g);const m=new T.LineDashedMaterial({color:0xffd27a,depthTest:false,transparent:true,opacity:.8,dashSize:.006,gapSize:.005});materials.push(m);const dashed=new T.LineSegments(g,m);dashed.computeLineDistances();lines.push(dashed);}
+    for(const line of lines){line.frustumCulled=false;line.renderOrder=6;line.visible=false;scene.add(line);}
+    // The whole path as one polyline with running length, for the markers that travel it.
+    const path=route.legs.flatMap(l=>l.points),lengths=[0];for(let k=3;k<path.length;k+=3)lengths.push(lengths.at(-1)!+Math.hypot(path[k]-path[k-3],path[k+1]-path[k-2],path[k+2]-path[k-1]));
+    mealRoute={route,lines,segments:new Set(route.segments.map(i=>flow.segments[i])),parts:new Set(route.segments.map(i=>flow.segments[i].part)),path,lengths};
+    // Each station is a numbered marker on the body and a line in the list beside it, in route order.
+    route.stations.forEach((station,n)=>{const node=document.createElement('div');node.hidden=true;node.textContent=String(n+1);node.title=station.name;routeTagHost.appendChild(node);const row=document.createElement('li');row.innerHTML='<b></b><span></span><em></em>';row.querySelector('b')!.textContent=String(n+1);row.querySelector('span')!.textContent=station.name;routeList.appendChild(row);routeTags.push({id:station.id,at:new T.Vector3().fromArray(station.at),node,text:row.querySelector('em')!,placed:''});});
+    el.dataset.routeLength=route.lengthM.toFixed(3);el.dataset.routeVessels=String(route.vessels.length);
+   }catch(error){routeButton.disabled=true;routeButton.title=error instanceof Error?error.message:'The route could not be built.';el.dataset.route='unavailable';}
    // Reported probes: the aortic root and the right femoral artery.
    aorta=vessels.segments.findIndex(s=>s.circuit==='arterial'&&s.parent<0&&atlas.parts[s.part]?.name==='Ascending aorta');femoral=vessels.segments.findIndex(s=>atlas.parts[s.part]?.name==='Right femoral artery');
    el.dataset.vesselSegments=String(vessels.segments.length);
@@ -198,7 +219,11 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
   el.appendChild(lensLegend);const lensTitle=lensLegend.querySelector('strong')!,lensValues=lensLegend.querySelector('p')!,lensScale=lensLegend.querySelectorAll('.scale span'),lensNote=lensLegend.querySelector('small')!;
   // Where the marked meal is now: one bar per nutrient, split by place.
   const mealFate=document.createElement('div');mealFate.className='physical-meal-fate';mealFate.hidden=true;mealFate.setAttribute('aria-label','Where the latest meal is now');
-  mealFate.innerHTML=`<strong></strong>${NUTRIENTS.map(key=>`<div data-nutrient="${key}"><span></span><i>${fates.map(f=>`<b class="${f}"></b>`).join('')}</i></div>`).join('')}<p>${fates.map(f=>`<span><b class="${f}"></b>${f}</span>`).join('')}</p>`;
+  mealFate.innerHTML=`<strong></strong>${NUTRIENTS.map(key=>`<div data-nutrient="${key}"><span></span><i>${fates.map(f=>`<b class="${f}"></b>`).join('')}</i></div>`).join('')}<p>${fates.map(f=>`<span><b class="${f}"></b>${f}</span>`).join('')}</p><button type="button" aria-pressed="false">Show route to muscle</button><ol class="physical-route-list" hidden></ol>`;
+  // The meal's route to the thigh muscle: a line along real vessels, travelling markers, and a label at each station.
+  const routeButton=mealFate.querySelector('button')!,routeList=mealFate.querySelector('ol')!,routeTagHost=document.createElement('div');routeTagHost.className='physical-route-tags';routeTagHost.setAttribute('aria-label','Meal carbohydrate at each station of the route');el.appendChild(routeTagHost);
+  const routeTags:{id:RouteStation;at:T.Vector3;node:HTMLDivElement;text:Element;placed:string}[]=[];let mealRoute:{route:MealRoute;lines:T.Object3D[];segments:Set<unknown>;parts:Set<number>;path:number[];lengths:number[]}|null=null,routeOn=false,tintedRoute=false;
+  routeButton.addEventListener('click',()=>{routeOn=!routeOn;dirty=true;});
   el.appendChild(mealFate);const fateTitle=mealFate.querySelector('strong')!,fateRows=NUTRIENTS.map(key=>{const row=mealFate.querySelector(`[data-nutrient="${key}"]`)!;return {key,text:row.querySelector('span')!,parts:[...row.querySelectorAll('b')] as HTMLElement[]};});let lensWas=false,tintedState:BodyState|null=null,tintedLens:Lens|null=null;
   // Labels pinned to organs: what each store holds now, and what each organ takes from its blood.
   // Hormone lens: a list of every hormone by family, and a label on each structure that shows one.
@@ -244,7 +269,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    phaseText[0].textContent=`${phaseName} · LV ${(fill[1]*beat!.summary.endDiastolic.lv).toFixed(0)} mL`;phaseText[1].textContent=breathing.inhaling?'Inhaling':'Exhaling';
    phaseBars[0].style.transform=`scaleX(${Math.min(1,(1-fill[1])/Math.max(.01,1-beat!.summary.endSystolic.lv/beat!.summary.endDiastolic.lv))})`;phaseBars[1].style.transform=`scaleX(${breathing.inflation})`;
    cycleReadout.hidden=v.preset==='surface'||v.preset==='skeleton'||v.preset==='nerves';
-   const counts={blood:0,air:0,food:0,portal:0,mix:0},slice=uniforms.slicePlane.value;
+   const counts={blood:0,air:0,food:0,portal:0,mix:0,route:0},slice=uniforms.slicePlane.value;
    if(vessels){
     // Bed flows ease toward the solver's values so a step change does not teleport beads.
     const target=bedFlows(current),ease=bedFlow?1-Math.exp(-dt/1.2):1;bedFlow??={...target};
@@ -256,9 +281,11 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
     // The meal lens is linear from none to 1.5 times what resting blood holds; substances are log ratios.
     const shade=(level:number)=>meal?Math.min(1,Math.max(0,level/1.5)):tint(level);
     // Levels and tints change only when the solver hands over a new state or the lens changes.
-    const restyle=tintedState!==current||tintedLens!==shown.current||tintedHormone!==chosenHormone;tintedState=current;tintedLens=shown.current;tintedHormone=chosenHormone;
+    const showRoute=meal&&routeOn&&!!mealRoute;
+    const restyle=tintedState!==current||tintedLens!==shown.current||tintedHormone!==chosenHormone||tintedRoute!==showRoute;tintedState=current;tintedLens=shown.current;tintedHormone=chosenHormone;tintedRoute=showRoute;
     if(tinted&&restyle)vessels.setLevels(substance?bodyLens.levels(current,substance):bodyLens.mealLevels(current));
-    vessels.beads(s=>s.part>=0&&visualData[s.part*4]>=.5,(x,y,z,s)=>{
+    // With the route shown, only the vessels on it carry beads.
+    vessels.beads(s=>s.part>=0&&visualData[s.part*4]>=.5&&(!showRoute||mealRoute!.segments.has(s)),(x,y,z,s)=>{
      if(slice.x*x+slice.y*y+slice.z*z+slice.w<0)return;
      const nutrient=!tinted&&!hormonal&&s.circuit==='portal'&&absorbing,color=tinted?tintColor(shade(s.level),lensColor):hormonal&&chosenHormone?tintColor(tint(current.hormones[chosenHormone]),lensColor):nutrient?nutrientColor:beadColor[s.circuit];
      tracerPositions[count*3]=x;tracerPositions[count*3+1]=y;tracerPositions[count*3+2]=z;color.toArray(tracerColors,count*3);tracerSizes[count]=s.bead;tracerLifts[count]=s.radius*1.25+.0008;count++;
@@ -271,7 +298,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
       let value=.5,on=0;
       if(tinted){
        const organ=index.organ.get(p.id),segment=vesselOfPart[i];
-       if(segment>=0){value=shade(vessels!.segments[segment].level)*.5+.5;on=1;}
+       if(segment>=0){value=showRoute&&!mealRoute!.parts.has(i)?.5:shade(vessels!.segments[segment].level)*.5+.5;on=1;}
        // The stomach and small intestine show how much of the meal is still inside them.
        else if(lumen&&organ==='gut'&&/^(stomach|duodenum|.* part of (jejunum|ileum))$/i.test(p.name)){value=(/^stomach$/i.test(p.name)?lumen.stomach:lumen.intestine)*.5+.5;on=1;}
        else if(organ){if(!organTint.has(organ))organTint.set(organ,shade(substance?bodyLens.organ(current,organ,substance):bodyLens.mealOrgan(current,organ)));value=organTint.get(organ)!*.5+.5;on=1;}
@@ -294,11 +321,29 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
      if(hormonal){for(const row of hormoneRows){const id=row.dataset.hormone as Hormone|'';row.setAttribute('aria-pressed',String((id||null)===chosenHormone));if(id)row.querySelector('em')!.textContent=`${current.hormones[id].toFixed(2)}×`;}el.dataset.hormoneChosen=chosenHormone??'';el.dataset.hormoneTop=mostChanged(current)[0];}
     }
     // The store and exchange labels give way to the hormone labels.
-    hormonePanel.hidden=!hormonal;callouts.hidden=hormonal;
+    hormonePanel.hidden=!hormonal;callouts.hidden=hormonal||showRoute;
     for(const tag of siteTags){
      projected.copy(tag.at).project(camera);
      const hide=!hormonal||tag.node.dataset.show!=='true'||visualData[tag.part*4]<.5||projected.z>=1||Math.abs(projected.x)>.92||Math.abs(projected.y)>.9;if(tag.node.hidden!==hide)tag.node.hidden=hide;if(hide)continue;
      const place=`translate(${((projected.x+1)/2*el.clientWidth).toFixed(1)}px,${((1-projected.y)/2*el.clientHeight).toFixed(1)}px)`;if(tag.placed!==place)tag.node.style.transform=tag.placed=place;
+    }
+    if(mealRoute){
+     for(const line of mealRoute.lines)if(line.visible!==showRoute){line.visible=showRoute;dirty=true;}
+     if(restyle){const amounts=routeAmounts(current);for(const tag of routeTags){const g=amounts[tag.id];tag.text.textContent=`${g.toFixed(g<1?2:1)} g`;el.dataset['route'+tag.id[0].toUpperCase()+tag.id.slice(1)]=g.toFixed(3);}routeButton.setAttribute('aria-pressed',String(routeOn));routeButton.textContent=routeOn?'Hide route to muscle':'Show route to muscle';el.dataset.route=showRoute?'on':'off';routeList.hidden=!showRoute;}
+     for(const tag of routeTags){
+      projected.copy(tag.at).project(camera);
+      const hide=!showRoute||projected.z>=1||Math.abs(projected.x)>.97||Math.abs(projected.y)>.95;if(tag.node.hidden!==hide)tag.node.hidden=hide;if(hide)continue;
+      const place=`translate(${((projected.x+1)/2*el.clientWidth).toFixed(1)}px,${((1-projected.y)/2*el.clientHeight).toFixed(1)}px)`;if(tag.placed!==place)tag.node.style.transform=tag.placed=place;
+     }
+     // Markers travel the route in the direction the meal moves, about one length every 20 seconds.
+     if(showRoute){const total=mealRoute.lengths.at(-1)!,path=mealRoute.path,lengths=mealRoute.lengths;let at=1;
+      for(const d of Array.from({length:16},(_,n)=>((displayTime*.05+n/16)%1)*total).sort((a,b)=>a-b)){
+       if(count>=tracerLimit)break;while(at<lengths.length-1&&lengths[at]<d)at++;
+       const t=(d-lengths[at-1])/Math.max(1e-9,lengths[at]-lengths[at-1]),i=at*3;
+       tracerPositions[count*3]=path[i-3]+(path[i]-path[i-3])*t;tracerPositions[count*3+1]=path[i-2]+(path[i+1]-path[i-2])*t;tracerPositions[count*3+2]=path[i-1]+(path[i+2]-path[i-1])*t;
+       tracerColors[count*3]=1;tracerColors[count*3+1]=.82;tracerColors[count*3+2]=.48;tracerSizes[count]=.007;tracerLifts[count]=.03;count++;counts.route++;
+      }
+     }
     }
     lensLegend.hidden=!tinted;mealFate.hidden=!meal;el.dataset.lens=shown.current;
     if(meal&&restyle){
@@ -390,7 +435,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    }
    updateMotion(dt);controls.update();if(!dirty&&!animate.current)return;renderer.render(scene,camera);lastRender=now;if(canFence){gpuFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();}dirty=false;
   };resize();draw();
-  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();intersection.disconnect();controls.dispose();for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.removeEventListener(name,handler);dive?.dispose();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());visualTexture.dispose();environment?.dispose();if(gpuFence)gl.deleteSync(gpuFence);renderer.dispose();renderer.domElement.remove();hovered.remove();cycleReadout.remove();lensLegend.remove();mealFate.remove();hormonePanel.remove();hormoneTags.remove();callouts.remove();clock.remove();};
+  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();intersection.disconnect();controls.dispose();for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.removeEventListener(name,handler);dive?.dispose();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());visualTexture.dispose();environment?.dispose();if(gpuFence)gl.deleteSync(gpuFence);renderer.dispose();renderer.domElement.remove();hovered.remove();cycleReadout.remove();lensLegend.remove();mealFate.remove();hormonePanel.remove();hormoneTags.remove();routeTagHost.remove();callouts.remove();clock.remove();};
  },[atlas,onProgress,onError]);
  return <div className="physical-canvas" ref={host} data-testid="physical-scene"/>;
 }

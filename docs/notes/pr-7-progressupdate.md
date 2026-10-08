@@ -22,3 +22,11 @@ Written 2026-10-07. Step 2 of the list (marked meal, scrub back in time, pumping
 - Rejected: colouring blood beads by a mix of elevated hormones. A bead has no stable identity in the bead callback, so colours would flicker, and the model has no per-vessel hormone level to show anyway.
 - Per-part colour needed a second meaning for the style texture's fourth channel: 1 is the warm and cool lens, 2 and above is a hormone family.
 - Not done: hormone molecular structures (T6.3, the molecule thread's area); per-compartment hormone transport.
+
+## Follow-up, 2026-10-08: meal route (step 4 of the list)
+
+- The vessel graph already connected every circuit the route needs; only the passages through organs had to be bridged.
+- Labels pinned to the eight stations stacked on each other in the trunk, and spreading them down the screen detached them from their places. Numbered markers on the body with an ordered list beside it replaced them.
+- One-pixel lines were too thin to read; vessel stretches are tubes drawn over everything.
+- From 2026-10-08 browser tests and screenshots run on uxserver (`~/Documents/proj/human_atlas`), at utkarsh's request, after local runs slowed his machine.
+- Not done: a route per target organ; following protein or fat; the tissue uptake zoom at the end of the route (step 5).
