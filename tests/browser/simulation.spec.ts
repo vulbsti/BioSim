@@ -168,3 +168,41 @@ test("brain vessel coverage exposes unresolved meshes and filters by source name
     page.getByRole("button", { name: /Inspect all 182 source vessel candidates in 3D/ }),
   ).toBeVisible();
 });
+
+test("looking back shows an earlier moment everywhere, returns to now, and can continue from there", async ({ page }) => {
+  test.setTimeout(240000);
+  await page.goto("/");
+  const elapsed = page.getByLabel("Elapsed simulation time", { exact: true }),
+    slider = page.getByLabel("Look back in simulated time"),
+    scene = page.getByTestId("physical-scene");
+  await expect(slider).toHaveCount(0);
+  await page.getByRole("button", { name: "Introduce meal", exact: false }).click();
+  await page.getByRole("button", { name: "Advance one hour" }).click();
+  // An hour is advanced in 120 recorded steps, which takes a few seconds on a busy machine.
+  await expect(elapsed).toHaveText("01:00:00", { timeout: 30000 });
+  // One hour leaves a moment every 30 simulated seconds.
+  await expect(slider).toHaveAttribute("max", "120");
+  await expect(scene).toHaveAttribute("data-ready", "true", { timeout: 90000 });
+  await expect.poll(async () => Number(await scene.getAttribute("data-glycogen")), { timeout: 30000 }).toBeGreaterThan(115);
+  const glycogenNow = Number(await scene.getAttribute("data-glycogen"));
+  await slider.fill("20");
+  await expect(elapsed).toHaveText("00:10:00");
+  await expect(page.getByLabel("Moment shown")).toHaveText("00:10:00 of 01:00:00");
+  await expect(page.locator(".run-status")).toContainText("LOOKING BACK");
+  // The body view shows the same earlier moment: the clock, and less glycogen stored than an hour in.
+  await expect(page.locator(".physical-clock")).toHaveText("SIMULATED 00:10:00", { timeout: 30000 });
+  await expect.poll(async () => Number(await scene.getAttribute("data-glycogen")), { timeout: 30000 }).toBeLessThan(glycogenNow - 3);
+  await page.getByRole("button", { name: "Return to now" }).click();
+  await expect(elapsed).toHaveText("01:00:00");
+  await expect(page.getByLabel("Moment shown")).toHaveCount(0);
+  // Continuing from an earlier moment makes it the present and drops what came after.
+  await slider.fill("40");
+  await expect(elapsed).toHaveText("00:20:00");
+  await page.getByRole("button", { name: "Continue from here" }).click();
+  await expect(elapsed).toHaveText("00:20:00");
+  await expect(slider).toHaveAttribute("max", "40");
+  await expect(page.locator(".run-status")).toContainText("PAUSED");
+  await page.getByRole("button", { name: "Advance five minutes" }).click();
+  await expect(elapsed).toHaveText("00:25:00");
+  await expect(slider).toHaveAttribute("max", "50");
+});

@@ -49,7 +49,7 @@ test('blood beads ride the vessel graph at simulated flow, and exercise speeds t
 test('running the simulation changes the body: stores fill, and a meal colours blood and organs by glucose',async({page})=>{
  test.setTimeout(240000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});
  const read=async(name:string)=>Number(await scene.getAttribute(name)),callouts=page.locator('.physical-callouts');
- const hour=async(shown:string)=>{await page.getByRole('button',{name:'Advance one hour'}).click();await expect(page.getByLabel('Elapsed simulation time',{exact:true})).toHaveText(shown);};
+ const hour=async(shown:string)=>{await page.getByRole('button',{name:'Advance one hour'}).click();await expect(page.getByLabel('Elapsed simulation time',{exact:true})).toHaveText(shown,{timeout:30000});};
  await expect(callouts).toContainText('BLADDER');await expect(callouts).toContainText('0 mL');const glycogen=await read('data-glycogen');
  // At rest nothing about the flows changes, but time passes: urine collects and glycogen is spent.
  await hour('01:00:00');
@@ -72,6 +72,46 @@ test('running the simulation changes the body: stores fill, and a meal colours b
  await expect(callouts).toContainText(/LIVER\s*glycogen [\d.]+ g\s*[\d.]+ g of this meal/);
 });
 
+test('the meal route runs from stomach to thigh muscle along real vessels, with the meal counted at each station',async({page})=>{
+ test.setTimeout(240000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:90000});
+ const number=async(name:string)=>Number(await scene.getAttribute(name));
+ // About two metres of path over a dozen named vessels.
+ expect(await number('data-route-length')).toBeGreaterThan(1.5);expect(await number('data-route-length')).toBeLessThan(4);expect(await number('data-route-vessels')).toBeGreaterThan(10);
+ await page.getByRole('button',{name:'Introduce meal',exact:false}).click();await page.getByLabel('Colour the body by').selectOption('meal');
+ const toggle=scene.getByRole('button',{name:'Show route to muscle'});await expect(toggle).toBeVisible();
+ await expect.poll(()=>number('data-blood-tracers'),{timeout:30000}).toBeGreaterThan(500);const everywhere=await number('data-blood-tracers');
+ await toggle.click();await expect(scene).toHaveAttribute('data-route','on',{timeout:30000});
+ // Only the route's vessels carry beads now, markers travel it, and all eight stations are labelled.
+ await expect.poll(()=>number('data-route-tracers'),{timeout:30000}).toBe(16);await expect.poll(()=>number('data-blood-tracers'),{timeout:30000}).toBeLessThan(everywhere/3);expect(await number('data-blood-tracers')).toBeGreaterThan(20);
+ await expect(scene.locator('.physical-route-tags > div')).toHaveCount(8);await expect(scene.locator('.physical-route-list li')).toHaveCount(8);await expect(scene.locator('.physical-route-list li').first()).toHaveText(/1\s*Stomach\s*60\.0 g/);await expect(scene.locator('.physical-route-list li').last()).toHaveText(/8\s*Muscle\s*0\.00 g/);
+ await expect(scene.locator('.physical-callouts')).toBeHidden();
+ // An hour on, the meal has moved down the route: less in the stomach, some in the liver and the muscle.
+ await page.getByRole('button',{name:'Advance one hour'}).click();
+ await expect.poll(()=>number('data-route-stomach'),{timeout:60000}).toBeLessThan(30);expect(await number('data-route-liver')).toBeGreaterThan(10);expect(await number('data-route-muscle')).toBeGreaterThan(1);
+ await scene.getByRole('button',{name:'Hide route to muscle'}).click();await expect(scene).toHaveAttribute('data-route','off',{timeout:30000});
+ await expect.poll(()=>number('data-blood-tracers'),{timeout:30000}).toBeGreaterThan(everywhere/2);await expect(scene.locator('.physical-callouts')).toBeVisible();
+});
+test('hormones colour the structures that release them by family, and one can be followed to where it acts',async({page})=>{
+ test.setTimeout(240000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:90000});
+ await page.getByLabel('Colour the body by').selectOption('hormones');await expect(scene).toHaveAttribute('data-lens','hormones');
+ const panel=scene.locator('.physical-hormones');await expect(panel).toBeVisible();await expect(panel.locator('button')).toHaveCount(32);await expect(panel.locator('section')).toHaveCount(8);
+ // At rest nothing has left baseline far enough to be labelled.
+ await expect(scene.locator('.physical-hormone-tags > div:not([hidden])')).toHaveCount(0);
+ await page.getByRole('button',{name:'Introduce meal',exact:false}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();
+ await page.getByRole('button',{name:'Organs',exact:true}).click();await page.getByRole('button',{name:'Abdomen',exact:true}).click();
+ // After a meal the pancreas shows insulin and the gut its own hormones, each named on the structure.
+ await expect(scene).toHaveAttribute('data-site-pancreas','insulin',{timeout:60000});await expect(scene).toHaveAttribute('data-site-stomach','gastrin');
+ expect(['cck','glp1','secretin']).toContain(await scene.getAttribute('data-site-intestine'));
+ await expect(scene.locator('.physical-hormone-tags')).toContainText(/PANCREAS\s*Insulin [\d.]+×/);await expect(panel.locator('button[data-hormone="insulin"] em')).toHaveText(/[\d.]+×/);
+ await expect(scene.locator('.physical-callouts')).toBeHidden();
+ // Choosing insulin leaves only its source and its target coloured, and says which is which.
+ await panel.locator('button[data-hormone="insulin"]').click();await expect(scene).toHaveAttribute('data-hormone-chosen','insulin',{timeout:30000});
+ await expect(scene).toHaveAttribute('data-site-liver','insulin');expect(await scene.getAttribute('data-site-stomach')).toBeNull();
+ await expect(scene.locator('.physical-hormone-tags')).toContainText(/LIVER\s*acts here · Insulin/);await expect(panel.locator('button[data-hormone="insulin"]')).toHaveAttribute('aria-pressed','true');
+ await panel.locator('button[data-hormone=""]').click();await expect(scene).toHaveAttribute('data-site-stomach','gastrin',{timeout:30000});
+ // Another colour option puts the store labels back.
+ await page.getByLabel('Colour the body by').selectOption('flow');await expect(panel).toBeHidden();await expect(scene.locator('.physical-callouts')).toBeVisible();
+});
 test('each heart chamber follows its simulated volume through the phases of the beat',async({page})=>{
  // Samples a live animation under software rendering, so the limits are generous for a loaded machine.
  test.setTimeout(300000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:90000});

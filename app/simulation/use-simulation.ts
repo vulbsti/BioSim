@@ -9,8 +9,10 @@ export function useSimulation() {
     running: boolean;
     speed: number;
     reference: Sample[] | null;
+    /** Moments of this run that can be shown again, the present time, and the moment shown (null: the present). */
+    timeline: { times: number[]; now: number; viewing: number | null };
     error?: string;
-  }>({ state: createBody(), running: false, speed: 120, reference: null });
+  }>({ state: createBody(), running: false, speed: 120, reference: null, timeline: { times: [0], now: 0, viewing: null } });
   useEffect(() => {
     const w = new Worker(new URL("./simulation.worker.ts", import.meta.url), { type: "module" });
     worker.current = w;
