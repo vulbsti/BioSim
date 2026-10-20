@@ -52,7 +52,7 @@ Branch `claude/project-thread-iyxw9i`, draft PR against `simulate`. See section 
 **Kept**
 - The 3D body and everything on it that follows the simulation (lenses, meal tracer, meal route, heart, breathing, gut, bladder, blood beads, vessel dive).
 - The transport and physiology engine, timeline look-back, and three plain starting situations: after a meal, exercise and recovery, drinking water.
-- The body is now the whole screen. Controls float over it: a top bar with the vital signs and play controls, a small "Try something" panel on the left, a plain-language card for whichever organ you click on the right, and a chart you can open at the bottom. A full-screen button hides the browser chrome too.
+- The body is now the whole screen. Controls float over it: a top bar with time, play and skip-ahead, the vital signs just under it (click one to watch that system), a small "Try something" panel on the left, a plain-language card for whichever organ you click on the right, and a chart you can open at the bottom. A full-screen button hides the browser chrome too.
 
 Hormones are still computed by the engine for now, because insulin, glucagon, cortisol, adrenaline, ADH and aldosterone drive real things in it. Pruning the 13 dead ones is step 1 of the plan.
 
@@ -212,10 +212,12 @@ Standing budgets, checked on every PR:
 
 1. **Which data first.** My default: CGM + blood panel + fitness band (steps 3 to 5) before EEG and microbiome, because the engine can already carry glucose, insulin and the heart, and these are the inputs most people have.
 2. **Nerves and cord source.** My default: build the brain view from the atlas meshes now (step 6), and use Z-Anatomy for cord and nerves if CC BY-SA is acceptable to you. Otherwise I author registered centrelines, which is slower.
-3. **The knee-jerk reflex commit** (50838d3, only on your machine). My default: drop it. It used nerves placed from landmarks, which you rejected, and the atlas has no peripheral nerves to rebuild it on. It comes back after step 7 if wanted.
+3. **The knee-jerk reflex.** It is being reworked in its own thread (nerves now routed inside psoas and iliacus into the quadriceps, still only on your machine). It is not part of this cleanup branch. Before it merges it should pass both gates in section 6, in particular A5 (anatomy sits inside, checked automatically and from four angles) and B1 (a reflex tap is not a measured input, so it needs a clear reason to be on the main screen, for example as the first nerve-signal view of step 7).
 
 ---
 
 ## 8. How to look at the cleanup
 
-The draft PR's branch is put on the uxserver dev server: http://192.168.88.8:3016. Nothing is merged into `simulate` until you say so.
+Branch `claude/project-thread-iyxw9i`, draft PR against `simulate`, served from its own worktree on uxserver at http://192.168.88.8:3017 (port 3016 is showing the knee-jerk work). Nothing is merged into `simulate` until you say so.
+
+The cleanup removes about 171,000 lines across 340 files (mostly validation receipts, pilot code, docs and unused components) and adds about 1,800.
