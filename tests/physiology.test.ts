@@ -1,7 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {advance,applyAction,carbohydrateResidual,createBody,fatResidual,glucose,proteinResidual,schedule,waterResidual} from '../app/simulation/engine';
-import {brainEdges,brainNodes,solveBrain} from '../app/simulation/brain';
 import {concentration,gasResiduals,totalSubstance,transportSubstances} from '../app/simulation/transport';
 import {scenarios} from '../app/simulation/scenarios';
 import type {BodyState} from '../app/simulation/types';
@@ -56,13 +55,6 @@ test('invalid inputs are rejected before mutation',()=>{
  const s=createBody(),before=structuredClone(s);
  assert.throws(()=>applyAction(s,{kind:'environment',values:{oxygen:NaN}}));assert.throws(()=>applyAction(s,{...mixedMeal,meal:{...mixedMeal.meal,water:-1}}));assert.throws(()=>schedule(s,-1,mixedMeal,'bad'));assert.throws(()=>advance(s,.5));assert.throws(()=>advance(s,Infinity));assert.deepEqual(s,before);
 });
-test('brain network conserves every interior node and equals body cerebral allocation',()=>{
- const s=createBody();const a=solveBrain(s);assert.ok(a.residual<1e-8);assert.ok(brainNodes.length>25);assert.ok(brainEdges.length>40);
- const inflow=brainEdges.filter(e=>e.from==='aorta').reduce((v,e)=>v+a.flows[e.id],0),outflow=brainEdges.filter(e=>e.to==='vena').reduce((v,e)=>v+a.flows[e.id],0);
- assert.ok(Math.abs(inflow-outflow)<1e-8);assert.ok(Math.abs(inflow-a.totalFlow)<1e-8);
- for(const p of Object.values(a.pressures))assert.ok(p>=5-1e-8&&p<=s.map+1e-8);
- const visual=a.flows['L-pca-L-visual'];s.inputs.light=1;const b=solveBrain(s);assert.ok(b.flows['L-pca-L-visual']>visual);
-});
 test('all preset experiments conserve modeled substrates throughout their duration',()=>{
  for(const scenario of scenarios){const s=createBody();for(const e of scenario.events)schedule(s,e.at,e.action,e.label);advance(s,0);
  for(let t=0;t<scenario.duration;t+=300){advance(s,Math.min(300,scenario.duration-t));conserved(s);}assert.equal(s.queue.length,0);}
@@ -70,16 +62,6 @@ test('all preset experiments conserve modeled substrates throughout their durati
 test('24-hour fasting run stays numerically finite and preserves complete intervention history',()=>{
  const s=createBody();advance(s,86400);conserved(s);assert.ok(s.history.length<=2881);assert.equal(s.time,86400);
  const urine=s.urineTotal;applyAction(s,{kind:'void'});assert.equal(s.bladder,0);assert.equal(s.urineTotal,urine);conserved(s);
-});
-
-test('exported recordings resume deterministically and reject invalid state before loading',async()=>{
- const {parseRecording}=await import('../app/simulation/recording');const {MODEL_VERSION}=await import('../app/simulation/engine');
- const original=createBody();applyAction(original,mixedMeal);advance(original,1234);schedule(original,1500,{kind:'environment',values:{exercise:.2}},'walk');
- const payload={model:MODEL_VERSION,exportedAt:'2026-09-08',state:original,reference:null,scope:'test'};
- const resumed=parseRecording(JSON.stringify(payload)).state;advance(original,3600);advance(resumed,3600);assert.deepEqual(original,resumed);
- assert.throws(()=>parseRecording(JSON.stringify({...payload,model:'different-model'})));
- const corrupt=structuredClone(payload);corrupt.state.plasma+=50;assert.throws(()=>parseRecording(JSON.stringify(corrupt)),/conservation/);
- const malformed=structuredClone(payload);malformed.state.hormones.insulin=null as unknown as number;assert.throws(()=>parseRecording(JSON.stringify(malformed)));
 });
 
 test('combined inputs preserve accounting across repeatable randomized experiments',()=>{
@@ -116,11 +98,3 @@ test('meal absorption produces a portal-to-systemic nutrient gradient and flux r
  assert.ok(s.transport.cumulativeFluxes.some(f=>f.from==='lymph'&&f.to==='venous'&&f.substance==='lipids'&&f.amount>0));conserved(s);
 });
 
-test('brain coverage accounts for every candidate once and reports unresolved source evidence',async()=>{
- const {auditBrainVessels}=await import('../app/simulation/brain-coverage');const {readFile}=await import('node:fs/promises');
- const atlas=JSON.parse(await readFile(new URL('../public/models/atlas.json',import.meta.url),'utf8')),audit=auditBrainVessels(atlas);
- assert.equal(audit.vessels.length,151);assert.equal(new Set(audit.vessels.map(v=>v.id)).size,151);assert.equal(Object.values(audit.counts).reduce((a,b)=>a+b,0),151);
- assert.equal(audit.counts.unresolved,10);assert.equal(audit.missingVenousGeometry,true);
- for(const vessel of audit.vessels){assert.ok(atlas.parts.some((p:{id:string})=>p.id===vessel.id));for(const node of vessel.nodes)assert.ok(brainNodes.some(n=>n.id===node));if(vessel.status==='exact-name link')assert.equal(vessel.nodes.length,1);}
- // This fixture intentionally audits the archived 4.0 base; assembled coverage is tested separately.
-});

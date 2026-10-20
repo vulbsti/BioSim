@@ -6,14 +6,14 @@ test('anatomical pixels move, pause freezes them, and breathing has live air tra
  test.setTimeout(240000);
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});
- await page.getByRole('button',{name:'Watch breathing',exact:true}).click();await page.getByRole('button',{name:'Expand anatomy',exact:true}).click();
- await expect(page.getByRole('dialog',{name:'Expanded physical anatomy'})).toBeVisible();
+ await page.getByRole('button',{name:'Watch breathing',exact:true}).click();
+ // The body fills the window.
+ const box=(await scene.boundingBox())!,size=page.viewportSize()!;expect(box.width).toBeGreaterThan(size.width*.98);expect(box.height).toBeGreaterThan(size.height*.98);
  await expect.poll(async()=>Number(await scene.getAttribute('data-air-tracers')),{timeout:20000}).toBeGreaterThan(0);
  const canvas=scene.locator('canvas'),first=await canvas.screenshot();await page.waitForTimeout(750);const second=await canvas.screenshot();expect(second.equals(first),'actual 3D pixels should move').toBe(false);
  await page.getByRole('button',{name:'Pause anatomical motion',exact:true}).click();await expect(scene).toHaveAttribute('data-motion','paused');await page.waitForTimeout(600);
  const still=await canvas.screenshot();await page.waitForTimeout(600);expect((await canvas.screenshot()).equals(still),'paused anatomy should stay still').toBe(true);
  await page.screenshot({path:'test-results/physical-breathing.png'});
- await page.keyboard.press('Escape');await expect(page.getByRole('dialog',{name:'Expanded physical anatomy'})).toHaveCount(0);await expect(page.getByRole('button',{name:'Expand anatomy',exact:true})).toBeFocused();
  expect(errors).toEqual([]);
 });
 
@@ -21,13 +21,13 @@ test('meal input starts swallowing and digestion, then portal absorption appears
  // Leave margin for the same software-renderer load after the preceding browser suites.
  test.setTimeout(240000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});
  await page.getByRole('button',{name:'Watch digestion',exact:true}).click();await expect(scene).toHaveAttribute('data-food-tracers','0');await expect(scene).toHaveAttribute('data-portal-tracers','0');
- await page.getByRole('button',{name:'Introduce meal',exact:false}).click();
+ await page.getByRole('button',{name:'Eat it',exact:true}).click();
  await expect.poll(async()=>Number(await scene.getAttribute('data-food-tracers'))).toBeGreaterThan(0);
  await expect.poll(async()=>Number(await scene.getAttribute('data-mix-tracers'))).toBeGreaterThan(0);
- await expect(page.getByLabel('Live process connections')).toContainText('95.0 g');
+ await expect(page.locator('.organ-now')).toContainText('95 g');
  await page.getByRole('button',{name:'Advance five minutes'}).click();await expect(page.getByLabel('Elapsed simulation time',{exact:true})).toHaveText('00:05:00');
  await expect.poll(async()=>Number(await scene.getAttribute('data-portal-tracers'))).toBeGreaterThan(0);
- await page.getByRole('tab',{name:'Air & body'}).click();await page.getByLabel('Exercise workload',{exact:true}).fill('0.65');await page.getByRole('button',{name:'Apply conditions'}).click();
+ await page.getByLabel('Exercise',{exact:true}).fill('0.65');await page.waitForTimeout(1500);
  await page.getByRole('button',{name:'Advance five minutes'}).click();await expect(page.getByLabel('Elapsed simulation time',{exact:true})).toHaveText('00:10:00');
  await expect.poll(async()=>Number(await scene.getAttribute('data-heart-hz'))).toBeGreaterThan(1.2);
  await expect.poll(async()=>Number(await scene.getAttribute('data-breath-hz'))).toBeGreaterThan(.2);
@@ -35,12 +35,12 @@ test('meal input starts swallowing and digestion, then portal absorption appears
 
 test('blood beads ride the vessel graph at simulated flow, and exercise speeds the leg artery',async({page})=>{
  test.setTimeout(240000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});
- await page.getByRole('button',{name:'Watch circulation',exact:true}).click();const read=async(name:string)=>Number(await scene.getAttribute(name));
+ await page.getByRole('button',{name:'Watch the heart and circulation',exact:true}).click();const read=async(name:string)=>Number(await scene.getAttribute(name));
  await expect.poll(()=>read('data-blood-tracers'),{timeout:30000}).toBeGreaterThan(1000);expect(await read('data-vessel-segments')).toBeGreaterThan(3000);
  // Every systemic bed, the brain included, is supplied through the aortic root.
  const output=await read('data-cardiac-output'),aorta=await read('data-aorta-flow'),restLeg=await read('data-femoral-speed');
  expect(aorta).toBeGreaterThan(output*.97);expect(aorta).toBeLessThan(output*1.01);expect(restLeg).toBeGreaterThan(0);
- await page.getByRole('tab',{name:'Air & body'}).click();await page.getByLabel('Exercise workload',{exact:true}).fill('0.65');await page.getByRole('button',{name:'Apply conditions'}).click();
+ await page.getByLabel('Exercise',{exact:true}).fill('0.65');await page.waitForTimeout(1500);
  await page.getByRole('button',{name:'Advance five minutes'}).click();await expect(page.getByLabel('Elapsed simulation time',{exact:true})).toHaveText('00:05:00');
  await expect.poll(()=>read('data-femoral-speed'),{timeout:30000}).toBeGreaterThan(restLeg*2);
  await expect.poll(()=>read('data-aorta-flow'),{timeout:30000}).toBeGreaterThan(aorta*1.5);
@@ -57,7 +57,7 @@ test('running the simulation changes the body: stores fill, and a meal colours b
  await expect(page.locator('.physical-clock')).toHaveText('SIMULATED 01:00:00');
  await page.getByLabel('Colour the body by').selectOption('glucose');await expect(scene).toHaveAttribute('data-lens','glucose');
  await expect.poll(()=>read('data-level-portal')).toBeLessThan(1.05);
- await page.getByRole('button',{name:'Introduce meal',exact:false}).click();
+ await page.getByRole('button',{name:'Eat it',exact:true}).click();
  await hour('02:00:00');
  // Absorbed glucose reaches the portal vein first, the liver takes most of it, and arterial blood rises less.
  await expect.poll(()=>read('data-level-portal'),{timeout:30000}).toBeGreaterThan(1.4);
@@ -77,7 +77,7 @@ test('the meal route runs from stomach to thigh muscle along real vessels, with 
  const number=async(name:string)=>Number(await scene.getAttribute(name));
  // About two metres of path over a dozen named vessels.
  expect(await number('data-route-length')).toBeGreaterThan(1.5);expect(await number('data-route-length')).toBeLessThan(4);expect(await number('data-route-vessels')).toBeGreaterThan(10);
- await page.getByRole('button',{name:'Introduce meal',exact:false}).click();await page.getByLabel('Colour the body by').selectOption('meal');
+ await page.getByRole('button',{name:'Eat it',exact:true}).click();await page.getByLabel('Colour the body by').selectOption('meal');
  const toggle=scene.getByRole('button',{name:'Show route to muscle'});await expect(toggle).toBeVisible();
  await expect.poll(()=>number('data-blood-tracers'),{timeout:30000}).toBeGreaterThan(500);const everywhere=await number('data-blood-tracers');
  await toggle.click();await expect(scene).toHaveAttribute('data-route','on',{timeout:30000});
@@ -97,8 +97,8 @@ test('hormones colour the structures that release them by family, and one can be
  const panel=scene.locator('.physical-hormones');await expect(panel).toBeVisible();await expect(panel.locator('button')).toHaveCount(32);await expect(panel.locator('section')).toHaveCount(8);
  // At rest nothing has left baseline far enough to be labelled.
  await expect(scene.locator('.physical-hormone-tags > div:not([hidden])')).toHaveCount(0);
- await page.getByRole('button',{name:'Introduce meal',exact:false}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();
- await page.getByRole('button',{name:'Organs',exact:true}).click();await page.getByRole('button',{name:'Abdomen',exact:true}).click();
+ await page.getByRole('button',{name:'Eat it',exact:true}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();
+ await page.getByRole('button',{name:'Organs',exact:true}).click();await page.getByRole('button',{name:'Belly',exact:true}).click();
  // After a meal the pancreas shows insulin and the gut its own hormones, each named on the structure.
  await expect(scene).toHaveAttribute('data-site-pancreas','insulin',{timeout:60000});await expect(scene).toHaveAttribute('data-site-stomach','gastrin');
  expect(['cck','glp1','secretin']).toContain(await scene.getAttribute('data-site-intestine'));
@@ -131,12 +131,12 @@ test('each heart chamber follows its simulated volume through the phases of the 
  // The modelled conduction system is part of the atlas and can be isolated by name.
  await page.getByLabel('Search physical anatomy').fill('cardiac conduction system');await page.locator('.physical-results').getByRole('button').first().click();await expect(scene).toHaveAttribute('data-visible-parts','10');
 });
-test('reduced motion, thyroid isolation, section controls and mobile expansion work',async({page})=>{
+test('reduced motion, thyroid isolation and section controls work on a phone',async({page})=>{
  test.setTimeout(120000);await page.emulateMedia({reducedMotion:'reduce'});await page.setViewportSize({width:390,height:844});await page.goto('/');
  const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});await expect(scene).toHaveAttribute('data-motion','paused');
- await page.getByRole('button',{name:'Expand anatomy',exact:true}).click();await page.getByLabel('Search physical anatomy').fill('thyroid gland');
- await page.locator('.physical-results').getByRole('button',{name:'thyroid gland 3 parts',exact:true}).click();await expect(scene).toHaveAttribute('data-visible-parts','3');
- await page.getByRole('button',{name:'In context',exact:true}).click();await page.getByRole('button',{name:'Dissect',exact:true}).click();await page.getByLabel('Anatomical section plane').selectOption('coronal');await expect(page.getByLabel('Anatomical section position')).toBeVisible();
+ await page.getByLabel('Search physical anatomy').fill('thyroid gland');
+ await page.locator('.physical-results').getByRole('button',{name:'thyroid gland',exact:true}).click();await expect(scene).toHaveAttribute('data-visible-parts','3');
+ await page.getByRole('button',{name:'Show the rest',exact:true}).click();await page.getByRole('button',{name:'Cut through the body',exact:true}).click();await page.getByLabel('Anatomical section plane').selectOption('coronal');await expect(page.getByLabel('Anatomical section position')).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);await page.screenshot({path:'test-results/physical-mobile.png'});
 });
 

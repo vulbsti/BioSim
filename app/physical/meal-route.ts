@@ -17,7 +17,7 @@ export const ROUTE_STATIONS=[
  {id:'veins',name:'Vena cava',pools:['venous']},
  {id:'lungs',name:'Lungs',pools:['lungs-blood']},
  {id:'arteries',name:'Aorta',pools:['arterial']},
- {id:'muscle',name:'Muscle',pools:['muscle-blood','muscle-tissue','muscle-cell','muscle-cell-r0','muscle-cell-r1','muscle-cell-r2','muscle-cell-r3']},
+ {id:'muscle',name:'Muscle',pools:['muscle-blood','muscle-tissue']},
 ] as const;
 export type RouteStation=(typeof ROUTE_STATIONS)[number]['id'];
 /** A stretch of the route: along vessel centerlines, or straight through an organ the graph does not cross. */

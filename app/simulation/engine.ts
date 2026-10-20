@@ -19,7 +19,6 @@ import {
   markMeal,
   updateBloodMeasurements,
 } from "./transport";
-import { advanceMultiscaleMeal, createMultiscaleMeal, muscleGlucosePools } from "./multiscale-meal";
 
 export const MODEL_VERSION = "atlas-physiology-0.4.0-m1-experimental";
 export const INPUT_BOUNDS: Record<keyof Inputs, [number, number]> = {
@@ -65,7 +64,6 @@ export function createBody(): BodyState {
   const s: BodyState = {
     version: 2,
     transport: createTransport(),
-    multiscaleMeal: createMultiscaleMeal(),
     time: 0,
     inputs: {
       exercise: 0,
@@ -372,10 +370,8 @@ function metabolize(s: BodyState, dt: number) {
   for (const [id, weight] of Object.entries(weights)) {
     const demand = (s.oxygenDemand * weight) / sum,
       blood = c[`${id}-blood`],
-      tissue = c[`${id}-tissue`],
-      glucoseTissue = id === "muscle" && s.multiscaleMeal.enabled ? c["muscle-cell"] : tissue;
-    const insulinShare =
-      id === "muscle" && s.multiscaleMeal.enabled ? 0 : 0.05 * (h.insulin - 1);
+      tissue = c[`${id}-tissue`];
+    const insulinShare = 0.05 * (h.insulin - 1);
     const carbShare =
       id === "brain"
         ? 1
@@ -384,11 +380,7 @@ function metabolize(s: BodyState, dt: number) {
             0.08,
             0.9,
           );
-    // Experimental muscle draws carbohydrate from its intracellular pools in proportion to their share.
-    const pools =
-      id === "muscle" && s.multiscaleMeal.enabled
-        ? muscleGlucosePools(s).map((p) => ({ ...p, c: c[p.id] }))
-        : [{ id: glucoseTissue.id, share: 1, c: glucoseTissue }];
+    const pools = [{ id: tissue.id, share: 1, c: tissue }];
     const wanted = pools.map((p) => Math.min(p.c.amounts.glucose, ((demand * carbShare * p.share) / 746) * dt));
     let carb = wanted.reduce((a, b) => a + b, 0),
       lipid = Math.min(tissue.amounts.lipids, ((demand * (1 - carbShare)) / 2010) * dt);
@@ -616,7 +608,6 @@ function step(s: BodyState) {
   updateHormones(s, dt);
   circulationAndBreathing(s, dt);
   transportSubstances(s, dt);
-  advanceMultiscaleMeal(s);
   metabolize(s, dt);
   fluidsAndHeat(s, dt);
   distributeWaterVolumes(s);

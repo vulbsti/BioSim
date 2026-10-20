@@ -7,7 +7,7 @@ test('a vessel can be dived into, down to molecules at true counts that follow t
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:75000});
  await expect(scene).toHaveAttribute('data-dive-species','47',{timeout:30000});
- await page.getByRole('button',{name:'Watch circulation',exact:true}).click();
+ await page.getByRole('button',{name:'Watch the heart and circulation',exact:true}).click();
  await expect.poll(async()=>Number(await scene.getAttribute('data-tracers')),{timeout:20000}).toBeGreaterThan(1000);
  const view=async()=>new Map(((await scene.getAttribute('data-dive-view'))||'').split(',').filter(Boolean).map(x=>{const [id,n]=x.split(':');return [id,Number(n)] as const;}));
  const span=async()=>Number(await scene.getAttribute('data-dive-span'));
@@ -41,7 +41,7 @@ test('a vessel can be dived into, down to molecules at true counts that follow t
  // The simulation drives the counts: a meal raises the glucose in view.
  await dive.getByRole('button',{name:'Molecules',exact:true}).click();await expect.poll(span,{timeout:30000}).toBeLessThan(1.23e-8);await expect.poll(span,{timeout:30000}).toBeGreaterThan(1.17e-8);await page.waitForTimeout(600);
  const before=(await view()).get('glucose')!;
- await page.getByRole('button',{name:'Introduce meal',exact:false}).click();for(let i=0;i<6;i++)await page.getByRole('button',{name:'Advance five minutes'}).click();
+ await page.getByRole('button',{name:'Eat it',exact:true}).click();for(let i=0;i<6;i++)await page.getByRole('button',{name:'Advance five minutes'}).click();
  await expect.poll(async()=>(await view()).get('glucose')??0,{timeout:30000}).toBeGreaterThan(before*1.15);
  // Scrolling out past the vessel returns to the body.
  await dive.getByRole('button',{name:'Vessel',exact:true}).click();await expect.poll(span,{timeout:20000}).toBeGreaterThan(.005);

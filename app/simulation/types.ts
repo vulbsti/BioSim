@@ -148,7 +148,6 @@ export type BodyState = {
   hormones: Record<Hormone, number>;
   hormoneFlux: Record<Hormone, HormoneFlux>;
   transport: TransportState;
-  multiscaleMeal: MultiscaleMealState;
   enzymes: Enzymes;
   digestionRates: { carbs: number; protein: number; fat: number };
   stomach: { carbs: number; protein: number; fat: number; water: number };
@@ -219,34 +218,4 @@ export type Scenario = {
   description: string;
   duration: number;
   events: { at: number; label: string; action: Action }[];
-};
-export type MultiscaleMealState = {
-  enabled: boolean;
-  version: string;
-  solver: string;
-  sensitivity: 1 | 0.35 | 0;
-  circulation: number[];
-  /** Body blood volumes adopted as circuit pressure references when the pathway was enabled, L. */
-  referenceVolumesL: number[];
-  /** Mean circuit branch flows over the last completed 30 s block, L/s, in BLOOD_EDGES order. */
-  meanFlowsLPerS: number[];
-  /** Branch volume accumulated in the current block, L, and its elapsed seconds. */
-  flowWindowL: number[];
-  flowWindowSeconds: number;
-  /** Integrated cardiac cycle phase in [0, 1). */
-  pumpPhase: number;
-  /** Beta-cell secretion model state (models/dallaman2007): Y pmol/kg/min, Ipo pmol/kg, previous G mg/dL. */
-  betaCell: { Y: number; Ipo: number; previousG: number };
-  secretedPmol: number;
-  /** Basal insulin inventory placed in the circuit when the pathway was enabled, pmol. */
-  primedPmol: number;
-  muscleUptakeG: number;
-  lastSecretionPmolPerMin: number;
-  lastUptakeMgPerMin: number;
-  /** Fraction of the muscle population running as the refined radial patch; 0 when coarse. */
-  patchFraction: number;
-  patchInsulinMol: number[];
-  patchSignal: number[][];
-  patchClearedMol: number;
-  patchUptakeG: number;
 };

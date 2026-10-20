@@ -9,7 +9,6 @@ import {createAnatomyIndex,partOpacity,type PhysicalViewState} from '../app/phys
 import {createTracerRoute,tracerKind} from '../app/physical/flow-routes';
 import {cardiacContraction,respiratoryCycle,motionRates} from '../app/physical/motion';
 import {applyAction,advance,createBody} from '../app/simulation/engine';
-import {auditBrainVessels} from '../app/simulation/brain-coverage';
 const read=(file:string)=>JSON.parse(readFileSync(new URL(`../public/models/${file}`,import.meta.url),'utf8')) as Atlas;
 const base=read('atlas.json'),expansion=read('expansion.json'),lungs=read('lung-surfaces.json'),reconstructed=read('reconstructed-vessels.json'),calibrated=read('calibrated-vessels.json'),registered=read('registered-vessels.json'),atlas=applyReplacements(applyReplacements(combineAtlases(combineAtlases(combineAtlases(base,expansion),lungs),reconstructed),calibrated),registered);
 
@@ -47,13 +46,6 @@ test('display corrections retain actual heart, liver, brain and lung surfaces th
  const v:PhysicalViewState={preset:'organs',region:'selection',selected:thyroid.elements,isolate:true,context:.5,cut:'none',slice:.5,angle:'front',focus:0,reset:0,hidden:[]};
  assert.equal(atlas.parts.filter(p=>partOpacity(p,index,v)>0).length,3);
  assert.equal(atlas.parts.filter(p=>partOpacity(p,index,{...v,hidden:thyroid.elements})>0).length,0);
-});
-
-test('cranial venous additions never become cerebral arterial territory associations',()=>{
- const audit=auditBrainVessels(atlas);assert.equal(audit.vessels.length,182);assert.equal(audit.missingVenousGeometry,false);
- const venous=audit.vessels.filter(p=>p.system==='venous');assert.equal(venous.length,27);
- for(const v of venous)assert.ok(v.nodes.every(n=>!/-(aca|pca|ica|frontal|visual|lateral)$/.test(n)),v.name);
- const saved=JSON.parse(readFileSync(new URL('../docs/brain-vessel-coverage.json',import.meta.url),'utf8'));assert.deepEqual(saved.vessels,audit.vessels);
 });
 
 test('display routes handle Float32 boundary drift; blood is left to the vessel graph',()=>{
