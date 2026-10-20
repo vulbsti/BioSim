@@ -1,16 +1,13 @@
 /// <reference lib="webworker" />
-import { advance, applyAction, createBody, schedule, MODEL_VERSION } from "./engine";
+import { advance, applyAction, createBody, schedule } from "./engine";
 import { scenarios } from "./scenarios";
 import type { Action, BodyState } from "./types";
-import { parseRecording } from "./recording";
-import { setMultiscaleMeal, setMusclePatch } from "./multiscale-meal";
 import { materialize, nearest, record, truncate, TIMELINE, type Snapshot } from "./timeline";
 
 let state = createBody(),
   running = false,
   speed = 120,
   fraction = 0;
-let reference: BodyState | null = null;
 // Snapshots of this run, and which one is being looked at; null shows the present.
 const timeline: Snapshot[] = [];
 let viewing: number | null = null;
@@ -25,7 +22,6 @@ function publish(error?: string) {
     state: viewing === null ? state : materialize(timeline[viewing], state),
     running,
     speed,
-    reference: reference?.history ?? null,
     timeline: { times: timeline.map((t) => t.time), now: state.time, viewing: viewing === null ? null : timeline[viewing].time },
     error,
   });
@@ -38,35 +34,16 @@ function advanceRecorded(s: BodyState, seconds: number) {
   }
 }
 function tick(seconds: number) {
-  const hasPhysical = state.multiscaleMeal.enabled || !!reference?.multiscaleMeal.enabled;
-  if (hasPhysical && seconds > 300)
-    throw new Error("The experimental physical meal pathway advances at most five minutes per command.");
-  if (hasPhysical) {
-    const candidate = structuredClone(state), candidateReference = reference ? structuredClone(reference) : null;
-    try {
-      advanceRecorded(candidate, seconds);
-      if (candidateReference) advance(candidateReference, seconds);
-    } catch (error) {
-      // The candidate is discarded, and so are the moments recorded from it.
-      truncate(timeline, state.time);
-      throw error;
-    }
-    state = candidate;
-    reference = candidateReference;
-  } else {
-    advanceRecorded(state, seconds);
-    if (reference) advance(reference, seconds);
-  }
+  advanceRecorded(state, seconds);
 }
 self.onmessage = (e: MessageEvent) => {
   try {
     const m = e.data;
     // Looking back changes nothing. Every other command acts on the present.
     if (m.type === "continue" && viewing !== null) {
-      // Take up the run from the moment shown: later moments are dropped, and a comparison fork ends.
+      // Take up the run from the moment shown: later moments are dropped.
       state = materialize(timeline[viewing], state);
       truncate(timeline, state.time);
-      reference = null;
     }
     if (m.type !== "view") viewing = null;
     switch (m.type) {
@@ -82,8 +59,7 @@ self.onmessage = (e: MessageEvent) => {
         running = !!m.running;
         break;
       case "speed":
-        if (![1, 30, 120, 600, 3600].includes(m.speed) || ((state.multiscaleMeal.enabled || reference?.multiscaleMeal.enabled) && m.speed > 120))
-          throw new Error("The physical meal pathway supports playback up to 120×.");
+        if (![1, 30, 120, 600, 3600].includes(m.speed)) throw new Error("Unsupported playback speed.");
         speed = m.speed;
         fraction = 0;
         break;
@@ -95,20 +71,12 @@ self.onmessage = (e: MessageEvent) => {
         applyAction(state, m.action as Action, m.label);
         record(timeline, state, true);
         break;
-      case "schedule":
-        schedule(state, m.at, m.action as Action, m.label);
-        advance(state, 0);
-        break;
-      case "cancel":
-        state.queue = state.queue.filter((a) => a.id !== m.id);
-        break;
       case "scenario": {
         const scenario = scenarios.find((s) => s.id === m.id);
         if (!scenario) throw new Error("Unknown scenario.");
         running = false;
         fraction = 0;
         state = createBody();
-        reference = null;
         for (const event of scenario.events) schedule(state, event.at, event.action, event.label);
         advance(state, 0);
         restart();
@@ -116,61 +84,10 @@ self.onmessage = (e: MessageEvent) => {
       }
       case "reset":
         state = createBody();
-        reference = null;
         running = false;
         fraction = 0;
         restart();
         break;
-      case "import": {
-        const saved = parseRecording(m.text);
-        state = saved.state;
-        reference = saved.reference;
-        if (state.multiscaleMeal.enabled || reference?.multiscaleMeal.enabled) speed = Math.min(speed, 120);
-        running = false;
-        fraction = 0;
-        restart();
-        break;
-      }
-      case "compare":
-        reference = m.enabled ? structuredClone(state) : null;
-        if (reference) reference.queue = [];
-        break;
-      case "multiscale-meal":
-        {
-        const sensitivityOnly = state.multiscaleMeal.enabled && !!m.enabled;
-        setMultiscaleMeal(
-          state,
-          !!m.enabled,
-          m.sensitivity <= 0.001 ? 0 : m.sensitivity === 0.35 ? 0.35 : 1,
-        );
-        if (!sensitivityOnly) reference = null;
-        if (state.multiscaleMeal.enabled) speed = Math.min(speed, 120);
-        running = false;
-        fraction = 0;
-        // Earlier moments belong to a different pathway and cannot be continued under this one.
-        restart();
-        break;
-        }
-      case "muscle-patch":
-        // Refinement changes who owns part of the muscle state; a comparison fork would mix owners.
-        setMusclePatch(state, Number(m.fraction));
-        reference = null;
-        running = false;
-        fraction = 0;
-        restart();
-        break;
-      case "export":
-        self.postMessage({
-          download: {
-            model: MODEL_VERSION,
-            exportedAt: new Date().toISOString(),
-            state,
-            reference,
-            scope:
-              "Exploratory compartment model. Hormones are relative activities, not measured concentrations. Cerebral topology is schematic.",
-          },
-        });
-        return;
       default:
         throw new Error("Unknown simulator command.");
     }
