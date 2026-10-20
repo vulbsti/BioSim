@@ -22,7 +22,7 @@
     "test:vessels": "work/p1/venv/bin/python -m unittest discover -s scripts/vessels -p 'test_*.py'",
     "test:multiscale": "tsx --test tests/multiscale.test.ts",
     "verify:multiscale": "tsx scripts/verify-multiscale.ts",
-    "test:tissue": "tsx --test tests/tissue.test.ts",
+    "test:tissue": "tsx --test tests/tissue.test.ts tests/tissue-uptake.test.ts",
     "verify:tissue": "tsx scripts/verify-tissue.ts",
     "test:circulation": "tsx --test tests/circulation.test.ts",
     "verify:circulation": "tsx scripts/verify-circulation.ts",
