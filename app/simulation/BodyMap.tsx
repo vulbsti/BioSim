@@ -29,7 +29,7 @@ export default function BodyMap({state,selected,onSelect,atlas,running,catalogue
     <button aria-label="Watch breathing" onClick={()=>watch('lungs','organs','oxygen')}><Wind size={15}/><span>Breathing<strong>{state.respiratoryRate.toFixed(0)} <small>breaths/min</small></strong></span></button>
     <button aria-label="Watch blood oxygen" onClick={()=>watch('lungs','organs','oxygen')}><Activity size={15}/><span>Blood oxygen<strong>{state.saturation.toFixed(0)} <small>%</small></strong></span></button>
     <button aria-label="Watch blood sugar" onClick={()=>watch('liver','organs','glucose')}><Droplet size={15}/><span>Blood sugar<strong>{glucose(state).toFixed(0)} <small>mg/dL</small></strong></span></button>
-    <button aria-label="Watch digestion" onClick={()=>watch('gut','organs','meal')}><Utensils size={15}/><span>Digestion<strong>{eating?'Digesting':'Empty'}</strong></span></button>
+    <button aria-label="Watch digestion" onClick={()=>watch('gut','organs','flow')}><Utensils size={15}/><span>Digestion<strong>{eating?'Digesting':'Empty'}</strong></span></button>
    </div>
    <aside className="physical-side" aria-label="Selected part of the body">
     <div className="physical-search"><Search size={14}/><input aria-label="Search physical anatomy" placeholder="Find a body part…" value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==='Escape')setQuery('');}}/>{query&&<button aria-label="Clear anatomy search" onClick={()=>setQuery('')}><X size={13}/></button>}{query.trim().length>=2&&<div className="physical-results">{searchResults.length?searchResults.map(c=><button key={c.id} onClick={()=>selectStructure(c)}><span>{c.name}</span><ChevronRight size={12}/></button>):<p>Nothing by that name in this body.</p>}</div>}</div>
