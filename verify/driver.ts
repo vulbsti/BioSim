@@ -75,6 +75,7 @@ export async function play(page: Page, step: Step) {
     return setMotion(page, false);
   }
   if ('lens' in step) return page.getByLabel('Colour the body by').selectOption({label: step.lens});
+  if ('hormone' in step) return page.locator(`.physical-hormones button[data-hormone="${step.hormone === 'all' ? '' : step.hormone}"]`).click();
   if ('show' in step) return page.getByRole('group', {name: 'What to show'}).getByRole('button', {name: step.show, exact: true}).click();
   if ('angle' in step) return page.getByLabel('Camera angle').getByRole('button', {name: step.angle, exact: true}).click();
   if ('region' in step) return page.getByLabel('Camera angle').getByRole('button', {name: step.region, exact: true}).click();
