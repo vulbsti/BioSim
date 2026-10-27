@@ -139,15 +139,21 @@ export function parseTime(s: string, order: "dmy" | "mdy" = "mdy"): number {
 }
 
 /**
- * Guesses whether a column of day-month dates is written day first. Looks for a first number above
- * 12 (only a day can be) or a second number above 12 (only a day can be). Falls back to month first.
+ * Guesses whether a column of day-month dates is written day first. A first number above 12 can only
+ * be a day, as can a second number above 12. When every date fits both ways (the first twelve days of
+ * a month), the order that keeps consecutive rows closest together in time wins: readings come minutes
+ * apart, not months. Falls back to month first.
  */
 export function dateOrder(samples: string[]): "dmy" | "mdy" {
   for (const s of samples) {
-    const m = s.trim().match(/^(\d{1,2})[-/.](\d{1,2})[-/.]\d{2,4}/);
+    const m = s?.trim().match(/^(\d{1,2})[-/.](\d{1,2})[-/.]\d{2,4}/);
     if (!m) continue;
     if (+m[1] > 12) return "dmy";
     if (+m[2] > 12) return "mdy";
   }
-  return "mdy";
+  const spread = (order: "dmy" | "mdy") => {
+    const t = samples.map((s) => parseTime(s ?? "", order)).filter(Number.isFinite);
+    return t.reduce((a, v, i) => (i ? a + Math.abs(v - t[i - 1]) : 0), 0);
+  };
+  return spread("dmy") < spread("mdy") ? "dmy" : "mdy";
 }

@@ -100,7 +100,7 @@ export const ANALYTES = {
     aliases: ["tsh", "thyroid stimulating hormone", "thyrotropin"],
     loinc: ["3016-3", "11580-8"],
     unit: "mIU/L",
-    units: { "µiu/ml": 1, "miu/ml": 1000 },
+    units: { "µiu/ml": 1, "mu/l": 1, "miu/ml": 1000 },
     typical: [0.4, 4],
     organs: ["endocrine", "brain"],
     says: "The brain's signal to the thyroid. High means the thyroid is being pushed harder.",

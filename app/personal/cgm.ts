@@ -63,7 +63,7 @@ export function parseLibre(text: string, source = "FreeStyle Libre"): Imported {
   };
   const mmol = isMmol(header[col.historic] ?? header[col.scan] ?? "");
   const rows = all.slice(at + 1).map((l) => csvLine(l, s));
-  const order = dateOrder(rows.slice(0, 200).map((r) => r[col.time]));
+  const order = dateOrder(rows.map((r) => r[col.time]));
   const points: Point[] = [],
     meals: Interval[] = [];
   let skipped = 0;
@@ -139,7 +139,7 @@ export function parsePlain(text: string, source = "Glucose"): Imported {
   // A column of values all under 35 can only be mmol/L.
   const values = rows.map((r) => number(r[g])).filter(Number.isFinite);
   const mmol = isMmol(header[g]) || (values.length > 0 && Math.max(...values) < 35);
-  const order = dateOrder(rows.slice(0, 200).map((r) => r[t]));
+  const order = dateOrder(rows.map((r) => r[t]));
   const points: Point[] = [];
   for (const r of rows) {
     const time = parseTime(r[t] ?? "", order),

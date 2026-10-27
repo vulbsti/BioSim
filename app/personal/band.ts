@@ -193,7 +193,7 @@ export function parseBandCsv(text: string, source = "Fitness band"): Imported {
   const cols = header.map((h, i) => (i === time ? null : (CSV_COLUMNS.find(([re]) => re.test(h))?.[1] ?? null)));
   const stage = header.findIndex((h) => /sleep|stage/i.test(h));
   const rows = all.slice(1).map((l) => csvLine(l));
-  const order = dateOrder(rows.slice(0, 200).map((r) => r[time]));
+  const order = dateOrder(rows.map((r) => r[time]));
   const points = new Map<SeriesKind, Point[]>(),
     intervals: Interval[] = [];
   rows.forEach((r, n) => {

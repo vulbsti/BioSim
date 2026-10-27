@@ -71,8 +71,9 @@ export function findMeals(points: Point[], { minRise = 25, gramsPerRise = 1.35, 
       let low = i;
       for (let k = i; k < peak; k++) if (s[k].v < s[low].v) low = k;
       const total = s[peak].v - s[low].v;
-      let onset = low;
-      while (onset + 1 < peak && s[onset + 1].v <= s[low].v + 0.1 * total) onset++;
+      // The last moment before the peak that sugar was still near its low, so a bump on the way is skipped.
+      let onset = peak;
+      while (onset > low && s[onset].v > s[low].v + 0.1 * total) onset--;
       meals.push({ at: s[onset].t - 10 * MIN, carbs: Math.round(Math.min(150, Math.max(10, total * gramsPerRise * insulinSensitivity))), how: "found", rise: Math.round(total) });
       // Ride the curve down to its next low point; a meal eaten on the way down starts there.
       i = peak;
