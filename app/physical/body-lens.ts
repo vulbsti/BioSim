@@ -75,11 +75,13 @@ export function createBodyLens(rest:BodyState){
   return resting>0?marked(s,where)/resting:0;
  };
  /** Grams of the meal's carbohydrate an organ holds now, in its blood, tissue and cells. */
- const mealHeld=(s:BodyState,id:Organ)=>Object.values(s.transport.compartments).reduce((a,c)=>a+(c.organ===id?s.transport.mark.pools[c.id].glucose:0),0);
+ // An organ holds the meal's sugar in its blood and tissue, and in its own glycogen store.
+ const STORE:Partial<Record<Organ,string>>={liver:'hepatic glycogen',muscle:'muscle glycogen'};
+ const mealHeld=(s:BodyState,id:Organ)=>Object.values(s.transport.compartments).reduce((a,c)=>a+(c.organ===id?s.transport.mark.pools[c.id].glucose:0),STORE[id]?s.transport.mark.pools[STORE[id]!].glucose:0);
  /** Grams of each of the meal's nutrients in each place. Every row sums to what the meal contained. */
  const mealFate=(s:BodyState)=>{
   const p=s.transport.mark.pools,sum=(kind:'blood'|'tissue',key:Nutrient)=>Object.values(s.transport.compartments).reduce((a,c)=>a+((kind==='blood'?c.kind!=='tissue':c.kind==='tissue')?p[c.id][key]:0),0);
-  return Object.fromEntries(NUTRIENTS.map(key=>[key,{stomach:p.stomach[key],intestine:p['intestinal lumen'][key],blood:sum('blood',key),tissues:sum('tissue',key),stored:p['hepatic glycogen'][key]+p['fat reserve'][key]+p['protein reserve'][key],burned:p['oxidized substrate'][key]+p.gluconeogenesis[key],excreted:p.urine[key]}])) as Record<Nutrient,Record<Fate,number>>;
+  return Object.fromEntries(NUTRIENTS.map(key=>[key,{stomach:p.stomach[key],intestine:p['intestinal lumen'][key],blood:sum('blood',key),tissues:sum('tissue',key),stored:p['hepatic glycogen'][key]+p['muscle glycogen'][key]+p['fat reserve'][key]+p['protein reserve'][key],burned:p['oxidized substrate'][key]+p.gluconeogenesis[key],excreted:p.urine[key]}])) as Record<Nutrient,Record<Fate,number>>;
  };
  /** Share of the meal's carbohydrate still inside the stomach and the small intestine, 0 to 1. */
  const mealLumen=(s:BodyState)=>{const m=s.transport.mark,eaten=m.eaten.glucose;return eaten>0?{stomach:m.pools.stomach.glucose/eaten,intestine:m.pools['intestinal lumen'].glucose/eaten}:{stomach:0,intestine:0};};

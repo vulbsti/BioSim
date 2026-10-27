@@ -1,70 +1,184 @@
 import {HORMONES, type BodyState, type Hormone} from './types';
-import {concentration} from './transport';
+import {BLOOD_COMPARTMENTS, bloodEdges, concentration} from './transport';
 
-export const hormoneInfo: Record<Hormone, {name: string; source: string; target: string; tau: number; pathway: string}> = {
-  insulin: {name:'Insulin', source:'Pancreatic β compartment', target:'Liver · muscle · adipose', tau:6, pathway:'Glucose and GLP-1 increase secretion; promotes glucose uptake and storage.'},
-  glucagon: {name:'Glucagon', source:'Pancreatic α compartment', target:'Liver', tau:8, pathway:'Low glucose and protein absorption increase secretion; mobilizes hepatic glycogen.'},
-  epinephrine: {name:'Epinephrine', source:'Adrenal medulla', target:'Heart · liver · muscle', tau:2, pathway:'Sympathetic drive increases secretion; increases cardiac work and fuel release.'},
-  norepinephrine: {name:'Norepinephrine', source:'Sympathetic nerves / adrenal medulla', target:'Vessels · heart', tau:2, pathway:'Sympathetic activation raises vascular tone and cardiac activity.'},
-  crh: {name:'CRH', source:'Hypothalamus', target:'Anterior pituitary', tau:8, pathway:'Stress drives CRH; cortisol supplies negative feedback.'},
-  acth: {name:'ACTH', source:'Anterior pituitary', target:'Adrenal cortex', tau:12, pathway:'CRH stimulates ACTH; cortisol inhibits the upstream axis.'},
-  cortisol: {name:'Cortisol', source:'Adrenal cortex', target:'Liver · hypothalamus · pituitary', tau:65, pathway:'ACTH raises cortisol with a delay; increases glucose synthesis and inhibits CRH / ACTH.'},
-  trh: {name:'TRH', source:'Hypothalamus', target:'Anterior pituitary', tau:12, pathway:'Cold increases hypothalamic drive; thyroid hormone feeds back.'},
-  tsh: {name:'TSH', source:'Anterior pituitary', target:'Thyroid', tau:60, pathway:'TRH stimulates TSH; thyroid hormone inhibits secretion.'},
-  thyroid: {name:'T3 / T4 activity', source:'Thyroid', target:'Systemic metabolism', tau:1440, pathway:'TSH slowly raises thyroid activity, which changes basal oxygen and fuel demand.'},
-  adh: {name:'ADH / vasopressin', source:'Hypothalamus → posterior pituitary', target:'Kidney collecting ducts', tau:12, pathway:'High osmolarity or low circulating volume raises ADH and reduces urinary water loss.'},
-  renin: {name:'Renin activity', source:'Kidney', target:'Circulating angiotensinogen', tau:15, pathway:'Low pressure, low volume, and sympathetic drive stimulate renin. Renin is an enzyme.'},
-  angiotensin: {name:'Angiotensin II', source:'Renin / ACE cascade', target:'Vessels · adrenal cortex', tau:3, pathway:'Renin drives angiotensin activity; increases vascular tone and aldosterone.'},
-  aldosterone: {name:'Aldosterone', source:'Adrenal cortex', target:'Kidney distal nephron', tau:35, pathway:'Angiotensin II raises aldosterone; reduces sodium excretion.'},
-  anp: {name:'ANP', source:'Atrial myocardium', target:'Kidneys', tau:5, pathway:'Volume expansion increases ANP; promotes urinary water and sodium loss.'},
-  gastrin: {name:'Gastrin', source:'Stomach', target:'Stomach', tau:10, pathway:'Gastric food stimulates gastrin and the pepsin activity proxy.'},
-  secretin: {name:'Secretin', source:'Duodenum', target:'Pancreas', tau:5, pathway:'Gastric delivery drives a secretin proxy for bicarbonate-supported digestion.'},
-  cck: {name:'CCK', source:'Small intestine', target:'Pancreas · gallbladder · stomach', tau:8, pathway:'Intestinal fat and protein raise CCK; increases enzyme activity and slows emptying.'},
-  glp1: {name:'GLP-1', source:'Intestine', target:'Pancreas · stomach', tau:4, pathway:'Nutrient absorption raises GLP-1; amplifies insulin and slows gastric emptying.'},
-  ghrelin: {name:'Ghrelin', source:'Stomach', target:'Hypothalamus', tau:30, pathway:'Falls after eating; contributes to the displayed hunger signal.'},
-  leptin: {name:'Leptin', source:'Adipose tissue', target:'Hypothalamus', tau:240, pathway:'Stored fat supplies a slow satiety signal; modulates the growth / reproductive drive.'},
-  melatonin: {name:'Melatonin', source:'Pineal gland', target:'Circadian / sleep controller', tau:35, pathway:'Nighttime drive raises melatonin; external light suppresses it.'},
-  gh: {name:'Growth hormone', source:'Anterior pituitary', target:'Liver · adipose', tau:25, pathway:'Sleep drive increases GH; IGF-1 inhibits it. Pulsatility is simplified.'},
-  igf1: {name:'IGF-1', source:'Liver', target:'Growth axis', tau:720, pathway:'GH slowly increases IGF-1, which closes the negative feedback loop.'},
-  gnrh: {name:'GnRH activity', source:'Hypothalamus', target:'Anterior pituitary', tau:60, pathway:'Energy availability and cortisol affect drive; testosterone supplies negative feedback.'},
-  lh: {name:'LH', source:'Anterior pituitary', target:'Testicular endocrine compartment', tau:60, pathway:'GnRH drives LH and testosterone feeds back; no sperm or cellular dynamics.'},
-  fsh: {name:'FSH', source:'Anterior pituitary', target:'Testicular endocrine compartment', tau:180, pathway:'GnRH drives FSH; inhibin supplies feedback.'},
-  testosterone: {name:'Testosterone', source:'Testicular endocrine compartment', target:'Hypothalamus · pituitary', tau:240, pathway:'LH drives testosterone; this reference models the adult male endocrine axis.'},
-  inhibin: {name:'Inhibin B', source:'Testicular endocrine compartment', target:'Anterior pituitary', tau:180, pathway:'FSH drives inhibin, which suppresses FSH.'},
-  pth: {name:'PTH', source:'Parathyroid', target:'Kidney · bone calcium pool', tau:5, pathway:'Low calcium raises PTH; promotes the calcium-restoring flux proxy and calcitriol.'},
-  calcitriol: {name:'Calcitriol', source:'Kidney', target:'Calcium balance', tau:360, pathway:'PTH drives calcitriol; closes a simplified calcium-regulation loop.'},
+/**
+ * Each hormone in plain words: the gland that releases it, the blood it is released into, how long
+ * it lasts in blood (`tau`, minutes) and what it does. `drain` is the blood compartment of
+ * the gland's vein: the pancreas and gut drain into the portal vein, the adrenals beside the renal
+ * veins, the pituitary, pineal and thyroid into the veins of the head and neck.
+ */
+export const hormoneInfo: Record<Hormone, {name: string; gland: string; drain: string; tau: number; does: string}> = {
+  insulin: {name: 'Insulin', gland: 'Pancreas', drain: 'gut-blood', tau: 6,
+    does: 'Released when blood sugar rises. Muscle, liver and fat take sugar in and store it.'},
+  glucagon: {name: 'Glucagon', gland: 'Pancreas', drain: 'gut-blood', tau: 8,
+    does: 'Released when blood sugar falls. The liver breaks down its stored sugar and releases it.'},
+  glp1: {name: 'GLP-1', gland: 'Small intestine', drain: 'gut-blood', tau: 4,
+    does: 'Released as food is absorbed. Makes the pancreas release more insulin and slows the stomach.'},
+  epinephrine: {name: 'Adrenaline', gland: 'Adrenal glands', drain: 'kidneys-blood', tau: 2,
+    does: 'Released in stress and exercise. Speeds the heart and makes the liver release sugar.'},
+  cortisol: {name: 'Cortisol', gland: 'Adrenal glands', drain: 'kidneys-blood', tau: 65,
+    does: 'Highest in the morning, raised by stress. The liver makes new sugar from protein.'},
+  thyroid: {name: 'Thyroid hormone', gland: 'Thyroid', drain: 'brain-blood', tau: 1440,
+    does: 'Sets how fast every cell burns fuel. Changes over weeks, not minutes.'},
+  adh: {name: 'ADH (vasopressin)', gland: 'Pituitary', drain: 'brain-blood', tau: 12,
+    does: 'Released when blood is concentrated. The kidneys hold on to water and make less urine.'},
+  aldosterone: {name: 'Aldosterone', gland: 'Adrenal glands', drain: 'kidneys-blood', tau: 35,
+    does: 'Released when blood volume or pressure is low. The kidneys hold on to salt.'},
+  melatonin: {name: 'Melatonin', gland: 'Pineal gland', drain: 'brain-blood', tau: 35,
+    does: 'Released in the dark hours of the night, most when asleep. Tells the body it is night.'},
 };
 
-export const clamp = (x:number, lo:number, hi:number) => Math.min(hi, Math.max(lo,x));
-export const relax = (x:number, target:number, dt:number, tau:number) => x+(target-x)*(-Math.expm1(-dt/tau));
-export function updateHormones(s:BodyState, dt:number) {
-  const h={...s.hormones}, g=concentration(s.transport.compartments.arterial,'glucose')*100000;
-  const volume=s.plasma/3000, hour=(8+s.time/3600)%24;
-  const night=(1+Math.cos((hour-2)*Math.PI/12))/2;
-  const gastric=s.stomach.carbs+s.stomach.protein+s.stomach.fat;
-  const absorbed=s.digestionRates.carbs;
-  const stress=Math.max(0,s.sympathetic-.15);
-  const targets:Record<Hormone,number>={
-    insulin:clamp(1+(g-90)/22+absorbed*1.8+.22*(h.glp1-1)-stress*.4,.08,12),
-    glucagon:clamp(1+(90-g)/30+.3*s.digestionRates.protein+.3*stress-.18*(h.insulin-1),.15,6),
-    epinephrine:1+stress*8, norepinephrine:1+stress*5,
-    crh:(1+stress*4)/(1+.65*(h.cortisol-1)), acth:h.crh/(1+.45*(h.cortisol-1)), cortisol:h.acth,
-    trh:(1+Math.max(0,22-s.inputs.temperature)*.02)/(1+.8*(h.thyroid-1)), tsh:h.trh/(1+.8*(h.thyroid-1)), thyroid:h.tsh,
-    adh:clamp(1+(s.osmolarity-285)*.22+(1-volume)*18,.08,12),
-    renin:clamp(1+(93-s.map)*.045+(1-volume)*12+stress,.1,8), angiotensin:h.renin, aldosterone:h.angiotensin,
-    anp:clamp(1+(volume-1)*15,.1,8),
-    gastrin:1+gastric/30+s.inputs.smell*.5, secretin:1+gastric/75,
-    cck:1+(s.gut.fat+s.gut.protein)/12, glp1:1+absorbed*2,
-    ghrelin:clamp(1.2-gastric/75-absorbed*.7,.1,2), leptin:clamp(s.fatStore/12000,.2,3),
-    melatonin:.1+3*night*(1-s.inputs.light),
-    gh:(1+1.8*s.inputs.sleep+.3*stress)/(1+.8*(h.igf1-1)), igf1:h.gh,
-    gnrh:clamp(h.leptin/(1+.5*(h.testosterone-1)+.2*Math.max(0,h.cortisol-1)),.1,3),
-    lh:h.gnrh/(1+.5*(h.testosterone-1)), fsh:h.gnrh/(1+.6*(h.inhibin-1)), testosterone:h.lh, inhibin:h.fsh,
-    pth:clamp(1+(2.4-s.calcium)*8,.1,5), calcitriol:h.pth,
+/** The clock time when a run starts (simulated time 0). */
+export const CLOCK_START_HOUR = 8;
+export const clockHour = (s: BodyState) => (CLOCK_START_HOUR + s.time / 3600) % 24;
+
+export const clamp = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, x));
+export const relax = (x: number, target: number, dt: number, tau: number) => x + (target - x) * -Math.expm1(-dt / tau);
+
+/** Sympathetic drive at this person's resting tone. */
+export const restingSympathetic = (s: BodyState) => 0.15 + 0.12 * s.params.autonomicTone;
+/** Sympathetic drive above this person's rest: 0 when calm. */
+export const arousal = (s: BodyState) => Math.max(0, s.sympathetic - restingSympathetic(s));
+/** Kidney renin drive (renin, angiotensin): low pressure, low volume and stress raise it. 1 at rest. */
+export const reninDrive = (s: BodyState) =>
+  clamp(1 + (93 - s.map) * 0.045 + (1 - s.plasma / 3000) * 12 + arousal(s), 0.1, 8);
+
+/** Daily cortisol rhythm: 1 at its 08:00 peak, about a third at midnight. */
+const cortisolRhythm = (hour: number) => {
+  const d = Math.min(Math.abs(hour - 8), 24 - Math.abs(hour - 8));
+  return 0.2 + 0.8 * Math.exp(-((d / 6) ** 2));
+};
+/** 0 by day to 1 at 03:00, the dark hours when the pineal releases melatonin. */
+const darkness = (hour: number) => clamp((Math.cos(((hour - 3) * Math.PI) / 12) - 0.3) / 0.7, 0, 1);
+
+/** How strongly each gland is driven now, against its resting release (1). */
+export function releaseDrive(s: BodyState): Record<Hormone, number> {
+  const h = s.hormones,
+    g = concentration(s.transport.compartments.arterial, 'glucose') * 100000,
+    hour = clockHour(s),
+    stress = arousal(s),
+    low = Math.max(0, (70 - g) / 10),
+    volume = s.plasma / 3000,
+    absorbed = s.digestionRates;
+  return {
+    insulin: clamp(s.params.betaCellResponse * (1 + (g - 90) / 50) * (1 + 0.25 * (h.glp1 - 1)) - stress * 0.4, 0.08, 12),
+    glucagon: clamp(1 + (90 - g) / 30 + 0.3 * absorbed.protein + 0.3 * stress + low - 0.18 * (h.insulin - 1), 0.15, 6),
+    glp1: 1 + absorbed.carbs * 2 + (absorbed.protein + absorbed.fat) * 1.5,
+    epinephrine: 1 + stress * 8 + low * 2,
+    cortisol: cortisolRhythm(hour) * (1 + stress * 2.5 + low),
+    thyroid: s.params.metabolicRate,
+    adh: clamp(1 + (s.osmolarity - 285) * 0.22 + (1 - volume) * 18, 0.08, 12),
+    aldosterone: reninDrive(s),
+    melatonin: 1 + 9 * darkness(hour) * (0.3 + 0.7 * s.inputs.sleep),
   };
-  for(const key of HORMONES) {
-    const target=clamp(targets[key],.03,15), tau=hormoneInfo[key].tau;
-    s.hormoneFlux[key]={target,secretion:target/tau,clearance:h[key]/tau};
-    s.hormones[key]=relax(h[key],target,dt,tau);
+}
+
+/** First-order loss per minute in each blood compartment; the liver and kidneys clear extra. */
+function clearance(h: Hormone, compartment: string) {
+  const base = 1 / hormoneInfo[h].tau;
+  // About half the insulin reaching the liver is removed on first pass, a quarter of the glucagon.
+  if (compartment === 'liver-blood' && h === 'insulin') return base + 4.5;
+  if (compartment === 'liver-blood' && h === 'glucagon') return base + 1.5;
+  if (compartment === 'kidneys-blood' && h === 'insulin') return base + 0.5;
+  return base;
+}
+
+/**
+ * Concentration in every blood compartment when the gland releases one unit per minute and the
+ * circulation is as in `s`: the linear steady state, solved directly.
+ */
+function steadyState(s: BodyState, h: Hormone) {
+  const ids = BLOOD_COMPARTMENTS,
+    n = ids.length,
+    at = new Map(ids.map((id, i) => [id, i])),
+    c = s.transport.compartments;
+  const a = Array.from({length: n}, () => new Array<number>(n + 1).fill(0));
+  ids.forEach((id, i) => {
+    a[i][i] -= clearance(h, id) * c[id].volume;
+  });
+  for (const e of bloodEdges(s)) {
+    const from = at.get(e.from)!,
+      to = at.get(e.to)!;
+    a[from][from] -= e.flow;
+    a[to][from] += e.flow;
+  }
+  a[at.get(hormoneInfo[h].drain)!][n] = -1;
+  for (let col = 0; col < n; col++) {
+    let pivot = col;
+    for (let r = col + 1; r < n; r++) if (Math.abs(a[r][col]) > Math.abs(a[pivot][col])) pivot = r;
+    [a[col], a[pivot]] = [a[pivot], a[col]];
+    for (let r = 0; r < n; r++) {
+      if (r === col) continue;
+      const f = a[r][col] / a[col][col];
+      for (let k = col; k <= n; k++) a[r][k] -= f * a[col][k];
+    }
+  }
+  return Object.fromEntries(ids.map((id, i) => [id, a[i][n] / a[i][i]]));
+}
+
+/**
+ * Sets each gland's resting release so that arterial blood holds 1 at rest, and fills every blood
+ * compartment with its steady level for the gland's current drive. Called once per new body.
+ */
+export function startHormones(s: BodyState) {
+  const drive = releaseDrive(s);
+  for (const h of HORMONES) {
+    const unit = steadyState(s, h),
+      rate = 1 / unit.arterial;
+    s.hormoneRate[h] = rate;
+    s.hormoneBlood[h] = {};
+    s.hormoneAmount[h] = {};
+    for (const id of BLOOD_COMPARTMENTS) {
+      s.hormoneBlood[h][id] = unit[id] * rate * drive[h];
+      s.hormoneAmount[h][id] = s.hormoneBlood[h][id] * s.transport.compartments[id].volume;
+    }
+    s.hormones[h] = s.hormoneBlood[h].arterial;
+    s.secretion[h] = drive[h];
+  }
+}
+
+/**
+ * Glands release into their own vein, blood carries each hormone around the circulation with the
+ * same flows as everything else, and every compartment clears it. `dt` is in minutes.
+ */
+export function updateHormones(s: BodyState, dt: number) {
+  const drive = releaseDrive(s),
+    c = s.transport.compartments,
+    ids = BLOOD_COMPARTMENTS,
+    n = ids.length,
+    at = new Map(ids.map((id, i) => [id, i])),
+    edges = bloodEdges(s).map((e) => ({from: at.get(e.from)!, to: at.get(e.to)!, flow: e.flow})),
+    volume = ids.map((id) => Math.max(1e-9, c[id].volume));
+  let fastest = 0;
+  for (const e of edges) fastest = Math.max(fastest, (e.flow * dt) / Math.max(1, volume[e.from]));
+  const steps = Math.max(1, Math.ceil(fastest / 0.25)),
+    subdt = dt / steps,
+    amount = new Float64Array(n),
+    moves = new Float64Array(edges.length),
+    kept = new Float64Array(n);
+  for (const h of HORMONES) {
+    const stored = s.hormoneAmount[h],
+      source = at.get(hormoneInfo[h].drain)!,
+      release = s.hormoneRate[h] * drive[h] * subdt;
+    for (let i = 0; i < n; i++) {
+      amount[i] = stored[ids[i]];
+      kept[i] = Math.exp(-clearance(h, ids[i]) * subdt);
+    }
+    for (let step = 0; step < steps; step++) {
+      // Moves are computed from the same old amounts, then applied together.
+      for (let k = 0; k < edges.length; k++) moves[k] = (amount[edges[k].from] / volume[edges[k].from]) * edges[k].flow * subdt;
+      for (let k = 0; k < edges.length; k++) {
+        amount[edges[k].from] -= moves[k];
+        amount[edges[k].to] += moves[k];
+      }
+      for (let i = 0; i < n; i++) amount[i] *= kept[i];
+      amount[source] += release;
+    }
+    for (let i = 0; i < n; i++) {
+      stored[ids[i]] = amount[i];
+      s.hormoneBlood[h][ids[i]] = amount[i] / volume[i];
+    }
+    s.hormones[h] = s.hormoneBlood[h].arterial;
+    s.secretion[h] = drive[h];
   }
 }

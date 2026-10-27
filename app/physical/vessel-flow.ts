@@ -1,4 +1,5 @@
 import type {BodyState,Organ} from '../simulation/types';
+import type {BloodLevels} from './body-lens';
 
 export type Circuit='arterial'|'venous'|'pulmonary-arterial'|'pulmonary-venous'|'portal';
 export type Bed='heart'|'brain'|'kidneys'|'gut'|'liver'|'hepatic'|'peripheral'|'lungs';
@@ -50,17 +51,20 @@ export function createVesselFlow(graph:VesselGraph,partIndex:Map<string,number>)
   * Substance level carried in each segment. Arteries carry arterial blood everywhere. A vein
   * carries the blood of the beds it drains, mixed in proportion to their flows, so a merged vein
   * shows the blend of its tributaries. Portal tributaries carry gut blood; the trunk and its
-  * hepatic branches carry the portal compartment.
+  * hepatic branches carry the portal compartment. `mixLevels` returns them per segment without
+  * changing the segments, for carrying several things at once.
   */
- const setLevels=(l:{bed:Record<Bed,number>;arterial:number;venous:number;lungs:number;portal:number;gut:number})=>{
-  for(const s of segments){
-   if(s.circuit==='arterial')s.level=l.arterial;
-   else if(s.circuit==='pulmonary-arterial')s.level=l.venous;
-   else if(s.circuit==='pulmonary-venous')s.level=l.lungs;
-   else if(s.circuit==='portal')s.level=s.away||(s.share.find(([bed])=>bed==='gut')?.[1]??0)>=.5?l.portal:l.gut;
-   else{let mixed=0;if(current)for(const [bed,share] of s.share)mixed+=current[bed]*share*l.bed[bed];s.level=s.flow>0?mixed/s.flow:l.venous;}
-  }
+ const mixLevels=(l:BloodLevels,out=new Float64Array(segments.length))=>{
+  segments.forEach((s,i)=>{
+   if(s.circuit==='arterial')out[i]=l.arterial;
+   else if(s.circuit==='pulmonary-arterial')out[i]=l.venous;
+   else if(s.circuit==='pulmonary-venous')out[i]=l.lungs;
+   else if(s.circuit==='portal')out[i]=s.away||(s.share.find(([bed])=>bed==='gut')?.[1]??0)>=.5?l.portal:l.gut;
+   else{let mixed=0;if(current)for(const [bed,share] of s.share)mixed+=current[bed]*share*l.bed[bed];out[i]=s.flow>0?mixed/s.flow:l.venous;}
+  });
+  return out;
  };
+ const setLevels=(l:BloodLevels)=>{const out=mixLevels(l);segments.forEach((s,i)=>{s.level=out[i];});};
  let pulsedTime=0,steadyTime=0;
  /** Advance bead clocks. Arterial time is stretched by the cardiac pulse; venous time is steady. */
  const advance=(dtPulsed:number,dtSteady:number)=>{
@@ -75,10 +79,13 @@ export function createVesselFlow(graph:VesselGraph,partIndex:Map<string,number>)
    s.clock+=dt+Math.max(-.3*dt,Math.min(.3*dt,error));
   }
  };
- /** Visit every bead of the segments accepted by `visible`. Returns the number emitted. */
- const beads=(visible:(s:FlowSegment)=>boolean,emit:(x:number,y:number,z:number,s:FlowSegment)=>void,limit=Infinity)=>{
+ /**
+  * Visit every bead of the segments accepted by `visible`. `number` is the bead's running number
+  * in its segment, which it keeps as it moves along. Returns the number emitted.
+  */
+ const beads=(visible:(s:FlowSegment)=>boolean,emit:(x:number,y:number,z:number,s:FlowSegment,number:number,segment:number)=>void,limit=Infinity)=>{
   let count=0;
-  for(const s of segments){
+  for(let k=0;k<segments.length;k++){const s=segments[k];
    if(s.length<=0||s.flow<=0||!visible(s))continue;
    const shown=Math.max(MIN_DISPLAY_SPEED,s.speed),spacing=shown*BEAD_INTERVAL,stride=2**Math.max(0,Math.ceil(Math.log2(MIN_SPACING/spacing)));
    // Distance from the root-side end of the first bead, and that bead's running number.
@@ -88,11 +95,11 @@ export function createVesselFlow(graph:VesselGraph,partIndex:Map<string,number>)
     const number=j-first;if(((number%stride)+stride)%stride)continue;
     while(at<s.along.length-1&&s.along[at]<d)at++;
     const a=s.along[at-1],t=(d-a)/Math.max(1e-9,s.along[at]-a),i=at*3,p=s.points;
-    emit(p[i-3]+(p[i]-p[i-3])*t,p[i-2]+(p[i+1]-p[i-2])*t,p[i-1]+(p[i+2]-p[i-1])*t,s);count++;
+    emit(p[i-3]+(p[i]-p[i-3])*t,p[i-2]+(p[i+1]-p[i-2])*t,p[i-1]+(p[i+2]-p[i-1])*t,s,number,k);count++;
    }
   }
   return count;
  };
- return {segments,setFlows,setLevels,advance,beads};
+ return {segments,setFlows,setLevels,mixLevels,advance,beads};
 }
 export type VesselFlow=ReturnType<typeof createVesselFlow>;

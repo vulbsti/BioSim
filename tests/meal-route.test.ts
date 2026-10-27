@@ -43,6 +43,6 @@ test('station amounts are the marked meal: they move down the route and never ex
  assert.deepEqual(routeAmounts(s),{stomach:60,intestine:0,portal:0,liver:0,veins:0,lungs:0,arteries:0,muscle:0});
  advance(s,300);const early=routeAmounts(s);advance(s,3300);const later=routeAmounts(s);
  assert.ok(early.stomach>50&&early.intestine>early.portal&&early.muscle<.5,JSON.stringify(early));
- assert.ok(later.stomach<early.stomach&&later.liver>10&&later.muscle>early.muscle&&later.muscle>1,JSON.stringify(later));
+ assert.ok(later.stomach<early.stomach&&later.liver>5&&later.muscle>early.muscle&&later.muscle>3,JSON.stringify(later));
  for(const amounts of [early,later])assert.ok(Object.values(amounts).reduce((a,b)=>a+b,0)<=60+1e-9);
 });

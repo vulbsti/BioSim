@@ -1,35 +1,17 @@
+/**
+ * The hormones the model carries: the ones a person's measurements (glucose sensor, blood panel,
+ * fitness band) can speak to, and that drive something visible in the body.
+ */
 export const HORMONES = [
   "insulin",
   "glucagon",
+  "glp1",
   "epinephrine",
-  "norepinephrine",
-  "crh",
-  "acth",
   "cortisol",
-  "trh",
-  "tsh",
   "thyroid",
   "adh",
-  "renin",
-  "angiotensin",
   "aldosterone",
-  "anp",
-  "gastrin",
-  "secretin",
-  "cck",
-  "glp1",
-  "ghrelin",
-  "leptin",
   "melatonin",
-  "gh",
-  "igf1",
-  "gnrh",
-  "lh",
-  "fsh",
-  "testosterone",
-  "inhibin",
-  "pth",
-  "calcitriol",
 ] as const;
 export type Hormone = (typeof HORMONES)[number];
 export type Organ =
@@ -43,17 +25,38 @@ export type Organ =
   | "skin"
   | "adipose"
   | "endocrine";
+/** What is happening to the body now. Imported data sets these over a day. */
 export type Inputs = {
+  /** 0 resting to 1 hard exercise. */
   exercise: number;
+  /** Fraction of oxygen in the air breathed (0.2095 at sea level). */
   oxygen: number;
-  airCO2: number;
+  /** Air temperature, °C. */
   temperature: number;
-  light: number;
-  sound: number;
-  touch: number;
-  pain: number;
-  smell: number;
+  /** 0 awake, 1 asleep. */
   sleep: number;
+  /** 0 calm to 1 acute stress (a fright, pain, a deadline). */
+  stress: number;
+};
+/**
+ * A person's measured baseline as multipliers on a typical adult (1 = typical), set once from their
+ * blood panel, fitness band and similar. Every key changes something in the model.
+ */
+export type PersonalBaseline = {
+  /** How strongly insulin makes muscle, fat and liver take up sugar. */
+  insulinSensitivity: number;
+  /** How much insulin the pancreas releases for a given rise in sugar. */
+  betaCellResponse: number;
+  /** Thyroid-set basal metabolic rate. */
+  metabolicRate: number;
+  /** Kidney filtering (eGFR against typical). */
+  kidneyClearance: number;
+  /** Oxygen the blood carries per litre (haemoglobin against typical). */
+  oxygenCarrying: number;
+  /** Resting heart rate, beats per minute. */
+  restingHeartRate: number;
+  /** -1 strongly vagal (calm, high HRV) to +1 strongly sympathetic; 0 typical. */
+  autonomicTone: number;
 };
 export type Meal = { carbs: number; protein: number; fat: number; water: number; sodium: number };
 export type Action =
@@ -69,7 +72,6 @@ export type Receipt = {
   detail: string;
 };
 export type Enzymes = { amylase: number; protease: number; lipase: number; pepsin: number };
-export type HormoneFlux = { target: number; secretion: number; clearance: number };
 export type Flow = { id: Organ; name: string; flow: number; oxygenUse: number; venousO2: number };
 export const SUBSTANCES = ["glucose", "aminoAcids", "lipids", "oxygen", "carbonDioxide"] as const;
 export type Substance = (typeof SUBSTANCES)[number];
@@ -142,11 +144,20 @@ export type Sample = {
   hormones: Record<Hormone, number>;
 };
 export type BodyState = {
-  version: 2;
+  version: 3;
   time: number;
   inputs: Inputs;
+  params: PersonalBaseline;
+  /** Each hormone in arterial blood, against its resting level (1). */
   hormones: Record<Hormone, number>;
-  hormoneFlux: Record<Hormone, HormoneFlux>;
+  /** Each hormone in every blood compartment, same scale: a gland's vein runs higher than the arteries. */
+  hormoneBlood: Record<Hormone, Record<string, number>>;
+  /** How fast each gland is releasing its hormone, against its resting rate (1). */
+  secretion: Record<Hormone, number>;
+  /** Each gland's resting release, in the units of `hormoneAmount`, per minute. */
+  hormoneRate: Record<Hormone, number>;
+  /** Hormone held in each blood compartment (concentration × volume). */
+  hormoneAmount: Record<Hormone, Record<string, number>>;
   transport: TransportState;
   enzymes: Enzymes;
   digestionRates: { carbs: number; protein: number; fat: number };
@@ -156,6 +167,9 @@ export type BodyState = {
   aminoAcids: number;
   lipids: number;
   glycogen: number;
+  muscleGlycogen: number;
+  /** When food (not just a drink) last reached the stomach, s; -1 before any. */
+  lastFood: number;
   fatStore: number;
   proteinStore: number;
   plasma: number;
@@ -163,7 +177,6 @@ export type BodyState = {
   intracellular: number;
   sodium: number;
   urea: number;
-  calcium: number;
   bladder: number;
   urineTotal: number;
   sodiumExcreted: number;

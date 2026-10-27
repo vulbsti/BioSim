@@ -36,6 +36,7 @@ export const MARK_FATES = [
   "stomach",
   "intestinal lumen",
   "hepatic glycogen",
+  "muscle glycogen",
   "fat reserve",
   "protein reserve",
   "oxidized substrate",
@@ -234,9 +235,16 @@ export function distributeWaterVolumes(s: BodyState) {
   }
 }
 
-export function transportSubstances(s: BodyState, dt: number) {
-  const c = s.transport.compartments;
-  distributeWaterVolumes(s);
+/** The blood compartments, in the order the circulation visits them from the veins. */
+export const BLOOD_COMPARTMENTS = [
+  "venous",
+  "lungs-blood",
+  "arterial",
+  ...beds.map((b) => `${b.id}-blood`),
+  "portal",
+];
+/** Whole-blood flows between blood compartments, mL/min. */
+export function bloodEdges(s: BodyState) {
   const q = (id: Organ) => (s.flows.find((f) => f.id === id)?.flow ?? 0) * 1000;
   const edges: { from: string; to: string; flow: number }[] = [
     { from: "venous", to: "lungs-blood", flow: s.cardiacOutput * 1000 },
@@ -251,6 +259,14 @@ export function transportSubstances(s: BodyState, dt: number) {
       flow: q(b.id) + (b.id === "liver" ? q("gut") : 0),
     });
   }
+  return edges;
+}
+
+export function transportSubstances(s: BodyState, dt: number) {
+  const c = s.transport.compartments;
+  distributeWaterVolumes(s);
+  const q = (id: Organ) => (s.flows.find((f) => f.id === id)?.flow ?? 0) * 1000;
+  const edges = bloodEdges(s);
   const outgoing: Record<string, number> = {};
   for (const e of edges) outgoing[e.from] = (outgoing[e.from] ?? 0) + e.flow;
   const maxFraction = Math.max(
@@ -289,7 +305,7 @@ export function transportSubstances(s: BodyState, dt: number) {
         const blood = c[`${b.id}-blood`],
           tissue = c[`${b.id}-tissue`];
         const ps =
-          (q(b.id) + (b.id === "liver" ? q("gut") : 0)) * 0.6 * (species === "lipids" ? 0.3 : 1.5);
+          (q(b.id) + (b.id === "liver" ? q("gut") : 0)) * 0.6 * (species === "lipids" ? 0.3 : 3);
         const gradient = concentration(blood, species) - concentration(tissue, species);
         const rate = gradient * ps;
         // Exact two-pool exchange prevents overshoot when permeability exceeds compartment turnover.
