@@ -103,7 +103,7 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
      const role=v.selected?.job?v.selected.job.parts[r.region.id]:v.selected?.part===r.region?'carries':v.selected?undefined:'all',inner=r.region.lobe==='fluid'||r.region.lobe==='wiring';
      const colour=role==='all'||v.selected?.part?r.base:role==='carries'?CARRIES:role==='helps'?HELPS:GHOST;
      r.material.color.copy(role?colour:r.base.clone().lerp(GHOST,.65));
-     r.material.opacity=role==='all'||role==='carries'?1:role==='helps'?.62:inner?.04:.1;r.material.transparent=r.material.opacity<1;r.material.depthWrite=!r.material.transparent;
+     r.material.opacity=role==='all'||role==='carries'?1:role==='helps'?.5:inner?.04:.1;r.material.transparent=r.material.opacity<1;r.material.depthWrite=!r.material.transparent;
      r.material.clippingPlanes=v.cut?[midline]:noClip;r.material.emissive.copy(colour);r.material.emissiveIntensity=role==='carries'?.22:role==='helps'?.08:0;r.material.needsUpdate=true;}
     for(const m of head)m.visible=v.showHead;
     if(arteries){arteries.visible=v.showVessels;(arteries.material as T.MeshStandardMaterial).clippingPlanes=v.cut?[midline]:noClip;(arteries.material as T.Material).needsUpdate=true;}

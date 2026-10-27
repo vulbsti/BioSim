@@ -12,9 +12,9 @@
 .brain-list-head{display:flex;justify-content:space-between;align-items:center;padding:2px 4px 6px;font-size:11px}
 .brain-list-head strong{font-weight:500}
 .sim-app .brain-list-head button{padding:3px;min-height:0;color:#93a7ae}
-.sim-app .brain-list>button{justify-content:flex-start;gap:9px;font-size:11px;color:#c9d5d9;padding:6px 7px;border-radius:5px;min-height:0;text-align:left}
-.sim-app .brain-list>button:hover{background:#2a3d46}
-.sim-app .brain-list>button[aria-pressed=true]{background:#52626766;color:#fff3dc}
+.sim-app .brain-list>button,.sim-app .brain-group>button{justify-content:flex-start;gap:9px;font-size:11px;color:#c9d5d9;padding:6px 7px;border-radius:5px;min-height:0;text-align:left}
+.sim-app .brain-list>button:hover,.sim-app .brain-group>button:hover{background:#2a3d46}
+.sim-app .brain-list>button[aria-pressed=true],.sim-app .brain-group>button[aria-pressed=true]{background:#52626766;color:#fff3dc}
 .brain-list i{width:11px;height:11px;border-radius:3px;flex-shrink:0}
 .sim-app .brain-list-open{position:absolute;top:62px;left:14px;font-size:11px;color:#dbe4e8;background:#14232bcc;border:1px solid #4c5e6680;border-radius:8px;padding:8px 12px;z-index:4}
 .brain-card{position:absolute;top:62px;right:14px;width:280px;background:#14232bee;border:1px solid #4c5e6680;border-radius:10px;padding:14px 16px;display:grid;gap:12px;z-index:4;backdrop-filter:blur(12px)}
@@ -42,3 +42,4 @@
 .sim-app .brain-chip{font-size:10px;color:#d6e0e3;border:1px solid #4c5e66;border-radius:12px;padding:4px 9px 4px 7px;min-height:0;gap:6px}
 .sim-app .brain-chip:hover{background:#2a3d46}
 .brain-chip i{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.brain-list-head{position:sticky;top:-10px;background:#14232b;z-index:1}
