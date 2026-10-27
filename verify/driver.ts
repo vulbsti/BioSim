@@ -88,6 +88,17 @@ export async function play(page: Page, step: Step) {
     return;
   }
   if ('motion' in step) return setMotion(page, step.motion);
+  if ('tap' in step) {
+    await tryPanel(page);
+    await page.getByRole('button', {name: 'Tap below the kneecap', exact: true}).click();
+    await expect(page.locator(SCENE)).toHaveAttribute('data-reflex-stage', /.+/, {timeout: 120000});
+    // Tapping turns the motion on so the reflex plays; screenshots hold one step still.
+    return setMotion(page, false);
+  }
+  if ('reflexStep' in step) {
+    await page.locator(`.physical-reflex [data-step="${step.reflexStep}"]`).click();
+    return expect(page.locator(SCENE)).toHaveAttribute('data-reflex-stage', step.reflexStep);
+  }
 }
 
 /** Hide every overlay so only the 3D body is left: the rest/change comparison must not count changing numbers. */

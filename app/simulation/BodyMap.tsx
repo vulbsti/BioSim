@@ -1,4 +1,4 @@
-import {lazy,Suspense,useMemo,useState,type ReactNode} from 'react';
+import {lazy,Suspense,useEffect,useMemo,useState,type ReactNode} from 'react';
 import {ChevronRight,Eye,Focus,Layers3,RotateCcw,Search,SlidersHorizontal,X,Play,Pause,Heart,Wind,Utensils,Droplet,Activity} from 'lucide-react';
 import type {Atlas,Concept} from '../anatomy';
 import {createAnatomyIndex,organNames,presets,type AnatomyAngle,type AnatomyPreset,type AnatomyRegion,type PhysicalViewState} from '../physical/anatomy-view';
@@ -9,9 +9,11 @@ import '../physical/physical.css';
 const PhysicalScene=lazy(()=>import('../physical/PhysicalScene'));
 const initialView:PhysicalViewState={preset:'dissection',region:'body',angle:'front',selected:[],isolate:false,context:.5,cut:'none',slice:.5,reset:0,focus:0,hidden:[]};
 /** The body fills the screen; every control floats over it. */
-export default function BodyMap({state,selected,onSelect,atlas,running,catalogueError,organCard}:{state:BodyState;selected:Organ;onSelect:(id:Organ)=>void;running:boolean;atlas:Atlas|null;catalogueError?:string;organCard:ReactNode}) {
+export default function BodyMap({state,selected,onSelect,atlas,running,catalogueError,organCard,reflex=0}:{state:BodyState;selected:Organ;onSelect:(id:Organ)=>void;running:boolean;atlas:Atlas|null;catalogueError?:string;organCard:ReactNode;reflex?:number}) {
  const [view,setView]=useState(initialView),[progress,setProgress]=useState(0),[error,setError]=useState(''),[query,setQuery]=useState(''),[structure,setStructure]=useState<Concept|null>(null),[toolsOpen,setToolsOpen]=useState(false),[motion,setMotion]=useState(()=>!window.matchMedia('(prefers-reduced-motion: reduce)').matches),[lens,setLens]=useState<Lens>('flow'),[cardOpen,setCardOpen]=useState(()=>window.innerWidth>900);
  const index=useMemo(()=>atlas?createAnatomyIndex(atlas):null,[atlas]);
+ // A tap on the knee opens the nerves, seen from the right, with motion on so the reflex plays.
+ useEffect(()=>{if(!reflex)return;setStructure(null);setCardOpen(false);setMotion(true);setView(v=>({...v,preset:'nerves',region:'reflex',isolate:false,hidden:[],cut:'none',focus:v.focus+1}));},[reflex]);
  const parts=structure?.elements??[...(index?.groups[selected]??[])];
  const sceneView=useMemo(()=>({...view,selected:parts}),[view,structure,index,selected]);
  const displayError=error||catalogueError;
@@ -23,7 +25,7 @@ export default function BodyMap({state,selected,onSelect,atlas,running,catalogue
  const eating=state.stomach.carbs+state.stomach.protein+state.stomach.fat>0;
  return <div className={`physical-anatomy body-first ${cardOpen?'card-open':''}`}>
   <div className="physical-stage">
-   {atlas&&<Suspense fallback={null}><PhysicalScene atlas={atlas} body={state} motion={motion} lens={lens} view={sceneView} onSelect={pick} onProgress={setProgress} onError={setError}/></Suspense>}
+   {atlas&&<Suspense fallback={null}><PhysicalScene atlas={atlas} body={state} motion={motion} lens={lens} view={sceneView} reflex={reflex} onSelect={pick} onProgress={setProgress} onError={setError}/></Suspense>}
    <div className="physical-processes" aria-label="Vital signs">
     <button aria-label="Watch the heart and circulation" onClick={()=>watch('heart','vessels','flow')}><Heart size={15}/><span>Heart<strong>{state.heartRate.toFixed(0)} <small>beats/min</small></strong></span></button>
     <button aria-label="Watch breathing" onClick={()=>watch('lungs','organs','oxygen')}><Wind size={15}/><span>Breathing<strong>{state.respiratoryRate.toFixed(0)} <small>breaths/min</small></strong></span></button>

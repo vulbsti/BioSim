@@ -20,12 +20,13 @@ import {loadMolecules} from './molecule-pack';
 import {createDive,type Dive} from './dive/dive-layer';
 import {PointerTap} from '../pointer-tap';
 import {createAnatomyIndex,cutawayAt,partOpacity,tissueColor,type PhysicalViewState} from './anatomy-view';
+import {createReflexLayer,legUniforms,poseShader} from './reflex-layer';
 
-interface Props {atlas:Atlas;body:BodyState;motion:boolean;lens:Lens;view:PhysicalViewState;onSelect:(id:string)=>void;onProgress:(n:number)=>void;onError:(message:string)=>void}
-export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onProgress,onError}:Props){
+interface Props {atlas:Atlas;body:BodyState;motion:boolean;lens:Lens;view:PhysicalViewState;reflex?:number;onSelect:(id:string)=>void;onProgress:(n:number)=>void;onError:(message:string)=>void}
+export default function PhysicalScene({atlas,body,motion,lens,view,reflex=0,onSelect,onProgress,onError}:Props){
  const host=useRef<HTMLDivElement>(null),latest=useRef(view),pickCallback=useRef(onSelect);
- const physiology=useRef(body),animate=useRef(motion),shown=useRef(lens);
- latest.current=view;pickCallback.current=onSelect;physiology.current=body;animate.current=motion;shown.current=lens;
+ const physiology=useRef(body),animate=useRef(motion),shown=useRef(lens),taps=useRef(reflex);
+ taps.current=reflex;latest.current=view;pickCallback.current=onSelect;physiology.current=body;animate.current=motion;shown.current=lens;
  useEffect(()=>{
   const el=host.current!;let disposed=false,frame=0,dirty=true,ready=false,lastState:PhysicalViewState|null=null,active=true,lastFit='';
   // Offscreen scenes may not draw yet. Subsequent updates follow rendered motion,
@@ -53,7 +54,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
   const rim=new T.DirectionalLight(0xbfdadf,2.5);rim.position.set(1,2,-3);scene.add(rim);
   const width=T.MathUtils.ceilPowerOfTwo(atlas.parts.length),visualData=new Float32Array(width*4),visualTexture=new T.DataTexture(visualData,width,1,T.RGBAFormat,T.FloatType);
   visualTexture.needsUpdate=true;
-  const uniforms={partVisual:{value:visualTexture},visualWidth:{value:width},dissect:{value:1},slicePlane:{value:new T.Vector4(0,0,0,1)},heartContraction:{value:0},chamberCenter:{value:CHAMBERS.map(()=>new T.Vector3())},chamberFill:{value:[1,1,1,1]},valveOpen:{value:[0,0,0,0]},hormoneColour:{value:HORMONE_FAMILIES.map(f=>new T.Color(f.colour))},lungInflation:{value:0},gutPhase:{value:0},gutActivity:{value:0},bladderFill:{value:0}};
+  const uniforms={partVisual:{value:visualTexture},visualWidth:{value:width},dissect:{value:1},slicePlane:{value:new T.Vector4(0,0,0,1)},heartContraction:{value:0},chamberCenter:{value:CHAMBERS.map(()=>new T.Vector3())},chamberFill:{value:[1,1,1,1]},valveOpen:{value:[0,0,0,0]},hormoneColour:{value:HORMONE_FAMILIES.map(f=>new T.Color(f.colour))},lungInflation:{value:0},gutPhase:{value:0},gutActivity:{value:0},bladderFill:{value:0},...legUniforms()};
   const geometries:T.BufferGeometry[]=[],materials:T.Material[]=[],pickers:(T.Mesh|undefined)[]=[],batches:{mesh:T.Mesh;ranges:{part:number;offset:number;count:number}[];source:Uint32Array;visible:T.BufferAttribute;ghost:boolean}[]=[];
   const bounds=atlas.parts.map(p=>new T.Box3(new T.Vector3().fromArray(p.bounds[0]),new T.Vector3().fromArray(p.bounds[1])));
   const selectedBounds=new T.Box3(),center=new T.Vector3(),size=new T.Vector3();
@@ -71,6 +72,8 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
     shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>',`#include <clipping_planes_fragment>\nif(partStyle.r < 0.005 ${ghost?'|| partStyle.r > 0.995':'|| partStyle.r < 0.995'}) discard; if(dot(vec4(anatomyPosition,1.0),slicePlane) < 0.0) discard; ${cut}`);
     shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\ndiffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.72,0.53,0.28), partStyle.g * 0.15); diffuseColor.a *= partStyle.r;\n// Substance lens: mute the tissue colour, then tint by the signed level (b: 0.5 is the reference).\n// Hormone lens: style.a is 2 + the hormone family, style.b the strength of its colour.\nif(partStyle.a > 1.5){ vec3 plain = mix(diffuseColor.rgb, vec3(dot(diffuseColor.rgb, vec3(0.333))), 0.7) * 0.8; diffuseColor.rgb = mix(plain, hormoneColour[int(partStyle.a - 1.5)], clamp(partStyle.b, 0.0, 1.0) * 0.9); } else if(partStyle.a > 0.5){ float lens = partStyle.b * 2.0 - 1.0; vec3 muted = mix(diffuseColor.rgb, vec3(dot(diffuseColor.rgb, vec3(0.333))), 0.7) * 0.8; diffuseColor.rgb = mix(muted, lens > 0.0 ? vec3(1.0,0.60,0.06) : vec3(0.22,0.45,1.0), min(abs(lens), 1.0) * 0.85); }');
     shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance += vec3(0.07,0.032,0.009) * partStyle.g; if(partStyle.a > 1.5){ totalEmissiveRadiance += hormoneColour[int(partStyle.a - 1.5)] * clamp(partStyle.b, 0.0, 1.0) * 0.4; } else if(partStyle.a > 0.5){ float glow = partStyle.b * 2.0 - 1.0; totalEmissiveRadiance += (glow > 0.0 ? vec3(0.5,0.28,0.02) : vec3(0.05,0.14,0.5)) * abs(glow) * 0.45; }');
+    // Sitting and the knee-jerk kick move every vertex of the legs alike, so nothing comes apart.
+    poseShader(shader);
    };
    m.customProgramCacheKey=()=>`physical-${system}-${ghost}`;materials.push(m);return m;
   };
@@ -80,7 +83,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
   tracerGeometry.setAttribute('position',new T.BufferAttribute(tracerPositions,3));tracerGeometry.setAttribute('color',new T.BufferAttribute(tracerColors,3));tracerGeometry.setAttribute('beadSize',new T.BufferAttribute(tracerSizes,1));tracerGeometry.setAttribute('beadLift',new T.BufferAttribute(tracerLifts,1));tracerGeometry.setDrawRange(0,0);geometries.push(tracerGeometry);
   // Bead diameters are in metres: size is 1/tan(fov/2), so attenuation yields true screen size.
   const tracerMaterial=new T.PointsMaterial({size:1/Math.tan(T.MathUtils.degToRad(31/2)),sizeAttenuation:true,vertexColors:true,transparent:true,opacity:.95,depthTest:true,depthWrite:false});
-  tracerMaterial.onBeforeCompile=shader=>{// A bead sits on the centerline, inside its own vessel wall. Lift it toward the camera by just over
+  tracerMaterial.onBeforeCompile=shader=>{Object.assign(shader.uniforms,uniforms);poseShader(shader);// A bead sits on the centerline, inside its own vessel wall. Lift it toward the camera by just over
    // the vessel radius so that wall does not hide it, while organs and bone in front still do.
    shader.vertexShader='attribute float beadSize; attribute float beadLift;\n'+shader.vertexShader.replace('#include <project_vertex>','vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 ); mvPosition.xyz += normalize(-mvPosition.xyz) * beadLift; gl_Position = projectionMatrix * mvPosition;').replace('gl_PointSize = size;','gl_PointSize = size * beadSize;').replace('#include <fog_vertex>','#include <fog_vertex>\ngl_PointSize = clamp(gl_PointSize, 1.6, 11.0);');shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>','#include <clipping_planes_fragment>\nfloat r=distance(gl_PointCoord,vec2(0.5)); if(r>0.5) discard;');};materials.push(tracerMaterial);
   const tracers=new T.Points(tracerGeometry,tracerMaterial);tracers.frustumCulled=false;tracers.renderOrder=5;scene.add(tracers);
@@ -169,11 +172,11 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    const v=latest.current;selectedBounds.makeEmpty();
    if(v.region==='selection'||v.isolate)atlas.parts.forEach((p,i)=>{if(v.selected.includes(p.id))selectedBounds.union(bounds[i]);});
    if(selectedBounds.isEmpty()){
-    const regions={body:[[-.43,-.03,-.2],[.43,1.77,.2]],torso:[[-.27,.78,-.2],[.27,1.52,.2]],head:[[-.16,1.44,-.17],[.16,1.76,.15]],abdomen:[[-.25,.8,-.2],[.25,1.27,.2]],selection:[[-.43,0,-.2],[.43,1.75,.2]]};
+    const regions={body:[[-.43,-.03,-.2],[.43,1.77,.2]],torso:[[-.27,.78,-.2],[.27,1.52,.2]],head:[[-.16,1.44,-.17],[.16,1.76,.15]],abdomen:[[-.25,.8,-.2],[.25,1.27,.2]],selection:[[-.43,0,-.2],[.43,1.75,.2]],reflex:[[-.3,.25,-.25],[.2,1.76,.65]]};
     const b=regions[v.region];selectedBounds.set(new T.Vector3().fromArray(b[0]),new T.Vector3().fromArray(b[1]));
    }
    selectedBounds.getCenter(center);selectedBounds.getSize(size);
-   const direction=v.angle==='front'?new T.Vector3(0,0,1):v.angle==='back'?new T.Vector3(0,0,-1):v.angle==='side'?new T.Vector3(1,0,0):new T.Vector3(.32,.05,1).normalize();
+   const direction=v.region==='reflex'?new T.Vector3(-1,.12,.55).normalize():v.angle==='front'?new T.Vector3(0,0,1):v.angle==='back'?new T.Vector3(0,0,-1):v.angle==='side'?new T.Vector3(1,0,0):new T.Vector3(.32,.05,1).normalize();
    const span=Math.max(size.y,Math.hypot(size.x,size.z)/Math.max(.2,camera.aspect)),distance=Math.max(.08,span/(2*Math.tan(T.MathUtils.degToRad(camera.fov/2)))*1.12+size.z*.4);
    controls.target.copy(center);camera.position.copy(center).addScaledVector(direction,distance);controls.update();dirty=true;
   };
@@ -235,6 +238,8 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
   const siteTags=(Object.keys(HORMONE_SITES) as HormoneSite[]).flatMap(site=>{const box=new T.Box3();let part=-1;atlas.parts.forEach((p,i)=>{if(HORMONE_SITES[site].match.test(p.name)){box.union(bounds[i]);if(part<0)part=i;}});if(part<0)return [];const node=document.createElement('div');node.hidden=true;node.innerHTML='<span></span><strong></strong>';node.querySelector('span')!.textContent=HORMONE_SITES[site].name.toUpperCase();hormoneTags.appendChild(node);return [{site,part,at:box.getCenter(new T.Vector3()),node,text:node.querySelector('strong')!,placed:''}];});
   const callouts=document.createElement('div');callouts.className='physical-callouts';callouts.setAttribute('aria-label','Live organ stores and exchange');el.appendChild(callouts);
   const clock=document.createElement('div');clock.className='physical-clock';clock.setAttribute('aria-label','Simulated time shown on the body');el.appendChild(clock);
+  // The knee-jerk reflex: started by a tap from the controls, shown only in the nerves view.
+  const reflexLayer=createReflexLayer({el,scene,atlas,uniforms,visual:{data:visualData,texture:visualTexture,restyle:()=>{tintedState=null;}},signal:abort.signal,changed:()=>{dirty=true;}});let tapsSeen=taps.current;
   const anchorOf=(test:(name:string,id:string)=>boolean)=>{const box=new T.Box3();let part=-1;atlas.parts.forEach((p,i)=>{if(test(p.name,p.id)){box.union(bounds[i]);if(part<0)part=i;}});return part<0?null:{part,at:box.getCenter(new T.Vector3())};};
   const named=(name:string)=>anchorOf(n=>n.toLowerCase()===name),grouped=(organ:'heart'|'brain'|'liver')=>anchorOf((_,id)=>index.groups[organ].has(id));
   const tags=([
@@ -388,6 +393,9 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    // The modelled conduction system lights stage by stage as the impulse passes.
    conductionParts??=atlas.parts.flatMap((p,i)=>p.stage?[{i,stage:p.stage as ConductionStage}]:[]);
    if(conductionParts.length){let lit='';for(const c of conductionParts){const glow=conductionGlow(c.stage,heartPhase,current.heartRate);visualData[c.i*4+2]=.5+.5*glow;visualData[c.i*4+3]=1;if(glow>.5&&!lit.includes(c.stage))lit+=(lit?' ':'')+c.stage;}visualTexture.needsUpdate=true;el.dataset.conduction=lit;}
+   if(taps.current!==tapsSeen){tapsSeen=taps.current;if(taps.current>0)reflexLayer.start();}
+   if(reflexLayer.active()&&v.preset!=='nerves')reflexLayer.stop();
+   reflexLayer.frame(dt);
    for(const route of routes){
     if(visualData[route.part*4]<.5||route.kind==='mix'&&rates.digesting<.01||route.kind==='food'&&displayTime>swallowUntil||route.kind==='air'&&!['dissection','organs'].includes(v.preset)&&!v.isolate)continue;
     const number=route.kind==='air'?7:4;
@@ -436,7 +444,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    }
    updateMotion(dt);controls.update();if(!dirty&&!animate.current)return;renderer.render(scene,camera);lastRender=now;if(canFence){gpuFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();}dirty=false;
   };resize();draw();
-  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();intersection.disconnect();controls.dispose();for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.removeEventListener(name,handler);dive?.dispose();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());visualTexture.dispose();environment?.dispose();if(gpuFence)gl.deleteSync(gpuFence);renderer.dispose();renderer.domElement.remove();hovered.remove();cycleReadout.remove();lensLegend.remove();mealFate.remove();hormonePanel.remove();hormoneTags.remove();routeTagHost.remove();callouts.remove();clock.remove();};
+  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();intersection.disconnect();controls.dispose();for(const [name,handler] of [['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',cancel],['pointerleave',cancel]] as const)renderer.domElement.removeEventListener(name,handler);dive?.dispose();reflexLayer.dispose();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());visualTexture.dispose();environment?.dispose();if(gpuFence)gl.deleteSync(gpuFence);renderer.dispose();renderer.domElement.remove();hovered.remove();cycleReadout.remove();lensLegend.remove();mealFate.remove();hormonePanel.remove();hormoneTags.remove();routeTagHost.remove();callouts.remove();clock.remove();};
  },[atlas,onProgress,onError]);
  return <div className="physical-canvas" ref={host} data-testid="physical-scene"/>;
 }

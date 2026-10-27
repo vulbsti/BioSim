@@ -50,6 +50,16 @@ Wasserthal J. et al., *TotalSegmentator CT dataset* v3.0.0, University Hospital 
 
 Adaptations: the scan was segmented with TotalSegmentator's open `total` and `headneck_bones_vessels` models (Apache-2.0); the vertebral arteries were traced through the contrast and all four artery centerlines extracted with VMTK (BSD). Only those centerlines and 23 landmark positions leave the scan. The centerlines were warped onto the BodyParts3D atlas by a thin-plate spline on 19 paired landmarks, moved to end exactly on the atlas vessels they join, eased off atlas bone, and swept into tubes whose calibre comes from published adult values, not from the scan. The four resulting segments are the course of one person's arteries fitted to a different person's skeleton. They are not BodyParts3D geometry and not a measurement of the atlas subject. Landmark residuals, end corrections and bone clearances are in `docs/registered-vessels-provenance.json` in the repository.
 
+## Spinal cord and nerves from Z-Anatomy
+
+Z-Anatomy (z-anatomy.com) and its contributors, built on BodyParts3D. Licensed under Creative Commons Attribution-ShareAlike 4.0 International; these adapted data keep that licence.
+
+- Source: https://github.com/Z-Anatomy/Models-of-human-anatomy (`Z-Anatomy.zip`, `Startup.blend`) and https://www.z-anatomy.com/
+- License terms: https://creativecommons.org/licenses/by-sa/4.0/
+- Packaged derivatives: `models/nerves.json`, `nerves.bin`, `nerves.bin.gz`, `models/nerve-paths.json`.
+
+The spinal cord, spinal ganglia, spinal roots, cauda equina, sympathetic trunk, vagus and the other cranial nerves that leave the skull, and about 120 body nerves on each side. Adaptations: nerve curves were read as centrelines and rebuilt as tubes whose thickness follows Z-Anatomy's own; every centreline and the cord mesh were moved onto this atlas by fits to 332 bones and muscles both atlases share (median fit 2.4 mm), then eased so each nerve stays clear of bone and under the skin. Muscular branches of the femoral nerve into the four heads of quadriceps and of the sciatic nerve into the three hamstrings are not in Z-Anatomy; they were authored here, starting on their parent nerve and running down the core of their muscle. The knee-jerk route and the hip, knee and ankle centres used to pose the leg are derived from the same data. Per-structure fits, clearances and what was authored are in `docs/nerves-provenance.json` in the repository; the build is `scripts/nerves/`.
+
 ## Viewer adaptations
 
 The physiology renderer applies tissue colors, transparency, anterior display cuts, optional section planes, and temporary illustrative heart/lung/diaphragm/digestive deformation. It also corrects display grouping for hepatovenous liver segments and cerebral ventricles, and includes the source ventricular wall in heart selection. Source identities and archived base buffers remain unchanged. Tracer paths are approximate visual guides and do not establish vessel junctions.

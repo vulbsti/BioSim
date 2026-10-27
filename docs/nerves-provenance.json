@@ -1,0 +1,3879 @@
+{
+ "scope": "Spinal cord, spinal ganglia and body nerves from Z-Anatomy, registered onto the BodyParts3D atlas. Nerve tubes are rebuilt from Z-Anatomy centrelines; thickness is read from Z-Anatomy's own tubes. Quadriceps and hamstring muscular branches are authored (Z-Anatomy has none).",
+ "source": {
+  "name": "Z-Anatomy",
+  "url": "https://github.com/Z-Anatomy/Models-of-human-anatomy",
+  "file": "Z-Anatomy.zip / Startup.blend",
+  "licence": "CC BY-SA 4.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "blendSHA256": "9f08a17ea0115fed80b2a73ecdf0a1bc2ab2f6956f37c593ce23d513ea35afcd"
+ },
+ "registration": {
+  "method": "Carry Z-Anatomy geometry onto this atlas.\n\nZ-Anatomy is built from BodyParts3D too, but it is remeshed, mirrored left to right and posed a\nlittle differently, so its nerves cannot be copied across as they are. They are moved by the\nbones and muscles around them:\n\n1. One similarity transform from the centroids of every bone both atlases name (axes, units, scale).\n2. For each bone and muscle both atlases have, a rigid fit (with at most 10% scale) of the Z-Anatomy\n   surface onto the atlas one, by symmetric iterative closest point. A pair that does not fit to\n   within FIT_MM is not used.\n3. A point is moved by a blend of the fits of the structures nearest to it, weighted by\n   exp(-(distance/REACH)^2) and by how well each fitted. A nerve in the thigh therefore moves with\n   the femur and the muscles it runs between; the cord moves with the vertebrae around it.",
+  "anchorsUsed": 332,
+  "anchorsTried": 364,
+  "fitRmsMm": {
+   "median": 2.41,
+   "greatest": 11.93
+  },
+  "anchors": [
+   {
+    "zAnatomy": "Abductor digiti minimi of foot.l",
+    "atlas": "Abductor digiti minimi of left foot",
+    "rmsMm": 1.0,
+    "used": true
+   },
+   {
+    "zAnatomy": "Abductor digiti minimi of foot.r",
+    "atlas": "Abductor digiti minimi of right foot",
+    "rmsMm": 1.0,
+    "used": true
+   },
+   {
+    "zAnatomy": "Abductor digiti minimi of hand.l",
+    "atlas": "Abductor digiti minimi of left hand",
+    "rmsMm": 238.86,
+    "used": false
+   },
+   {
+    "zAnatomy": "Abductor digiti minimi of hand.r",
+    "atlas": "Abductor digiti minimi of right hand",
+    "rmsMm": 1.13,
+    "used": true
+   },
+   {
+    "zAnatomy": "Abductor hallucis.l",
+    "atlas": "Left abductor hallucis",
+    "rmsMm": 1.69,
+    "used": true
+   },
+   {
+    "zAnatomy": "Abductor hallucis.r",
+    "atlas": "Right abductor hallucis",
+    "rmsMm": 1.69,
+    "used": true
+   },
+   {
+    "zAnatomy": "Abductor pollicis brevis.l",
+    "atlas": "Left abductor pollicis brevis",
+    "rmsMm": 1.55,
+    "used": true
+   },
+   {
+    "zAnatomy": "Abductor pollicis brevis.r",
+    "atlas": "Right abductor pollicis brevis",
+    "rmsMm": 18.9,
+    "used": false
+   },
+   {
+    "zAnatomy": "Abductor pollicis longus.l",
+    "atlas": "Left abductor pollicis longus",
+    "rmsMm": 2.35,
+    "used": true
+   },
+   {
+    "zAnatomy": "Abductor pollicis longus.r",
+    "atlas": "Right abductor pollicis longus",
+    "rmsMm": 2.49,
+    "used": true
+   },
+   {
+    "zAnatomy": "Acromial part of deltoid muscle.l",
+    "atlas": "Acromial part of left deltoid",
+    "rmsMm": 4.38,
+    "used": true
+   },
+   {
+    "zAnatomy": "Acromial part of deltoid muscle.r",
+    "atlas": "Acromial part of right deltoid",
+    "rmsMm": 4.36,
+    "used": true
+   },
+   {
+    "zAnatomy": "Adductor brevis.l",
+    "atlas": "Left adductor brevis",
+    "rmsMm": 4.06,
+    "used": true
+   },
+   {
+    "zAnatomy": "Adductor brevis.r",
+    "atlas": "Right adductor brevis",
+    "rmsMm": 4.06,
+    "used": true
+   },
+   {
+    "zAnatomy": "Adductor longus.l",
+    "atlas": "Left adductor longus",
+    "rmsMm": 4.64,
+    "used": true
+   },
+   {
+    "zAnatomy": "Adductor longus.r",
+    "atlas": "Right adductor longus",
+    "rmsMm": 4.75,
+    "used": true
+   },
+   {
+    "zAnatomy": "Adductor magnus.l",
+    "atlas": "Left adductor magnus",
+    "rmsMm": 5.39,
+    "used": true
+   },
+   {
+    "zAnatomy": "Adductor magnus.r",
+    "atlas": "Right adductor magnus",
+    "rmsMm": 5.42,
+    "used": true
+   },
+   {
+    "zAnatomy": "Anconeus muscle.l",
+    "atlas": "Left anconeus",
+    "rmsMm": 1.47,
+    "used": true
+   },
+   {
+    "zAnatomy": "Anconeus muscle.r",
+    "atlas": "Right anconeus",
+    "rmsMm": 1.48,
+    "used": true
+   },
+   {
+    "zAnatomy": "Atlas (C1)",
+    "atlas": "Atlas",
+    "rmsMm": 0.95,
+    "used": true
+   },
+   {
+    "zAnatomy": "Axis (C2)",
+    "atlas": "Axis",
+    "rmsMm": 1.07,
+    "used": true
+   },
+   {
+    "zAnatomy": "Body of sternum",
+    "atlas": "Body of sternum",
+    "rmsMm": 1.76,
+    "used": true
+   },
+   {
+    "zAnatomy": "Brachialis muscle.l",
+    "atlas": "Left brachialis",
+    "rmsMm": 3.41,
+    "used": true
+   },
+   {
+    "zAnatomy": "Brachialis muscle.r",
+    "atlas": "Right brachialis",
+    "rmsMm": 3.45,
+    "used": true
+   },
+   {
+    "zAnatomy": "Brachioradialis muscle.l",
+    "atlas": "Left brachioradialis",
+    "rmsMm": 2.61,
+    "used": true
+   },
+   {
+    "zAnatomy": "Brachioradialis muscle.r",
+    "atlas": "Right brachioradialis",
+    "rmsMm": 2.58,
+    "used": true
+   },
+   {
+    "zAnatomy": "Calcaneal tendon.l",
+    "atlas": "Left calcaneal tendon",
+    "rmsMm": 2.35,
+    "used": true
+   },
+   {
+    "zAnatomy": "Calcaneal tendon.r",
+    "atlas": "Right calcaneal tendon",
+    "rmsMm": 2.57,
+    "used": true
+   },
+   {
+    "zAnatomy": "Calcaneus.l",
+    "atlas": "Left calcaneus",
+    "rmsMm": 1.72,
+    "used": true
+   },
+   {
+    "zAnatomy": "Calcaneus.r",
+    "atlas": "Right calcaneus",
+    "rmsMm": 1.11,
+    "used": true
+   },
+   {
+    "zAnatomy": "Clavicle.l",
+    "atlas": "Left clavicle",
+    "rmsMm": 2.08,
+    "used": true
+   },
+   {
+    "zAnatomy": "Clavicle.r",
+    "atlas": "Right clavicle",
+    "rmsMm": 2.09,
+    "used": true
+   },
+   {
+    "zAnatomy": "Clavicular part of deltoid muscle.l",
+    "atlas": "Clavicular part of left deltoid",
+    "rmsMm": 3.17,
+    "used": true
+   },
+   {
+    "zAnatomy": "Clavicular part of deltoid muscle.r",
+    "atlas": "Clavicular part of right deltoid",
+    "rmsMm": 3.18,
+    "used": true
+   },
+   {
+    "zAnatomy": "Coccygeus muscle.l",
+    "atlas": "Left coccygeus",
+    "rmsMm": 14.16,
+    "used": false
+   },
+   {
+    "zAnatomy": "Coccygeus muscle.r",
+    "atlas": "Right coccygeus",
+    "rmsMm": 205.79,
+    "used": false
+   },
+   {
+    "zAnatomy": "Common tendinous ring.l",
+    "atlas": "Left common tendinous ring",
+    "rmsMm": 697.37,
+    "used": false
+   },
+   {
+    "zAnatomy": "Common tendinous ring.r",
+    "atlas": "Right common tendinous ring",
+    "rmsMm": 696.4,
+    "used": false
+   },
+   {
+    "zAnatomy": "Coracobrachialis muscle.l",
+    "atlas": "Left coracobrachialis",
+    "rmsMm": 3.87,
+    "used": true
+   },
+   {
+    "zAnatomy": "Coracobrachialis muscle.r",
+    "atlas": "Right coracobrachialis",
+    "rmsMm": 3.83,
+    "used": true
+   },
+   {
+    "zAnatomy": "Diaphragm",
+    "atlas": "Diaphragm",
+    "rmsMm": 6.65,
+    "used": true
+   },
+   {
+    "zAnatomy": "Eighth rib.l",
+    "atlas": "Left eighth rib",
+    "rmsMm": 1.8,
+    "used": true
+   },
+   {
+    "zAnatomy": "Eighth rib.r",
+    "atlas": "Right eighth rib",
+    "rmsMm": 1.81,
+    "used": true
+   },
+   {
+    "zAnatomy": "Eleventh rib.l",
+    "atlas": "Left eleventh rib",
+    "rmsMm": 3.18,
+    "used": true
+   },
+   {
+    "zAnatomy": "Eleventh rib.r",
+    "atlas": "Right eleventh rib",
+    "rmsMm": 2.9,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor carpi radialis brevis.l",
+    "atlas": "Left extensor carpi radialis brevis",
+    "rmsMm": 3.09,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor carpi radialis brevis.r",
+    "atlas": "Right extensor carpi radialis brevis",
+    "rmsMm": 3.07,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor carpi radialis longus.l",
+    "atlas": "Left extensor carpi radialis longus",
+    "rmsMm": 3.01,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor carpi radialis longus.r",
+    "atlas": "Right extensor carpi radialis longus",
+    "rmsMm": 3.01,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor digiti minimi.l",
+    "atlas": "Left extensor digiti minimi",
+    "rmsMm": 2.95,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor digiti minimi.r",
+    "atlas": "Right extensor digiti minimi",
+    "rmsMm": 3.03,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor digitorum.l",
+    "atlas": "Left extensor digitorum",
+    "rmsMm": 2.88,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor digitorum.r",
+    "atlas": "Right extensor digitorum",
+    "rmsMm": 2.94,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor hallucis brevis.l",
+    "atlas": "Left extensor hallucis brevis",
+    "rmsMm": 0.98,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor hallucis brevis.r",
+    "atlas": "Right extensor hallucis brevis",
+    "rmsMm": 0.99,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor hallucis longus.l",
+    "atlas": "Left extensor hallucis longus",
+    "rmsMm": 3.98,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor hallucis longus.r",
+    "atlas": "Right extensor hallucis longus",
+    "rmsMm": 4.0,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor indicis.l",
+    "atlas": "Left extensor indicis",
+    "rmsMm": 1.83,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor indicis.r",
+    "atlas": "Right extensor indicis",
+    "rmsMm": 1.93,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor pollicis brevis.l",
+    "atlas": "Left extensor pollicis brevis",
+    "rmsMm": 2.19,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor pollicis brevis.r",
+    "atlas": "Right extensor pollicis brevis",
+    "rmsMm": 2.6,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor pollicis longus.l",
+    "atlas": "Left extensor pollicis longus",
+    "rmsMm": 2.53,
+    "used": true
+   },
+   {
+    "zAnatomy": "Extensor pollicis longus.r",
+    "atlas": "Right extensor pollicis longus",
+    "rmsMm": 2.41,
+    "used": true
+   },
+   {
+    "zAnatomy": "Femur.l",
+    "atlas": "Left femur",
+    "rmsMm": 5.64,
+    "used": true
+   },
+   {
+    "zAnatomy": "Femur.r",
+    "atlas": "Right femur",
+    "rmsMm": 5.6,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fibula.l",
+    "atlas": "Left fibula",
+    "rmsMm": 4.85,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fibula.r",
+    "atlas": "Right fibula",
+    "rmsMm": 4.77,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fibularis brevis muscle.l",
+    "atlas": "Left fibularis brevis",
+    "rmsMm": 6.17,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fibularis brevis muscle.r",
+    "atlas": "Right fibularis brevis",
+    "rmsMm": 6.74,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fibularis longus muscle.l",
+    "atlas": "Left fibularis longus",
+    "rmsMm": 4.09,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fibularis longus muscle.r",
+    "atlas": "Right fibularis longus",
+    "rmsMm": 4.12,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fibularis tertius muscle.l",
+    "atlas": "Left fibularis tertius",
+    "rmsMm": 2.0,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fibularis tertius muscle.r",
+    "atlas": "Right fibularis tertius",
+    "rmsMm": 1.99,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fifth rib.l",
+    "atlas": "Left fifth rib",
+    "rmsMm": 1.58,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fifth rib.r",
+    "atlas": "Right fifth rib",
+    "rmsMm": 1.59,
+    "used": true
+   },
+   {
+    "zAnatomy": "First rib.l",
+    "atlas": "Left first rib",
+    "rmsMm": 1.05,
+    "used": true
+   },
+   {
+    "zAnatomy": "First rib.r",
+    "atlas": "Right first rib",
+    "rmsMm": 1.03,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor carpi radialis.l",
+    "atlas": "Left flexor carpi radialis",
+    "rmsMm": 3.9,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor carpi radialis.r",
+    "atlas": "Right flexor carpi radialis",
+    "rmsMm": 3.82,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor digitorum brevis.l",
+    "atlas": "Left flexor digitorum brevis",
+    "rmsMm": 5.01,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor digitorum brevis.r",
+    "atlas": "Right flexor digitorum brevis",
+    "rmsMm": 5.05,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor digitorum longus.l",
+    "atlas": "Left flexor digitorum longus",
+    "rmsMm": 5.44,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor digitorum longus.r",
+    "atlas": "Right flexor digitorum longus",
+    "rmsMm": 5.44,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor digitorum profundus.l",
+    "atlas": "Left flexor digitorum profundus",
+    "rmsMm": 2.42,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor digitorum profundus.r",
+    "atlas": "Right flexor digitorum profundus",
+    "rmsMm": 2.41,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor hallucis longus.l",
+    "atlas": "Left flexor hallucis longus",
+    "rmsMm": 3.89,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor hallucis longus.r",
+    "atlas": "Right flexor hallucis longus",
+    "rmsMm": 3.87,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor pollicis longus.l",
+    "atlas": "Left flexor pollicis longus",
+    "rmsMm": 3.68,
+    "used": true
+   },
+   {
+    "zAnatomy": "Flexor pollicis longus.r",
+    "atlas": "Right flexor pollicis longus",
+    "rmsMm": 3.73,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fourth rib.l",
+    "atlas": "Left fourth rib",
+    "rmsMm": 1.46,
+    "used": true
+   },
+   {
+    "zAnatomy": "Fourth rib.r",
+    "atlas": "Right fourth rib",
+    "rmsMm": 1.52,
+    "used": true
+   },
+   {
+    "zAnatomy": "Frontal bone",
+    "atlas": "Frontal bone",
+    "rmsMm": 2.27,
+    "used": true
+   },
+   {
+    "zAnatomy": "Genioglossus muscle.l",
+    "atlas": "Left genioglossus",
+    "rmsMm": 3.25,
+    "used": true
+   },
+   {
+    "zAnatomy": "Genioglossus muscle.r",
+    "atlas": "Right genioglossus",
+    "rmsMm": 664.45,
+    "used": false
+   },
+   {
+    "zAnatomy": "Geniohyoid muscle.l",
+    "atlas": "Left geniohyoid",
+    "rmsMm": 1.29,
+    "used": true
+   },
+   {
+    "zAnatomy": "Geniohyoid muscle.r",
+    "atlas": "Right geniohyoid",
+    "rmsMm": 1.27,
+    "used": true
+   },
+   {
+    "zAnatomy": "Gluteus maximus muscle.l",
+    "atlas": "Left gluteus maximus",
+    "rmsMm": 5.27,
+    "used": true
+   },
+   {
+    "zAnatomy": "Gluteus maximus muscle.r",
+    "atlas": "Right gluteus maximus",
+    "rmsMm": 5.29,
+    "used": true
+   },
+   {
+    "zAnatomy": "Gluteus medius muscle.l",
+    "atlas": "Left gluteus medius",
+    "rmsMm": 3.02,
+    "used": true
+   },
+   {
+    "zAnatomy": "Gluteus medius muscle.r",
+    "atlas": "Right gluteus medius",
+    "rmsMm": 2.87,
+    "used": true
+   },
+   {
+    "zAnatomy": "Gluteus minimus muscle.l",
+    "atlas": "Left gluteus minimus",
+    "rmsMm": 2.5,
+    "used": true
+   },
+   {
+    "zAnatomy": "Gluteus minimus muscle.r",
+    "atlas": "Right gluteus minimus",
+    "rmsMm": 2.57,
+    "used": true
+   },
+   {
+    "zAnatomy": "Hip bone.l",
+    "atlas": "Left hip bone",
+    "rmsMm": 3.98,
+    "used": true
+   },
+   {
+    "zAnatomy": "Hip bone.r",
+    "atlas": "Right hip bone",
+    "rmsMm": 3.99,
+    "used": true
+   },
+   {
+    "zAnatomy": "Humeral head of flexor carpi ulnaris.l",
+    "atlas": "Humeral head of left flexor carpi ulnaris",
+    "rmsMm": 2.78,
+    "used": true
+   },
+   {
+    "zAnatomy": "Humeral head of flexor carpi ulnaris.r",
+    "atlas": "Humeral head of right flexor carpi ulnaris",
+    "rmsMm": 2.76,
+    "used": true
+   },
+   {
+    "zAnatomy": "Humerus.l",
+    "atlas": "Left humerus",
+    "rmsMm": 3.29,
+    "used": true
+   },
+   {
+    "zAnatomy": "Humerus.r",
+    "atlas": "Right humerus",
+    "rmsMm": 2.8,
+    "used": true
+   },
+   {
+    "zAnatomy": "Hyoglossus muscle.l",
+    "atlas": "Left hyoglossus",
+    "rmsMm": 1.56,
+    "used": true
+   },
+   {
+    "zAnatomy": "Hyoglossus muscle.r",
+    "atlas": "Right hyoglossus",
+    "rmsMm": 1.73,
+    "used": true
+   },
+   {
+    "zAnatomy": "Iliacus muscle.l",
+    "atlas": "Left iliacus",
+    "rmsMm": 3.24,
+    "used": true
+   },
+   {
+    "zAnatomy": "Iliacus muscle.r",
+    "atlas": "Right iliacus",
+    "rmsMm": 3.25,
+    "used": true
+   },
+   {
+    "zAnatomy": "Iliococcygeus muscle.l",
+    "atlas": "Left iliococcygeus",
+    "rmsMm": 2.88,
+    "used": true
+   },
+   {
+    "zAnatomy": "Iliococcygeus muscle.r",
+    "atlas": "Right iliococcygeus",
+    "rmsMm": 12.66,
+    "used": false
+   },
+   {
+    "zAnatomy": "Iliocostalis lumborum muscle.l",
+    "atlas": "Left iliocostalis lumborum",
+    "rmsMm": 5.1,
+    "used": true
+   },
+   {
+    "zAnatomy": "Iliocostalis lumborum muscle.r",
+    "atlas": "Right iliocostalis lumborum",
+    "rmsMm": 4.84,
+    "used": true
+   },
+   {
+    "zAnatomy": "Iliocostalis thoracis muscle.l",
+    "atlas": "Left iliocostalis thoracis",
+    "rmsMm": 2.11,
+    "used": true
+   },
+   {
+    "zAnatomy": "Iliocostalis thoracis muscle.r",
+    "atlas": "Right iliocostalis thoracis",
+    "rmsMm": 2.12,
+    "used": true
+   },
+   {
+    "zAnatomy": "Iliotibial tract.l",
+    "atlas": "Left iliotibial tract",
+    "rmsMm": 3.72,
+    "used": true
+   },
+   {
+    "zAnatomy": "Iliotibial tract.r",
+    "atlas": "Right iliotibial tract",
+    "rmsMm": 3.69,
+    "used": true
+   },
+   {
+    "zAnatomy": "Inferior gemellus muscle.l",
+    "atlas": "Left gemellus inferior",
+    "rmsMm": 1.47,
+    "used": true
+   },
+   {
+    "zAnatomy": "Inferior gemellus muscle.r",
+    "atlas": "Right gemellus inferior",
+    "rmsMm": 1.47,
+    "used": true
+   },
+   {
+    "zAnatomy": "Inferior oblique muscle.l",
+    "atlas": "Left inferior oblique",
+    "rmsMm": 0.43,
+    "used": true
+   },
+   {
+    "zAnatomy": "Inferior oblique muscle.r",
+    "atlas": "Right inferior oblique",
+    "rmsMm": 0.31,
+    "used": true
+   },
+   {
+    "zAnatomy": "Inferior pharyngeal constrictor.l",
+    "atlas": "Left inferior pharyngeal constrictor",
+    "rmsMm": 1.15,
+    "used": true
+   },
+   {
+    "zAnatomy": "Inferior pharyngeal constrictor.r",
+    "atlas": "Right inferior pharyngeal constrictor",
+    "rmsMm": 1.14,
+    "used": true
+   },
+   {
+    "zAnatomy": "Inferior rectus muscle.l",
+    "atlas": "Left inferior rectus",
+    "rmsMm": 0.57,
+    "used": true
+   },
+   {
+    "zAnatomy": "Inferior rectus muscle.r",
+    "atlas": "Right inferior rectus",
+    "rmsMm": 0.49,
+    "used": true
+   },
+   {
+    "zAnatomy": "Infraspinatus muscle.l",
+    "atlas": "Left infraspinatus muscle",
+    "rmsMm": 5.63,
+    "used": true
+   },
+   {
+    "zAnatomy": "Infraspinatus muscle.r",
+    "atlas": "Right infraspinatus muscle",
+    "rmsMm": 5.61,
+    "used": true
+   },
+   {
+    "zAnatomy": "Lateral crico-arytenoid muscle.l",
+    "atlas": "Left lateral crico-arytenoid",
+    "rmsMm": 418.18,
+    "used": false
+   },
+   {
+    "zAnatomy": "Lateral crico-arytenoid muscle.r",
+    "atlas": "Right lateral crico-arytenoid",
+    "rmsMm": 438.33,
+    "used": false
+   },
+   {
+    "zAnatomy": "Lateral head of flexor hallucis brevis.l",
+    "atlas": "Lateral head of left flexor hallucis brevis",
+    "rmsMm": 3.62,
+    "used": true
+   },
+   {
+    "zAnatomy": "Lateral head of flexor hallucis brevis.r",
+    "atlas": "Lateral head of right flexor hallucis brevis",
+    "rmsMm": 2.53,
+    "used": true
+   },
+   {
+    "zAnatomy": "Lateral head of gastrocnemius.l",
+    "atlas": "Lateral head of left gastrocnemius",
+    "rmsMm": 5.17,
+    "used": true
+   },
+   {
+    "zAnatomy": "Lateral head of gastrocnemius.r",
+    "atlas": "Lateral head of right gastrocnemius",
+    "rmsMm": 5.14,
+    "used": true
+   },
+   {
+    "zAnatomy": "Lateral head of triceps brachii.l",
+    "atlas": "Lateral head of left triceps brachii",
+    "rmsMm": 3.19,
+    "used": true
+   },
+   {
+    "zAnatomy": "Lateral head of triceps brachii.r",
+    "atlas": "Lateral head of right triceps brachii",
+    "rmsMm": 3.2,
+    "used": true
+   },
+   {
+    "zAnatomy": "Lateral rectus muscle.l",
+    "atlas": "Left lateral rectus",
+    "rmsMm": 0.72,
+    "used": true
+   },
+   {
+    "zAnatomy": "Lateral rectus muscle.r",
+    "atlas": "Right lateral rectus",
+    "rmsMm": 0.62,
+    "used": true
+   },
+   {
+    "zAnatomy": "Levator palpebrae superioris.l",
+    "atlas": "Left levator palpebrae superioris",
+    "rmsMm": 332.88,
+    "used": false
+   },
+   {
+    "zAnatomy": "Levator palpebrae superioris.r",
+    "atlas": "Right levator palpebrae superioris",
+    "rmsMm": 224.66,
+    "used": false
+   },
+   {
+    "zAnatomy": "Levator scapulae.l",
+    "atlas": "Left levator scapulae",
+    "rmsMm": 1.94,
+    "used": true
+   },
+   {
+    "zAnatomy": "Levator scapulae.r",
+    "atlas": "Right levator scapulae",
+    "rmsMm": 1.92,
+    "used": true
+   },
+   {
+    "zAnatomy": "Linea alba",
+    "atlas": "Linea alba",
+    "rmsMm": 6.17,
+    "used": true
+   },
+   {
+    "zAnatomy": "Long head of biceps brachii.l",
+    "atlas": "Long head of left biceps brachii",
+    "rmsMm": 4.35,
+    "used": true
+   },
+   {
+    "zAnatomy": "Long head of biceps brachii.r",
+    "atlas": "Long head of right biceps brachii",
+    "rmsMm": 4.4,
+    "used": true
+   },
+   {
+    "zAnatomy": "Long head of biceps femoris.l",
+    "atlas": "Long head of left biceps femoris",
+    "rmsMm": 5.42,
+    "used": true
+   },
+   {
+    "zAnatomy": "Long head of biceps femoris.r",
+    "atlas": "Long head of right biceps femoris",
+    "rmsMm": 5.39,
+    "used": true
+   },
+   {
+    "zAnatomy": "Long head of triceps brachii.l",
+    "atlas": "Long head of left triceps brachii",
+    "rmsMm": 4.57,
+    "used": true
+   },
+   {
+    "zAnatomy": "Long head of triceps brachii.r",
+    "atlas": "Long head of right triceps brachii",
+    "rmsMm": 4.59,
+    "used": true
+   },
+   {
+    "zAnatomy": "Longissimus capitis muscle.l",
+    "atlas": "Left longissimus capitis",
+    "rmsMm": 2.2,
+    "used": true
+   },
+   {
+    "zAnatomy": "Longissimus capitis muscle.r",
+    "atlas": "Right longissimus capitis",
+    "rmsMm": 2.19,
+    "used": true
+   },
+   {
+    "zAnatomy": "Longissimus thoracis muscle.l",
+    "atlas": "Left longissimus thoracis",
+    "rmsMm": 3.97,
+    "used": true
+   },
+   {
+    "zAnatomy": "Longissimus thoracis muscle.r",
+    "atlas": "Right longissimus thoracis",
+    "rmsMm": 3.89,
+    "used": true
+   },
+   {
+    "zAnatomy": "Longus capitis muscle.l",
+    "atlas": "Left longus capitis",
+    "rmsMm": 1.4,
+    "used": true
+   },
+   {
+    "zAnatomy": "Longus capitis muscle.r",
+    "atlas": "Right longus capitis",
+    "rmsMm": 1.35,
+    "used": true
+   },
+   {
+    "zAnatomy": "Mandible",
+    "atlas": "Mandible",
+    "rmsMm": 4.11,
+    "used": true
+   },
+   {
+    "zAnatomy": "Medial head of flexor hallucis brevis.l",
+    "atlas": "Medial head of left flexor hallucis brevis",
+    "rmsMm": 1.92,
+    "used": true
+   },
+   {
+    "zAnatomy": "Medial head of flexor hallucis brevis.r",
+    "atlas": "Medial head of right flexor hallucis brevis",
+    "rmsMm": 1.92,
+    "used": true
+   },
+   {
+    "zAnatomy": "Medial head of gastrocnemius.l",
+    "atlas": "Medial head of left gastrocnemius",
+    "rmsMm": 5.17,
+    "used": true
+   },
+   {
+    "zAnatomy": "Medial head of gastrocnemius.r",
+    "atlas": "Medial head of right gastrocnemius",
+    "rmsMm": 5.12,
+    "used": true
+   },
+   {
+    "zAnatomy": "Medial head of triceps brachii.l",
+    "atlas": "Medial head of left triceps brachii",
+    "rmsMm": 4.58,
+    "used": true
+   },
+   {
+    "zAnatomy": "Medial head of triceps brachii.r",
+    "atlas": "Medial head of right triceps brachii",
+    "rmsMm": 4.58,
+    "used": true
+   },
+   {
+    "zAnatomy": "Medial rectus muscle.l",
+    "atlas": "Left medial rectus",
+    "rmsMm": 0.63,
+    "used": true
+   },
+   {
+    "zAnatomy": "Medial rectus muscle.r",
+    "atlas": "Right medial rectus",
+    "rmsMm": 0.48,
+    "used": true
+   },
+   {
+    "zAnatomy": "Middle pharyngeal constrictor.l",
+    "atlas": "Left middle pharyngeal constrictor",
+    "rmsMm": 369.61,
+    "used": false
+   },
+   {
+    "zAnatomy": "Middle pharyngeal constrictor.r",
+    "atlas": "Right middle pharyngeal constrictor",
+    "rmsMm": 377.05,
+    "used": false
+   },
+   {
+    "zAnatomy": "Mylohyoid muscle.l",
+    "atlas": "Left mylohyoid",
+    "rmsMm": 0.87,
+    "used": true
+   },
+   {
+    "zAnatomy": "Mylohyoid muscle.r",
+    "atlas": "Right mylohyoid",
+    "rmsMm": 0.9,
+    "used": true
+   },
+   {
+    "zAnatomy": "Ninth rib.l",
+    "atlas": "Left ninth rib",
+    "rmsMm": 2.03,
+    "used": true
+   },
+   {
+    "zAnatomy": "Ninth rib.r",
+    "atlas": "Right ninth rib",
+    "rmsMm": 1.98,
+    "used": true
+   },
+   {
+    "zAnatomy": "Oblique head of adductor hallucis.l",
+    "atlas": "Oblique head of left adductor hallucis",
+    "rmsMm": 0.93,
+    "used": true
+   },
+   {
+    "zAnatomy": "Oblique head of adductor hallucis.r",
+    "atlas": "Oblique head of right adductor hallucis",
+    "rmsMm": 0.93,
+    "used": true
+   },
+   {
+    "zAnatomy": "Oblique head of adductor pollicis.l",
+    "atlas": "Oblique head of left adductor pollicis",
+    "rmsMm": 44.43,
+    "used": false
+   },
+   {
+    "zAnatomy": "Oblique head of adductor pollicis.r",
+    "atlas": "Oblique head of right adductor pollicis",
+    "rmsMm": 51.7,
+    "used": false
+   },
+   {
+    "zAnatomy": "Obliquus inferior capitis muscle.l",
+    "atlas": "Left obliquus capitis inferior",
+    "rmsMm": 1.29,
+    "used": true
+   },
+   {
+    "zAnatomy": "Obliquus inferior capitis muscle.r",
+    "atlas": "Right obliquus capitis inferior",
+    "rmsMm": 1.21,
+    "used": true
+   },
+   {
+    "zAnatomy": "Obliquus superior capitis muscle.l",
+    "atlas": "Left obliquus capitis superior",
+    "rmsMm": 0.74,
+    "used": true
+   },
+   {
+    "zAnatomy": "Obliquus superior capitis muscle.r",
+    "atlas": "Right obliquus capitis superior",
+    "rmsMm": 82.54,
+    "used": false
+   },
+   {
+    "zAnatomy": "Obturator externus.l",
+    "atlas": "Left obturator externus",
+    "rmsMm": 2.2,
+    "used": true
+   },
+   {
+    "zAnatomy": "Obturator externus.r",
+    "atlas": "Right obturator externus",
+    "rmsMm": 2.21,
+    "used": true
+   },
+   {
+    "zAnatomy": "Obturator internus.l",
+    "atlas": "Left obturator internus",
+    "rmsMm": 1.82,
+    "used": true
+   },
+   {
+    "zAnatomy": "Obturator internus.r",
+    "atlas": "Right obturator internus",
+    "rmsMm": 1.85,
+    "used": true
+   },
+   {
+    "zAnatomy": "Occipital bone",
+    "atlas": "Occipital bone",
+    "rmsMm": 2.27,
+    "used": true
+   },
+   {
+    "zAnatomy": "Omohyoid muscle.l",
+    "atlas": "Left omohyoid",
+    "rmsMm": 1.07,
+    "used": true
+   },
+   {
+    "zAnatomy": "Omohyoid muscle.r",
+    "atlas": "Right omohyoid",
+    "rmsMm": 1.07,
+    "used": true
+   },
+   {
+    "zAnatomy": "Opponens digiti minimi muscle of hand.l",
+    "atlas": "Opponens digiti minimi of left hand",
+    "rmsMm": 5.15,
+    "used": true
+   },
+   {
+    "zAnatomy": "Opponens digiti minimi muscle of hand.r",
+    "atlas": "Opponens digiti minimi of right hand",
+    "rmsMm": 7.82,
+    "used": true
+   },
+   {
+    "zAnatomy": "Opponens pollicis muscle.l",
+    "atlas": "Left opponens pollicis",
+    "rmsMm": 4.01,
+    "used": true
+   },
+   {
+    "zAnatomy": "Opponens pollicis muscle.r",
+    "atlas": "Right opponens pollicis",
+    "rmsMm": 3.98,
+    "used": true
+   },
+   {
+    "zAnatomy": "Palatopharyngeus muscle.l",
+    "atlas": "Left palatopharyngeus",
+    "rmsMm": 0.57,
+    "used": true
+   },
+   {
+    "zAnatomy": "Palatopharyngeus muscle.r",
+    "atlas": "Right palatopharyngeus",
+    "rmsMm": 0.56,
+    "used": true
+   },
+   {
+    "zAnatomy": "Palmaris longus muscle.l",
+    "atlas": "Left palmaris longus",
+    "rmsMm": 1.91,
+    "used": true
+   },
+   {
+    "zAnatomy": "Palmaris longus muscle.r",
+    "atlas": "Right palmaris longus",
+    "rmsMm": 1.89,
+    "used": true
+   },
+   {
+    "zAnatomy": "Patella.l",
+    "atlas": "Left patella",
+    "rmsMm": 1.63,
+    "used": true
+   },
+   {
+    "zAnatomy": "Pectineus muscle.l",
+    "atlas": "Left pectineus",
+    "rmsMm": 3.03,
+    "used": true
+   },
+   {
+    "zAnatomy": "Pectineus muscle.r",
+    "atlas": "Right pectineus",
+    "rmsMm": 3.02,
+    "used": true
+   },
+   {
+    "zAnatomy": "Pectoralis minor muscle.l",
+    "atlas": "Left pectoralis minor",
+    "rmsMm": 2.73,
+    "used": true
+   },
+   {
+    "zAnatomy": "Pectoralis minor muscle.r",
+    "atlas": "Right pectoralis minor",
+    "rmsMm": 2.75,
+    "used": true
+   },
+   {
+    "zAnatomy": "Piriformis muscle.l",
+    "atlas": "Left piriformis",
+    "rmsMm": 2.76,
+    "used": true
+   },
+   {
+    "zAnatomy": "Piriformis muscle.r",
+    "atlas": "Right piriformis",
+    "rmsMm": 2.73,
+    "used": true
+   },
+   {
+    "zAnatomy": "Plantaris muscle.l",
+    "atlas": "Left plantaris",
+    "rmsMm": 3.96,
+    "used": true
+   },
+   {
+    "zAnatomy": "Plantaris muscle.r",
+    "atlas": "Right plantaris",
+    "rmsMm": 4.11,
+    "used": true
+   },
+   {
+    "zAnatomy": "Popliteus muscle.l",
+    "atlas": "Left popliteus",
+    "rmsMm": 4.0,
+    "used": true
+   },
+   {
+    "zAnatomy": "Popliteus muscle.r",
+    "atlas": "Right popliteus",
+    "rmsMm": 3.98,
+    "used": true
+   },
+   {
+    "zAnatomy": "Posterior crico-arytenoid muscle.l",
+    "atlas": "Left posterior crico-arytenoid",
+    "rmsMm": 0.31,
+    "used": true
+   },
+   {
+    "zAnatomy": "Posterior crico-arytenoid muscle.r",
+    "atlas": "Right posterior crico-arytenoid",
+    "rmsMm": 0.31,
+    "used": true
+   },
+   {
+    "zAnatomy": "Pronator quadratus.l",
+    "atlas": "Left pronator quadratus",
+    "rmsMm": 8.74,
+    "used": true
+   },
+   {
+    "zAnatomy": "Pronator quadratus.r",
+    "atlas": "Right pronator quadratus",
+    "rmsMm": 37.9,
+    "used": false
+   },
+   {
+    "zAnatomy": "Psoas major.l",
+    "atlas": "Left psoas major",
+    "rmsMm": 3.89,
+    "used": true
+   },
+   {
+    "zAnatomy": "Psoas major.r",
+    "atlas": "Right psoas major",
+    "rmsMm": 3.86,
+    "used": true
+   },
+   {
+    "zAnatomy": "Pubococcygeus muscle.l",
+    "atlas": "Left pubococcygeus",
+    "rmsMm": 3.98,
+    "used": true
+   },
+   {
+    "zAnatomy": "Pubococcygeus muscle.r",
+    "atlas": "Right pubococcygeus",
+    "rmsMm": 7.27,
+    "used": true
+   },
+   {
+    "zAnatomy": "Quadratus femoris muscle.l",
+    "atlas": "Left quadratus femoris",
+    "rmsMm": 1.93,
+    "used": true
+   },
+   {
+    "zAnatomy": "Quadratus femoris muscle.r",
+    "atlas": "Right quadratus femoris",
+    "rmsMm": 1.93,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rectus femoris muscle.l",
+    "atlas": "Left rectus femoris",
+    "rmsMm": 4.92,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rectus femoris muscle.r",
+    "atlas": "Right rectus femoris",
+    "rmsMm": 5.04,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rectus posterior major capitis muscle.l",
+    "atlas": "Left rectus capitis posterior major",
+    "rmsMm": 1.01,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rectus posterior major capitis muscle.r",
+    "atlas": "Right rectus capitis posterior major",
+    "rmsMm": 1.01,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rectus posterior minor capitis muscle.l",
+    "atlas": "Left rectus capitis posterior minor",
+    "rmsMm": 131.88,
+    "used": false
+   },
+   {
+    "zAnatomy": "Rectus posterior minor capitis muscle.r",
+    "atlas": "Right rectus capitis posterior minor",
+    "rmsMm": 9.27,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rhomboid major muscle.l",
+    "atlas": "Left rhomboid major",
+    "rmsMm": 2.18,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rhomboid major muscle.r",
+    "atlas": "Right rhomboid major",
+    "rmsMm": 2.15,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rhomboid minor muscle.l",
+    "atlas": "Left rhomboid minor",
+    "rmsMm": 1.44,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rhomboid minor muscle.r",
+    "atlas": "Right rhomboid minor",
+    "rmsMm": 1.44,
+    "used": true
+   },
+   {
+    "zAnatomy": "Sartorius muscle.l",
+    "atlas": "Left sartorius",
+    "rmsMm": 5.09,
+    "used": true
+   },
+   {
+    "zAnatomy": "Sartorius muscle.r",
+    "atlas": "Right sartorius",
+    "rmsMm": 5.04,
+    "used": true
+   },
+   {
+    "zAnatomy": "Scalenus anterior muscle.l",
+    "atlas": "Left scalenus anterior",
+    "rmsMm": 1.2,
+    "used": true
+   },
+   {
+    "zAnatomy": "Scalenus anterior muscle.r",
+    "atlas": "Right scalenus anterior",
+    "rmsMm": 1.19,
+    "used": true
+   },
+   {
+    "zAnatomy": "Scalenus medius muscle.l",
+    "atlas": "Left scalenus medius",
+    "rmsMm": 1.74,
+    "used": true
+   },
+   {
+    "zAnatomy": "Scalenus medius muscle.r",
+    "atlas": "Right scalenus medius",
+    "rmsMm": 1.79,
+    "used": true
+   },
+   {
+    "zAnatomy": "Scalenus posterior muscle.l",
+    "atlas": "Left scalenus posterior",
+    "rmsMm": 3.03,
+    "used": true
+   },
+   {
+    "zAnatomy": "Scalenus posterior muscle.r",
+    "atlas": "Right scalenus posterior",
+    "rmsMm": 2.31,
+    "used": true
+   },
+   {
+    "zAnatomy": "Second rib.r",
+    "atlas": "Right second rib",
+    "rmsMm": 1.59,
+    "used": true
+   },
+   {
+    "zAnatomy": "Semimembranosus muscle.l",
+    "atlas": "Left semimembranosus",
+    "rmsMm": 4.84,
+    "used": true
+   },
+   {
+    "zAnatomy": "Semimembranosus muscle.r",
+    "atlas": "Right semimembranosus",
+    "rmsMm": 4.8,
+    "used": true
+   },
+   {
+    "zAnatomy": "Semispinalis thoracis muscle.r",
+    "atlas": "Right semispinalis thoracis",
+    "rmsMm": 2.05,
+    "used": true
+   },
+   {
+    "zAnatomy": "Serratus anterior muscle.l",
+    "atlas": "Left serratus anterior",
+    "rmsMm": 3.36,
+    "used": true
+   },
+   {
+    "zAnatomy": "Serratus anterior muscle.r",
+    "atlas": "Right serratus anterior",
+    "rmsMm": 3.32,
+    "used": true
+   },
+   {
+    "zAnatomy": "Serratus posterior inferior muscle.l",
+    "atlas": "Left serratus posterior inferior",
+    "rmsMm": 3.11,
+    "used": true
+   },
+   {
+    "zAnatomy": "Serratus posterior inferior muscle.r",
+    "atlas": "Right serratus posterior inferior",
+    "rmsMm": 3.07,
+    "used": true
+   },
+   {
+    "zAnatomy": "Serratus posterior superior muscle.l",
+    "atlas": "Left serratus posterior superior",
+    "rmsMm": 1.99,
+    "used": true
+   },
+   {
+    "zAnatomy": "Serratus posterior superior muscle.r",
+    "atlas": "Right serratus posterior superior",
+    "rmsMm": 1.97,
+    "used": true
+   },
+   {
+    "zAnatomy": "Short head of biceps brachii.l",
+    "atlas": "Short head of left biceps brachii",
+    "rmsMm": 3.07,
+    "used": true
+   },
+   {
+    "zAnatomy": "Short head of biceps brachii.r",
+    "atlas": "Short head of right biceps brachii",
+    "rmsMm": 3.08,
+    "used": true
+   },
+   {
+    "zAnatomy": "Short head of biceps femoris.l",
+    "atlas": "Short head of left biceps femoris",
+    "rmsMm": 4.71,
+    "used": true
+   },
+   {
+    "zAnatomy": "Short head of biceps femoris.r",
+    "atlas": "Short head of right biceps femoris",
+    "rmsMm": 4.65,
+    "used": true
+   },
+   {
+    "zAnatomy": "Soleus muscle.l",
+    "atlas": "Left soleus",
+    "rmsMm": 6.31,
+    "used": true
+   },
+   {
+    "zAnatomy": "Soleus muscle.r",
+    "atlas": "Right soleus",
+    "rmsMm": 6.41,
+    "used": true
+   },
+   {
+    "zAnatomy": "Oblique part of cricothyroid muscle.l",
+    "atlas": "Oblique part of left cricothyroid",
+    "rmsMm": 1.17,
+    "used": true
+   },
+   {
+    "zAnatomy": "Oblique part of cricothyroid muscle.r",
+    "atlas": "Oblique part of right cricothyroid",
+    "rmsMm": 0.93,
+    "used": true
+   },
+   {
+    "zAnatomy": "Patella.r",
+    "atlas": "Right patella",
+    "rmsMm": 0.85,
+    "used": true
+   },
+   {
+    "zAnatomy": "Platysma.l",
+    "atlas": "Left platysma",
+    "rmsMm": 3.11,
+    "used": true
+   },
+   {
+    "zAnatomy": "Platysma.r",
+    "atlas": "Right platysma",
+    "rmsMm": 3.09,
+    "used": true
+   },
+   {
+    "zAnatomy": "Radius.l",
+    "atlas": "Left radius",
+    "rmsMm": 3.22,
+    "used": true
+   },
+   {
+    "zAnatomy": "Radius.r",
+    "atlas": "Right radius",
+    "rmsMm": 2.99,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rectus anterior capitis muscle.l",
+    "atlas": "Left rectus capitis anterior",
+    "rmsMm": 0.78,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rectus anterior capitis muscle.r",
+    "atlas": "Right rectus capitis anterior",
+    "rmsMm": 5.17,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rectus lateralis capitis muscle.l",
+    "atlas": "Left rectus capitis lateralis",
+    "rmsMm": 0.89,
+    "used": true
+   },
+   {
+    "zAnatomy": "Rectus lateralis capitis muscle.r",
+    "atlas": "Right rectus capitis lateralis",
+    "rmsMm": 0.78,
+    "used": true
+   },
+   {
+    "zAnatomy": "Sacrum",
+    "atlas": "Sacrum",
+    "rmsMm": 6.89,
+    "used": true
+   },
+   {
+    "zAnatomy": "Scapula.l",
+    "atlas": "Left scapula",
+    "rmsMm": 2.23,
+    "used": true
+   },
+   {
+    "zAnatomy": "Scapula.r",
+    "atlas": "Right scapula",
+    "rmsMm": 2.14,
+    "used": true
+   },
+   {
+    "zAnatomy": "Second rib.l",
+    "atlas": "Left second rib",
+    "rmsMm": 1.59,
+    "used": true
+   },
+   {
+    "zAnatomy": "Semispinalis thoracis muscle.l",
+    "atlas": "Left semispinalis thoracis",
+    "rmsMm": 2.03,
+    "used": true
+   },
+   {
+    "zAnatomy": "Seventh rib.l",
+    "atlas": "Left seventh rib",
+    "rmsMm": 1.93,
+    "used": true
+   },
+   {
+    "zAnatomy": "Seventh rib.r",
+    "atlas": "Right seventh rib",
+    "rmsMm": 1.97,
+    "used": true
+   },
+   {
+    "zAnatomy": "Sixth rib.l",
+    "atlas": "Left sixth rib",
+    "rmsMm": 1.71,
+    "used": true
+   },
+   {
+    "zAnatomy": "Sixth rib.r",
+    "atlas": "Right sixth rib",
+    "rmsMm": 1.66,
+    "used": true
+   },
+   {
+    "zAnatomy": "Spinalis thoracis muscle.l",
+    "atlas": "Left spinalis thoracis",
+    "rmsMm": 1.67,
+    "used": true
+   },
+   {
+    "zAnatomy": "Spinalis thoracis muscle.r",
+    "atlas": "Right spinalis thoracis",
+    "rmsMm": 1.66,
+    "used": true
+   },
+   {
+    "zAnatomy": "Splenius capitis muscle.l",
+    "atlas": "Left splenius capitis",
+    "rmsMm": 1.96,
+    "used": true
+   },
+   {
+    "zAnatomy": "Splenius capitis muscle.r",
+    "atlas": "Right splenius capitis",
+    "rmsMm": 1.96,
+    "used": true
+   },
+   {
+    "zAnatomy": "Sternocleidomastoid muscle.l",
+    "atlas": "Left sternocleidomastoid",
+    "rmsMm": 2.21,
+    "used": true
+   },
+   {
+    "zAnatomy": "Sternocleidomastoid muscle.r",
+    "atlas": "Right sternocleidomastoid",
+    "rmsMm": 11.61,
+    "used": true
+   },
+   {
+    "zAnatomy": "Sternohyoid muscle.l",
+    "atlas": "Left sternohyoid",
+    "rmsMm": 1.97,
+    "used": true
+   },
+   {
+    "zAnatomy": "Sternohyoid muscle.r",
+    "atlas": "Right sternohyoid",
+    "rmsMm": 2.05,
+    "used": true
+   },
+   {
+    "zAnatomy": "Sternothyroid muscle.l",
+    "atlas": "Left sternothyroid",
+    "rmsMm": 4.7,
+    "used": true
+   },
+   {
+    "zAnatomy": "Sternothyroid muscle.r",
+    "atlas": "Right sternothyroid",
+    "rmsMm": 4.96,
+    "used": true
+   },
+   {
+    "zAnatomy": "Straight part of cricothyroid muscle.l",
+    "atlas": "Straight part of left cricothyroid",
+    "rmsMm": 791.31,
+    "used": false
+   },
+   {
+    "zAnatomy": "Straight part of cricothyroid muscle.r",
+    "atlas": "Straight part of right cricothyroid",
+    "rmsMm": 0.69,
+    "used": true
+   },
+   {
+    "zAnatomy": "Stylohyoid muscle.l",
+    "atlas": "Left stylohyoid",
+    "rmsMm": 0.72,
+    "used": true
+   },
+   {
+    "zAnatomy": "Stylohyoid muscle.r",
+    "atlas": "Right stylohyoid",
+    "rmsMm": 0.76,
+    "used": true
+   },
+   {
+    "zAnatomy": "Stylopharyngeus muscle.l",
+    "atlas": "Left stylopharyngeus",
+    "rmsMm": 677.77,
+    "used": false
+   },
+   {
+    "zAnatomy": "Stylopharyngeus muscle.r",
+    "atlas": "Right stylopharyngeus",
+    "rmsMm": 0.41,
+    "used": true
+   },
+   {
+    "zAnatomy": "Subclavius muscle.l",
+    "atlas": "Left subclavius",
+    "rmsMm": 1.97,
+    "used": true
+   },
+   {
+    "zAnatomy": "Subclavius muscle.r",
+    "atlas": "Right subclavius",
+    "rmsMm": 1.87,
+    "used": true
+   },
+   {
+    "zAnatomy": "Subscapularis muscle.l",
+    "atlas": "Left subscapularis",
+    "rmsMm": 2.83,
+    "used": true
+   },
+   {
+    "zAnatomy": "Subscapularis muscle.r",
+    "atlas": "Right subscapularis",
+    "rmsMm": 2.83,
+    "used": true
+   },
+   {
+    "zAnatomy": "Superficial head of flexor pollicis brevis.l",
+    "atlas": "Superficial head of left flexor pollicis brevis",
+    "rmsMm": 140.42,
+    "used": false
+   },
+   {
+    "zAnatomy": "Superficial head of flexor pollicis brevis.r",
+    "atlas": "Superficial head of right flexor pollicis brevis",
+    "rmsMm": 140.7,
+    "used": false
+   },
+   {
+    "zAnatomy": "Superior gemellus muscle.l",
+    "atlas": "Left gemellus superior",
+    "rmsMm": 93.15,
+    "used": false
+   },
+   {
+    "zAnatomy": "Superior gemellus muscle.r",
+    "atlas": "Right gemellus superior",
+    "rmsMm": 94.27,
+    "used": false
+   },
+   {
+    "zAnatomy": "Superior oblique muscle.l",
+    "atlas": "Left superior oblique",
+    "rmsMm": 0.58,
+    "used": true
+   },
+   {
+    "zAnatomy": "Superior oblique muscle.r",
+    "atlas": "Right superior oblique",
+    "rmsMm": 0.52,
+    "used": true
+   },
+   {
+    "zAnatomy": "Superior pharyngeal constrictor.l",
+    "atlas": "Left superior pharyngeal constrictor",
+    "rmsMm": 0.74,
+    "used": true
+   },
+   {
+    "zAnatomy": "Superior pharyngeal constrictor.r",
+    "atlas": "Right superior pharyngeal constrictor",
+    "rmsMm": 0.71,
+    "used": true
+   },
+   {
+    "zAnatomy": "Superior rectus muscle.l",
+    "atlas": "Left superior rectus",
+    "rmsMm": 888.08,
+    "used": false
+   },
+   {
+    "zAnatomy": "Superior rectus muscle.r",
+    "atlas": "Right superior rectus",
+    "rmsMm": 945.67,
+    "used": false
+   },
+   {
+    "zAnatomy": "Supinator.l",
+    "atlas": "Left supinator",
+    "rmsMm": 1.63,
+    "used": true
+   },
+   {
+    "zAnatomy": "Supinator.r",
+    "atlas": "Right supinator",
+    "rmsMm": 1.66,
+    "used": true
+   },
+   {
+    "zAnatomy": "Supraspinatus muscle.l",
+    "atlas": "Left supraspinatus",
+    "rmsMm": 2.96,
+    "used": true
+   },
+   {
+    "zAnatomy": "Supraspinatus muscle.r",
+    "atlas": "Right supraspinatus",
+    "rmsMm": 2.97,
+    "used": true
+   },
+   {
+    "zAnatomy": "Tenth rib.l",
+    "atlas": "Left tenth rib",
+    "rmsMm": 1.97,
+    "used": true
+   },
+   {
+    "zAnatomy": "Tenth rib.r",
+    "atlas": "Right tenth rib",
+    "rmsMm": 2.02,
+    "used": true
+   },
+   {
+    "zAnatomy": "Teres major muscle.l",
+    "atlas": "Left teres major",
+    "rmsMm": 3.72,
+    "used": true
+   },
+   {
+    "zAnatomy": "Teres major muscle.r",
+    "atlas": "Right teres major",
+    "rmsMm": 3.74,
+    "used": true
+   },
+   {
+    "zAnatomy": "Teres minor muscle.l",
+    "atlas": "Left teres minor",
+    "rmsMm": 3.76,
+    "used": true
+   },
+   {
+    "zAnatomy": "Teres minor muscle.r",
+    "atlas": "Right teres minor",
+    "rmsMm": 3.75,
+    "used": true
+   },
+   {
+    "zAnatomy": "Third rib.l",
+    "atlas": "Left third rib",
+    "rmsMm": 1.41,
+    "used": true
+   },
+   {
+    "zAnatomy": "Third rib.r",
+    "atlas": "Right third rib",
+    "rmsMm": 1.43,
+    "used": true
+   },
+   {
+    "zAnatomy": "Thyrohyoid muscle.l",
+    "atlas": "Left thyrohyoid",
+    "rmsMm": 0.71,
+    "used": true
+   },
+   {
+    "zAnatomy": "Thyrohyoid muscle.r",
+    "atlas": "Right thyrohyoid",
+    "rmsMm": 6.26,
+    "used": true
+   },
+   {
+    "zAnatomy": "Tibia.l",
+    "atlas": "Left tibia",
+    "rmsMm": 5.85,
+    "used": true
+   },
+   {
+    "zAnatomy": "Tibia.r",
+    "atlas": "Right tibia",
+    "rmsMm": 5.56,
+    "used": true
+   },
+   {
+    "zAnatomy": "Tibialis posterior muscle.l",
+    "atlas": "Left tibialis posterior",
+    "rmsMm": 3.28,
+    "used": true
+   },
+   {
+    "zAnatomy": "Tibialis posterior muscle.r",
+    "atlas": "Right tibialis posterior",
+    "rmsMm": 3.41,
+    "used": true
+   },
+   {
+    "zAnatomy": "Transverse arytenoid muscle",
+    "atlas": "Transverse arytenoid",
+    "rmsMm": 0.15,
+    "used": true
+   },
+   {
+    "zAnatomy": "Transverse head of adductor hallucis.l",
+    "atlas": "Transverse head of left adductor hallucis",
+    "rmsMm": 12.23,
+    "used": false
+   },
+   {
+    "zAnatomy": "Transverse head of adductor hallucis.r",
+    "atlas": "Transverse head of right adductor hallucis",
+    "rmsMm": 11.93,
+    "used": true
+   },
+   {
+    "zAnatomy": "Transverse head of adductor pollicis.l",
+    "atlas": "Transverse head of left adductor pollicis",
+    "rmsMm": 1.42,
+    "used": true
+   },
+   {
+    "zAnatomy": "Transverse head of adductor pollicis.r",
+    "atlas": "Transverse head of right adductor pollicis",
+    "rmsMm": 1.42,
+    "used": true
+   },
+   {
+    "zAnatomy": "Transverse part of trapezius muscle.l",
+    "atlas": "Transverse part of left trapezius",
+    "rmsMm": 1.98,
+    "used": true
+   },
+   {
+    "zAnatomy": "Transverse part of trapezius muscle.r",
+    "atlas": "Transverse part of right trapezius",
+    "rmsMm": 1.98,
+    "used": true
+   },
+   {
+    "zAnatomy": "Transversus thoracis muscle.l",
+    "atlas": "Left transversus thoracis",
+    "rmsMm": 2.6,
+    "used": true
+   },
+   {
+    "zAnatomy": "Transversus thoracis muscle.r",
+    "atlas": "Right transversus thoracis",
+    "rmsMm": 2.61,
+    "used": true
+   },
+   {
+    "zAnatomy": "Trochlea of superior oblique muscle.l",
+    "atlas": "Trochlea of left superior oblique",
+    "rmsMm": 695.81,
+    "used": false
+   },
+   {
+    "zAnatomy": "Trochlea of superior oblique muscle.r",
+    "atlas": "Trochlea of right superior oblique",
+    "rmsMm": 651.54,
+    "used": false
+   },
+   {
+    "zAnatomy": "Twelfth rib.l",
+    "atlas": "Left twelfth rib",
+    "rmsMm": 736.32,
+    "used": false
+   },
+   {
+    "zAnatomy": "Twelfth rib.r",
+    "atlas": "Right twelfth rib",
+    "rmsMm": 732.81,
+    "used": false
+   },
+   {
+    "zAnatomy": "Ulna.l",
+    "atlas": "Left ulna",
+    "rmsMm": 2.53,
+    "used": true
+   },
+   {
+    "zAnatomy": "Ulna.r",
+    "atlas": "Right ulna",
+    "rmsMm": 1.82,
+    "used": true
+   },
+   {
+    "zAnatomy": "Ulnar head of flexor carpi ulnaris.l",
+    "atlas": "Ulnar head of left flexor carpi ulnaris",
+    "rmsMm": 2.93,
+    "used": true
+   },
+   {
+    "zAnatomy": "Ulnar head of flexor carpi ulnaris.r",
+    "atlas": "Ulnar head of right flexor carpi ulnaris",
+    "rmsMm": 2.94,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vastus intermedius muscle.l",
+    "atlas": "Left vastus intermedius",
+    "rmsMm": 4.76,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vastus intermedius muscle.r",
+    "atlas": "Right vastus intermedius",
+    "rmsMm": 4.79,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vastus lateralis muscle.l",
+    "atlas": "Left vastus lateralis",
+    "rmsMm": 4.43,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vastus lateralis muscle.r",
+    "atlas": "Right vastus lateralis",
+    "rmsMm": 4.46,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vastus medialis muscle.l",
+    "atlas": "Left vastus medialis",
+    "rmsMm": 4.12,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vastus medialis muscle.r",
+    "atlas": "Right vastus medialis",
+    "rmsMm": 4.33,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra C3",
+    "atlas": "Third cervical vertebra",
+    "rmsMm": 1.52,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra C4",
+    "atlas": "Fourth cervical vertebra",
+    "rmsMm": 1.16,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra C5",
+    "atlas": "Fifth cervical vertebra",
+    "rmsMm": 1.11,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra C6",
+    "atlas": "Sixth cervical vertebra",
+    "rmsMm": 1.53,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra C7",
+    "atlas": "Seventh cervical vertebra",
+    "rmsMm": 1.64,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra L1",
+    "atlas": "First lumbar vertebra",
+    "rmsMm": 1.38,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra L2",
+    "atlas": "Second lumbar vertebra",
+    "rmsMm": 1.41,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra L3",
+    "atlas": "Third lumbar vertebra",
+    "rmsMm": 1.45,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra L4",
+    "atlas": "Fourth lumbar vertebra",
+    "rmsMm": 1.42,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra L5",
+    "atlas": "Fifth lumbar vertebra",
+    "rmsMm": 1.4,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T1",
+    "atlas": "First thoracic vertebra",
+    "rmsMm": 1.37,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T10",
+    "atlas": "Tenth thoracic vertebra",
+    "rmsMm": 1.46,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T11",
+    "atlas": "Eleventh thoracic vertebra",
+    "rmsMm": 1.63,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T12",
+    "atlas": "Twelfth thoracic vertebra",
+    "rmsMm": 1.38,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T2",
+    "atlas": "Second thoracic vertebra",
+    "rmsMm": 1.25,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T3",
+    "atlas": "Third thoracic vertebra",
+    "rmsMm": 1.53,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T4",
+    "atlas": "Fourth thoracic vertebra",
+    "rmsMm": 1.81,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T5",
+    "atlas": "Fifth thoracic vertebra",
+    "rmsMm": 1.46,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T6",
+    "atlas": "Sixth thoracic vertebra",
+    "rmsMm": 1.3,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T7",
+    "atlas": "Seventh thoracic vertebra",
+    "rmsMm": 1.37,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T8",
+    "atlas": "Eighth thoracic vertebra",
+    "rmsMm": 1.95,
+    "used": true
+   },
+   {
+    "zAnatomy": "Vertebra T9",
+    "atlas": "Ninth thoracic vertebra",
+    "rmsMm": 1.69,
+    "used": true
+   }
+  ]
+ },
+ "rules": {
+  "centrelineStepMm": 3.0,
+  "boneGapMm": 0.6,
+  "skinDepthMm": 2.0,
+  "radiusMm": [
+   0.5,
+   5.0
+  ]
+ },
+ "parts": [
+  {
+   "id": "ZA-communicating-branch-of-left-median-nerve-with-ulnar-nerve",
+   "name": "Communicating branch of left median nerve with ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 108
+  },
+  {
+   "id": "ZA-communicating-branch-of-right-median-nerve-with-ulnar-nerve",
+   "name": "Communicating branch of right median nerve with ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 108
+  },
+  {
+   "id": "ZA-left-accessory-nerve",
+   "name": "Left accessory nerve",
+   "kind": "z-anatomy",
+   "triangles": 2400
+  },
+  {
+   "id": "ZA-right-accessory-nerve",
+   "name": "Right accessory nerve",
+   "kind": "z-anatomy",
+   "triangles": 2388
+  },
+  {
+   "id": "ZA-anterior-branch-of-left-medial-antebrachial-cutaneous-nerve",
+   "name": "Anterior branch of left medial antebrachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1944
+  },
+  {
+   "id": "ZA-anterior-branch-of-right-medial-antebrachial-cutaneous-nerve",
+   "name": "Anterior branch of right medial antebrachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1944
+  },
+  {
+   "id": "ZA-anterior-branch-of-left-obturator-nerve",
+   "name": "Anterior branch of left obturator nerve",
+   "kind": "z-anatomy",
+   "triangles": 2712
+  },
+  {
+   "id": "ZA-anterior-branch-of-right-obturator-nerve",
+   "name": "Anterior branch of right obturator nerve",
+   "kind": "z-anatomy",
+   "triangles": 2712
+  },
+  {
+   "id": "ZA-anterior-cutaneous-branches-of-left-femoral-nerve",
+   "name": "Anterior cutaneous branches of left femoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 3000
+  },
+  {
+   "id": "ZA-anterior-cutaneous-branches-of-right-femoral-nerve",
+   "name": "Anterior cutaneous branches of right femoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 3000
+  },
+  {
+   "id": "ZA-anterior-division-of-inferior-trunk-of-left-brachial-plexus",
+   "name": "Anterior division of inferior trunk of left brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 160
+  },
+  {
+   "id": "ZA-anterior-division-of-inferior-trunk-of-right-brachial-plexus",
+   "name": "Anterior division of inferior trunk of right brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 160
+  },
+  {
+   "id": "ZA-anterior-division-of-left-mandibular-nerve",
+   "name": "Anterior division of left mandibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 84
+  },
+  {
+   "id": "ZA-anterior-division-of-right-mandibular-nerve",
+   "name": "Anterior division of right mandibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 84
+  },
+  {
+   "id": "ZA-anterior-division-of-middle-trunk-of-left-brachial-plexus",
+   "name": "Anterior division of middle trunk of left brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 192
+  },
+  {
+   "id": "ZA-anterior-division-of-middle-trunk-of-right-brachial-plexus",
+   "name": "Anterior division of middle trunk of right brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 192
+  },
+  {
+   "id": "ZA-anterior-division-of-superior-trunk-of-left-brachial-plexus",
+   "name": "Anterior division of superior trunk of left brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 288
+  },
+  {
+   "id": "ZA-anterior-division-of-superior-trunk-of-right-brachial-plexus",
+   "name": "Anterior division of superior trunk of right brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 288
+  },
+  {
+   "id": "ZA-anterior-interosseous-nerve-of-left-forearm",
+   "name": "Anterior interosseous nerve of left forearm",
+   "kind": "z-anatomy",
+   "triangles": 1752
+  },
+  {
+   "id": "ZA-anterior-interosseous-nerve-of-right-forearm",
+   "name": "Anterior interosseous nerve of right forearm",
+   "kind": "z-anatomy",
+   "triangles": 1752
+  },
+  {
+   "id": "ZA-anterior-root-of-left-posterior-femoral-cutaneous-nerve",
+   "name": "Anterior root of left posterior femoral cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 520
+  },
+  {
+   "id": "ZA-anterior-root-of-right-posterior-femoral-cutaneous-nerve",
+   "name": "Anterior root of right posterior femoral cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 520
+  },
+  {
+   "id": "ZA-anterior-root-of-left-spinal-nerve",
+   "name": "Anterior root of left spinal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1596
+  },
+  {
+   "id": "ZA-anterior-root-of-right-spinal-nerve",
+   "name": "Anterior root of right spinal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1596
+  },
+  {
+   "id": "ZA-left-axillary-nerve",
+   "name": "Left axillary nerve",
+   "kind": "z-anatomy",
+   "triangles": 416
+  },
+  {
+   "id": "ZA-right-axillary-nerve",
+   "name": "Right axillary nerve",
+   "kind": "z-anatomy",
+   "triangles": 416
+  },
+  {
+   "id": "ZA-left-buccal-nerve",
+   "name": "Left buccal nerve",
+   "kind": "z-anatomy",
+   "triangles": 300
+  },
+  {
+   "id": "ZA-right-buccal-nerve",
+   "name": "Right buccal nerve",
+   "kind": "z-anatomy",
+   "triangles": 300
+  },
+  {
+   "id": "ZA-cauda-equina",
+   "name": "Cauda equina",
+   "kind": "z-anatomy",
+   "triangles": 2576
+  },
+  {
+   "id": "ZA-left-chorda-tympani",
+   "name": "Left chorda tympani",
+   "kind": "z-anatomy",
+   "triangles": 168
+  },
+  {
+   "id": "ZA-right-chorda-tympani",
+   "name": "Right chorda tympani",
+   "kind": "z-anatomy",
+   "triangles": 168
+  },
+  {
+   "id": "ZA-left-common-fibular-nerve",
+   "name": "Left common fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 912
+  },
+  {
+   "id": "ZA-right-common-fibular-nerve",
+   "name": "Right common fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 928
+  },
+  {
+   "id": "ZA-common-palmar-digital-branches-of-left-median-nerve",
+   "name": "Common palmar digital branches of left median nerve",
+   "kind": "z-anatomy",
+   "triangles": 808
+  },
+  {
+   "id": "ZA-common-palmar-digital-branches-of-right-median-nerve",
+   "name": "Common palmar digital branches of right median nerve",
+   "kind": "z-anatomy",
+   "triangles": 808
+  },
+  {
+   "id": "ZA-common-palmar-digital-branches-of-left-ulnar-nerve",
+   "name": "Common palmar digital branches of left ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 588
+  },
+  {
+   "id": "ZA-common-palmar-digital-branches-of-right-ulnar-nerve",
+   "name": "Common palmar digital branches of right ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 712
+  },
+  {
+   "id": "ZA-common-plantar-digital-branches-of-left-lateral-plantar-nerve",
+   "name": "Common plantar digital branches of left lateral plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1140
+  },
+  {
+   "id": "ZA-common-plantar-digital-branches-of-right-lateral-plantar-nerve",
+   "name": "Common plantar digital branches of right lateral plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1140
+  },
+  {
+   "id": "ZA-common-plantar-digital-branches-of-left-medial-plantar-nerve",
+   "name": "Common plantar digital branches of left medial plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 788
+  },
+  {
+   "id": "ZA-deep-branch-of-left-radial-nerve",
+   "name": "Deep branch of left radial nerve",
+   "kind": "z-anatomy",
+   "triangles": 1392
+  },
+  {
+   "id": "ZA-deep-branch-of-right-radial-nerve",
+   "name": "Deep branch of right radial nerve",
+   "kind": "z-anatomy",
+   "triangles": 1392
+  },
+  {
+   "id": "ZA-deep-branch-of-left-ulnar-nerve",
+   "name": "Deep branch of left ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 228
+  },
+  {
+   "id": "ZA-deep-branch-of-right-ulnar-nerve",
+   "name": "Deep branch of right ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 228
+  },
+  {
+   "id": "ZA-left-deep-fibular-nerve",
+   "name": "Left deep fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 2256
+  },
+  {
+   "id": "ZA-right-deep-fibular-nerve",
+   "name": "Right deep fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 2256
+  },
+  {
+   "id": "ZA-dorsal-branch-of-left-ulnar-nerve",
+   "name": "Dorsal branch of left ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1128
+  },
+  {
+   "id": "ZA-dorsal-branch-of-right-ulnar-nerve",
+   "name": "Dorsal branch of right ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1116
+  },
+  {
+   "id": "ZA-dorsal-digital-branches-of-left-deep-fibular-nerve",
+   "name": "Dorsal digital branches of left deep fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 552
+  },
+  {
+   "id": "ZA-dorsal-digital-branches-of-right-deep-fibular-nerve",
+   "name": "Dorsal digital branches of right deep fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 552
+  },
+  {
+   "id": "ZA-dorsal-digital-branches-of-left-radial-nerve",
+   "name": "Dorsal digital branches of left radial nerve",
+   "kind": "z-anatomy",
+   "triangles": 3528
+  },
+  {
+   "id": "ZA-dorsal-digital-branches-of-right-radial-nerve",
+   "name": "Dorsal digital branches of right radial nerve",
+   "kind": "z-anatomy",
+   "triangles": 3540
+  },
+  {
+   "id": "ZA-dorsal-digital-branches-of-left-superficial-fibular-nerve",
+   "name": "Dorsal digital branches of left superficial fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 1428
+  },
+  {
+   "id": "ZA-dorsal-digital-branches-of-right-superficial-fibular-nerve",
+   "name": "Dorsal digital branches of right superficial fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 1452
+  },
+  {
+   "id": "ZA-dorsal-digital-branches-of-left-ulnar-nerve",
+   "name": "Dorsal digital branches of left ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 972
+  },
+  {
+   "id": "ZA-dorsal-digital-branches-of-right-ulnar-nerve",
+   "name": "Dorsal digital branches of right ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 984
+  },
+  {
+   "id": "ZA-left-dorsal-scapular-nerve",
+   "name": "Left dorsal scapular nerve",
+   "kind": "z-anatomy",
+   "triangles": 1152
+  },
+  {
+   "id": "ZA-right-dorsal-scapular-nerve",
+   "name": "Right dorsal scapular nerve",
+   "kind": "z-anatomy",
+   "triangles": 1152
+  },
+  {
+   "id": "ZA-left-facial-nerve",
+   "name": "Left facial nerve",
+   "kind": "z-anatomy",
+   "triangles": 2700
+  },
+  {
+   "id": "ZA-right-facial-nerve",
+   "name": "Right facial nerve",
+   "kind": "z-anatomy",
+   "triangles": 2688
+  },
+  {
+   "id": "ZA-femoral-branch-of-left-genitofemoral-nerve",
+   "name": "Femoral branch of left genitofemoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 1908
+  },
+  {
+   "id": "ZA-femoral-branch-of-right-genitofemoral-nerve",
+   "name": "Femoral branch of right genitofemoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 1908
+  },
+  {
+   "id": "ZA-left-femoral-nerve",
+   "name": "Left femoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 5696
+  },
+  {
+   "id": "ZA-right-femoral-nerve",
+   "name": "Right femoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 5672
+  },
+  {
+   "id": "ZA-genital-branch-of-left-genitofemoral-nerve",
+   "name": "Genital branch of left genitofemoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 1424
+  },
+  {
+   "id": "ZA-genital-branch-of-right-genitofemoral-nerve",
+   "name": "Genital branch of right genitofemoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 1424
+  },
+  {
+   "id": "ZA-left-genitofemoral-nerve",
+   "name": "Left genitofemoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 864
+  },
+  {
+   "id": "ZA-right-genitofemoral-nerve",
+   "name": "Right genitofemoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 864
+  },
+  {
+   "id": "ZA-left-glossopharyngeal-nerve",
+   "name": "Left glossopharyngeal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1260
+  },
+  {
+   "id": "ZA-right-glossopharyngeal-nerve",
+   "name": "Right glossopharyngeal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1260
+  },
+  {
+   "id": "ZA-left-hypoglossal-nerve",
+   "name": "Left hypoglossal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1176
+  },
+  {
+   "id": "ZA-right-hypoglossal-nerve",
+   "name": "Right hypoglossal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1176
+  },
+  {
+   "id": "ZA-left-ilio-inguinal-nerve",
+   "name": "Left ilio-inguinal nerve",
+   "kind": "z-anatomy",
+   "triangles": 2016
+  },
+  {
+   "id": "ZA-right-ilio-inguinal-nerve",
+   "name": "Right ilio-inguinal nerve",
+   "kind": "z-anatomy",
+   "triangles": 2000
+  },
+  {
+   "id": "ZA-left-iliohypogastric-nerve",
+   "name": "Left iliohypogastric nerve",
+   "kind": "z-anatomy",
+   "triangles": 1168
+  },
+  {
+   "id": "ZA-right-iliohypogastric-nerve",
+   "name": "Right iliohypogastric nerve",
+   "kind": "z-anatomy",
+   "triangles": 1152
+  },
+  {
+   "id": "ZA-left-inferior-alveolar-nerve",
+   "name": "Left inferior alveolar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1284
+  },
+  {
+   "id": "ZA-right-inferior-alveolar-nerve",
+   "name": "Right inferior alveolar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1272
+  },
+  {
+   "id": "ZA-left-inferior-lateral-brachial-cutaneous-nerve",
+   "name": "Left inferior lateral brachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 252
+  },
+  {
+   "id": "ZA-right-inferior-lateral-brachial-cutaneous-nerve",
+   "name": "Right inferior lateral brachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 252
+  },
+  {
+   "id": "ZA-left-inferior-subscapular-nerve",
+   "name": "Left inferior subscapular nerve",
+   "kind": "z-anatomy",
+   "triangles": 844
+  },
+  {
+   "id": "ZA-right-inferior-subscapular-nerve",
+   "name": "Right inferior subscapular nerve",
+   "kind": "z-anatomy",
+   "triangles": 832
+  },
+  {
+   "id": "ZA-inferior-trunk-of-left-brachial-plexus",
+   "name": "Inferior trunk of left brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 208
+  },
+  {
+   "id": "ZA-inferior-trunk-of-right-brachial-plexus",
+   "name": "Inferior trunk of right brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 208
+  },
+  {
+   "id": "ZA-infrapatellar-branch-of-left-saphenous-nerve",
+   "name": "Infrapatellar branch of left saphenous nerve",
+   "kind": "z-anatomy",
+   "triangles": 204
+  },
+  {
+   "id": "ZA-infrapatellar-branch-of-right-saphenous-nerve",
+   "name": "Infrapatellar branch of right saphenous nerve",
+   "kind": "z-anatomy",
+   "triangles": 204
+  },
+  {
+   "id": "ZA-left-intercostal-nerves",
+   "name": "Left intercostal nerves",
+   "kind": "z-anatomy",
+   "triangles": 18316
+  },
+  {
+   "id": "ZA-right-intercostal-nerves",
+   "name": "Right intercostal nerves",
+   "kind": "z-anatomy",
+   "triangles": 18256
+  },
+  {
+   "id": "ZA-intermediate-dorsal-cutaneous-nerve-of-left-foot",
+   "name": "Intermediate dorsal cutaneous nerve of left foot",
+   "kind": "z-anatomy",
+   "triangles": 912
+  },
+  {
+   "id": "ZA-intermediate-dorsal-cutaneous-nerve-of-right-foot",
+   "name": "Intermediate dorsal cutaneous nerve of right foot",
+   "kind": "z-anatomy",
+   "triangles": 912
+  },
+  {
+   "id": "ZA-left-lateral-antebrachial-cutaneous-nerve",
+   "name": "Left lateral antebrachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 992
+  },
+  {
+   "id": "ZA-right-lateral-antebrachial-cutaneous-nerve",
+   "name": "Right lateral antebrachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 992
+  },
+  {
+   "id": "ZA-left-lateral-femoral-cutaneous-nerve",
+   "name": "Left lateral femoral cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 7944
+  },
+  {
+   "id": "ZA-right-lateral-femoral-cutaneous-nerve",
+   "name": "Right lateral femoral cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 7944
+  },
+  {
+   "id": "ZA-left-lateral-pectoral-nerve",
+   "name": "Left lateral pectoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 3028
+  },
+  {
+   "id": "ZA-right-lateral-pectoral-nerve",
+   "name": "Right lateral pectoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 3028
+  },
+  {
+   "id": "ZA-left-lateral-plantar-nerve",
+   "name": "Left lateral plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 348
+  },
+  {
+   "id": "ZA-right-lateral-plantar-nerve",
+   "name": "Right lateral plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 348
+  },
+  {
+   "id": "ZA-left-lingual-nerve",
+   "name": "Left lingual nerve",
+   "kind": "z-anatomy",
+   "triangles": 372
+  },
+  {
+   "id": "ZA-right-lingual-nerve",
+   "name": "Right lingual nerve",
+   "kind": "z-anatomy",
+   "triangles": 372
+  },
+  {
+   "id": "ZA-left-long-thoracic-nerve",
+   "name": "Left long thoracic nerve",
+   "kind": "z-anatomy",
+   "triangles": 1916
+  },
+  {
+   "id": "ZA-right-long-thoracic-nerve",
+   "name": "Right long thoracic nerve",
+   "kind": "z-anatomy",
+   "triangles": 1900
+  },
+  {
+   "id": "ZA-left-maxillary-nerve",
+   "name": "Left maxillary nerve",
+   "kind": "z-anatomy",
+   "triangles": 720
+  },
+  {
+   "id": "ZA-right-maxillary-nerve",
+   "name": "Right maxillary nerve",
+   "kind": "z-anatomy",
+   "triangles": 720
+  },
+  {
+   "id": "ZA-left-medial-antebrachial-cutaneous-nerve",
+   "name": "Left medial antebrachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1152
+  },
+  {
+   "id": "ZA-right-medial-antebrachial-cutaneous-nerve",
+   "name": "Right medial antebrachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1152
+  },
+  {
+   "id": "ZA-left-medial-brachial-cutaneous-nerve",
+   "name": "Left medial brachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1216
+  },
+  {
+   "id": "ZA-right-medial-brachial-cutaneous-nerve",
+   "name": "Right medial brachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1216
+  },
+  {
+   "id": "ZA-medial-crural-cutaneous-branches-of-left-saphenous-nerve",
+   "name": "Medial crural cutaneous branches of left saphenous nerve",
+   "kind": "z-anatomy",
+   "triangles": 960
+  },
+  {
+   "id": "ZA-medial-crural-cutaneous-branches-of-right-saphenous-nerve",
+   "name": "Medial crural cutaneous branches of right saphenous nerve",
+   "kind": "z-anatomy",
+   "triangles": 960
+  },
+  {
+   "id": "ZA-medial-dorsal-cutaneous-nerve-of-left-foot",
+   "name": "Medial dorsal cutaneous nerve of left foot",
+   "kind": "z-anatomy",
+   "triangles": 960
+  },
+  {
+   "id": "ZA-medial-dorsal-cutaneous-nerve-of-right-foot",
+   "name": "Medial dorsal cutaneous nerve of right foot",
+   "kind": "z-anatomy",
+   "triangles": 960
+  },
+  {
+   "id": "ZA-left-medial-pectoral-nerve",
+   "name": "Left medial pectoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 836
+  },
+  {
+   "id": "ZA-right-medial-pectoral-nerve",
+   "name": "Right medial pectoral nerve",
+   "kind": "z-anatomy",
+   "triangles": 836
+  },
+  {
+   "id": "ZA-left-medial-plantar-nerve",
+   "name": "Left medial plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 620
+  },
+  {
+   "id": "ZA-right-medial-plantar-nerve",
+   "name": "Right medial plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 620
+  },
+  {
+   "id": "ZA-left-medial-sural-cutaneous-nerve",
+   "name": "Left medial sural cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1176
+  },
+  {
+   "id": "ZA-right-medial-sural-cutaneous-nerve",
+   "name": "Right medial sural cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1176
+  },
+  {
+   "id": "ZA-left-median-nerve",
+   "name": "Left median nerve",
+   "kind": "z-anatomy",
+   "triangles": 4728
+  },
+  {
+   "id": "ZA-right-median-nerve",
+   "name": "Right median nerve",
+   "kind": "z-anatomy",
+   "triangles": 4728
+  },
+  {
+   "id": "ZA-meningeal-branch-of-left-maxillary-nerve",
+   "name": "Meningeal branch of left maxillary nerve",
+   "kind": "z-anatomy",
+   "triangles": 876
+  },
+  {
+   "id": "ZA-meningeal-branch-of-right-maxillary-nerve",
+   "name": "Meningeal branch of right maxillary nerve",
+   "kind": "z-anatomy",
+   "triangles": 876
+  },
+  {
+   "id": "ZA-left-mental-nerve",
+   "name": "Left mental nerve",
+   "kind": "z-anatomy",
+   "triangles": 144
+  },
+  {
+   "id": "ZA-right-mental-nerve",
+   "name": "Right mental nerve",
+   "kind": "z-anatomy",
+   "triangles": 144
+  },
+  {
+   "id": "ZA-middle-trunk-of-left-brachial-plexus",
+   "name": "Middle trunk of left brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 240
+  },
+  {
+   "id": "ZA-middle-trunk-of-right-brachial-plexus",
+   "name": "Middle trunk of right brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 240
+  },
+  {
+   "id": "ZA-muscular-branches-of-left-axillary-nerve",
+   "name": "Muscular branches of left axillary nerve",
+   "kind": "z-anatomy",
+   "triangles": 228
+  },
+  {
+   "id": "ZA-muscular-branches-of-right-axillary-nerve",
+   "name": "Muscular branches of right axillary nerve",
+   "kind": "z-anatomy",
+   "triangles": 228
+  },
+  {
+   "id": "ZA-muscular-branches-of-left-deep-fibular-nerve",
+   "name": "Muscular branches of left deep fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 168
+  },
+  {
+   "id": "ZA-muscular-branches-of-right-deep-fibular-nerve",
+   "name": "Muscular branches of right deep fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 168
+  },
+  {
+   "id": "ZA-muscular-branches-of-left-median-nerve",
+   "name": "Muscular branches of left median nerve",
+   "kind": "z-anatomy",
+   "triangles": 264
+  },
+  {
+   "id": "ZA-muscular-branches-of-right-median-nerve",
+   "name": "Muscular branches of right median nerve",
+   "kind": "z-anatomy",
+   "triangles": 264
+  },
+  {
+   "id": "ZA-muscular-branches-of-left-radial-nerve",
+   "name": "Muscular branches of left radial nerve",
+   "kind": "z-anatomy",
+   "triangles": 992
+  },
+  {
+   "id": "ZA-muscular-branches-of-right-radial-nerve",
+   "name": "Muscular branches of right radial nerve",
+   "kind": "z-anatomy",
+   "triangles": 992
+  },
+  {
+   "id": "ZA-muscular-branches-of-left-ulnar-nerve",
+   "name": "Muscular branches of left ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 180
+  },
+  {
+   "id": "ZA-muscular-branches-of-right-ulnar-nerve",
+   "name": "Muscular branches of right ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 180
+  },
+  {
+   "id": "ZA-left-musculocutaneous-nerve",
+   "name": "Left musculocutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1216
+  },
+  {
+   "id": "ZA-right-musculocutaneous-nerve",
+   "name": "Right musculocutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1216
+  },
+  {
+   "id": "ZA-left-nerve-to-mylohyoid-muscle",
+   "name": "Left nerve to mylohyoid muscle",
+   "kind": "z-anatomy",
+   "triangles": 360
+  },
+  {
+   "id": "ZA-right-nerve-to-mylohyoid-muscle",
+   "name": "Right nerve to mylohyoid muscle",
+   "kind": "z-anatomy",
+   "triangles": 360
+  },
+  {
+   "id": "ZA-left-nerve-to-piriformis-muscle",
+   "name": "Left nerve to piriformis muscle",
+   "kind": "z-anatomy",
+   "triangles": 560
+  },
+  {
+   "id": "ZA-right-nerve-to-piriformis-muscle",
+   "name": "Right nerve to piriformis muscle",
+   "kind": "z-anatomy",
+   "triangles": 504
+  },
+  {
+   "id": "ZA-left-nerve-to-quadratus-femoris-muscle",
+   "name": "Left nerve to quadratus femoris muscle",
+   "kind": "z-anatomy",
+   "triangles": 1672
+  },
+  {
+   "id": "ZA-right-nerve-to-quadratus-femoris-muscle",
+   "name": "Right nerve to quadratus femoris muscle",
+   "kind": "z-anatomy",
+   "triangles": 1672
+  },
+  {
+   "id": "ZA-left-obturator-nerve",
+   "name": "Left obturator nerve",
+   "kind": "z-anatomy",
+   "triangles": 2904
+  },
+  {
+   "id": "ZA-right-obturator-nerve",
+   "name": "Right obturator nerve",
+   "kind": "z-anatomy",
+   "triangles": 2904
+  },
+  {
+   "id": "ZA-left-ophthalmic-nerve",
+   "name": "Left ophthalmic nerve",
+   "kind": "z-anatomy",
+   "triangles": 708
+  },
+  {
+   "id": "ZA-right-ophthalmic-nerve",
+   "name": "Right ophthalmic nerve",
+   "kind": "z-anatomy",
+   "triangles": 708
+  },
+  {
+   "id": "ZA-palmar-branch-of-left-median-nerve",
+   "name": "Palmar branch of left median nerve",
+   "kind": "z-anatomy",
+   "triangles": 936
+  },
+  {
+   "id": "ZA-palmar-branch-of-right-median-nerve",
+   "name": "Palmar branch of right median nerve",
+   "kind": "z-anatomy",
+   "triangles": 936
+  },
+  {
+   "id": "ZA-palmar-branch-of-left-ulnar-nerve",
+   "name": "Palmar branch of left ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 768
+  },
+  {
+   "id": "ZA-palmar-branch-of-right-ulnar-nerve",
+   "name": "Palmar branch of right ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 768
+  },
+  {
+   "id": "ZA-left-posterior-antebrachial-cutaneous-nerve",
+   "name": "Left posterior antebrachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1376
+  },
+  {
+   "id": "ZA-right-posterior-antebrachial-cutaneous-nerve",
+   "name": "Right posterior antebrachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1376
+  },
+  {
+   "id": "ZA-posterior-branch-of-left-medial-antebrachial-cutaneous-nerve",
+   "name": "Posterior branch of left medial antebrachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1280
+  },
+  {
+   "id": "ZA-posterior-branch-of-right-medial-antebrachial-cutaneous-nerve",
+   "name": "Posterior branch of right medial antebrachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 1280
+  },
+  {
+   "id": "ZA-posterior-branch-of-left-obturator-nerve",
+   "name": "Posterior branch of left obturator nerve",
+   "kind": "z-anatomy",
+   "triangles": 928
+  },
+  {
+   "id": "ZA-posterior-branch-of-right-obturator-nerve",
+   "name": "Posterior branch of right obturator nerve",
+   "kind": "z-anatomy",
+   "triangles": 928
+  },
+  {
+   "id": "ZA-posterior-cord-of-left-brachial-plexus",
+   "name": "Posterior cord of left brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 120
+  },
+  {
+   "id": "ZA-posterior-cord-of-right-brachial-plexus",
+   "name": "Posterior cord of right brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 120
+  },
+  {
+   "id": "ZA-posterior-division-of-inferior-trunk-of-left-brachial-plexus",
+   "name": "Posterior division of inferior trunk of left brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 176
+  },
+  {
+   "id": "ZA-posterior-division-of-inferior-trunk-of-right-brachial-plexus",
+   "name": "Posterior division of inferior trunk of right brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 176
+  },
+  {
+   "id": "ZA-posterior-division-of-left-mandibular-nerve",
+   "name": "Posterior division of left mandibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 168
+  },
+  {
+   "id": "ZA-posterior-division-of-right-mandibular-nerve",
+   "name": "Posterior division of right mandibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 168
+  },
+  {
+   "id": "ZA-posterior-division-of-middle-trunk-of-left-brachial-plexus",
+   "name": "Posterior division of middle trunk of left brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 160
+  },
+  {
+   "id": "ZA-posterior-division-of-middle-trunk-of-right-brachial-plexus",
+   "name": "Posterior division of middle trunk of right brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 160
+  },
+  {
+   "id": "ZA-posterior-division-of-superior-trunk-of-left-brachial-plexus",
+   "name": "Posterior division of superior trunk of left brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 144
+  },
+  {
+   "id": "ZA-posterior-division-of-superior-trunk-of-right-brachial-plexus",
+   "name": "Posterior division of superior trunk of right brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 144
+  },
+  {
+   "id": "ZA-right-posterior-femoral-cutaneous-nerve",
+   "name": "Right posterior femoral cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 2832
+  },
+  {
+   "id": "ZA-posterior-interosseous-nerve-of-left-forearm",
+   "name": "Posterior interosseous nerve of left forearm",
+   "kind": "z-anatomy",
+   "triangles": 928
+  },
+  {
+   "id": "ZA-posterior-interosseous-nerve-of-right-forearm",
+   "name": "Posterior interosseous nerve of right forearm",
+   "kind": "z-anatomy",
+   "triangles": 928
+  },
+  {
+   "id": "ZA-posterior-root-of-left-posterior-femoral-cutaneous-nerve",
+   "name": "Posterior root of left posterior femoral cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 756
+  },
+  {
+   "id": "ZA-posterior-root-of-right-posterior-femoral-cutaneous-nerve",
+   "name": "Posterior root of right posterior femoral cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 756
+  },
+  {
+   "id": "ZA-posterior-root-of-left-spinal-nerve",
+   "name": "Posterior root of left spinal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1572
+  },
+  {
+   "id": "ZA-posterior-root-of-right-spinal-nerve",
+   "name": "Posterior root of right spinal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1572
+  },
+  {
+   "id": "ZA-proper-palmar-digital-branches-of-left-median-nerve",
+   "name": "Proper palmar digital branches of left median nerve",
+   "kind": "z-anatomy",
+   "triangles": 2568
+  },
+  {
+   "id": "ZA-proper-palmar-digital-branches-of-right-median-nerve",
+   "name": "Proper palmar digital branches of right median nerve",
+   "kind": "z-anatomy",
+   "triangles": 2592
+  },
+  {
+   "id": "ZA-proper-palmar-digital-branches-of-left-ulnar-nerve",
+   "name": "Proper palmar digital branches of left ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1200
+  },
+  {
+   "id": "ZA-proper-palmar-digital-branches-of-right-ulnar-nerve",
+   "name": "Proper palmar digital branches of right ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1200
+  },
+  {
+   "id": "ZA-proper-plantar-digital-branches-of-left-lateral-plantar-nerve",
+   "name": "Proper plantar digital branches of left lateral plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1176
+  },
+  {
+   "id": "ZA-proper-plantar-digital-branches-of-right-lateral-plantar-nerve",
+   "name": "Proper plantar digital branches of right lateral plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1188
+  },
+  {
+   "id": "ZA-proper-plantar-digital-branches-of-left-medial-plantar-nerve",
+   "name": "Proper plantar digital branches of left medial plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1296
+  },
+  {
+   "id": "ZA-proper-plantar-digital-branches-of-right-medial-plantar-nerve",
+   "name": "Proper plantar digital branches of right medial plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 1320
+  },
+  {
+   "id": "ZA-left-radial-nerve",
+   "name": "Left radial nerve",
+   "kind": "z-anatomy",
+   "triangles": 2568
+  },
+  {
+   "id": "ZA-right-radial-nerve",
+   "name": "Right radial nerve",
+   "kind": "z-anatomy",
+   "triangles": 2568
+  },
+  {
+   "id": "ZA-left-posterior-femoral-cutaneous-nerve",
+   "name": "Left posterior femoral cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 2856
+  },
+  {
+   "id": "ZA-common-plantar-digital-branches-of-medial-plantar-nerve",
+   "name": "Common plantar digital branches of medial plantar nerve",
+   "kind": "z-anatomy",
+   "triangles": 788
+  },
+  {
+   "id": "ZA-left-saphenous-nerve",
+   "name": "Left saphenous nerve",
+   "kind": "z-anatomy",
+   "triangles": 8128
+  },
+  {
+   "id": "ZA-right-saphenous-nerve",
+   "name": "Right saphenous nerve",
+   "kind": "z-anatomy",
+   "triangles": 8128
+  },
+  {
+   "id": "ZA-left-sciatic-nerve",
+   "name": "Left sciatic nerve",
+   "kind": "z-anatomy",
+   "triangles": 4440
+  },
+  {
+   "id": "ZA-right-sciatic-nerve",
+   "name": "Right sciatic nerve",
+   "kind": "z-anatomy",
+   "triangles": 4440
+  },
+  {
+   "id": "ZA-left-pudendal-nerve",
+   "name": "Left pudendal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1324
+  },
+  {
+   "id": "ZA-right-pudendal-nerve",
+   "name": "Right pudendal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1324
+  },
+  {
+   "id": "ZA-roots-of-left-brachial-plexus",
+   "name": "Roots of left brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 1616
+  },
+  {
+   "id": "ZA-roots-of-right-brachial-plexus",
+   "name": "Roots of right brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 1600
+  },
+  {
+   "id": "ZA-left-subclavian-nerve",
+   "name": "Left subclavian nerve",
+   "kind": "z-anatomy",
+   "triangles": 324
+  },
+  {
+   "id": "ZA-right-subclavian-nerve",
+   "name": "Right subclavian nerve",
+   "kind": "z-anatomy",
+   "triangles": 324
+  },
+  {
+   "id": "ZA-superficial-branch-of-left-radial-nerve",
+   "name": "Superficial branch of left radial nerve",
+   "kind": "z-anatomy",
+   "triangles": 1864
+  },
+  {
+   "id": "ZA-superficial-branch-of-right-radial-nerve",
+   "name": "Superficial branch of right radial nerve",
+   "kind": "z-anatomy",
+   "triangles": 1860
+  },
+  {
+   "id": "ZA-superficial-branch-of-left-ulnar-nerve",
+   "name": "Superficial branch of left ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 192
+  },
+  {
+   "id": "ZA-superficial-branch-of-right-ulnar-nerve",
+   "name": "Superficial branch of right ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 192
+  },
+  {
+   "id": "ZA-left-superficial-fibular-nerve",
+   "name": "Left superficial fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 1664
+  },
+  {
+   "id": "ZA-right-superficial-fibular-nerve",
+   "name": "Right superficial fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 1664
+  },
+  {
+   "id": "ZA-left-superior-gluteal-nerve",
+   "name": "Left superior gluteal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1124
+  },
+  {
+   "id": "ZA-right-superior-gluteal-nerve",
+   "name": "Right superior gluteal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1124
+  },
+  {
+   "id": "ZA-left-superior-lateral-brachial-cutaneous-nerve",
+   "name": "Left superior lateral brachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 684
+  },
+  {
+   "id": "ZA-right-superior-lateral-brachial-cutaneous-nerve",
+   "name": "Right superior lateral brachial cutaneous nerve",
+   "kind": "z-anatomy",
+   "triangles": 684
+  },
+  {
+   "id": "ZA-left-superior-subscapular-nerve",
+   "name": "Left superior subscapular nerve",
+   "kind": "z-anatomy",
+   "triangles": 448
+  },
+  {
+   "id": "ZA-right-superior-subscapular-nerve",
+   "name": "Right superior subscapular nerve",
+   "kind": "z-anatomy",
+   "triangles": 464
+  },
+  {
+   "id": "ZA-superior-trunk-of-left-brachial-plexus",
+   "name": "Superior trunk of left brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 432
+  },
+  {
+   "id": "ZA-superior-trunk-of-right-brachial-plexus",
+   "name": "Superior trunk of right brachial plexus",
+   "kind": "z-anatomy",
+   "triangles": 432
+  },
+  {
+   "id": "ZA-left-suprascapular-nerve",
+   "name": "Left suprascapular nerve",
+   "kind": "z-anatomy",
+   "triangles": 1572
+  },
+  {
+   "id": "ZA-right-suprascapular-nerve",
+   "name": "Right suprascapular nerve",
+   "kind": "z-anatomy",
+   "triangles": 1572
+  },
+  {
+   "id": "ZA-sural-communicating-branch-of-left-common-fibular-nerve",
+   "name": "Sural communicating branch of left common fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 480
+  },
+  {
+   "id": "ZA-sural-communicating-branch-of-right-common-fibular-nerve",
+   "name": "Sural communicating branch of right common fibular nerve",
+   "kind": "z-anatomy",
+   "triangles": 480
+  },
+  {
+   "id": "ZA-left-sural-nerve",
+   "name": "Left sural nerve",
+   "kind": "z-anatomy",
+   "triangles": 4248
+  },
+  {
+   "id": "ZA-right-sural-nerve",
+   "name": "Right sural nerve",
+   "kind": "z-anatomy",
+   "triangles": 4248
+  },
+  {
+   "id": "ZA-left-sympathetic-nerves",
+   "name": "Left sympathetic nerves",
+   "kind": "z-anatomy",
+   "triangles": 1884
+  },
+  {
+   "id": "ZA-right-sympathetic-nerves",
+   "name": "Right sympathetic nerves",
+   "kind": "z-anatomy",
+   "triangles": 1896
+  },
+  {
+   "id": "ZA-left-sympathetic-trunk",
+   "name": "Left sympathetic trunk",
+   "kind": "z-anatomy",
+   "triangles": 1632
+  },
+  {
+   "id": "ZA-right-sympathetic-trunk",
+   "name": "Right sympathetic trunk",
+   "kind": "z-anatomy",
+   "triangles": 1632
+  },
+  {
+   "id": "ZA-right-thoracodorsal-nerve",
+   "name": "Right thoracodorsal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1756
+  },
+  {
+   "id": "ZA-left-thoracodorsal-nerve",
+   "name": "Left thoracodorsal nerve",
+   "kind": "z-anatomy",
+   "triangles": 1756
+  },
+  {
+   "id": "ZA-left-tibial-nerve",
+   "name": "Left tibial nerve",
+   "kind": "z-anatomy",
+   "triangles": 4128
+  },
+  {
+   "id": "ZA-right-tibial-nerve",
+   "name": "Right tibial nerve",
+   "kind": "z-anatomy",
+   "triangles": 4128
+  },
+  {
+   "id": "ZA-left-trigeminal-nerve",
+   "name": "Left trigeminal nerve",
+   "kind": "z-anatomy",
+   "triangles": 312
+  },
+  {
+   "id": "ZA-right-trigeminal-nerve",
+   "name": "Right trigeminal nerve",
+   "kind": "z-anatomy",
+   "triangles": 312
+  },
+  {
+   "id": "ZA-left-ulnar-nerve",
+   "name": "Left ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 4392
+  },
+  {
+   "id": "ZA-right-ulnar-nerve",
+   "name": "Right ulnar nerve",
+   "kind": "z-anatomy",
+   "triangles": 4392
+  },
+  {
+   "id": "ZA-left-vagus-nerve",
+   "name": "Left vagus nerve",
+   "kind": "z-anatomy",
+   "triangles": 2112
+  },
+  {
+   "id": "ZA-right-vagus-nerve",
+   "name": "Right vagus nerve",
+   "kind": "z-anatomy",
+   "triangles": 5868
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-femoral-nerve-to-rectus-femoris",
+   "name": "Muscular branch of right femoral nerve to rectus femoris",
+   "kind": "authored",
+   "triangles": 1020
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-femoral-nerve-to-vastus-lateralis",
+   "name": "Muscular branch of right femoral nerve to vastus lateralis",
+   "kind": "authored",
+   "triangles": 1360
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-femoral-nerve-to-vastus-intermedius",
+   "name": "Muscular branch of right femoral nerve to vastus intermedius",
+   "kind": "authored",
+   "triangles": 1216
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-femoral-nerve-to-vastus-medialis",
+   "name": "Muscular branch of right femoral nerve to vastus medialis",
+   "kind": "authored",
+   "triangles": 1008
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-sciatic-nerve-to-long-head-of-biceps-femoris",
+   "name": "Muscular branch of right sciatic nerve to long head of biceps femoris",
+   "kind": "authored",
+   "triangles": 1392
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-sciatic-nerve-to-semitendinosus",
+   "name": "Muscular branch of right sciatic nerve to semitendinosus",
+   "kind": "authored",
+   "triangles": 1584
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-sciatic-nerve-to-semimembranosus",
+   "name": "Muscular branch of right sciatic nerve to semimembranosus",
+   "kind": "authored",
+   "triangles": 1608
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-femoral-nerve-to-rectus-femoris",
+   "name": "Muscular branch of left femoral nerve to rectus femoris",
+   "kind": "authored",
+   "triangles": 1008
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-femoral-nerve-to-vastus-lateralis",
+   "name": "Muscular branch of left femoral nerve to vastus lateralis",
+   "kind": "authored",
+   "triangles": 1344
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-femoral-nerve-to-vastus-intermedius",
+   "name": "Muscular branch of left femoral nerve to vastus intermedius",
+   "kind": "authored",
+   "triangles": 1216
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-femoral-nerve-to-vastus-medialis",
+   "name": "Muscular branch of left femoral nerve to vastus medialis",
+   "kind": "authored",
+   "triangles": 1008
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-sciatic-nerve-to-long-head-of-biceps-femoris",
+   "name": "Muscular branch of left sciatic nerve to long head of biceps femoris",
+   "kind": "authored",
+   "triangles": 1392
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-sciatic-nerve-to-semitendinosus",
+   "name": "Muscular branch of left sciatic nerve to semitendinosus",
+   "kind": "authored",
+   "triangles": 1584
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-sciatic-nerve-to-semimembranosus",
+   "name": "Muscular branch of left sciatic nerve to semimembranosus",
+   "kind": "authored",
+   "triangles": 1584
+  },
+  {
+   "id": "ZA-spinal-cord",
+   "name": "Spinal cord",
+   "kind": "z-anatomy",
+   "triangles": 15554
+  },
+  {
+   "id": "ZA-right-spinal-ganglia",
+   "name": "Right spinal ganglia",
+   "kind": "z-anatomy",
+   "triangles": 1680
+  },
+  {
+   "id": "ZA-left-spinal-ganglia",
+   "name": "Left spinal ganglia",
+   "kind": "z-anatomy",
+   "triangles": 1680
+  }
+ ],
+ "cord": [
+  {
+   "id": "ZA-spinal-cord",
+   "source": "White matter of spinal cord",
+   "insideBone": 0,
+   "closestBoneMm": 0.22
+  },
+  {
+   "id": "ZA-right-spinal-ganglia",
+   "source": "Spinal ganglion.r",
+   "insideBone": 0,
+   "closestBoneMm": 0.55
+  },
+  {
+   "id": "ZA-left-spinal-ganglia",
+   "source": "Spinal ganglion.l",
+   "insideBone": 0,
+   "closestBoneMm": 0.34
+  }
+ ],
+ "authored": [
+  {
+   "id": "ZA-muscular-branch-of-right-femoral-nerve-to-rectus-femoris",
+   "name": "Muscular branch of right femoral nerve to rectus femoris",
+   "parent": "Femoral nerve.r",
+   "muscle": "right rectus femoris",
+   "lengthMm": 244.5
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-femoral-nerve-to-vastus-lateralis",
+   "name": "Muscular branch of right femoral nerve to vastus lateralis",
+   "parent": "Femoral nerve.r",
+   "muscle": "right vastus lateralis",
+   "lengthMm": 242.7
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-femoral-nerve-to-vastus-intermedius",
+   "name": "Muscular branch of right femoral nerve to vastus intermedius",
+   "parent": "Femoral nerve.r",
+   "muscle": "right vastus intermedius",
+   "lengthMm": 212.3
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-femoral-nerve-to-vastus-medialis",
+   "name": "Muscular branch of right femoral nerve to vastus medialis",
+   "parent": "Femoral nerve.r",
+   "muscle": "right vastus medialis",
+   "lengthMm": 172.0
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-sciatic-nerve-to-long-head-of-biceps-femoris",
+   "name": "Muscular branch of right sciatic nerve to long head of biceps femoris",
+   "parent": "Sciatic nerve.r",
+   "muscle": "long head of right biceps femoris",
+   "lengthMm": 161.4
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-sciatic-nerve-to-semitendinosus",
+   "name": "Muscular branch of right sciatic nerve to semitendinosus",
+   "parent": "Sciatic nerve.r",
+   "muscle": "right semitendinosus",
+   "lengthMm": 184.0
+  },
+  {
+   "id": "ZA-muscular-branch-of-right-sciatic-nerve-to-semimembranosus",
+   "name": "Muscular branch of right sciatic nerve to semimembranosus",
+   "parent": "Sciatic nerve.r",
+   "muscle": "right semimembranosus",
+   "lengthMm": 184.0
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-femoral-nerve-to-rectus-femoris",
+   "name": "Muscular branch of left femoral nerve to rectus femoris",
+   "parent": "Femoral nerve.l",
+   "muscle": "left rectus femoris",
+   "lengthMm": 243.7
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-femoral-nerve-to-vastus-lateralis",
+   "name": "Muscular branch of left femoral nerve to vastus lateralis",
+   "parent": "Femoral nerve.l",
+   "muscle": "left vastus lateralis",
+   "lengthMm": 241.7
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-femoral-nerve-to-vastus-intermedius",
+   "name": "Muscular branch of left femoral nerve to vastus intermedius",
+   "parent": "Femoral nerve.l",
+   "muscle": "left vastus intermedius",
+   "lengthMm": 210.7
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-femoral-nerve-to-vastus-medialis",
+   "name": "Muscular branch of left femoral nerve to vastus medialis",
+   "parent": "Femoral nerve.l",
+   "muscle": "left vastus medialis",
+   "lengthMm": 171.0
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-sciatic-nerve-to-long-head-of-biceps-femoris",
+   "name": "Muscular branch of left sciatic nerve to long head of biceps femoris",
+   "parent": "Sciatic nerve.l",
+   "muscle": "long head of left biceps femoris",
+   "lengthMm": 161.5
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-sciatic-nerve-to-semitendinosus",
+   "name": "Muscular branch of left sciatic nerve to semitendinosus",
+   "parent": "Sciatic nerve.l",
+   "muscle": "left semitendinosus",
+   "lengthMm": 182.5
+  },
+  {
+   "id": "ZA-muscular-branch-of-left-sciatic-nerve-to-semimembranosus",
+   "name": "Muscular branch of left sciatic nerve to semimembranosus",
+   "parent": "Sciatic nerve.l",
+   "muscle": "left semimembranosus",
+   "lengthMm": 183.7
+  }
+ ],
+ "kneeJerkRoutesMm": {
+  "afferent": [
+   {
+    "to": "right rectus femoris",
+    "lengthMm": 493.7
+   },
+   {
+    "to": "right vastus lateralis",
+    "lengthMm": 582.6
+   },
+   {
+    "to": "right vastus intermedius",
+    "lengthMm": 558.3
+   },
+   {
+    "to": "right vastus medialis",
+    "lengthMm": 547.1
+   }
+  ],
+  "efferent": [
+   {
+    "to": "right rectus femoris",
+    "lengthMm": 493.4
+   },
+   {
+    "to": "right vastus lateralis",
+    "lengthMm": 582.1
+   },
+   {
+    "to": "right vastus intermedius",
+    "lengthMm": 557.8
+   },
+   {
+    "to": "right vastus medialis",
+    "lengthMm": 546.7
+   }
+  ],
+  "inhibitory": [
+   {
+    "to": "long head of right biceps femoris",
+    "lengthMm": 511.3
+   },
+   {
+    "to": "right semitendinosus",
+    "lengthMm": 545.4
+   },
+   {
+    "to": "right semimembranosus",
+    "lengthMm": 545.3
+   }
+  ]
+ },
+ "generator": "ff920621b1542320ec0a69001f09f8b778a3b1e5cdc015dac2fb267b8c2536ab",
+ "binarySHA256": "295ad6dcac4877e38e10d3e5935829f400986ad0ad666555c751513c9de6c753"
+}

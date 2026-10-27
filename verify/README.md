@@ -7,6 +7,7 @@ npm run verify                 # everything, then builds verify-report/index.htm
 npm run verify:directions      # A3 direction table, A4 and A5 self-tests (Node, seconds)
 npm run verify:visual          # A1, A2 cards and the B screen budget (browser, minutes)
 npm run verify:containment -- --parts "vagus|spinal" --clear-of system:skeletal --allow 0.002
+npm run verify:nerves     # the Z-Anatomy cord and nerves: inside the skin and clear of bone
 npm run verify:report          # rebuild the page from whatever ran
 ```
 
@@ -26,7 +27,7 @@ VERIFY_CARDS=meal-sugar,exercise-heart npm run verify:visual   # just some cards
 | A1, A2 cause → effect, rest vs change | `cards.ts` | A card: cause, what a person should see, shots, and a rest/change pair. Write it **before** building the mechanism; mark it `pending` until then. |
 | A3 direction | `directions.ts` | A row: cause, what to read, up/down/settles, by when. A row the engine cannot test yet gets `pending` with what is missing. |
 | A4 data round trip | `round-trip.ts` | Your importer calls `followCurve(measured, drawn, {margin, unit})` and `saveRoundTrip(result)`. |
-| A5 inside the body | `containment.ts` | Run it on your new parts. Add a card with Front, Back, Side and ¾ shots. |
+| A5 inside the body | `containment.ts` | Run it on your new parts. Add a card with Front, Back, Side and ¾ shots. `--except` drops obstacles by name (the atlas files a few muscles, such as tibialis anterior, under skeletal). The nerves gate leaves out the inferior alveolar and mental nerves, which run inside the jaw bone in life. |
 | B budget | `budget.ts` | Nothing; it measures the main screen. If you add a control, remove one. |
 
 Card steps (`Step` in `cards.ts`) are the controls a person uses: situations, eating, water, exercise, skipping ahead, watching a vital sign, colour lens, what to show, camera angle and region, finding a part, the chart. `driver.ts` is the only file that knows the app's labels; when the UI changes, fix it there.

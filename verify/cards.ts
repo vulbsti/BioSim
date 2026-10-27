@@ -25,7 +25,11 @@ export type Step =
   | {find: string}
   | {chart: boolean}
   /** Anatomical motion (heart beat, breathing, beads). Off by default so screenshots repeat. */
-  | {motion: boolean};
+  | {motion: boolean}
+  /** "Tap below the kneecap" in Try something: the body sits and the knee-jerk reflex plays. */
+  | {tap: 'knee'}
+  /** Show one step of the knee-jerk reflex (its numbered button), held still. */
+  | {reflexStep: 'tap' | 'sensory' | 'cord' | 'motor' | 'kick'};
 
 export type Shot = {label: string; after?: Step[]; note?: string};
 export type Pair = {
@@ -134,6 +138,43 @@ export const cards: Card[] = [
       {label: '30 min', after: [{eat: meal75}, {advance: 30}]},
     ],
     pairs: [{rest: 'Before the meal', change: '30 min', what: 'Hormone colour on the pancreas and its targets'}],
+  },
+  {
+    id: 'knee-jerk',
+    title: 'A tap below the kneecap: a signal goes to the spinal cord and straight back, and the leg kicks',
+    cause: 'A tap on the tendon below the right kneecap, with the body sitting and the lower legs hanging.',
+    expect: [
+      'A light-blue signal leaves the front of the thigh and runs up the femoral nerve, through the groin, into the spinal cord in the lower back.',
+      'An orange command comes back out of the cord and down the same nerve into the front of the thigh; a violet one runs down the back of the thigh.',
+      'The front of the thigh turns warm (tightening), the back of the thigh turns cool (relaxing), and the lower leg swings forward.',
+      'Every nerve the signal uses sits inside the body: in the spine, behind the hip muscles, between the thigh muscles.',
+    ],
+    answer: 'The tap sent a signal up a nerve to the spinal cord and straight back, and the thigh muscle kicked the leg.',
+    setup: [{tap: 'knee'}],
+    shots: [
+      {label: 'Sitting, tapped', after: [{reflexStep: 'tap'}]},
+      {label: 'Signal going up', after: [{reflexStep: 'sensory'}]},
+      {label: 'Command coming back', after: [{reflexStep: 'motor'}]},
+      {label: 'Kick', after: [{reflexStep: 'kick'}]},
+    ],
+    pairs: [
+      {rest: 'Sitting, tapped', change: 'Signal going up', what: 'The sensing signal on the femoral nerve'},
+      {rest: 'Sitting, tapped', change: 'Kick', what: 'The lower leg swings forward; thigh muscles change colour'},
+    ],
+  },
+  {
+    id: 'nerves-inside',
+    title: 'The spinal cord and the nerves sit inside the body',
+    cause: 'The "Nerves" view: brain, spinal cord and body nerves inside a faint skin and skeleton.',
+    expect: ['From every side the cord runs down the spinal canal and the nerves run inside the limbs and trunk; nothing pokes out of the skin.'],
+    answer: 'The brain, spinal cord and nerves, all inside the body.',
+    setup: [{show: 'Nerves'}],
+    shots: [
+      {label: 'Front', after: [{angle: 'Front'}]},
+      {label: 'Back', after: [{angle: 'Back'}]},
+      {label: 'Side', after: [{angle: 'Side'}]},
+      {label: '¾', after: [{angle: '¾'}]},
+    ],
   },
   {
     id: 'insulin-particles',

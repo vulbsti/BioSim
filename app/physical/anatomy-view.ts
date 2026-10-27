@@ -2,7 +2,7 @@ import {SYSTEMS,type Atlas,type Part,type SystemId} from '../anatomy';
 import type {Organ} from '../simulation/types';
 
 export type AnatomyPreset='dissection'|'organs'|'muscles'|'skeleton'|'vessels'|'nerves'|'surface';
-export type AnatomyRegion='body'|'torso'|'head'|'abdomen'|'selection';
+export type AnatomyRegion='body'|'torso'|'head'|'abdomen'|'selection'|'reflex';
 export type AnatomyAngle='front'|'oblique'|'back'|'side';
 export const presets:{id:AnatomyPreset;name:string;description:string}[]=[
  {id:'dissection',name:'Dissection',description:'Open anterior body wall · organs in their source positions'},
@@ -10,7 +10,7 @@ export const presets:{id:AnatomyPreset;name:string;description:string}[]=[
  {id:'muscles',name:'Muscles',description:'Superficial and deep muscle geometry · rotate to see attachments'},
  {id:'skeleton',name:'Skeleton',description:'Bones, cartilage and connective structures'},
  {id:'vessels',name:'Vessels',description:'Source arterial and venous geometry · flow on extracted centerlines'},
- {id:'nerves',name:'Nerves',description:'Brain and brainstem · this atlas has no spinal cord or body nerves yet'},
+ {id:'nerves',name:'Nerves',description:'Brain, spinal cord and the nerves of the body, inside a faint body outline'},
  {id:'surface',name:'Surface',description:'Adult male body surface · source proportions'},
 ];
 export const organNames:Record<Organ,string>={heart:'Heart',brain:'Brain',lungs:'Lungs',liver:'Liver',gut:'Gut',kidneys:'Kidneys',muscle:'Muscle',skin:'Skin',adipose:'Adipose',endocrine:'Endocrine'};
@@ -53,6 +53,8 @@ export function tissueColor(part:Part,index:AnatomyIndex):string {
  return SYSTEMS.find(x=>x.id===s)?.color??'#b6b5a0';
 }
 export interface PhysicalViewState {preset:AnatomyPreset;region:AnatomyRegion;angle:AnatomyAngle;selected:string[];isolate:boolean;context:number;cut:'none'|'sagittal'|'coronal'|'axial';slice:number;reset:number;focus:number;hidden:string[]}
+/** Thigh muscles the knee-jerk reflex tightens or relaxes. */
+export const REFLEX_MUSCLES=/^(right|left) (rectus femoris|vastus (lateralis|medialis|intermedius)|semitendinosus|semimembranosus)$|^long head of (right|left) biceps femoris$/i;
 export function partOpacity(p:Part,index:AnatomyIndex,state:PhysicalViewState):number {
  if(state.hidden.includes(p.id))return 0;
  const selected=state.selected.includes(p.id),s=index.system.get(p.id)!,preset=state.preset;
@@ -62,7 +64,8 @@ export function partOpacity(p:Part,index:AnatomyIndex,state:PhysicalViewState):n
  if(preset==='muscles')return ['muscular','skeletal','connective','sensory'].includes(s)?1:0;
  if(p.id.startsWith('BP3D3-'))return preset==='dissection'?.68:preset==='organs'?.84:0;
  if(preset==='vessels')return s==='arterial'||s==='venous'||index.groups.heart.has(p.id)?1:s==='skeletal'?state.context*.25:0;
- if(preset==='nerves')return s==='nervous'||s==='endocrine'?1:s==='skeletal'?state.context*.22:0;
+ // Nerves sit inside a faint body: bones and the skin for orientation, the thigh muscles of the knee-jerk as context.
+ if(preset==='nerves')return s==='nervous'||s==='endocrine'?1:s==='skeletal'?state.context*.3:s==='integumentary'&&/^skin$/i.test(p.name)?.1:REFLEX_MUSCLES.test(p.name)?.42:0;
  if(s==='integumentary'||s==='connective')return 0;
  if(s==='skeletal')return preset==='organs'?state.context*.3:1;
  if(s==='muscular')return /^diaphragm$/i.test(p.name)&&preset==='organs'?.65:preset==='dissection'?1:0;

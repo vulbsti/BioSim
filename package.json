@@ -14,14 +14,15 @@
     "test:browser": "playwright test",
     "test:browser:production": "playwright test --config playwright.production.config.ts",
     "test": "npm run test:physiology && npm run test:anatomy && npm run test:browser",
-    "test:anatomy": "tsx --test tests/physical-anatomy.test.ts tests/vessel-flow.test.ts tests/body-lens.test.ts tests/heart.test.ts tests/heart-motion.test.ts tests/hormone-lens.test.ts tests/meal-route.test.ts tests/meal-mark.test.ts",
+    "test:anatomy": "tsx --test tests/physical-anatomy.test.ts tests/vessel-flow.test.ts tests/body-lens.test.ts tests/heart.test.ts tests/heart-motion.test.ts tests/hormone-lens.test.ts tests/meal-route.test.ts tests/meal-mark.test.ts tests/knee-jerk.test.ts",
     "build:heart": "tsx scripts/heart/build-heart-motion.ts",
     "build:vessels": "work/p1/venv/bin/python scripts/vessels/build-calibrated-vessels.py && work/p1/venv/bin/python scripts/vessels/build-reconstructed-vessels.py && work/p1/venv/bin/python scripts/vessels/build-registered-vessels.py && work/p1/venv/bin/python scripts/vessels/build-vessel-graph.py",
     "test:vessels": "work/p1/venv/bin/python -m unittest discover -s scripts/vessels -p 'test_*.py'",
-    "verify": "npm run verify:directions; npm run verify:containment -- --parts system:nervous; npm run verify:visual; npm run verify:report",
+    "verify": "npm run verify:directions; npm run verify:containment -- --parts system:nervous; npm run verify:nerves; npm run verify:visual; npm run verify:report",
     "verify:directions": "tsx --test verify/directions.test.ts verify/round-trip.test.ts verify/containment.test.ts",
     "verify:visual": "playwright test --config playwright.verify.config.ts",
     "verify:containment": "tsx verify/containment.ts",
+    "verify:nerves": "tsx verify/containment.ts --parts \"^ZA-(?!(left|right)-(inferior-alveolar|mental)-nerve)\" --clear-of system:skeletal --except \"fibularis|iliotibial|levator scapulae|subscapularis|tibialis\" --allow 0.002",
     "verify:report": "tsx verify/report.ts"
   },
   "dependencies": {
