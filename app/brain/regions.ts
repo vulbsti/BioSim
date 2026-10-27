@@ -87,6 +87,8 @@ export function brainMeshes(atlas:Atlas,index:AnatomyIndex):BrainMeshes {
  const parts=new Map<string,BrainPart>(),arteries:string[]=[],skull:string[]=[],skin:string[]=[];
  for(const p of atlas.parts){
   const s=index.system.get(p.id)??p.system;
+  // Cord and nerves registered from Z-Anatomy (ids ZA-) belong to the body nerve layer, not to the brain parts.
+  if(p.id.startsWith('ZA-'))continue;
   if((s==='nervous'||s==='endocrine'||index.groups.brain.has(p.id))&&p.bounds[0][1]>1.5){const r=partOf(p.name);if(r)parts.set(p.id,r);}
   else if(s==='arterial'&&inside(p))arteries.push(p.id);
   else if(s==='skeletal'&&p.bounds[0][1]>1.5&&p.bounds[1][1]>1.6)skull.push(p.id);
