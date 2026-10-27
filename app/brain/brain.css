@@ -29,3 +29,16 @@
 /* The brain view takes the whole stage; body-only panels step aside until you go back. */
 .sim-app:has(.brain-view) :is(.bio-try,.bio-try-open,.bio-chart){display:none}
 .brain-card .organ-card-head h3{text-transform:none}
+.brain-list-head [role=tablist]{display:flex;gap:2px;background:#0f1a20;border-radius:6px;padding:2px}
+.sim-app .brain-list-head [role=tab]{font-size:10px;color:#93a7ae;padding:5px 9px;border-radius:4px;min-height:0}
+.sim-app .brain-list-head [role=tab][aria-selected=true]{background:#52626766;color:#ece5d6}
+.brain-group{display:grid;gap:1px;margin-top:6px}
+.brain-group>span{font-size:8px;letter-spacing:1.4px;text-transform:uppercase;color:#7f949c;padding:4px 7px 2px}
+.brain-card{max-height:calc(100% - 150px);overflow-y:auto;scrollbar-width:thin}
+.brain-card h4{display:flex;align-items:center;gap:7px;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:#93a7ae;font-weight:500;margin-top:2px}
+.brain-card h4 i{width:10px;height:10px;border-radius:50%}
+.brain-note{font-size:11px!important;color:#a9bcc2!important;font-style:italic}
+.brain-chips{display:flex;flex-wrap:wrap;gap:4px}
+.sim-app .brain-chip{font-size:10px;color:#d6e0e3;border:1px solid #4c5e66;border-radius:12px;padding:4px 9px 4px 7px;min-height:0;gap:6px}
+.sim-app .brain-chip:hover{background:#2a3d46}
+.brain-chip i{width:8px;height:8px;border-radius:50%;flex-shrink:0}

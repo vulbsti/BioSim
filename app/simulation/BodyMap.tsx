@@ -5,7 +5,7 @@ import {createAnatomyIndex,organNames,presets,type AnatomyAngle,type AnatomyPres
 import type {BodyState,Organ} from './types';
 import {glucose} from './engine';
 import {lenses,type Lens} from '../physical/body-lens';
-import {regionOf} from '../brain/regions';
+import {partOf} from '../brain/regions';
 import '../physical/physical.css';
 const PhysicalScene=lazy(()=>import('../physical/PhysicalScene'));
 const BrainView=lazy(()=>import('../brain/BrainView'));
@@ -21,7 +21,7 @@ export default function BodyMap({state,selected,onSelect,atlas,running,catalogue
  const selectStructure=(c:Concept)=>{setStructure(c);setQuery('');setCardOpen(true);setView(v=>({...v,region:'selection',isolate:true,hidden:[],cut:'none',focus:v.focus+1}));const organ=c.elements.map(id=>index?.organ.get(id)).find(Boolean);if(organ)onSelect(organ);};
  const pick=(id:string)=>{const part=atlas?.parts.find(p=>p.id===id);if(!part)return;setStructure({id:part.conceptId,name:part.name,elements:[id]});setCardOpen(true);const organ=index?.organ.get(id);if(organ)onSelect(organ);
   // A click on the brain in the body opens the brain on its own, on the area that was clicked.
-  const area=organ==='brain'?regionOf(part.name):undefined;if(area){setBrainFocus(area.id);setBrainOpen(true);}};
+  const area=organ==='brain'?partOf(part.name):undefined;if(area){setBrainFocus(area.id);setBrainOpen(true);}};
  const watch=(id:Organ,preset:AnatomyPreset,nextLens:Lens=lens)=>{setStructure(null);onSelect(id);setCardOpen(true);setMotion(true);setLens(nextLens);setView(v=>({...v,preset,region:id==='gut'?'abdomen':id==='lungs'?'selection':'torso',isolate:false,cut:'none',hidden:[],focus:v.focus+1}));};
  const reset=()=>{setView(v=>({...initialView,reset:v.reset+1}));setStructure(null);setQuery('');};
  const eating=state.stomach.carbs+state.stomach.protein+state.stomach.fat>0;
