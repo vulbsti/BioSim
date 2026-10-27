@@ -172,7 +172,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,reflex=0,onSe
    const v=latest.current;selectedBounds.makeEmpty();
    if(v.region==='selection'||v.isolate)atlas.parts.forEach((p,i)=>{if(v.selected.includes(p.id))selectedBounds.union(bounds[i]);});
    if(selectedBounds.isEmpty()){
-    const regions={body:[[-.43,-.03,-.2],[.43,1.77,.2]],torso:[[-.27,.78,-.2],[.27,1.52,.2]],head:[[-.16,1.44,-.17],[.16,1.76,.15]],abdomen:[[-.25,.8,-.2],[.25,1.27,.2]],selection:[[-.43,0,-.2],[.43,1.75,.2]],reflex:[[-.3,.25,-.25],[.2,1.76,.65]]};
+    const regions={body:[[-.43,-.03,-.2],[.43,1.77,.2]],torso:[[-.27,.78,-.2],[.27,1.52,.2]],head:[[-.16,1.44,-.17],[.16,1.76,.15]],abdomen:[[-.25,.8,-.2],[.25,1.27,.2]],selection:[[-.43,0,-.2],[.43,1.75,.2]],reflex:[[-.3,.3,-.25],[.2,1.3,.65]]};
     const b=regions[v.region];selectedBounds.set(new T.Vector3().fromArray(b[0]),new T.Vector3().fromArray(b[1]));
    }
    selectedBounds.getCenter(center);selectedBounds.getSize(size);

@@ -17,7 +17,7 @@ export function poseShader(shader: {vertexShader: string}) {
 }
 
 const COLOURS = {afferent: new T.Color('#8ff3ff'), efferent: new T.Color('#ffb24a'), inhibitory: new T.Color('#c4a0ff')};
-const TRAIN = 12, SPACING = 0.007, LIMIT = 900;
+const TRAIN = 18, SPACING = 0.006, LIMIT = 1200;
 const STEPS: Exclude<Stage, 'ready'>[] = ['tap', 'sensory', 'cord', 'motor', 'kick'];
 
 /**
@@ -34,7 +34,7 @@ export function createReflexLayer({el, scene, atlas, uniforms, visual, signal, c
   geometry.setAttribute('color', new T.BufferAttribute(colours, 3));
   geometry.setDrawRange(0, 0);
   // Signals glow through the nerve wall and the muscles around it, like the blood beads do.
-  const material = new T.PointsMaterial({size: 0.022, sizeAttenuation: true, vertexColors: true, transparent: true, opacity: 0.95, depthTest: false, depthWrite: false});
+  const material = new T.PointsMaterial({size: 0.03, sizeAttenuation: true, vertexColors: true, transparent: true, opacity: 0.95, depthTest: false, depthWrite: false});
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, uniforms);
     poseShader(shader);
