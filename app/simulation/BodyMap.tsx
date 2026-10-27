@@ -5,20 +5,23 @@ import {createAnatomyIndex,organNames,presets,type AnatomyAngle,type AnatomyPres
 import type {BodyState,Organ} from './types';
 import {glucose} from './engine';
 import {lenses,type Lens} from '../physical/body-lens';
+import {regionOf} from '../brain/regions';
 import '../physical/physical.css';
 const PhysicalScene=lazy(()=>import('../physical/PhysicalScene'));
 const BrainView=lazy(()=>import('../brain/BrainView'));
 const initialView:PhysicalViewState={preset:'dissection',region:'body',angle:'front',selected:[],isolate:false,context:.5,cut:'none',slice:.5,reset:0,focus:0,hidden:[]};
 /** The body fills the screen; every control floats over it. */
 export default function BodyMap({state,selected,onSelect,atlas,running,catalogueError,organCard}:{state:BodyState;selected:Organ;onSelect:(id:Organ)=>void;running:boolean;atlas:Atlas|null;catalogueError?:string;organCard:ReactNode}) {
- const [view,setView]=useState(initialView),[progress,setProgress]=useState(0),[error,setError]=useState(''),[query,setQuery]=useState(''),[structure,setStructure]=useState<Concept|null>(null),[toolsOpen,setToolsOpen]=useState(false),[motion,setMotion]=useState(()=>!window.matchMedia('(prefers-reduced-motion: reduce)').matches),[lens,setLens]=useState<Lens>('flow'),[cardOpen,setCardOpen]=useState(()=>window.innerWidth>900),[brainOpen,setBrainOpen]=useState(false);
+ const [view,setView]=useState(initialView),[progress,setProgress]=useState(0),[error,setError]=useState(''),[query,setQuery]=useState(''),[structure,setStructure]=useState<Concept|null>(null),[toolsOpen,setToolsOpen]=useState(false),[motion,setMotion]=useState(()=>!window.matchMedia('(prefers-reduced-motion: reduce)').matches),[lens,setLens]=useState<Lens>('flow'),[cardOpen,setCardOpen]=useState(()=>window.innerWidth>900),[brainOpen,setBrainOpen]=useState(false),[brainFocus,setBrainFocus]=useState<string>();
  const index=useMemo(()=>atlas?createAnatomyIndex(atlas):null,[atlas]);
  const parts=structure?.elements??[...(index?.groups[selected]??[])];
  const sceneView=useMemo(()=>({...view,selected:parts}),[view,structure,index,selected]);
  const displayError=error||catalogueError;
  const searchResults=useMemo(()=>{if(!atlas||query.trim().length<2)return [];const q=query.toLowerCase().trim();return atlas.concepts.filter(c=>c.name.toLowerCase().includes(q)||c.id.toLowerCase().includes(q)).sort((a,b)=>Number(b.name.toLowerCase()===q)-Number(a.name.toLowerCase()===q)||a.name.length-b.name.length).slice(0,12);},[atlas,query]);
  const selectStructure=(c:Concept)=>{setStructure(c);setQuery('');setCardOpen(true);setView(v=>({...v,region:'selection',isolate:true,hidden:[],cut:'none',focus:v.focus+1}));const organ=c.elements.map(id=>index?.organ.get(id)).find(Boolean);if(organ)onSelect(organ);};
- const pick=(id:string)=>{const part=atlas?.parts.find(p=>p.id===id);if(!part)return;setStructure({id:part.conceptId,name:part.name,elements:[id]});setCardOpen(true);const organ=index?.organ.get(id);if(organ)onSelect(organ);};
+ const pick=(id:string)=>{const part=atlas?.parts.find(p=>p.id===id);if(!part)return;setStructure({id:part.conceptId,name:part.name,elements:[id]});setCardOpen(true);const organ=index?.organ.get(id);if(organ)onSelect(organ);
+  // A click on the brain in the body opens the brain on its own, on the area that was clicked.
+  const area=organ==='brain'?regionOf(part.name):undefined;if(area){setBrainFocus(area.id);setBrainOpen(true);}};
  const watch=(id:Organ,preset:AnatomyPreset,nextLens:Lens=lens)=>{setStructure(null);onSelect(id);setCardOpen(true);setMotion(true);setLens(nextLens);setView(v=>({...v,preset,region:id==='gut'?'abdomen':id==='lungs'?'selection':'torso',isolate:false,cut:'none',hidden:[],focus:v.focus+1}));};
  const reset=()=>{setView(v=>({...initialView,reset:v.reset+1}));setStructure(null);setQuery('');};
  const eating=state.stomach.carbs+state.stomach.protein+state.stomach.fat>0;
@@ -49,7 +52,7 @@ export default function BodyMap({state,selected,onSelect,atlas,running,catalogue
    {progress<100&&!displayError&&<div className="physical-loading" role="status"><Layers3 size={25}/><strong>Assembling the body</strong><span>{progress}%</span><div><i style={{width:`${progress}%`}}/></div></div>}
    {displayError&&<div className="physical-loading physical-load-error" role="alert"><strong>{displayError}</strong><button onClick={()=>location.reload()}>Reload</button></div>}
    <div className="physical-tracer-legend" hidden={lens!=='flow'}><span><i/> Oxygen-rich blood</span><span><i/> Oxygen-poor blood</span><span><i/> Air</span><span><i/> Food</span></div>
-   {brainOpen&&atlas&&<Suspense fallback={null}><BrainView atlas={atlas} body={state} motion={motion} onClose={()=>setBrainOpen(false)}/></Suspense>}
+   {brainOpen&&atlas&&<Suspense fallback={null}><BrainView atlas={atlas} body={state} motion={motion} focus={brainFocus} onClose={()=>{setBrainOpen(false);setBrainFocus(undefined);}}/></Suspense>}
   <div className="physical-stage-foot"><span>{running?'Running':'Paused'} · motion is illustrative, sizes not to scale</span><span>Drag to turn · scroll to zoom · click a part · double-click a vessel to look inside the blood</span></div>
   </div>
  </div>;

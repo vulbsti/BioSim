@@ -19,11 +19,11 @@ function live(region:BrainRegion,s:BodyState):[string,string][] {
  if(region.id==='hormones')return [['Body temperature',`${s.coreTemperature.toFixed(1)} °C`],['Cortisol vs resting',`${s.hormones.cortisol.toFixed(1)}×`]];
  return [];
 }
-interface Props {atlas:Atlas;body:BodyState;motion:boolean;onClose:()=>void}
+interface Props {atlas:Atlas;body:BodyState;motion:boolean;focus?:string;onClose:()=>void}
 /** The brain on its own: the atlas's own brain meshes, in their place inside the head, coloured by what each area does. */
-export default function BrainView({atlas,body,motion,onClose}:Props){
+export default function BrainView({atlas,body,motion,focus,onClose}:Props){
  const host=useRef<HTMLDivElement>(null),hover=useRef<HTMLDivElement>(null);
- const [selected,setSelected]=useState<BrainRegion|null>(null),[showHead,setShowHead]=useState(true),[showVessels,setShowVessels]=useState(false),[cut,setCut]=useState(false),[angle,setAngle]=useState<Angle>('side'),[listOpen,setListOpen]=useState(()=>window.innerWidth>700),[progress,setProgress]=useState(0),[error,setError]=useState('');
+ const [selected,setSelected]=useState<BrainRegion|null>(()=>BRAIN_REGIONS.find(r=>r.id===focus)??null),[showHead,setShowHead]=useState(true),[showVessels,setShowVessels]=useState(false),[cut,setCut]=useState(false),[angle,setAngle]=useState<Angle>('side'),[listOpen,setListOpen]=useState(()=>window.innerWidth>700),[progress,setProgress]=useState(0),[error,setError]=useState('');
  const view=useRef({selected,showHead,showVessels,cut,angle,motion,heartRate:body.heartRate,turn:0});
  const parts=useMemo(()=>brainParts(atlas,createAnatomyIndex(atlas)),[atlas]);
  useEffect(()=>{view.current={...view.current,selected,showHead,showVessels,cut,motion,heartRate:body.heartRate};},[selected,showHead,showVessels,cut,motion,body.heartRate]);
