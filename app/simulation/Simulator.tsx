@@ -21,7 +21,10 @@ import { scenarios } from "./scenarios";
 import type { Atlas } from "../anatomy";
 import { loadAtlas } from "../atlas-loader";
 import BodyMap from "./BodyMap";
-import Trace, { formatTime } from "./Trace";
+import Trace, { formatTime, type Measured } from "./Trace";
+import YourData from "../personal/YourData";
+import { emptyData, type PersonalData } from "../personal/data";
+import { CLOCK_START_HOUR } from "../personal/day";
 import "./simulation.css";
 
 /** What each organ does, in plain words, and what it is doing right now. */
@@ -140,7 +143,9 @@ export default function Simulator() {
     [exercise, setExercise] = useState(s.inputs.exercise),
     [notice, setNotice] = useState(""),
     [atlas, setAtlas] = useState<Atlas | null>(null),
-    [atlasError, setAtlasError] = useState("");
+    [atlasError, setAtlasError] = useState(""),
+    [personal, setPersonal] = useState<PersonalData>(emptyData),
+    [replay, setReplay] = useState<{ description: string; measured: Measured; clock: number } | null>(null);
   useEffect(() => setExercise(s.inputs.exercise), [s.inputs.exercise]);
   // A slider sends one change once it settles, not one per pixel dragged.
   useEffect(() => {
@@ -177,6 +182,7 @@ export default function Simulator() {
   );
   const act = (a: Action, label: string) => {
     setScenario("custom");
+    setReplay(null);
     send({ type: "action", action: a, label });
     setNotice(label);
   };
@@ -184,7 +190,7 @@ export default function Simulator() {
     if (document.fullscreenElement) document.exitFullscreen();
     else document.documentElement.requestFullscreen?.().catch(() => setNotice("Full screen is not available here"));
   };
-  const current = scenarios.find((x) => x.id === scenario);
+  const current = replay ?? scenarios.find((x) => x.id === scenario);
   return (
     <div className={`sim-app bio-app ${tryOpen ? "try-open" : ""} ${chartOpen ? "chart-open" : ""}`}>
       <BodyMap
@@ -226,8 +232,8 @@ export default function Simulator() {
           <span>what is happening inside</span>
         </div>
         <div className="bio-playback" aria-label="Simulation playback">
-          <strong className="bio-clock" aria-label="Elapsed simulation time">
-            {formatTime(s.time)}
+          <strong className="bio-clock" aria-label={replay ? "Time of day in your replayed day" : "Elapsed simulation time"}>
+            {replay ? formatTime((s.time + replay.clock) % 86400).slice(0, 5) : formatTime(s.time)}
           </strong>
           <button className="bio-play" onClick={() => send({ type: "run", running: !running })}>
             {running ? <Pause size={15} /> : <Play size={15} />} {running ? "Pause" : "Play"}
@@ -261,6 +267,7 @@ export default function Simulator() {
             onClick={() => {
               send({ type: "reset" });
               setScenario("baseline");
+              setReplay(null);
             }}
           >
             <RotateCcw size={15} />
@@ -300,6 +307,7 @@ export default function Simulator() {
                 aria-pressed={scenario === x.id}
                 onClick={() => {
                   setScenario(x.id);
+                  setReplay(null);
                   send({ type: "scenario", id: x.id });
                   if (x.events.length) send({ type: "run", running: true });
                 }}
@@ -309,6 +317,17 @@ export default function Simulator() {
             ))}
           </div>
           {current && <p className="bio-note">{current.description}</p>}
+          <YourData
+            data={personal}
+            onData={setPersonal}
+            onReplay={(r) => {
+              setScenario(r.scenario.id);
+              setReplay({ description: r.scenario.description, measured: r.measured, clock: CLOCK_START_HOUR * 3600 });
+              send({ type: "scenario", scenario: r.scenario });
+              send({ type: "run", running: true });
+              setChartOpen(true);
+            }}
+          />
           <h3>Eat something</h3>
           <div className="bio-meal">
             {(
@@ -375,7 +394,7 @@ export default function Simulator() {
           <button className="bio-chart-close" aria-label="Close chart" onClick={() => setChartOpen(false)}>
             <X size={15} />
           </button>
-          <Trace samples={history} time={s.time} />
+          <Trace samples={history} time={s.time} measured={replay?.measured} clock={replay?.clock} />
           {timeline.times.length > 1 && (
             <div className={`bio-lookback ${timeline.viewing !== null ? "viewing" : ""}`}>
               <span>Look back</span>

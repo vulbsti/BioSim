@@ -3,12 +3,18 @@ import type {Sample} from './types';
 
 export const formatTime=(s:number)=>`${Math.floor(s/3600).toString().padStart(2,'0')}:${Math.floor(s%3600/60).toString().padStart(2,'0')}:${Math.floor(s%60).toString().padStart(2,'0')}`;
 const metrics={glucose:{name:'Blood sugar',unit:'mg/dL',color:'#b8894f',base:90},heartRate:{name:'Heart rate',unit:'bpm',color:'#b66762',base:72},saturation:{name:'Blood oxygen',unit:'%',color:'#5d90a4',base:97.5},map:{name:'Blood pressure',unit:'mmHg',color:'#9681ae',base:93},urine:{name:'Urine made',unit:'mL/min',color:'#ad9665',base:1}};
-export default function Trace({samples,time}:{samples:Sample[];time:number}) {
+/** A measured curve to draw under the model's, in simulated seconds (for example a CGM day). */
+export type Measured=Partial<Record<'glucose'|'heartRate',{time:number;value:number}[]>>;
+/** clock: seconds to add to simulated time for the labels, so a replayed day reads in its own clock times. */
+export default function Trace({samples,time,measured={},clock=0}:{samples:Sample[];time:number;measured?:Measured;clock?:number}) {
+  const label=(t:number)=>formatTime((t+clock)%86400);
   const [metric,setMetric]=useState<keyof typeof metrics>('glucose'),[hover,setHover]=useState<number|null>(null);
   const info=metrics[metric];
   const value=(s:Sample)=>s[metric];
-  const start=samples[0]?.time??0,end=Math.max(start+60,time);
-  const all=samples.map(value);
+  const own=metric==='glucose'||metric==='heartRate'?measured[metric]??[]:[];
+  // The whole measured day is drawn, so the model can be watched catching up with it.
+  const start=samples[0]?.time??0,end=Math.max(start+60,time,own.at(-1)?.time??0);
+  const all=[...samples.map(value),...own.map(p=>p.value)];
   const lo=Math.min(info.base,...all),hi=Math.max(info.base,...all),padding=Math.max((hi-lo)*.2,info.base*.025,.1),min=lo-padding,max=hi+padding;
   const x=(t:number)=>52+(t-start)/(end-start)*838,y=(v:number)=>124-(v-min)/(max-min)*100;
   const path=(data:Sample[])=>data.filter(s=>s.time>=start).map((s,i)=>`${i?'L':'M'}${x(s.time).toFixed(2)},${y(value(s)).toFixed(2)}`).join(' ');
@@ -17,10 +23,11 @@ export default function Trace({samples,time}:{samples:Sample[];time:number}) {
     <svg viewBox="0 0 930 158" className="trace-svg" role="img" aria-label={`${info.name} over elapsed simulation time`} onPointerMove={e=>{const r=e.currentTarget.getBoundingClientRect();setHover(start+Math.max(0,Math.min(1,((e.clientX-r.left)/r.width*930-52)/838))*(end-start));}} onPointerLeave={()=>setHover(null)}>
       {[0,.5,1].map(t=>{const v=min+(max-min)*t;return <g key={t}><line x1="52" x2="890" y1={y(v)} y2={y(v)} stroke="#e8ece7"/><text x="42" y={y(v)+4} textAnchor="end">{v.toFixed(v<10?1:0)}</text></g>;})}
       <line x1="52" x2="890" y1={y(info.base)} y2={y(info.base)} stroke="#cad6cc" strokeDasharray="3 4"/>
+      {own.map((p,i)=><circle key={i} cx={x(p.time)} cy={y(p.value)} r="1.6" fill="#e8d5b0" opacity=".75"/>)}
       <path d={path(samples)} stroke={info.color} strokeWidth="2.3" fill="none" strokeLinejoin="round"/>
       {samples.length===1&&<circle cx={x(samples[0].time)} cy={y(value(samples[0]))} r="3" fill={info.color}/>}
-      {[0,.25,.5,.75,1].map(t=><text key={t} x={52+838*t} y="147" textAnchor="middle">{end-start<3600?formatTime(start+t*(end-start)).slice(3):formatTime(start+t*(end-start)).slice(0,5)}</text>)}
-      {focused&&<g><line x1={x(focused.time)} x2={x(focused.time)} y1="15" y2="126" stroke="#9aa99e"/><circle cx={x(focused.time)} cy={y(value(focused))} r="4" fill={info.color}/><rect x={Math.min(744,Math.max(55,x(focused.time)-60))} y="1" width="147" height="20" rx="4" fill="#edf2ea"/><text x={Math.min(818,Math.max(129,x(focused.time)+14))} y="14" textAnchor="middle">{formatTime(focused.time)} · {value(focused).toFixed(2)}</text></g>}
-    </svg><div className="trace-foot"><span>Dashed line: where it started</span></div>
+      {[0,.25,.5,.75,1].map(t=><text key={t} x={52+838*t} y="147" textAnchor="middle">{end-start<3600?label(start+t*(end-start)).slice(3):label(start+t*(end-start)).slice(0,5)}</text>)}
+      {focused&&<g><line x1={x(focused.time)} x2={x(focused.time)} y1="15" y2="126" stroke="#9aa99e"/><circle cx={x(focused.time)} cy={y(value(focused))} r="4" fill={info.color}/><rect x={Math.min(744,Math.max(55,x(focused.time)-60))} y="1" width="147" height="20" rx="4" fill="#edf2ea"/><text x={Math.min(818,Math.max(129,x(focused.time)+14))} y="14" textAnchor="middle">{label(focused.time)} · {value(focused).toFixed(2)}</text></g>}
+    </svg><div className="trace-foot"><span>Dashed line: where it started</span>{own.length>0&&<span>Dots: what you measured</span>}</div>
   </section>;
 }

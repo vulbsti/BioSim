@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 import { advance, applyAction, createBody, schedule } from "./engine";
 import { scenarios } from "./scenarios";
-import type { Action, BodyState } from "./types";
+import type { Action, BodyState, Scenario } from "./types";
 import { materialize, nearest, record, truncate, TIMELINE, type Snapshot } from "./timeline";
 
 let state = createBody(),
@@ -72,7 +72,8 @@ self.onmessage = (e: MessageEvent) => {
         record(timeline, state, true);
         break;
       case "scenario": {
-        const scenario = scenarios.find((s) => s.id === m.id);
+        // A built-in scenario by id, or one made from the person's own data (a day replay).
+        const scenario: Scenario | undefined = m.scenario ?? scenarios.find((s) => s.id === m.id);
         if (!scenario) throw new Error("Unknown scenario.");
         running = false;
         fraction = 0;
