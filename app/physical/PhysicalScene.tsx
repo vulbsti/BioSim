@@ -269,7 +269,8 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    if(animate.current){displayTime+=dt;heartPhase=(heartPhase+dt*rates.heartHz)%1;breathPhase=(breathPhase+dt*rates.breathHz)%1;gutPhase+=dt*.85;}
    const breathing=respiratoryCycle(breathPhase);uniforms.heartContraction.value=cardiacContraction(heartPhase);uniforms.lungInflation.value=breathing.inflation*rates.lungExcursion;uniforms.gutPhase.value=gutPhase;uniforms.gutActivity.value=rates.digesting;
    // Display mapping: the bladder mesh swells toward a 500 mL fill. Not a calibrated wall model.
-   uniforms.bladderFill.value=Math.min(1,Math.max(0,current.bladder/500));
+   // A paused body still redraws when the bladder has filled, or skipping ahead shows nothing.
+   const bladderFill=Math.min(1,Math.max(0,current.bladder/500));if(Math.abs(bladderFill-uniforms.bladderFill.value)>1e-4)dirty=true;uniforms.bladderFill.value=bladderFill;
    let count=0;const v=latest.current;
    // The beat the body state implies is solved when the state changes; each chamber then follows its own volume.
    if(beatState!==current){beatState=current;beat=heartCycle(current);const b=beat.summary;el.dataset.heartEf=b.ejectionFraction.toFixed(3);el.dataset.heartLvEdv=b.endDiastolic.lv.toFixed(1);el.dataset.heartLvEsv=b.endSystolic.lv.toFixed(1);el.dataset.heartSystolic=b.peak.aorta.toFixed(1);el.dataset.heartDiastolic=b.aorticDiastolic.toFixed(1);}
