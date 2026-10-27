@@ -268,7 +268,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    const valves=easeValves(beat!,heartPhase,animate.current?dt:0,uniforms.valveOpen.value);VALVES.forEach((k,i)=>{el.dataset['valve'+k[0].toUpperCase()+k.slice(1)]=valves[i].toFixed(3);});
    phaseText[0].textContent=`${phaseName} · LV ${(fill[1]*beat!.summary.endDiastolic.lv).toFixed(0)} mL`;phaseText[1].textContent=breathing.inhaling?'Inhaling':'Exhaling';
    phaseBars[0].style.transform=`scaleX(${Math.min(1,(1-fill[1])/Math.max(.01,1-beat!.summary.endSystolic.lv/beat!.summary.endDiastolic.lv))})`;phaseBars[1].style.transform=`scaleX(${breathing.inflation})`;
-   cycleReadout.hidden=v.preset==='surface'||v.preset==='skeleton'||v.preset==='nerves';
+   cycleReadout.hidden=v.preset==='surface'||v.preset==='skeleton';
    const counts={blood:0,air:0,food:0,portal:0,mix:0,route:0},slice=uniforms.slicePlane.value;
    if(vessels){
     // Bed flows ease toward the solver's values so a step change does not teleport beads.
