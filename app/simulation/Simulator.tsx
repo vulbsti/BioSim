@@ -25,6 +25,7 @@ import Trace, { formatTime, type Measured } from "./Trace";
 import YourData from "../personal/YourData";
 import { emptyData, type PersonalData } from "../personal/data";
 import { CLOCK_START_HOUR } from "../personal/day";
+import { personalBaseline } from "../personal/baseline";
 import "./simulation.css";
 
 /** What each organ does, in plain words, and what it is doing right now. */
@@ -191,6 +192,7 @@ export default function Simulator() {
     else document.documentElement.requestFullscreen?.().catch(() => setNotice("Full screen is not available here"));
   };
   const current = replay ?? scenarios.find((x) => x.id === scenario);
+  const yours = useMemo(() => personalBaseline(personal).tints.filter((t) => t.organ === organ), [personal, organ]);
   return (
     <div className={`sim-app bio-app ${tryOpen ? "try-open" : ""} ${chartOpen ? "chart-open" : ""}`}>
       <BodyMap
@@ -211,6 +213,13 @@ export default function Simulator() {
                 </div>
               ))}
             </dl>
+            {yours.map((t) => (
+              <div key={t.why} className="organ-yours">
+                <span>From your data</span>
+                <p>{t.why}</p>
+                <small>Based on {t.from.join(", ")}</small>
+              </div>
+            ))}
             <div className="organ-flow">
               <span>Gets</span>
               <p>{organInfo[organ].in}</p>
