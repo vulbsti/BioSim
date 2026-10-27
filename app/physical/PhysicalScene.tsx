@@ -242,7 +242,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
    liver:siteBox((_,id)=>index.groups.liver.has(id)),heart:siteBox((_,id)=>index.groups.heart.has(id)),brain:siteBox((_,id)=>index.groups.brain.has(id)),
    kidneys:siteBox(n=>/^left kidney$/i.test(n)),muscle:siteBox(n=>/^left vastus lateralis$/i.test(n)),
   };
-  const siteTags=(Object.entries(siteAnchors) as [Site,{part:number;at:T.Vector3}|null][]).flatMap(([site,anchor])=>{if(!anchor)return [];const node=document.createElement('div');node.hidden=true;node.innerHTML='<span></span><strong></strong>';node.querySelector('span')!.textContent=(site in GLANDS?GLANDS[site as Gland].name:organNames[site as keyof typeof organNames]).toUpperCase();hormoneTags.appendChild(node);return [{site,part:anchor.part,at:anchor.at,node,text:node.querySelector('strong')!,placed:''}];});
+  const siteTags=(Object.entries(siteAnchors) as [Site,{part:number;at:T.Vector3}|null][]).flatMap(([site,anchor])=>{if(!anchor)return [];const node=document.createElement('div');node.hidden=true;node.innerHTML='<span></span><strong></strong>';node.querySelector('span')!.textContent=(site in GLANDS?GLANDS[site as Gland].name:organNames[site as keyof typeof organNames]).toUpperCase();hormoneTags.appendChild(node);return [{site,part:anchor.part,at:anchor.at,node,text:node.querySelector('strong')!,placed:'',width:0,height:0}];});
   const callouts=document.createElement('div');callouts.className='physical-callouts';callouts.setAttribute('aria-label','Live organ stores and exchange');el.appendChild(callouts);
   const clock=document.createElement('div');clock.className='physical-clock';clock.setAttribute('aria-label','Simulated time shown on the body');el.appendChild(clock);
   const anchorOf=(test:(name:string,id:string)=>boolean)=>{const box=new T.Box3();let part=-1;atlas.parts.forEach((p,i)=>{if(test(p.name,p.id)){box.union(bounds[i]);if(part<0)part=i;}});return part<0?null:{part,at:box.getCenter(new T.Vector3())};};
@@ -341,7 +341,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
       const shade=siteHormone[tag.site],name=shade?hormoneInfo[shade.hormone].name:'';
       const show=!!shade&&(shade.role==='gland'?(!!chosenHormone||shade.drive>.15):(!!chosenHormone||shade.drive>TARGET_LIT));
       tag.node.dataset.show=String(show);
-      if(shade){tag.text.textContent=shade.role==='gland'?`releasing ${name} ${current.secretion[shade.hormone].toFixed(1)}×`:`${name} arriving · ${levelText(current.hormones[shade.hormone])}`;tag.node.style.borderColor=HORMONE_COLOUR[shade.hormone];el.dataset['site'+tag.site[0].toUpperCase()+tag.site.slice(1)]=`${shade.hormone}:${shade.role}:${shade.drive.toFixed(3)}`;}
+      if(shade){tag.width=0;tag.text.textContent=shade.role==='gland'?`releasing ${name} ${current.secretion[shade.hormone].toFixed(1)}×`:`${name} arriving · ${levelText(current.hormones[shade.hormone])}`;tag.node.style.borderColor=HORMONE_COLOUR[shade.hormone];el.dataset['site'+tag.site[0].toUpperCase()+tag.site.slice(1)]=`${shade.hormone}:${shade.role}:${shade.drive.toFixed(3)}`;}
       else delete el.dataset['site'+tag.site[0].toUpperCase()+tag.site.slice(1)];
      }
      if(hormonal){
@@ -361,10 +361,18 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
     for(const h of HORMONES)el.dataset['dots'+h[0].toUpperCase()+h.slice(1)]=String(hormoneDots[h]);
     // The store and exchange labels give way to the hormone labels.
     hormonePanel.hidden=!hormonal;callouts.hidden=hormonal||showRoute;
+    // Labels whose anchors fall close together stack downwards instead of overlapping.
+    const stacked:{tag:typeof siteTags[number];x:number;y:number}[]=[];
     for(const tag of siteTags){
      projected.copy(tag.at).project(camera);
      const hide=!hormonal||tag.node.dataset.show!=='true'||visualData[tag.part*4]<.5||projected.z>=1||Math.abs(projected.x)>.92||Math.abs(projected.y)>.9;if(tag.node.hidden!==hide)tag.node.hidden=hide;if(hide)continue;
-     const place=`translate(${((projected.x+1)/2*el.clientWidth).toFixed(1)}px,${((1-projected.y)/2*el.clientHeight).toFixed(1)}px)`;if(tag.placed!==place)tag.node.style.transform=tag.placed=place;
+     stacked.push({tag,x:(projected.x+1)/2*el.clientWidth,y:(1-projected.y)/2*el.clientHeight});
+    }
+    stacked.sort((a,b)=>a.y-b.y);
+    for(let i=0;i<stacked.length;i++){
+     const a=stacked[i];if(!a.tag.width){a.tag.width=a.tag.node.offsetWidth;a.tag.height=a.tag.node.offsetHeight;}
+     for(let j=0;j<i;j++){const b=stacked[j];if(a.x<b.x+(b.tag.width||180)&&b.x<a.x+(a.tag.width||180)&&a.y<b.y+(b.tag.height||30)+2)a.y=b.y+(b.tag.height||30)+2;}
+     const place=`translate(${a.x.toFixed(1)}px,${a.y.toFixed(1)}px)`;if(a.tag.placed!==place)a.tag.node.style.transform=a.tag.placed=place;
     }
     if(mealRoute){
      for(const line of mealRoute.lines)if(line.visible!==showRoute){line.visible=showRoute;dirty=true;}
