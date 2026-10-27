@@ -1,0 +1,86 @@
+{
+ "resourceType": "Bundle",
+ "type": "collection",
+ "entry": [
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "status": "final",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ]
+    },
+    "effectiveDateTime": "2026-09-28T08:10:00+01:00",
+    "valueQuantity": {
+     "value": 5.7,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org",
+     "code": "%"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "status": "final",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2345-7"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "effectiveDateTime": "2026-09-28T08:10:00+01:00",
+    "valueQuantity": {
+     "value": 97,
+     "unit": "mg/dL"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "status": "final",
+    "code": {
+     "text": "Fasting insulin"
+    },
+    "valueQuantity": {
+     "value": 14,
+     "unit": "uIU/mL"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "status": "final",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "1975-2",
+       "display": "Bilirubin"
+      }
+     ]
+    },
+    "valueQuantity": {
+     "value": 0.6,
+     "unit": "mg/dL"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Patient",
+    "id": "p1"
+   }
+  }
+ ]
+}

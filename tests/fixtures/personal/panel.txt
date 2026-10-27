@@ -1,0 +1,18 @@
+Patient: Asha Example        Collected: 28/09/2026
+Glucose, fasting      5.4 mmol/L     (3.9 - 5.5)
+HbA1c                 39 mmol/mol    (20 - 41)
+Insulin               84 pmol/L      (12 - 78)  H
+Cholesterol           5.1 mmol/L
+HDL Cholesterol       1.4 mmol/L     (> 1.0)
+LDL Cholesterol       3.1 mmol/L
+Triglycerides         1.9 mmol/L     (< 1.7)  H
+TSH                   2.1 mIU/L      (0.3 - 4.2)
+Free T4               15.8 pmol/L    (12 - 22)
+CRP                   1.2 mg/L       (< 5)
+Creatinine            72 umol/L      (45 - 84)
+eGFR                  >90 mL/min/1.73m2
+ALT                   52 U/L         (< 33)  H
+AST                   30 U/L
+Haemoglobin           132 g/L        (120 - 150)
+Ferritin              45 ug/L
+Vitamin D             60 nmol/L
