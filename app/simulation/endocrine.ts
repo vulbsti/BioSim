@@ -116,6 +116,11 @@ function steadyState(s: BodyState, h: Hormone) {
   return Object.fromEntries(ids.map((id, i) => [id, a[i][n] / a[i][i]]));
 }
 
+const INDEX = new Map(BLOOD_COMPARTMENTS.map((id, i) => [id, i]));
+/** A hormone's level in one blood compartment, against resting arterial blood (1). */
+export const hormoneIn = (s: BodyState, h: Hormone, compartment: string) =>
+  s.hormoneAmount[h][INDEX.get(compartment)!] / Math.max(1e-9, s.transport.compartments[compartment].volume);
+
 /**
  * Sets each gland's resting release so that arterial blood holds 1 at rest, and fills every blood
  * compartment with its steady level for the gland's current drive. Called once per new body.
@@ -126,17 +131,23 @@ export function startHormones(s: BodyState) {
     const unit = steadyState(s, h),
       rate = 1 / unit.arterial;
     s.hormoneRate[h] = rate;
-    s.hormoneBlood[h] = {};
-    s.hormoneAmount[h] = {};
-    for (const id of BLOOD_COMPARTMENTS) {
-      s.hormoneBlood[h][id] = unit[id] * rate * drive[h];
-      s.hormoneAmount[h][id] = s.hormoneBlood[h][id] * s.transport.compartments[id].volume;
-    }
-    s.hormones[h] = s.hormoneBlood[h].arterial;
+    s.hormoneAmount[h] = BLOOD_COMPARTMENTS.map((id) => unit[id] * rate * drive[h] * s.transport.compartments[id].volume);
+    s.hormones[h] = unit.arterial * rate * drive[h];
     s.secretion[h] = drive[h];
   }
 }
 
+/** Per hormone, the fraction of each compartment's hormone that survives `kept.dt` minutes of clearance. */
+const kept = {dt: NaN, factor: {} as Record<Hormone, Float64Array>};
+function survival(dt: number) {
+  if (kept.dt !== dt) {
+    for (const h of HORMONES) kept.factor[h] = Float64Array.from(BLOOD_COMPARTMENTS, (id) => Math.exp(-clearance(h, id) * dt));
+    kept.dt = dt;
+  }
+  return kept.factor;
+}
+
+const ARTERIAL = INDEX.get('arterial')!;
 /**
  * Glands release into their own vein, blood carries each hormone around the circulation with the
  * same flows as everything else, and every compartment clears it. `dt` is in minutes.
@@ -146,39 +157,34 @@ export function updateHormones(s: BodyState, dt: number) {
     c = s.transport.compartments,
     ids = BLOOD_COMPARTMENTS,
     n = ids.length,
-    at = new Map(ids.map((id, i) => [id, i])),
-    edges = bloodEdges(s).map((e) => ({from: at.get(e.from)!, to: at.get(e.to)!, flow: e.flow})),
-    volume = ids.map((id) => Math.max(1e-9, c[id].volume));
+    list = bloodEdges(s),
+    m = list.length,
+    from = Int32Array.from(list, (e) => INDEX.get(e.from)!),
+    to = Int32Array.from(list, (e) => INDEX.get(e.to)!),
+    flow = Float64Array.from(list, (e) => e.flow),
+    volume = Float64Array.from(ids, (id) => Math.max(1e-9, c[id].volume));
   let fastest = 0;
-  for (const e of edges) fastest = Math.max(fastest, (e.flow * dt) / Math.max(1, volume[e.from]));
+  for (let k = 0; k < m; k++) fastest = Math.max(fastest, (flow[k] * dt) / Math.max(1, volume[from[k]]));
   const steps = Math.max(1, Math.ceil(fastest / 0.25)),
     subdt = dt / steps,
-    amount = new Float64Array(n),
-    moves = new Float64Array(edges.length),
-    kept = new Float64Array(n);
+    factor = survival(subdt),
+    moves = new Float64Array(m);
   for (const h of HORMONES) {
-    const stored = s.hormoneAmount[h],
-      source = at.get(hormoneInfo[h].drain)!,
+    const amount = s.hormoneAmount[h],
+      survive = factor[h],
+      source = INDEX.get(hormoneInfo[h].drain)!,
       release = s.hormoneRate[h] * drive[h] * subdt;
-    for (let i = 0; i < n; i++) {
-      amount[i] = stored[ids[i]];
-      kept[i] = Math.exp(-clearance(h, ids[i]) * subdt);
-    }
     for (let step = 0; step < steps; step++) {
       // Moves are computed from the same old amounts, then applied together.
-      for (let k = 0; k < edges.length; k++) moves[k] = (amount[edges[k].from] / volume[edges[k].from]) * edges[k].flow * subdt;
-      for (let k = 0; k < edges.length; k++) {
-        amount[edges[k].from] -= moves[k];
-        amount[edges[k].to] += moves[k];
+      for (let k = 0; k < m; k++) moves[k] = (amount[from[k]] / volume[from[k]]) * flow[k] * subdt;
+      for (let k = 0; k < m; k++) {
+        amount[from[k]] -= moves[k];
+        amount[to[k]] += moves[k];
       }
-      for (let i = 0; i < n; i++) amount[i] *= kept[i];
+      for (let i = 0; i < n; i++) amount[i] *= survive[i];
       amount[source] += release;
     }
-    for (let i = 0; i < n; i++) {
-      stored[ids[i]] = amount[i];
-      s.hormoneBlood[h][ids[i]] = amount[i] / volume[i];
-    }
-    s.hormones[h] = s.hormoneBlood[h].arterial;
+    s.hormones[h] = amount[ARTERIAL] / volume[ARTERIAL];
     s.secretion[h] = drive[h];
   }
 }

@@ -97,7 +97,6 @@ export function createBody(params: Partial<PersonalBaseline> = {}): BodyState {
     },
     params: p,
     hormones: Object.fromEntries(HORMONES.map((k) => [k, 1])) as BodyState["hormones"],
-    hormoneBlood: {} as BodyState["hormoneBlood"],
     hormoneAmount: {} as BodyState["hormoneAmount"],
     hormoneRate: {} as BodyState["hormoneRate"],
     secretion: Object.fromEntries(HORMONES.map((k) => [k, 1])) as BodyState["secretion"],
@@ -303,15 +302,8 @@ function digest(s: BodyState, dt: number) {
       amount = Math.min(s.gut[k], ((p.v * p.e * s.gut[k]) / (p.km + s.gut[k])) * dt);
     s.gut[k] -= amount;
     s.digestionRates[k] = amount / dt;
-    transfer(
-      s,
-      "intestinal lumen",
-      k === "fat" ? "lymph" : "portal",
-      NUTRIENT_OF[k],
-      amount,
-      "absorption",
-      lumen,
-    );
+    // Absorbed food enters the blood evenly through the step, as transport carries it on.
+    s.transport.absorbing.push({ to: k === "fat" ? "lymph" : "portal", species: NUTRIENT_OF[k], amount, lumen });
   }
   const water = s.gut.water * -Math.expm1(-dt / 15);
   s.gut.water -= water;
@@ -662,13 +654,15 @@ function fluidsAndHeat(s: BodyState, dt: number) {
   s.fatigue = clamp(s.fatigue + dt * (0.0008 + 0.015 * exercise - 0.02 * s.inputs.sleep), 0, 1);
 }
 
-function step(s: BodyState) {
-  const dt = 1 / 60,
+/** Longest step, s. Every process uses exact exponentials or bounded transfers, so five seconds is stable. */
+export const STEP = 5;
+function step(s: BodyState, seconds: number) {
+  const dt = seconds / 60,
     previousG = glucose(s),
     previousO2 = s.saturation;
   s.transport.fluxes = [];
+  s.transport.fluxSeconds = seconds;
   digest(s, dt);
-  syncNutrientTotals(s);
   updateHormones(s, dt);
   circulationAndBreathing(s, dt);
   transportSubstances(s, dt);
@@ -677,7 +671,7 @@ function step(s: BodyState) {
   distributeWaterVolumes(s);
   syncNutrientTotals(s);
   updateBloodMeasurements(s);
-  s.time++;
+  s.time += seconds;
   if (previousG <= 140 && glucose(s) > 140)
     receipt(
       s,
@@ -706,7 +700,11 @@ function step(s: BodyState) {
   }
 }
 
-/** Mutates only the supplied state. All advancing uses fixed one-second steps. */
+/**
+ * Mutates only the supplied state. Steps run on a fixed five-second grid of simulated time, cut
+ * short at queued events and at the end of the advance, so events apply at their exact second and
+ * any split of an advance into multiples of five seconds gives the same result.
+ */
 export function advance(s: BodyState, seconds: number) {
   if (!Number.isInteger(seconds) || seconds < 0 || seconds > 86400)
     throw new Error("Advance by an integer number of seconds between 0 and 86400.");
@@ -721,7 +719,8 @@ export function advance(s: BodyState, seconds: number) {
   };
   due();
   while (s.time < target) {
-    step(s);
+    const next = Math.min(target, (Math.floor(s.time / STEP) + 1) * STEP, s.queue[0]?.at ?? Infinity);
+    step(s, next - s.time);
     due();
   }
   return s;

@@ -102,7 +102,7 @@ export type TransportFlux = {
   to: string;
   substance: Substance;
   amount: number;
-  mechanism: "advection" | "exchange" | "reaction" | "absorption" | "clearance";
+  mechanism: "exchange" | "reaction" | "absorption" | "clearance";
 };
 export type MetabolicRate = {
   glucose: number;
@@ -113,7 +113,11 @@ export type MetabolicRate = {
 };
 export type TransportState = {
   compartments: Record<string, Compartment>;
+  /** Transfers during the latest step, which covered `fluxSeconds` of simulated time. */
   fluxes: TransportFlux[];
+  fluxSeconds: number;
+  /** Food absorbed this step, entered into blood across the step's transport substeps. `lumen` is the gut's amount before. */
+  absorbing: { to: string; species: Nutrient; amount: number; lumen: number }[];
   cumulativeFluxes: TransportFlux[];
   mark: MealMark;
   metabolism: Record<string, MetabolicRate>;
@@ -150,14 +154,15 @@ export type BodyState = {
   params: PersonalBaseline;
   /** Each hormone in arterial blood, against its resting level (1). */
   hormones: Record<Hormone, number>;
-  /** Each hormone in every blood compartment, same scale: a gland's vein runs higher than the arteries. */
-  hormoneBlood: Record<Hormone, Record<string, number>>;
   /** How fast each gland is releasing its hormone, against its resting rate (1). */
   secretion: Record<Hormone, number>;
   /** Each gland's resting release, in the units of `hormoneAmount`, per minute. */
   hormoneRate: Record<Hormone, number>;
-  /** Hormone held in each blood compartment (concentration × volume). */
-  hormoneAmount: Record<Hormone, Record<string, number>>;
+  /**
+   * Hormone held in each blood compartment, in BLOOD_COMPARTMENTS order (level × volume). `hormoneIn`
+   * reads a compartment's level: a gland's vein runs higher than the arteries.
+   */
+  hormoneAmount: Record<Hormone, number[]>;
   transport: TransportState;
   enzymes: Enzymes;
   digestionRates: { carbs: number; protein: number; fat: number };

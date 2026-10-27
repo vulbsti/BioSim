@@ -42,7 +42,7 @@ export function createBodyLens(rest:BodyState){
  };
  /**
   * Net amount an organ's tissue takes from its blood, per minute (negative: it releases). Read from
-  * the transport step's own blood-to-tissue exchange records, which cover one simulated second.
+  * the transport step's own blood-to-tissue exchange records, which cover the step's simulated seconds.
   */
  const uptake=(s:BodyState,id:Organ,x:Substance)=>{
   // Gases are consumed and produced inside the tissue model, which reports them per minute.
@@ -55,7 +55,7 @@ export function createBodyLens(rest:BodyState){
    if(f.from===`${id}-blood`&&f.to===`${id}-tissue`)net+=f.amount;
    if(f.from===`${id}-tissue`&&f.to===`${id}-blood`)net-=f.amount;
   }
-  return net*60;
+  return net*60/s.transport.fluxSeconds;
  };
  const marked=(s:BodyState,id:string)=>{const c=s.transport.compartments[id];return c?s.transport.mark.pools[id].glucose/c.volume:0;};
  const meal=(s:BodyState,id:string)=>marked(s,id)/amount(rest,'arterial','glucose');

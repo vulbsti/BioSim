@@ -1,4 +1,5 @@
 import {HORMONES,type BodyState,type Hormone,type Organ} from '../simulation/types';
+import {hormoneIn} from '../simulation/endocrine';
 import type {BloodLevels} from './body-lens';
 import type {Bed} from './vessel-flow';
 
@@ -57,10 +58,10 @@ export const dotShare=(level:number,atRest:number)=>Math.min(.7,atRest*Math.max(
 const PERIPHERAL:Organ[]=['muscle','skin','adipose','endocrine'];
 /** A hormone's level in the blood each vessel circuit and bed carries, on the scale of resting arterial blood. */
 export function hormoneLevels(s:BodyState,h:Hormone):BloodLevels{
- const blood=s.hormoneBlood[h],flow=(id:Organ)=>s.flows.find(f=>f.id===id)?.flow??0,total=PERIPHERAL.reduce((a,id)=>a+flow(id),0);
- const peripheral=total>0?PERIPHERAL.reduce((a,id)=>a+flow(id)*blood[`${id}-blood`],0)/total:blood['muscle-blood'];
- const bed:Record<Bed,number>={heart:blood['heart-blood'],brain:blood['brain-blood'],kidneys:blood['kidneys-blood'],gut:blood['gut-blood'],liver:blood['liver-blood'],hepatic:blood['liver-blood'],peripheral,lungs:blood['lungs-blood']};
- return {arterial:blood.arterial,venous:blood.venous,lungs:blood['lungs-blood'],portal:blood.portal,gut:blood['gut-blood'],bed};
+ const blood=(id:string)=>hormoneIn(s,h,id),flow=(id:Organ)=>s.flows.find(f=>f.id===id)?.flow??0,total=PERIPHERAL.reduce((a,id)=>a+flow(id),0);
+ const peripheral=total>0?PERIPHERAL.reduce((a,id)=>a+flow(id)*blood(`${id}-blood`),0)/total:blood('muscle-blood');
+ const bed:Record<Bed,number>={heart:blood('heart-blood'),brain:blood('brain-blood'),kidneys:blood('kidneys-blood'),gut:blood('gut-blood'),liver:blood('liver-blood'),hepatic:blood('liver-blood'),peripheral,lungs:blood('lungs-blood')};
+ return {arterial:blood('arterial'),venous:blood('venous'),lungs:blood('lungs-blood'),portal:blood('portal'),gut:blood('gut-blood'),bed};
 }
 
 /**

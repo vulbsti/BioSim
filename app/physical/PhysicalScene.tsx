@@ -12,7 +12,7 @@ import {createTracerRoute,type TracerRoute} from './flow-routes';
 import {createBodyLens,fates,lenses,nutrientNames,tint,tintColor,type Lens} from './body-lens';
 import {buildMealRoute,routeAmounts,type MealRoute,type RouteStation} from './meal-route';
 import {GLAND_OF,GLANDS,HORMONE_COLOUR,TARGET_LIT,TARGETS,dotHormone,dotRandom,dotShares,glandDrive,hormoneLevels,levelText,mostActive,targetDrive,type Gland,type Site} from './hormone-lens';
-import {hormoneInfo} from '../simulation/endocrine';
+import {hormoneIn,hormoneInfo} from '../simulation/endocrine';
 import {createBody} from '../simulation/engine';
 import {bedFlows,createVesselFlow,type Bed,type VesselFlow,type VesselGraph} from './vessel-flow';
 import {decodeModelResponse} from '../model-download';
@@ -347,7 +347,7 @@ export default function PhysicalScene({atlas,body,motion,lens,view,onSelect,onPr
       for(const row of hormoneRows){const id=row.dataset.hormone as Hormone|'';row.setAttribute('aria-pressed',String((id||null)===chosenHormone));if(id){row.querySelector('em')!.textContent=levelText(current.hormones[id]);row.dataset.active=String(glandDrive(current,id)>.15);}}
       hormoneDoes.textContent=chosenHormone?hormoneInfo[chosenHormone].does:'Glands pulse while they release more than at rest, and the organs a hormone reaches light up. Pick one to follow it.';
       el.dataset.hormoneChosen=chosenHormone??'';el.dataset.hormoneTop=mostActive(current)[0];
-      for(const h of HORMONES)el.dataset['portal'+h[0].toUpperCase()+h.slice(1)]=current.hormoneBlood[h].portal.toFixed(3);
+      for(const h of HORMONES)el.dataset['portal'+h[0].toUpperCase()+h.slice(1)]=hormoneIn(current,h,'portal').toFixed(3);
      }
     }
     // Glands pulse with their hormone's colour, harder the more they release; at rest they keep a faint tint so they can be found.

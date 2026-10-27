@@ -1,4 +1,5 @@
 import {concentration} from '../../simulation/transport';
+import {hormoneIn} from '../../simulation/endocrine';
 import {HORMONES,type BodyState} from '../../simulation/types';
 import type {Circuit} from '../vessel-flow';
 import type {SpeciesId} from '../molecules';
@@ -50,7 +51,7 @@ export function composition(s:BodyState,rest:BodyState,blood:Blood):Amount[]{
  solute('oxygen',.00003*oxygenPressure(concentration(here,'oxygen'))*1000/22400,'simulated');
  solute('carbonDioxide',ref('carbonDioxide').molarPerMmHg!*s.paCO2*concentration(here,'carbonDioxide')/concentration(s.transport.compartments.arterial,'carbonDioxide'),'simulated');
  // Hormones are levels in this blood against resting arterial blood (1): the portal vein carries more insulin.
- for(const id of HORMONES)scaled(id,Math.max(0,s.hormoneBlood[id][blood]),'level');
+ for(const id of HORMONES)scaled(id,Math.max(0,hormoneIn(s,id,blood)),'level');
  // Sodium is one extracellular pool in millimoles.
  solute('sodium',s.sodium/(s.plasma+s.interstitial),'simulated');
  for(const id of ['calcium','potassium','chloride','bicarbonate','albumin','igg','fibrinogen'] as const)scaled(id,1,'reference');
