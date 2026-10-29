@@ -1,83 +1,91 @@
-import {HORMONES,type BodyState,type Hormone} from '../simulation/types';
-import {hormoneInfo} from '../simulation/endocrine';
+import {HORMONES,type BodyState,type Hormone,type Organ} from '../simulation/types';
+import {hormoneIn} from '../simulation/endocrine';
+import type {BloodLevels} from './body-lens';
+import type {Bed} from './vessel-flow';
 
 /**
- * Hormones on the body. The model keeps one body-wide activity per hormone, as a multiple of its
- * baseline, so this view shows where each hormone comes from and acts, not where it is.
+ * Hormones on the body. The model carries each hormone in every blood compartment, released into
+ * its gland's own vein and cleared as it circulates. The view shows three things:
+ * the gland pulses while it releases more than at rest, coloured dots ride the blood at a density
+ * that follows the hormone's level in that vessel, and the organs it acts on light up as it rises.
  *
- * Thirty-one hormones cannot each have a colour a reader can tell apart, so colour carries the
- * family (eight hues, checked for colour-vision deficiency against the stage background) and the
- * name is always written beside it.
+ * Nine hormones each get their own colour; the name is always written beside it.
  */
-export const HORMONE_FAMILIES=[
- {id:'fluid',name:'Fluid and pressure',colour:'#3987e5',hormones:['adh','renin','angiotensin','aldosterone','anp']},
- {id:'stress',name:'Stress',colour:'#d95926',hormones:['epinephrine','norepinephrine','crh','acth','cortisol']},
- {id:'gut',name:'Gut',colour:'#199e70',hormones:['gastrin','secretin','cck','glp1','ghrelin']},
- {id:'glucose',name:'Glucose',colour:'#c98500',hormones:['insulin','glucagon']},
- {id:'reproductive',name:'Reproductive',colour:'#d55181',hormones:['gnrh','lh','fsh','testosterone','inhibin']},
- {id:'growth',name:'Growth, sleep and stores',colour:'#008300',hormones:['gh','igf1','leptin','melatonin']},
- {id:'thyroid',name:'Thyroid',colour:'#9085e9',hormones:['trh','tsh','thyroid']},
- {id:'calcium',name:'Calcium',colour:'#e66767',hormones:['pth','calcitriol']},
-] as const satisfies readonly {id:string;name:string;colour:string;hormones:readonly Hormone[]}[];
-export const familyOf=Object.fromEntries(HORMONE_FAMILIES.flatMap((f,i)=>f.hormones.map(h=>[h,i]))) as Record<Hormone,number>;
-
-/** Structures of the atlas a hormone is released from or acts on, matched by part name. */
-export const HORMONE_SITES={
- hypothalamus:{name:'Hypothalamus',match:/^(hypothalamus|tuber cinereum)$/i},
- pituitary:{name:'Pituitary',match:/^pituitary gland$/i},
- pineal:{name:'Pineal',match:/^pineal body$/i},
- thyroid:{name:'Thyroid',match:/(lobe|isthmus) of thyroid gland$/i},
- parathyroid:{name:'Parathyroids',match:/parathyroid gland$/i},
- adrenal:{name:'Adrenals',match:/^(left|right) adrenal gland$/i},
- pancreas:{name:'Pancreas',match:/^(pancreas|parenchyma of pancreas)$/i},
- kidney:{name:'Kidneys',match:/^(left|right) kidney$/i},
- stomach:{name:'Stomach',match:/^stomach$/i},
- intestine:{name:'Small intestine',match:/^(duodenum|.* part of (jejunum|ileum))$/i},
- liver:{name:'Liver',match:/^(liver|.* lobe of liver)$/i},
- atria:{name:'Atria',match:/^wall of (left|right) atrium$/i},
- heart:{name:'Ventricles',match:/^wall of ventricle$/i},
- testes:{name:'Testes',match:/^(left|right) testis$/i},
-} as const;
-export type HormoneSite=keyof typeof HORMONE_SITES;
-/**
- * Where each hormone is released, and the listed structures it acts on, following the model's own
- * source and target descriptions. Fat, muscle, bone, vessels and nerves have no single structure
- * here, so hormones from or for them show only what the atlas can point at.
- */
-export const HORMONE_ROUTES:Record<Hormone,{from:HormoneSite[];to:HormoneSite[]}>={
- insulin:{from:['pancreas'],to:['liver']},glucagon:{from:['pancreas'],to:['liver']},
- epinephrine:{from:['adrenal'],to:['heart','liver']},norepinephrine:{from:['adrenal'],to:['heart']},
- crh:{from:['hypothalamus'],to:['pituitary']},acth:{from:['pituitary'],to:['adrenal']},cortisol:{from:['adrenal'],to:['liver','hypothalamus','pituitary']},
- trh:{from:['hypothalamus'],to:['pituitary']},tsh:{from:['pituitary'],to:['thyroid']},thyroid:{from:['thyroid'],to:[]},
- adh:{from:['hypothalamus','pituitary'],to:['kidney']},renin:{from:['kidney'],to:[]},angiotensin:{from:[],to:['adrenal']},aldosterone:{from:['adrenal'],to:['kidney']},anp:{from:['atria'],to:['kidney']},
- gastrin:{from:['stomach'],to:['stomach']},secretin:{from:['intestine'],to:['pancreas']},cck:{from:['intestine'],to:['pancreas','stomach']},glp1:{from:['intestine'],to:['pancreas','stomach']},ghrelin:{from:['stomach'],to:['hypothalamus']},
- leptin:{from:[],to:['hypothalamus']},melatonin:{from:['pineal'],to:[]},gh:{from:['pituitary'],to:['liver']},igf1:{from:['liver'],to:[]},
- gnrh:{from:['hypothalamus'],to:['pituitary']},lh:{from:['pituitary'],to:['testes']},fsh:{from:['pituitary'],to:['testes']},testosterone:{from:['testes'],to:['hypothalamus','pituitary']},inhibin:{from:['testes'],to:['pituitary']},
- pth:{from:['parathyroid'],to:['kidney']},calcitriol:{from:['kidney'],to:[]},
+export const HORMONE_COLOUR:Record<Hormone,string>={
+ insulin:'#ffc21a',glucagon:'#4b8dff',glp1:'#2fc58a',epinephrine:'#ff5a2b',cortisol:'#ef5fa7',
+ thyroid:'#a58cff',adh:'#2ccbe0',aldosterone:'#d79a52',melatonin:'#e4e1ff',
 };
 
-/** How far a hormone is from its baseline: 0 at baseline, 1 at double or half. Signed. */
+/** Atlas structures that release a hormone, matched by part name. */
+export const GLANDS={
+ pancreas:{name:'Pancreas',match:/^(pancreas|parenchyma of pancreas)$/i},
+ intestine:{name:'Small intestine',match:/^(duodenum|.* part of (jejunum|ileum))$/i},
+ adrenal:{name:'Adrenal glands',match:/^(left|right) adrenal gland$/i},
+ thyroid:{name:'Thyroid',match:/(lobe|isthmus) of thyroid gland$/i},
+ pituitary:{name:'Pituitary',match:/^pituitary gland$/i},
+ pineal:{name:'Pineal',match:/^pineal body$/i},
+} as const;
+export type Gland=keyof typeof GLANDS;
+export const GLAND_OF:Record<Hormone,Gland>={
+ insulin:'pancreas',glucagon:'pancreas',glp1:'intestine',epinephrine:'adrenal',cortisol:'adrenal',
+ thyroid:'thyroid',adh:'pituitary',aldosterone:'adrenal',melatonin:'pineal',
+};
+/** What each hormone acts on: body organs, or a gland (GLP-1 acts on the pancreas). */
+export type Site=Organ|Gland;
+export const TARGETS:Record<Hormone,Site[]>={
+ insulin:['muscle','liver'],glucagon:['liver'],glp1:['pancreas'],epinephrine:['heart','liver','muscle'],
+ cortisol:['liver'],thyroid:['heart','muscle'],adh:['kidneys'],aldosterone:['kidneys'],melatonin:['brain'],
+};
+
+/** How far a level is from rest: 0 at rest, 1 at double or more, -1 at half or less. */
 export const departure=(level:number)=>level>0?Math.max(-1,Math.min(1,Math.log2(level))):-1;
-export type SiteShade={hormone:Hormone;family:number;strength:number;role:'source'|'target'};
+/** How hard a gland is releasing above rest, 0 to 1: full at four times its resting release. */
+export const glandDrive=(s:BodyState,h:Hormone)=>Math.max(0,Math.min(1,Math.log2(Math.max(1e-9,s.secretion[h]))/2));
+/** How strongly an organ is being acted on, 0 to 1: the hormone's arterial rise, as the model's effects use it. */
+export const targetDrive=(s:BodyState,h:Hormone)=>Math.max(0,departure(s.hormones[h]));
+/** An organ lights once a hormone acting on it is this far above rest (0.3: about a quarter higher). Smaller drifts, such as ADH creeping up in an hour without a drink, stay unlit. */
+export const TARGET_LIT=.3;
+
 /**
- * What each structure shows. With no hormone chosen, a structure shows the hormone it releases
- * that is furthest from baseline. With one chosen, its sources show it at full strength and its
- * targets at part strength, and everything else is left plain.
+ * Share of blood dots drawn as a hormone at resting arterial level: small with all nine shown, so
+ * the body at rest is mostly plain blood; larger when one is followed. Real molecules are far too
+ * few to see at any zoom.
  */
-export function hormoneShades(s:BodyState,chosen:Hormone|null):Partial<Record<HormoneSite,SiteShade>>{
- const shades:Partial<Record<HormoneSite,SiteShade>>={};
- if(chosen){
-  const route=HORMONE_ROUTES[chosen],strength=Math.max(.35,Math.abs(departure(s.hormones[chosen])));
-  for(const site of route.to)shades[site]={hormone:chosen,family:familyOf[chosen],strength:strength*.7,role:'target'};
-  for(const site of route.from)shades[site]={hormone:chosen,family:familyOf[chosen],strength,role:'source'};
-  return shades;
- }
- for(const hormone of HORMONES)for(const site of HORMONE_ROUTES[hormone].from){
-  const strength=Math.abs(departure(s.hormones[hormone]));
-  if(!shades[site]||strength>shades[site]!.strength)shades[site]={hormone,family:familyOf[hormone],strength,role:'source'};
- }
- return shades;
+export const DOTS_AT_REST={all:.006,one:.03};
+/** Share of dots for a hormone at `level` against resting arterial blood, before the shares are fitted into one. */
+export const dotShare=(level:number,atRest:number)=>Math.min(.7,atRest*Math.max(0,level));
+
+const PERIPHERAL:Organ[]=['muscle','skin','adipose','endocrine'];
+/** A hormone's level in the blood each vessel circuit and bed carries, on the scale of resting arterial blood. */
+export function hormoneLevels(s:BodyState,h:Hormone):BloodLevels{
+ const blood=(id:string)=>hormoneIn(s,h,id),flow=(id:Organ)=>s.flows.find(f=>f.id===id)?.flow??0,total=PERIPHERAL.reduce((a,id)=>a+flow(id),0);
+ const peripheral=total>0?PERIPHERAL.reduce((a,id)=>a+flow(id)*blood(`${id}-blood`),0)/total:blood('muscle-blood');
+ const bed:Record<Bed,number>={heart:blood('heart-blood'),brain:blood('brain-blood'),kidneys:blood('kidneys-blood'),gut:blood('gut-blood'),liver:blood('liver-blood'),hepatic:blood('liver-blood'),peripheral,lungs:blood('lungs-blood')};
+ return {arterial:blood('arterial'),venous:blood('venous'),lungs:blood('lungs-blood'),portal:blood('portal'),gut:blood('gut-blood'),bed};
 }
-/** Hormones ordered by how far each is from baseline, furthest first. */
-export const mostChanged=(s:BodyState)=>[...HORMONES].sort((a,b)=>Math.abs(departure(s.hormones[b]))-Math.abs(departure(s.hormones[a])));
-export const hormoneLabel=(s:BodyState,h:Hormone)=>`${hormoneInfo[h].name} ${s.hormones[h].toFixed(2)}×`;
+
+/**
+ * Running shares of blood dots per vessel segment: for segment k, entries [k*n, k*n+n) climb
+ * through the `n` shown hormones' shares, given each hormone's level per segment. When the shares
+ * add up past 0.85 they are scaled down together, so some plain blood always shows.
+ */
+export function dotShares(levels:readonly ArrayLike<number>[],segments:number){
+ const n=levels.length,out=new Float32Array(segments*n),atRest=n===1?DOTS_AT_REST.one:DOTS_AT_REST.all;
+ for(let k=0;k<segments;k++){
+  let total=0;for(let i=0;i<n;i++)total+=dotShare(levels[i][k],atRest);
+  const scale=total>.85?.85/total:1;let at=0;
+  for(let i=0;i<n;i++){at+=dotShare(levels[i][k],atRest)*scale;out[k*n+i]=at;}
+ }
+ return out;
+}
+/** Which of the `n` shown hormones a dot with fixed random number `u` shows in segment k, or -1 for plain blood. */
+export function dotHormone(u:number,shares:Float32Array,k:number,n:number){
+ for(let i=0;i<n;i++)if(u<shares[k*n+i])return i;
+ return -1;
+}
+/** A fixed random number in [0, 1) for a dot, from its running number and its vessel. */
+export const dotRandom=(number:number,segment:number)=>{const x=Math.sin(number*12.9898+segment*78.233)*43758.5453;return x-Math.floor(x);};
+
+/** Hormones ordered by how far each gland is from its resting release, furthest first. */
+export const mostActive=(s:BodyState)=>[...HORMONES].sort((a,b)=>Math.abs(Math.log2(s.secretion[b]))-Math.abs(Math.log2(s.secretion[a])));
+export const levelText=(level:number)=>level>=.95&&level<=1.05?'at rest':`${level.toFixed(level<10?1:0)}× rest`;
