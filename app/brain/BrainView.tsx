@@ -73,7 +73,7 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
     const g=merge([...parts.parts].filter(([,r])=>r===region).map(([id])=>id));if(!g)continue;
     const base=new T.Color(TISSUE[region.lobe]);
     // Living tissue is wet: a thin clear coat over a soft, slightly velvety surface.
-    const material=new T.MeshPhysicalMaterial({color:base.clone(),vertexColors:true,roughness:.5,metalness:0,clearcoat:.45,clearcoatRoughness:.3,sheen:.6,sheenRoughness:.55,sheenColor:new T.Color('#f1c4bb'),envMapIntensity:.55,side:T.DoubleSide,clippingPlanes:noClip});materials.push(material);
+    const material=new T.MeshPhysicalMaterial({color:base.clone(),vertexColors:true,roughness:.5,metalness:0,clearcoat:.45,clearcoatRoughness:.3,envMapIntensity:.55,side:T.DoubleSide,clippingPlanes:noClip});materials.push(material);
     if(region.lobe!=='fluid'&&region.lobe!=='pathway')addTissueDetail(material,{vessels:region.lobe==='wiring'||region.lobe==='brainstem'?.3:1});
     // The fluid spaces and the deep wiring sit inside; draw them so they read through when the outer areas fade.
     const mesh=new T.Mesh(g,material);mesh.renderOrder=region.lobe==='fluid'?2:1;scene.add(mesh);regionMeshes.push({mesh,region,material,base});
@@ -94,6 +94,9 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
    // The head is a faint shell: enough to show the brain sits in its true place, never enough to hide it.
    for(const [g,colour,opacity] of [[skull,0xe5d8b9,.13],[skin,0xd9ab90,.07]] as const)if(g){const m=new T.MeshStandardMaterial({color:colour,roughness:.8,transparent:true,opacity,depthWrite:false,side:T.FrontSide,clippingPlanes:[new T.Plane(new T.Vector3(0,1,0),-1.43)]});materials.push(m);const mesh=new T.Mesh(g,m);mesh.renderOrder=4;scene.add(mesh);head.push(mesh);}
    for(const g of built.values())if(!geometries.includes(g))g.dispose();
+   // Compile every shader the view can need (opaque and see-through, cut and whole) before showing it, so picking a job never stalls a frame.
+   if(renderer.compileAsync){const all=[...regionMeshes.map(r=>r.material),...(arteries?[arteries.material as T.MeshPhysicalMaterial]:[])];
+    for(const clear of [true,false])for(const planes of [[midline],noClip]){for(const m of all){m.transparent=clear;m.clippingPlanes=planes;m.needsUpdate=true;}await renderer.compileAsync(scene,camera);if(disposed)return;}}
    ready=true;el.dataset.ready='true';el.dataset.regions=String(regionMeshes.length);el.dataset.arteries=String(parts.arteries.length);
   };
   load().catch(e=>{if(!disposed)setError(e instanceof Error?e.message:'Could not load the brain.');});
@@ -121,10 +124,12 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
      // Picked parts keep their tissue look under a coloured wash, so the brain still reads as a brain.
      const colour=role==='all'?r.base:r.base.clone().lerp(role==='helps'?HELPS:CARRIES,role==='helps'?.5:.62);
      r.material.color.copy(role?colour:r.base.clone().lerp(GHOST,.65));
-     r.material.opacity=role==='all'||role==='carries'?1:role==='helps'?.5:inner?.04:.1;r.material.transparent=r.material.opacity<1;r.material.depthWrite=!r.material.transparent;
-     r.material.clippingPlanes=v.cut?[midline]:noClip;r.material.emissive.copy(role==='helps'?HELPS:CARRIES);r.material.emissiveIntensity=role==='carries'?.12:role==='helps'?.05:0;r.material.needsUpdate=true;}
+     const wasClear=r.material.transparent;r.material.opacity=role==='all'||role==='carries'?1:role==='helps'?.5:inner?.04:.1;r.material.transparent=r.material.opacity<1;r.material.depthWrite=!r.material.transparent;
+     r.material.clippingPlanes=v.cut?[midline]:noClip;r.material.emissive.copy(role==='helps'?HELPS:CARRIES);r.material.emissiveIntensity=role==='carries'?.12:role==='helps'?.05:0;
+     // Only a change of transparency needs a different shader; everything else is a uniform. Both variants are compiled at load.
+     if(wasClear!==r.material.transparent)r.material.needsUpdate=true;}
     for(const m of head)m.visible=v.showHead;
-    if(arteries){arteries.visible=v.showVessels;const am=arteries.material as T.MeshPhysicalMaterial;am.transparent=!!v.selected;am.opacity=v.selected?.22:1;am.depthWrite=!v.selected;(arteries.material as T.MeshStandardMaterial).clippingPlanes=v.cut?[midline]:noClip;(arteries.material as T.Material).needsUpdate=true;}
+    if(arteries){arteries.visible=v.showVessels;const am=arteries.material as T.MeshPhysicalMaterial;if(am.transparent!==!!v.selected)am.needsUpdate=true;am.transparent=!!v.selected;am.opacity=v.selected?.22:1;am.depthWrite=!v.selected;am.clippingPlanes=v.cut?[midline]:noClip;}
     el.dataset.selected=v.selected?.job?.id??v.selected?.part?.id??'';el.dataset.lit=String(regionMeshes.filter(r=>r.material.opacity>.3).length);el.dataset.cut=String(v.cut);el.dataset.head=String(v.showHead);
    }
    // The medulla holds the heartbeat centres; it flickers once per beat the body model is beating.
