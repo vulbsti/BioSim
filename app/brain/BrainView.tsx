@@ -9,6 +9,7 @@ import type {BodyState} from '../simulation/types';
 import {createAnatomyIndex} from '../physical/anatomy-view';
 import {decodeModelResponse} from '../model-download';
 import {PointerTap} from '../pointer-tap';
+import {STILL,createFramePacer,createStillLayer} from '../physical/still-layer';
 import {bakeOcclusion,type Surface} from './occlusion';
 import {addTissueDetail} from './tissue-shader';
 import {BRAIN_JOBS,BRAIN_PARTS,LOBES,TISSUE,brainMeshes,jobsOf,partsOf,type BrainJob,type BrainPart} from './regions';
@@ -48,17 +49,27 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
   controls.enableDamping=true;controls.dampingFactor=.1;controls.minDistance=.06;controls.maxDistance=1.4;
   // Soft studio light: a room reflected in the wet surface, a warm key that follows the camera, a cool rim behind.
   const pmrem=new T.PMREMGenerator(renderer),room=new RoomEnvironment(),environment=pmrem.fromScene(room,.04);scene.environment=environment.texture;room.dispose();pmrem.dispose();
-  scene.add(new T.HemisphereLight(0xfff4ee,0x4d3836,.45));
+  const sky=new T.HemisphereLight(0xfff4ee,0x4d3836,.45);scene.add(sky);
   const key=new T.DirectionalLight(0xfff1e6,2.2);camera.add(key);key.position.set(-.5,.8,1);scene.add(camera);
-  const rim=new T.DirectionalLight(0xc6dbe8,1.4);rim.position.set(1,2,-3);scene.add(rim);
+  const rim=new T.DirectionalLight(0xc6dbe8,1.4);rim.position.set(1,2,-3);scene.add(rim);for(const light of [sky,key,rim])light.layers.enableAll();
   // The right half stays; everything left of the midline (atlas +x) is cut away to show the inside.
   const midline=new T.Plane(new T.Vector3(-1,0,0),.0004),noClip:T.Plane[]=[];
   const geometries:T.BufferGeometry[]=[],materials:T.Material[]=[];
   const regionMeshes:{mesh:T.Mesh;region:BrainPart;material:T.MeshPhysicalMaterial;ghost:T.MeshLambertMaterial;base:T.Color}[]=[];
-  let arteries:T.Mesh|null=null,arteryLook:T.Material|null=null,head:T.Mesh[]=[];
+  let arteries:T.Mesh|null=null,arteryLook:T.Material|null=null,head:T.Mesh[]=[],headOverStem:T.Mesh[]=[];
   // See-through layers are drawn with a plain matte material: stacked wet, clear-coated layers are what made a selection slow on integrated GPUs.
   const arteryGhost=new T.MeshLambertMaterial({color:0x8f2629,transparent:true,opacity:.2,depthWrite:false});materials.push(arteryGhost);
-  const center=new T.Vector3(),size=new T.Vector3();
+  const center=new T.Vector3(),size=new T.Vector3(),corner=new T.Vector3(),stemRect=new T.Box2(),stemCorner=new T.Vector2();
+  // Solid parts are drawn once into a still image; only the beating medulla and the see-through parts are drawn each frame,
+  // and nothing is drawn while nothing changes.
+  const still=createStillLayer(renderer),pacer=createFramePacer(30);let dirty=true;
+  controls.addEventListener('change',()=>{dirty=still.stale=true;});
+  // The shell is redrawn only inside the medulla's box on screen, so a beat costs a few thousand pixels, not the whole head.
+  const clipToStem=(cam:T.Camera)=>{
+   const box=regionMeshes.find(r=>r.region.id==='medulla')?.mesh.geometry.boundingBox;if(!box)return;stemRect.makeEmpty();
+   for(let k=0;k<8;k++){corner.set(k&1?box.max.x:box.min.x,k&2?box.max.y:box.min.y,k&4?box.max.z:box.min.z).project(cam);if(corner.z>1)return;stemRect.expandByPoint(stemCorner.set((corner.x+1)/2*el.clientWidth,(corner.y+1)/2*el.clientHeight));}
+   renderer.setScissor(stemRect.min.x-2,stemRect.min.y-2,stemRect.max.x-stemRect.min.x+4,stemRect.max.y-stemRect.min.y+4);renderer.setScissorTest(true);
+  };
   const load=async()=>{
    const wanted=new Set([...parts.parts.keys(),...parts.arteries,...parts.skull,...parts.skin]);
    const byChunk=new Map<number,typeof atlas.parts>();for(const p of atlas.parts)if(wanted.has(p.id)){const list=byChunk.get(p.chunk)??[];list.push(p);byChunk.set(p.chunk,list);}
@@ -70,7 +81,7 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
     if(!disposed)setProgress(Math.round(++done/byChunk.size*100));
    }));
    if(disposed)return;
-   const merge=(ids:string[])=>{const list=ids.map(id=>built.get(id)).filter((g):g is T.BufferGeometry=>!!g);if(!list.length)return null;const g=mergeGeometries(list,false);if(g){g.computeBoundingSphere();geometries.push(g);}return g;};
+   const merge=(ids:string[])=>{const list=ids.map(id=>built.get(id)).filter((g):g is T.BufferGeometry=>!!g);if(!list.length)return null;const g=mergeGeometries(list,false);if(g){g.computeBoundingSphere();g.computeBoundingBox();geometries.push(g);}return g;};
    for(const region of BRAIN_PARTS){
     const g=merge([...parts.parts].filter(([,r])=>r===region).map(([id])=>id));if(!g)continue;
     const base=new T.Color(TISSUE[region.lobe]);
@@ -85,7 +96,14 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
    const a=merge(parts.arteries);if(a){const m=new T.MeshPhysicalMaterial({color:0x8f2629,roughness:.35,clearcoat:.6,clearcoatRoughness:.2,envMapIntensity:.6,clippingPlanes:noClip});materials.push(m);arteries=new T.Mesh(a,m);arteryLook=m;arteries.renderOrder=3;scene.add(arteries);}
    // Shade the grooves: each vertex learns how much open space it faces, from the brain and its arteries.
    const surface=(g:T.BufferGeometry):Surface=>({positions:g.getAttribute('position').array as Float32Array,normals:g.getAttribute('normal').array as ArrayLike<number>,normalScale:g.getAttribute('normal').normalized?1/32767:1,index:g.getIndex()!.array});
-   const occlusion=bakeOcclusion([...regionMeshes.map(r=>surface(r.mesh.geometry)),...(a?[surface(a)]:[])],regionMeshes.map(r=>surface(r.mesh.geometry)));
+   const occluders=[...regionMeshes.map(r=>surface(r.mesh.geometry)),...(a?[surface(a)]:[])],targets=regionMeshes.map((_,i)=>i);
+   const occlusion=await new Promise<Float32Array[]>(resolve=>{
+    // Off the main thread when workers are available; posting copies the buffers, so the meshes keep theirs.
+    try{const w=new Worker(new URL('./occlusion.worker.ts',import.meta.url),{type:'module'});
+     w.onmessage=e=>{w.terminate();resolve(e.data);};w.onerror=()=>{w.terminate();resolve(bakeOcclusion(occluders,targets.map(i=>occluders[i])));};
+     w.postMessage({occluders,targets});}
+    catch{resolve(bakeOcclusion(occluders,targets.map(i=>occluders[i])));}
+   });if(disposed)return;
    regionMeshes.forEach((r,i)=>{const ao=occlusion[i],pos=r.mesh.geometry.getAttribute('position'),colour=new Float32Array(ao.length*3);
     for(let v=0;v<ao.length;v++){
      // A faint mottle, as on a real surface, on top of the occlusion.
@@ -93,9 +111,14 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
      colour[v*3]=shade;colour[v*3+1]=shade*.985;colour[v*3+2]=shade*.985;}
     r.mesh.geometry.setAttribute('color',new T.BufferAttribute(colour,3));});
    el.dataset.occlusion=(occlusion.reduce((n,x)=>n+x.reduce((m,y)=>m+y,0),0)/occlusion.reduce((n,x)=>n+x.length,0)).toFixed(2);
-   const skull=merge(parts.skull),skin=merge(parts.skin);
+   // The shells are cut at the neck (y 1.43); triangles wholly below the cut draw nothing, so they are left out.
+   const above=(g:T.BufferGeometry|null)=>{if(!g?.index)return g;const y=g.getAttribute('position'),from=g.index.array,kept:number[]=[];for(let k=0;k<from.length;k+=3)if(Math.max(y.getY(from[k]),y.getY(from[k+1]),y.getY(from[k+2]))>=1.43)kept.push(from[k],from[k+1],from[k+2]);g.setIndex(kept);return g;};
+   const skull=above(merge(parts.skull)),skin=above(merge(parts.skin));
    // The head is a faint shell: enough to show the brain sits in its true place, never enough to hide it.
-   for(const [g,colour,opacity] of [[skull,0xe5d8b9,.13],[skin,0xd9ab90,.07]] as const)if(g){const m=new T.MeshStandardMaterial({color:colour,roughness:.8,transparent:true,opacity,depthWrite:false,side:T.FrontSide,clippingPlanes:[new T.Plane(new T.Vector3(0,1,0),-1.43)]});materials.push(m);const mesh=new T.Mesh(g,m);mesh.renderOrder=4;scene.add(mesh);head.push(mesh);}
+   for(const [g,colour,opacity] of [[skull,0xe5d8b9,.13],[skin,0xd9ab90,.07]] as const)if(g){const m=new T.MeshStandardMaterial({color:colour,roughness:.8,transparent:true,opacity,depthWrite:false,side:T.FrontSide,clippingPlanes:[new T.Plane(new T.Vector3(0,1,0),-1.43)]});materials.push(m);const mesh=new T.Mesh(g,m);mesh.renderOrder=4;scene.add(mesh);head.push(mesh);
+    // While every area is solid, the shell goes into the still image and is drawn again each frame only over the beating medulla.
+    const over=m.clone();over.stencilWrite=true;over.stencilRef=1;over.stencilFunc=T.EqualStencilFunc;materials.push(over);const again=new T.Mesh(g,over);again.renderOrder=4;again.onBeforeRender=(_r,_s,cam)=>clipToStem(cam);again.onAfterRender=()=>renderer.setScissorTest(false);scene.add(again);headOverStem.push(again);}
+   const stem=regionMeshes.find(r=>r.region.id==='medulla');if(stem)for(const m of [stem.material,stem.ghost])Object.assign(m,{stencilWrite:true,stencilRef:1,stencilFunc:T.AlwaysStencilFunc,stencilZPass:T.ReplaceStencilOp});
    for(const g of built.values())if(!geometries.includes(g))g.dispose();
    // Compile every shader the view can need (opaque and see-through, cut and whole) before showing it, so picking a job never stalls a frame.
    if(renderer.compileAsync){
@@ -107,7 +130,7 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
   };
   load().catch(e=>{if(!disposed)setError(e instanceof Error?e.message:'Could not load the brain.');});
   const fit=(dir:[number,number,number])=>{const d=new T.Vector3(...dir).normalize(),r=Math.max(size.x,size.y,size.z)*.62,dist=r/Math.sin(T.MathUtils.degToRad(camera.fov/2))/Math.min(1,camera.aspect)*1.05;controls.target.copy(center);camera.position.copy(center).addScaledVector(d,dist);controls.update();};
-  const resize=()=>{if(el.clientWidth<1)return;camera.aspect=el.clientWidth/el.clientHeight;camera.updateProjectionMatrix();renderer.setSize(el.clientWidth,el.clientHeight);if(ready)fit(ANGLES.find(a=>a.id===view.current.angle)!.dir);};
+  const resize=()=>{if(el.clientWidth<1)return;camera.aspect=el.clientWidth/el.clientHeight;camera.updateProjectionMatrix();renderer.setSize(el.clientWidth,el.clientHeight);still.resize();dirty=true;if(ready)fit(ANGLES.find(a=>a.id===view.current.angle)!.dir);};
   const observer=new ResizeObserver(resize);observer.observe(el);resize();
   const raycaster=new T.Raycaster(),pointer=new T.Vector2(),tap=new PointerTap();
   const pick=(x:number,y:number):BrainPart|null=>{const rect=renderer.domElement.getBoundingClientRect();pointer.set((x-rect.left)/rect.width*2-1,-(y-rect.top)/rect.height*2+1);raycaster.setFromCamera(pointer,camera);
@@ -121,7 +144,7 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
   const cancel=(e:PointerEvent)=>tap.cancel(e.pointerId);
   renderer.domElement.addEventListener('pointerdown',down);renderer.domElement.addEventListener('pointermove',move);renderer.domElement.addEventListener('pointerup',up);renderer.domElement.addEventListener('pointercancel',cancel);renderer.domElement.addEventListener('pointerleave',leave);
   const tick=(now:number)=>{frame=requestAnimationFrame(tick);if(!ready)return;const v=view.current;
-   if(turned!==v.turn){turned=v.turn;fit(ANGLES.find(a=>a.id===v.angle)!.dir);}
+   if(turned!==v.turn){turned=v.turn;fit(ANGLES.find(a=>a.id===v.angle)!.dir);dirty=still.stale=true;}
    const key=`${v.selected?.job?.id??v.selected?.part?.id}|${v.cut}|${v.showHead}|${v.showVessels}`;
    if(key!==lastKey){lastKey=key;
     for(const r of regionMeshes){
@@ -132,18 +155,23 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
      r.material.color.copy(role==='all'?r.base:r.base.clone().lerp(CARRIES,.62));r.material.emissive.copy(CARRIES);r.material.emissiveIntensity=role==='carries'?.12:0;
      r.ghost.color.copy(role==='helps'?r.base.clone().lerp(HELPS,.7):r.base.clone().lerp(GHOST,.65));r.ghost.opacity=role==='helps'?.55:inner?.04:.1;r.ghost.emissive.copy(HELPS);r.ghost.emissiveIntensity=role==='helps'?.22:0;
      r.material.clippingPlanes=r.ghost.clippingPlanes=v.cut?[midline]:noClip;}
-    for(const m of head)m.visible=v.showHead;
-    if(arteries&&arteryLook){arteries.visible=v.showVessels;arteries.material=v.selected?arteryGhost:arteryLook;arteryLook.clippingPlanes=arteryGhost.clippingPlanes=v.cut?[midline]:noClip;}
+    if(arteries&&arteryLook){arteries.visible=v.showVessels;arteries.material=v.selected?arteryGhost:arteryLook;arteryLook.clippingPlanes=arteryGhost.clippingPlanes=v.cut?[midline]:noClip;arteries.layers.set(arteries.material===arteryLook?STILL:0);}
+    // Solid parts go into the still image; the medulla and anything see-through are drawn each frame.
+    for(const r of regionMeshes)r.mesh.layers.set(r.mesh.material===r.material&&r.region.id!=='medulla'?STILL:0);
+    const solid=regionMeshes.every(r=>r.mesh.material===r.material)&&(!arteries?.visible||arteries.material===arteryLook);
+    for(const m of head){m.visible=v.showHead;m.layers.set(solid?STILL:0);}for(const m of headOverStem)m.visible=v.showHead&&solid;
+    dirty=still.stale=true;
     el.dataset.selected=v.selected?.job?.id??v.selected?.part?.id??'';el.dataset.lit=String(regionMeshes.filter(r=>r.mesh.material===r.material||r.ghost.opacity>.3).length);el.dataset.cut=String(v.cut);el.dataset.head=String(v.showHead);
    }
    // The medulla holds the heartbeat centres; it flickers once per beat the body model is beating.
    const stem=regionMeshes.find(r=>r.region.id==='medulla');
+   let beating=false;
    if(stem){const phase=v.motion?(now/1000*v.heartRate/60)%1:.5,beat=v.motion?Math.exp(-phase*7):0,solid=stem.mesh.material===stem.material,role=v.selected?.job?.parts.medulla;
     if(solid){stem.material.emissive.copy(v.selected?CARRIES:stem.base);stem.material.emissiveIntensity=(v.selected?.12:0)+beat*.55;}
-    stem.ghost.emissiveIntensity=!solid&&role==='helps'?.22+beat*.5:0;el.dataset.beat=beat.toFixed(2);}
-   controls.update();renderer.render(scene,camera);};
+    stem.ghost.emissiveIntensity=!solid&&role==='helps'?.22+beat*.5:0;el.dataset.beat=beat.toFixed(2);beating=v.motion&&(solid||role==='helps');}
+   controls.update();const paced=pacer.ready(now);if(!dirty&&(!beating||!paced))return;still.render(scene,camera);pacer.drew(now);dirty=false;};
   frame=requestAnimationFrame(tick);
-  return()=>{disposed=true;cancelAnimationFrame(frame);observer.disconnect();controls.dispose();for(const g of geometries)g.dispose();for(const m of materials)m.dispose();environment.dispose();renderer.dispose();renderer.domElement.remove();};
+  return()=>{disposed=true;cancelAnimationFrame(frame);observer.disconnect();controls.dispose();for(const g of geometries)g.dispose();for(const m of materials)m.dispose();still.dispose();environment.dispose();renderer.dispose();renderer.domElement.remove();};
  },[atlas,parts]);
  const rows=selected?live(selected,body):[];
  const showPart=(part:BrainPart)=>{setSelected({part});setTab('parts');},showJob=(job:BrainJob)=>{setSelected({job});setTab('jobs');};
