@@ -2,20 +2,23 @@ import {useEffect,useMemo,useRef,useState} from 'react';
 import * as T from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import {RoomEnvironment} from 'three/examples/jsm/environments/RoomEnvironment.js';
 import {Brain,ChevronLeft,Scissors,User,Droplet,X} from 'lucide-react';
 import type {Atlas} from '../anatomy';
 import type {BodyState} from '../simulation/types';
 import {createAnatomyIndex} from '../physical/anatomy-view';
 import {decodeModelResponse} from '../model-download';
 import {PointerTap} from '../pointer-tap';
-import {BRAIN_JOBS,BRAIN_PARTS,LOBES,brainMeshes,jobsOf,partsOf,type BrainJob,type BrainPart} from './regions';
+import {bakeOcclusion,type Surface} from './occlusion';
+import {addTissueDetail} from './tissue-shader';
+import {BRAIN_JOBS,BRAIN_PARTS,LOBES,TISSUE,brainMeshes,jobsOf,partsOf,type BrainJob,type BrainPart} from './regions';
 import './brain.css';
 
 type Angle='side'|'front'|'top'|'below';
 const ANGLES:{id:Angle;name:string;dir:[number,number,number]}[]=[{id:'side',name:'Side',dir:[1,.18,.12]},{id:'front',name:'Front',dir:[0,.12,1]},{id:'top',name:'Top',dir:[0,1,.0001]},{id:'below',name:'Below',dir:[.15,-1,.25]}];
 /** Live readouts for the areas the body model already drives. Other areas have nothing measured yet, so they say nothing. */
 type Pick={job:BrainJob;part?:undefined}|{part:BrainPart;job?:undefined}|null;
-const CARRIES=new T.Color('#ffb347'),HELPS=new T.Color('#79c2e6'),GHOST=new T.Color(0x8a959b);
+const CARRIES=new T.Color('#ffb347'),HELPS=new T.Color('#79c2e6'),GHOST=new T.Color(0x9c9390);
 function live(pick:NonNullable<Pick>,s:BodyState):[string,string][] {
  const id=pick.job?.id??pick.part!.id;
  if(id==='vital'||id==='medulla')return [['Heart rate it is setting',`${s.heartRate.toFixed(0)} beats/min`],['Breathing rate',`${s.respiratoryRate.toFixed(0)} breaths/min`]];
@@ -27,7 +30,7 @@ const Chip=({color,label,onClick}:{color:string;label:string;onClick:()=>void})=
 /** The brain on its own: the atlas's own brain meshes, in their place inside the head. Parts keep their anatomical names; a job lights every part that carries or helps it. */
 export default function BrainView({atlas,body,motion,focus,onClose}:Props){
  const host=useRef<HTMLDivElement>(null),hover=useRef<HTMLDivElement>(null);
- const [selected,setSelected]=useState<Pick>(()=>{const part=BRAIN_PARTS.find(r=>r.id===focus);return part?{part}:null;}),[tab,setTab]=useState<'jobs'|'parts'>(()=>focus?'parts':'jobs'),[showHead,setShowHead]=useState(true),[showVessels,setShowVessels]=useState(false),[cut,setCut]=useState(false),[angle,setAngle]=useState<Angle>('side'),[listOpen,setListOpen]=useState(()=>window.innerWidth>700),[progress,setProgress]=useState(0),[error,setError]=useState('');
+ const [selected,setSelected]=useState<Pick>(()=>{const part=BRAIN_PARTS.find(r=>r.id===focus);return part?{part}:null;}),[tab,setTab]=useState<'jobs'|'parts'>(()=>focus?'parts':'jobs'),[showHead,setShowHead]=useState(true),[showVessels,setShowVessels]=useState(true),[cut,setCut]=useState(false),[angle,setAngle]=useState<Angle>('side'),[listOpen,setListOpen]=useState(()=>window.innerWidth>700),[progress,setProgress]=useState(0),[error,setError]=useState('');
  const view=useRef({selected,showHead,showVessels,cut,angle,motion,heartRate:body.heartRate,turn:0});
  const parts=useMemo(()=>brainMeshes(atlas,createAnatomyIndex(atlas)),[atlas]);
  useEffect(()=>{view.current={...view.current,selected,showHead,showVessels,cut,motion,heartRate:body.heartRate};},[selected,showHead,showVessels,cut,motion,body.heartRate]);
@@ -38,18 +41,20 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
   const el=host.current!;let disposed=false,frame=0,ready=false,turned=-1,lastKey='';
   let renderer:T.WebGLRenderer;
   try{renderer=new T.WebGLRenderer({antialias:true,alpha:true});}catch{setError('3D rendering is unavailable. Enable WebGL to see the brain.');return;}
-  renderer.setClearColor(0,0);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.localClippingEnabled=true;
+  renderer.setClearColor(0,0);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;renderer.localClippingEnabled=true;
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));el.appendChild(renderer.domElement);
-  renderer.domElement.setAttribute('role','img');renderer.domElement.setAttribute('aria-label','3D brain coloured by what each area does. Drag to turn, scroll to zoom, click an area.');
+  renderer.domElement.setAttribute('role','img');renderer.domElement.setAttribute('aria-label','3D brain. Drag to turn, scroll to zoom, click a part.');
   const scene=new T.Scene(),camera=new T.PerspectiveCamera(30,1,.005,10),controls=new OrbitControls(camera,renderer.domElement);
   controls.enableDamping=true;controls.dampingFactor=.1;controls.minDistance=.06;controls.maxDistance=1.4;
-  scene.add(new T.HemisphereLight(0xf2f5ff,0x4a3a3a,1.25));
-  const key=new T.DirectionalLight(0xfff0e0,2.4);camera.add(key);key.position.set(-.4,.6,1);scene.add(camera);
-  const rim=new T.DirectionalLight(0xbcd6e6,1.1);rim.position.set(1,2,-3);scene.add(rim);
+  // Soft studio light: a room reflected in the wet surface, a warm key that follows the camera, a cool rim behind.
+  const pmrem=new T.PMREMGenerator(renderer),room=new RoomEnvironment(),environment=pmrem.fromScene(room,.04);scene.environment=environment.texture;room.dispose();pmrem.dispose();
+  scene.add(new T.HemisphereLight(0xfff4ee,0x4d3836,.45));
+  const key=new T.DirectionalLight(0xfff1e6,2.2);camera.add(key);key.position.set(-.5,.8,1);scene.add(camera);
+  const rim=new T.DirectionalLight(0xc6dbe8,1.4);rim.position.set(1,2,-3);scene.add(rim);
   // The right half stays; everything left of the midline (atlas +x) is cut away to show the inside.
   const midline=new T.Plane(new T.Vector3(-1,0,0),.0004),noClip:T.Plane[]=[];
   const geometries:T.BufferGeometry[]=[],materials:T.Material[]=[];
-  const regionMeshes:{mesh:T.Mesh;region:BrainPart;material:T.MeshStandardMaterial;base:T.Color}[]=[];
+  const regionMeshes:{mesh:T.Mesh;region:BrainPart;material:T.MeshPhysicalMaterial;base:T.Color}[]=[];
   let arteries:T.Mesh|null=null,head:T.Mesh[]=[];
   const center=new T.Vector3(),size=new T.Vector3();
   const load=async()=>{
@@ -66,13 +71,25 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
    const merge=(ids:string[])=>{const list=ids.map(id=>built.get(id)).filter((g):g is T.BufferGeometry=>!!g);if(!list.length)return null;const g=mergeGeometries(list,false);if(g){g.computeBoundingSphere();geometries.push(g);}return g;};
    for(const region of BRAIN_PARTS){
     const g=merge([...parts.parts].filter(([,r])=>r===region).map(([id])=>id));if(!g)continue;
-    const base=new T.Color(region.color);
-    const material=new T.MeshStandardMaterial({color:base.clone(),roughness:.62,metalness:0,side:T.DoubleSide,clippingPlanes:noClip});materials.push(material);
+    const base=new T.Color(TISSUE[region.lobe]);
+    // Living tissue is wet: a thin clear coat over a soft, slightly velvety surface.
+    const material=new T.MeshPhysicalMaterial({color:base.clone(),vertexColors:true,roughness:.5,metalness:0,clearcoat:.45,clearcoatRoughness:.3,sheen:.6,sheenRoughness:.55,sheenColor:new T.Color('#f1c4bb'),envMapIntensity:.55,side:T.DoubleSide,clippingPlanes:noClip});materials.push(material);
+    if(region.lobe!=='fluid'&&region.lobe!=='pathway')addTissueDetail(material,{vessels:region.lobe==='wiring'||region.lobe==='brainstem'?.3:1});
     // The fluid spaces and the deep wiring sit inside; draw them so they read through when the outer areas fade.
     const mesh=new T.Mesh(g,material);mesh.renderOrder=region.lobe==='fluid'?2:1;scene.add(mesh);regionMeshes.push({mesh,region,material,base});
    }
    const all=new T.Box3();for(const r of regionMeshes)all.union(new T.Box3().setFromBufferAttribute(r.mesh.geometry.getAttribute('position') as T.BufferAttribute));all.getCenter(center);all.getSize(size);
-   const a=merge(parts.arteries);if(a){const m=new T.MeshStandardMaterial({color:0xc23b3f,roughness:.45,clippingPlanes:noClip});materials.push(m);arteries=new T.Mesh(a,m);arteries.renderOrder=3;scene.add(arteries);}
+   const a=merge(parts.arteries);if(a){const m=new T.MeshPhysicalMaterial({color:0x8f2629,roughness:.35,clearcoat:.6,clearcoatRoughness:.2,envMapIntensity:.6,clippingPlanes:noClip});materials.push(m);arteries=new T.Mesh(a,m);arteries.renderOrder=3;scene.add(arteries);}
+   // Shade the grooves: each vertex learns how much open space it faces, from the brain and its arteries.
+   const surface=(g:T.BufferGeometry):Surface=>({positions:g.getAttribute('position').array as Float32Array,normals:g.getAttribute('normal').array as ArrayLike<number>,normalScale:g.getAttribute('normal').normalized?1/32767:1,index:g.getIndex()!.array});
+   const occlusion=bakeOcclusion([...regionMeshes.map(r=>surface(r.mesh.geometry)),...(a?[surface(a)]:[])],regionMeshes.map(r=>surface(r.mesh.geometry)));
+   regionMeshes.forEach((r,i)=>{const ao=occlusion[i],pos=r.mesh.geometry.getAttribute('position'),colour=new Float32Array(ao.length*3);
+    for(let v=0;v<ao.length;v++){
+     // A faint mottle, as on a real surface, on top of the occlusion.
+     const mottle=.96+.04*Math.sin(pos.getX(v)*913)*Math.sin(pos.getY(v)*1171)*Math.sin(pos.getZ(v)*1033),shade=(.2+.8*Math.pow(ao[v],.75))*mottle;
+     colour[v*3]=shade;colour[v*3+1]=shade*.985;colour[v*3+2]=shade*.985;}
+    r.mesh.geometry.setAttribute('color',new T.BufferAttribute(colour,3));});
+   el.dataset.occlusion=(occlusion.reduce((n,x)=>n+x.reduce((m,y)=>m+y,0),0)/occlusion.reduce((n,x)=>n+x.length,0)).toFixed(2);
    const skull=merge(parts.skull),skin=merge(parts.skin);
    // The head is a faint shell: enough to show the brain sits in its true place, never enough to hide it.
    for(const [g,colour,opacity] of [[skull,0xe5d8b9,.13],[skin,0xd9ab90,.07]] as const)if(g){const m=new T.MeshStandardMaterial({color:colour,roughness:.8,transparent:true,opacity,depthWrite:false,side:T.FrontSide,clippingPlanes:[new T.Plane(new T.Vector3(0,1,0),-1.43)]});materials.push(m);const mesh=new T.Mesh(g,m);mesh.renderOrder=4;scene.add(mesh);head.push(mesh);}
@@ -101,12 +118,13 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
     for(const r of regionMeshes){
      // A job lights every part it uses, in two strengths; a part lights only itself. The rest fades to a ghost so deep parts show through.
      const role=v.selected?.job?v.selected.job.parts[r.region.id]:v.selected?.part===r.region?'carries':v.selected?undefined:'all',inner=r.region.lobe==='fluid'||r.region.lobe==='wiring';
-     const colour=role==='all'||v.selected?.part?r.base:role==='carries'?CARRIES:role==='helps'?HELPS:GHOST;
+     // Picked parts keep their tissue look under a coloured wash, so the brain still reads as a brain.
+     const colour=role==='all'?r.base:r.base.clone().lerp(role==='helps'?HELPS:CARRIES,role==='helps'?.5:.62);
      r.material.color.copy(role?colour:r.base.clone().lerp(GHOST,.65));
      r.material.opacity=role==='all'||role==='carries'?1:role==='helps'?.5:inner?.04:.1;r.material.transparent=r.material.opacity<1;r.material.depthWrite=!r.material.transparent;
-     r.material.clippingPlanes=v.cut?[midline]:noClip;r.material.emissive.copy(colour);r.material.emissiveIntensity=role==='carries'?.22:role==='helps'?.08:0;r.material.needsUpdate=true;}
+     r.material.clippingPlanes=v.cut?[midline]:noClip;r.material.emissive.copy(role==='helps'?HELPS:CARRIES);r.material.emissiveIntensity=role==='carries'?.12:role==='helps'?.05:0;r.material.needsUpdate=true;}
     for(const m of head)m.visible=v.showHead;
-    if(arteries){arteries.visible=v.showVessels;(arteries.material as T.MeshStandardMaterial).clippingPlanes=v.cut?[midline]:noClip;(arteries.material as T.Material).needsUpdate=true;}
+    if(arteries){arteries.visible=v.showVessels;const am=arteries.material as T.MeshPhysicalMaterial;am.transparent=!!v.selected;am.opacity=v.selected?.22:1;am.depthWrite=!v.selected;(arteries.material as T.MeshStandardMaterial).clippingPlanes=v.cut?[midline]:noClip;(arteries.material as T.Material).needsUpdate=true;}
     el.dataset.selected=v.selected?.job?.id??v.selected?.part?.id??'';el.dataset.lit=String(regionMeshes.filter(r=>r.material.opacity>.3).length);el.dataset.cut=String(v.cut);el.dataset.head=String(v.showHead);
    }
    // The medulla holds the heartbeat centres; it flickers once per beat the body model is beating.
@@ -114,7 +132,7 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
    if(stem){const phase=v.motion?(now/1000*v.heartRate/60)%1:.5,beat=v.motion?Math.exp(-phase*7):0,lit=stem.material.opacity>.3,rest=lit?(v.selected?.job?.parts.medulla==='carries'?.22:v.selected?.job?.parts.medulla==='helps'?.08:0):0;stem.material.emissiveIntensity=rest+(lit?beat*.55:0);el.dataset.beat=beat.toFixed(2);}
    controls.update();renderer.render(scene,camera);};
   frame=requestAnimationFrame(tick);
-  return()=>{disposed=true;cancelAnimationFrame(frame);observer.disconnect();controls.dispose();for(const g of geometries)g.dispose();for(const m of materials)m.dispose();renderer.dispose();renderer.domElement.remove();};
+  return()=>{disposed=true;cancelAnimationFrame(frame);observer.disconnect();controls.dispose();for(const g of geometries)g.dispose();for(const m of materials)m.dispose();environment.dispose();renderer.dispose();renderer.domElement.remove();};
  },[atlas,parts]);
  const rows=selected?live(selected,body):[];
  const showPart=(part:BrainPart)=>{setSelected({part});setTab('parts');},showJob=(job:BrainJob)=>{setSelected({job});setTab('jobs');};
@@ -126,7 +144,7 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
   {listOpen?<nav className="brain-list" aria-label="Brain jobs and parts">
    <div className="brain-list-head"><div role="tablist" aria-label="List">{(['jobs','parts'] as const).map(t=><button key={t} role="tab" aria-selected={tab===t} onClick={()=>setTab(t)}>{t==='jobs'?'What it does':'Parts'}</button>)}</div><button aria-label="Hide the list" onClick={()=>setListOpen(false)}><X size={14}/></button></div>
    {tab==='jobs'?BRAIN_JOBS.map(j=><button key={j.id} aria-pressed={job===j} onClick={()=>setSelected(s=>s?.job===j?null:{job:j})}>{j.name}</button>)
-    :LOBES.map(l=>{const list=BRAIN_PARTS.filter(p=>p.lobe===l.id);return list.length?<div key={l.id} className="brain-group"><span>{l.name}</span>{list.map(p=><button key={p.id} aria-pressed={part===p} onClick={()=>setSelected(s=>s?.part===p?null:{part:p})}><i style={{background:p.color}}/>{p.name}</button>)}</div>:null;})}
+    :LOBES.map(l=>{const list=BRAIN_PARTS.filter(p=>p.lobe===l.id);return list.length?<div key={l.id} className="brain-group"><span>{l.name}</span>{list.map(p=><button key={p.id} aria-pressed={part===p} onClick={()=>setSelected(s=>s?.part===p?null:{part:p})}>{p.name}</button>)}</div>:null;})}
   </nav>:<button className="brain-list-open" onClick={()=>setListOpen(true)}>Jobs and parts</button>}
   {selected&&<aside className="brain-card" aria-label="Selected brain job or part">
    <div className="organ-card-head"><div><span>{job?'WHAT THE BRAIN DOES':LOBES.find(l=>l.id===part!.lobe)!.name.toUpperCase()}</span><h3>{job?.name??part!.name}</h3></div><button aria-label="Close card" onClick={()=>setSelected(null)}><X size={15}/></button></div>
@@ -134,8 +152,8 @@ export default function BrainView({atlas,body,motion,focus,onClose}:Props){
    {job?.note&&<p className="brain-note">{job.note}</p>}
    {rows.length>0&&<dl className="organ-now">{rows.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>}
    {job&&<>
-    <h4><i style={{background:CARRIES.getStyle()}}/> Mainly done by</h4><div className="brain-chips">{linked.filter(l=>l.role==='carries').map(l=><Chip key={l.part.id} color={l.part.color} label={l.part.name} onClick={()=>showPart(l.part)}/>)}</div>
-    <h4><i style={{background:HELPS.getStyle()}}/> With help from</h4><div className="brain-chips">{linked.filter(l=>l.role==='helps').map(l=><Chip key={l.part.id} color={l.part.color} label={l.part.name} onClick={()=>showPart(l.part)}/>)}</div>
+    <h4><i style={{background:CARRIES.getStyle()}}/> Mainly done by</h4><div className="brain-chips">{linked.filter(l=>l.role==='carries').map(l=><Chip key={l.part.id} color={CARRIES.getStyle()} label={l.part.name} onClick={()=>showPart(l.part)}/>)}</div>
+    <h4><i style={{background:HELPS.getStyle()}}/> With help from</h4><div className="brain-chips">{linked.filter(l=>l.role==='helps').map(l=><Chip key={l.part.id} color={HELPS.getStyle()} label={l.part.name} onClick={()=>showPart(l.part)}/>)}</div>
    </>}
    {part&&(roles.length?<>
     {roles.some(r=>r.role==='carries')&&<><h4>A main player in</h4><div className="brain-chips">{roles.filter(r=>r.role==='carries').map(r=><Chip key={r.job.id} color={CARRIES.getStyle()} label={r.job.name} onClick={()=>showJob(r.job)}/>)}</div></>}
