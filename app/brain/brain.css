@@ -43,3 +43,5 @@
 .sim-app .brain-chip:hover{background:#2a3d46}
 .brain-chip i{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .brain-list-head{position:sticky;top:-10px;background:#14232b;z-index:1}
+/* The body keeps its place underneath but stops drawing while the brain is open. */
+.physical-stage:has(.brain-view) .physical-canvas{display:none}
