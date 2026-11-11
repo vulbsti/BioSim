@@ -10,7 +10,7 @@ export const presets:{id:AnatomyPreset;name:string;description:string}[]=[
  {id:'muscles',name:'Muscles',description:'Superficial and deep muscle geometry · rotate to see attachments'},
  {id:'skeleton',name:'Skeleton',description:'Bones, cartilage and connective structures'},
  {id:'vessels',name:'Vessels',description:'Source arterial and venous geometry · flow on extracted centerlines'},
- {id:'nerves',name:'Nerves',description:'Brain, spinal cord and available peripheral nerves'},
+ {id:'nerves',name:'Nerves',description:'Brain and brainstem · this atlas has no spinal cord or body nerves yet'},
  {id:'surface',name:'Surface',description:'Adult male body surface · source proportions'},
 ];
 export const organNames:Record<Organ,string>={heart:'Heart',brain:'Brain',lungs:'Lungs',liver:'Liver',gut:'Gut',kidneys:'Kidneys',muscle:'Muscle',skin:'Skin',adipose:'Adipose',endocrine:'Endocrine'};

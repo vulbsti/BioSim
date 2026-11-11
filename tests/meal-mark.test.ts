@@ -1,9 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {advance,applyAction,createBody,MODEL_VERSION} from '../app/simulation/engine';
+import {advance,applyAction,createBody} from '../app/simulation/engine';
 import {markedTotal} from '../app/simulation/transport';
-import {parseRecording} from '../app/simulation/recording';
-import {setMultiscaleMeal} from '../app/simulation/multiscale-meal';
 import {NUTRIENTS,type BodyState} from '../app/simulation/types';
 
 const meal={carbs:60,protein:20,fat:15,water:250,sodium:500};
@@ -44,12 +42,3 @@ test('a new meal takes over the mark',()=>{
  assert.ok(s.stomach.carbs>30);assert.equal(s.transport.mark.pools.portal.glucose,0);advance(s,1800);conserved(s);
 });
 
-test('the label follows the refined muscle pathway and survives a saved run',()=>{
- const s=fed(1800,b=>setMultiscaleMeal(b,true,1));conserved(s);assert.ok(label(s,'muscle-cell')>0);
- const saved=JSON.stringify({model:MODEL_VERSION,exportedAt:'',state:s,reference:null,scope:''}),back=parseRecording(saved).state;
- assert.deepEqual(back.transport.mark,s.transport.mark);
- // A run saved before meals were labelled resumes with no meal marked.
- const old=JSON.parse(JSON.stringify({model:MODEL_VERSION,exportedAt:'',state:fed(600),reference:null,scope:''}));delete old.state.transport.mark;
- assert.equal(parseRecording(JSON.stringify(old)).state.transport.mark.at,-1);
- const broken=JSON.parse(saved);broken.state.transport.mark.pools.portal.glucose+=1;assert.throws(()=>parseRecording(JSON.stringify(broken)),/not conserved/);
-});

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createBody } from "./engine";
-import type { BodyState, Sample } from "./types";
+import type { BodyState } from "./types";
 
 export function useSimulation() {
   const worker = useRef<Worker | null>(null);
@@ -8,26 +8,14 @@ export function useSimulation() {
     state: BodyState;
     running: boolean;
     speed: number;
-    reference: Sample[] | null;
     /** Moments of this run that can be shown again, the present time, and the moment shown (null: the present). */
     timeline: { times: number[]; now: number; viewing: number | null };
     error?: string;
-  }>({ state: createBody(), running: false, speed: 120, reference: null, timeline: { times: [0], now: 0, viewing: null } });
+  }>({ state: createBody(), running: false, speed: 120, timeline: { times: [0], now: 0, viewing: null } });
   useEffect(() => {
     const w = new Worker(new URL("./simulation.worker.ts", import.meta.url), { type: "module" });
     worker.current = w;
-    w.onmessage = (e) => {
-      if (e.data.download) {
-        const url = URL.createObjectURL(
-          new Blob([JSON.stringify(e.data.download, null, 2)], { type: "application/json" }),
-        );
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `human-atlas-run-${e.data.download.state.time}s.json`;
-        a.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-      } else setData(e.data);
-    };
+    w.onmessage = (e) => setData(e.data);
     w.onerror = () =>
       setData((d) => ({
         ...d,

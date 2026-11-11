@@ -10,7 +10,7 @@ The Whole body view renders 2,277 individually identifiable meshes, 3,457 named 
 
 The numerical simulation and anatomical animation have separate playback controls. Display cycles use current beats and breaths per real minute; 120× simulated time does not produce a 120× heartbeat animation. A paused numerical state can be previewed in motion and is labelled **State preview**. The Motion button freezes visual phase. Reduced-motion preference disables motion initially. Hardware rendering uses environment-lit materials with a 30 fps cap. Detected software GPUs use diffuse lighting, no environment prefilter, and a 12 fps cap while retaining all source geometry. In both paths, only visible triangle ranges are submitted, and a GPU fence limits the queue to one outstanding frame. Offscreen rendering is suspended. Camera navigation remains usable with motion paused.
 
-Use layer presets, source-name search, exact structure selection, focus, isolation, hidden-part restoration, and sagittal/coronal/axial section controls. Expand opens a keyboard-contained dialog with Escape support. Section planes expose open source surfaces; they do not reconstruct internal cut faces.
+Use layer presets, source-name search, exact structure selection, focus, isolation, hidden-part restoration, and sagittal/coronal/axial section controls. Section planes expose open source surfaces; they do not reconstruct internal cut faces.
 
 ## Seeing the simulation's state on the body
 
@@ -36,7 +36,7 @@ The body model computes far more than motion. It tracks glucose, amino acids, li
 
 At rest the flows are steady, so with *Flow speed* chosen a running simulation still looks the same. What changes at rest is the clock, the bladder and the glycogen label. A meal or exercise changes the colours.
 
-This is a display of a compartment model. Every part of one organ has the same colour because the model has one value for it; it does not say where inside the liver glucose is. The colour scale, the bladder swelling and the label positions are display choices. Hormones are not yet a colour option.
+This is a display of a compartment model. Every part of one organ has the same colour because the model has one value for it; it does not say where inside the liver glucose is. The colour scale, the bladder swelling and the label positions are display choices.
 
 ## Source geometry and assembly
 

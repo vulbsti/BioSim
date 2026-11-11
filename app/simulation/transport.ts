@@ -117,15 +117,6 @@ export function createTransport(): TransportState {
     add(`${b.id}-blood`, `${b.name} blood`, "blood", b.id, b.blood);
     add(`${b.id}-tissue`, `${b.name} interstitium`, "tissue", b.id, b.tissue);
   }
-  // Effective intracellular muscle pool used only by the opt-in P4 replacement.
-  // It starts empty, so enabling the branch cannot create glucose inventory.
-  add("muscle-cell", "Skeletal muscle intracellular glucose", "tissue", "muscle", 18000);
-  for (const key of SUBSTANCES) compartments["muscle-cell"].amounts[key] = 0;
-  // Radial shells of an optional refined muscle patch; empty unless the patch is active.
-  for (let k = 0; k < 4; k++) {
-    add(`muscle-cell-r${k}`, `Refined muscle patch shell ${k + 1} intracellular glucose`, "tissue", "muscle", 18000);
-    for (const key of SUBSTANCES) compartments[`muscle-cell-r${k}`].amounts[key] = 0;
-  }
   add("lymph", "Intestinal lymph lipid transit", "lymph", "gut", 100);
   const total = (key: Substance) =>
     Object.values(compartments).reduce((a, c) => a + c.amounts[key], 0);
