@@ -40,10 +40,11 @@ test('hypoxic air lowers arterial oxygen and recovery follows room air',()=>{
  const s=createBody();applyAction(s,{kind:'environment',values:{oxygen:.15}});advance(s,600);const low=s.saturation;assert.ok(low<94);
  applyAction(s,{kind:'environment',values:{oxygen:.2095}});advance(s,600);assert.ok(s.saturation>low+3);conserved(s);
 });
-test('sensory startle recruits fast catecholamines and delayed cortisol',()=>{
- const s=createBody();applyAction(s,{kind:'environment',values:{sound:.9,pain:.4}});advance(s,120);const epi=s.hormones.epinephrine;
- assert.ok(epi>1.5);assert.ok(s.hormones.cortisol<s.hormones.epinephrine);
- applyAction(s,{kind:'environment',values:{sound:0,pain:0}});advance(s,1200);assert.ok(s.hormones.epinephrine<epi);assert.ok(s.hormones.cortisol>1);conserved(s);
+test('acute stress recruits fast adrenaline and slower cortisol, and both settle when it passes',()=>{
+ const s=createBody();applyAction(s,{kind:'environment',values:{stress:.8}});advance(s,120);const epi=s.hormones.epinephrine,hr=s.heartRate;
+ assert.ok(epi>2,`adrenaline ${epi}`);assert.ok(s.hormones.cortisol<epi);assert.ok(hr>85,`heart rate ${hr}`);
+ advance(s,1800);const cortisol=s.hormones.cortisol;assert.ok(cortisol>1.2,`cortisol ${cortisol}`);
+ applyAction(s,{kind:'environment',values:{stress:0}});advance(s,1200);assert.ok(s.hormones.epinephrine<epi/2);assert.ok(s.heartRate<hr-10);conserved(s);
 });
 test('integer scheduling is deterministic, ordered and applied once at exact boundaries',()=>{
  const a=createBody(),b=createBody();for(const s of [a,b]){schedule(s,60,mixedMeal,'first');schedule(s,60,mixedMeal,'second');}
@@ -68,7 +69,7 @@ test('combined inputs preserve accounting across repeatable randomized experimen
  let seed=42;const random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
  for(let run=0;run<8;run++){
    const s=createBody();for(let t=0;t<24;t++){
-     applyAction(s,{kind:'environment',values:{exercise:random()*.8,oxygen:.15+random()*.08,temperature:15+random()*20,pain:random()*.2,sound:random()*.3}});
+     applyAction(s,{kind:'environment',values:{exercise:random()*.8,oxygen:.15+random()*.08,temperature:15+random()*20,stress:random()*.3,sleep:random()<.2?1:0}});
      if(t%6===0)applyAction(s,{kind:'meal',meal:{carbs:random()*60,protein:random()*25,fat:random()*20,water:random()*400,sodium:random()*500}});
      advance(s,300);conserved(s);
    }

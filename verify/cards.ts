@@ -17,6 +17,8 @@ export type Step =
   | {watch: 'heart' | 'breathing' | 'oxygen' | 'sugar' | 'digestion'}
   /** "Colour by" option, as the user reads it. */
   | {lens: 'Blood flow' | 'Sugar (glucose)' | 'Oxygen' | 'Fat (lipids)' | 'This meal' | 'Hormones' | string}
+  /** In the Hormones lens, follow one hormone (its model id, such as 'insulin'), or 'all'. */
+  | {hormone: string}
   /** "What to show" button. */
   | {show: 'Open body' | 'Organs' | 'Muscles' | 'Skeleton' | 'Vessels' | 'Nerves' | 'Surface' | string}
   | {angle: 'Front' | 'Back' | 'Side' | '¾'}
@@ -138,10 +140,32 @@ export const cards: Card[] = [
   {
     id: 'insulin-particles',
     title: 'Insulin particles stream from the pancreas to the muscles',
-    cause: 'A 75 g carbohydrate meal.',
-    expect: ['The pancreas pulses within 5 minutes of sugar rising.', 'Gold particles leave it into the blood and the muscles light up when they arrive.'],
-    answer: 'The pancreas released insulin that travelled in the blood to the muscles.',
-    shots: [],
-    pending: 'Plan step 2 (hormones as particles). Write the shots when the particles exist.',
+    cause: 'A 75 g carbohydrate meal, following insulin in the Hormones lens.',
+    expect: [
+      'Before the meal a few gold dots ride the blood, more in the portal vein to the liver than elsewhere.',
+      'By 20 minutes the pancreas is gold and gold dots crowd the portal vein; the liver and the muscles are lit gold.',
+      'By 3 hours the dots have thinned and the liver and muscles are plain again.',
+    ],
+    answer: 'The pancreas released insulin that travelled in the blood to the liver and muscles, then it faded.',
+    setup: [{show: 'Organs'}, {region: 'Belly'}, {lens: 'Hormones'}, {hormone: 'insulin'}],
+    shots: [
+      {label: 'Before the meal'},
+      {label: '20 min', after: [{eat: meal75}, {advance: 20}]},
+      {label: '3 hours', after: [{advance: 160}]},
+    ],
+    pairs: [{rest: 'Before the meal', change: '20 min', what: 'Gold insulin dots and gold liver and muscles'}],
+  },
+  {
+    id: 'exercise-adrenaline',
+    title: 'Exercise sends adrenaline from the adrenal glands to the heart',
+    cause: 'Jogging (exercise level 0.6), following adrenaline in the Hormones lens.',
+    expect: ['Within 5 minutes orange dots leave the veins beside the kidneys, where the adrenal glands sit.', 'The heart and liver are lit orange.'],
+    answer: 'Moving made the adrenal glands release adrenaline, which reached the heart and liver.',
+    setup: [{show: 'Organs'}, {region: 'Whole body'}, {lens: 'Hormones'}, {hormone: 'epinephrine'}],
+    shots: [
+      {label: 'At rest'},
+      {label: 'Jogging 5 min', after: [{exercise: 0.6}, {advance: 5}]},
+    ],
+    pairs: [{rest: 'At rest', change: 'Jogging 5 min', what: 'Orange adrenaline dots and a lit heart and liver'}],
   },
 ];

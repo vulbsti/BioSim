@@ -2,46 +2,55 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import type {Atlas} from '../app/anatomy';
-import {departure,familyOf,HORMONE_FAMILIES,HORMONE_ROUTES,HORMONE_SITES,hormoneShades,mostChanged,type HormoneSite} from '../app/physical/hormone-lens';
+import {DOTS_AT_REST,GLAND_OF,GLANDS,HORMONE_COLOUR,TARGET_LIT,TARGETS,departure,dotHormone,dotRandom,dotShares,glandDrive,hormoneLevels,targetDrive} from '../app/physical/hormone-lens';
 import {advance,applyAction,createBody} from '../app/simulation/engine';
 import {HORMONES} from '../app/simulation/types';
 
 const read=(file:string)=>JSON.parse(readFileSync(new URL(`../public/models/${file}`,import.meta.url),'utf8')) as Atlas;
 const parts=['atlas.json','expansion.json'].flatMap(f=>read(f).parts);
+const meal={kind:'meal',meal:{carbs:75,protein:25,fat:20,water:350,sodium:600}} as const;
 
-test('every hormone has one family, eight family colours, and every structure exists in the atlas',()=>{
- assert.deepEqual(HORMONE_FAMILIES.flatMap(f=>[...f.hormones]).sort(),[...HORMONES].sort());assert.equal(HORMONE_FAMILIES.length,8);
- // The eight dark-surface steps of the validated categorical palette, in its fixed order.
- assert.deepEqual(HORMONE_FAMILIES.map(f=>f.colour),['#3987e5','#d95926','#199e70','#c98500','#d55181','#008300','#9085e9','#e66767']);
- for(const h of HORMONES)assert.ok(HORMONE_FAMILIES[familyOf[h]].hormones.includes(h as never));
- for(const [site,{match}] of Object.entries(HORMONE_SITES))assert.ok(parts.some(p=>match.test(p.name)),`no atlas part for ${site}`);
- // No part belongs to two structures, so a part's colour is never ambiguous.
- for(const p of parts)assert.ok(Object.values(HORMONE_SITES).filter(s=>s.match.test(p.name)).length<=1,p.name);
- for(const h of HORMONES)for(const site of [...HORMONE_ROUTES[h].from,...HORMONE_ROUTES[h].to])assert.ok(site in HORMONE_SITES,`${h}: ${site}`);
+test('every hormone has its own colour, a gland in the atlas, and targets the view can show',()=>{
+ assert.equal(new Set(HORMONES.map(h=>HORMONE_COLOUR[h])).size,HORMONES.length);
+ for(const [gland,{match}] of Object.entries(GLANDS))assert.ok(parts.some(p=>match.test(p.name)),`no atlas part for ${gland}`);
+ // No part belongs to two glands, so a part's colour is never ambiguous.
+ for(const p of parts)assert.ok(Object.values(GLANDS).filter(g=>g.match.test(p.name)).length<=1,p.name);
+ for(const h of HORMONES){assert.ok(GLAND_OF[h] in GLANDS);assert.ok(TARGETS[h].length>0,h);}
  assert.deepEqual([departure(1),departure(2),departure(.5),departure(16),departure(0)],[0,1,-1,1,-1]);
 });
 
-test('at rest nothing stands out; a meal lights the gut and pancreas, exercise the adrenals',()=>{
- const rest=hormoneShades(createBody(),null);for(const shade of Object.values(rest))assert.ok(shade.strength<.01);
- const fed=createBody();applyAction(fed,{kind:'meal',meal:{carbs:60,protein:20,fat:15,water:250,sodium:500}});advance(fed,1500);
- const shades=hormoneShades(fed,null);
- assert.equal(shades.pancreas!.hormone,'insulin');assert.ok(shades.pancreas!.strength>.3);assert.equal(HORMONE_FAMILIES[shades.pancreas!.family].id,'glucose');
- assert.ok(['cck','glp1','secretin'].includes(shades.intestine!.hormone)&&shades.intestine!.strength>.3);assert.ok(['gastrin','ghrelin'].includes(shades.stomach!.hormone));
- // A structure that releases several hormones shows the one furthest from baseline, and only sources are shown.
- for(const shade of Object.values(shades))assert.equal(shade.role,'source');
- assert.ok(['insulin','cck','glp1','gastrin','secretin','ghrelin'].includes(mostChanged(fed)[0]),mostChanged(fed)[0]);
- const run=createBody();applyAction(run,{kind:'environment',values:{exercise:.7}});advance(run,600);
- const hard=hormoneShades(run,null);assert.ok(['epinephrine','norepinephrine'].includes(hard.adrenal!.hormone)&&hard.adrenal!.strength>.8&&HORMONE_FAMILIES[hard.adrenal!.family].id==='stress');
+test('rest is quiet: no gland releases above rest and no organ lights in the first daytime hour',()=>{
+ const s=createBody();advance(s,3600);
+ for(const h of HORMONES){assert.ok(glandDrive(s,h)<.15,`${h} gland ${glandDrive(s,h)}`);assert.ok(targetDrive(s,h)<TARGET_LIT,`${h} target ${targetDrive(s,h)}`);}
 });
 
-test('choosing a hormone shows where it is released and where it acts, and nothing else',()=>{
- const fed=createBody();applyAction(fed,{kind:'meal',meal:{carbs:60,protein:20,fat:15,water:250,sodium:500}});advance(fed,1500);
- const insulin=hormoneShades(fed,'insulin');assert.deepEqual(Object.keys(insulin).sort(),['liver','pancreas']);
- assert.equal(insulin.pancreas!.role,'source');assert.equal(insulin.liver!.role,'target');assert.ok(insulin.liver!.strength<insulin.pancreas!.strength);
- // A hormone at baseline is still findable when chosen.
- const acth=hormoneShades(createBody(),'acth');assert.ok(acth.pituitary!.strength>=.35&&acth.adrenal!.role==='target');
- // A structure that is both source and target of the chosen hormone reads as its source.
- assert.equal(hormoneShades(fed,'gastrin').stomach!.role,'source');
- // Hormones with no structure of their own in the atlas still show their targets.
- assert.deepEqual(Object.keys(hormoneShades(fed,'leptin')) as HormoneSite[],['hypothalamus']);
+test('a meal is loud: the pancreas releases insulin, the portal vein carries most of it, and muscle and liver light up',()=>{
+ const rest=createBody(),s=createBody();applyAction(s,meal);advance(s,1800);advance(rest,1800);
+ assert.ok(glandDrive(s,'insulin')>.5,`pancreas ${glandDrive(s,'insulin')}`);assert.ok(glandDrive(s,'glp1')>.5,`gut GLP-1 ${glandDrive(s,'glp1')}`);
+ assert.ok(targetDrive(s,'insulin')>.8,`insulin reaching muscle and liver ${targetDrive(s,'insulin')}`);
+ // Glucagon falls: the liver stops being told to release sugar.
+ assert.ok(s.hormones.glucagon<.6);assert.equal(glandDrive(s,'glucagon'),0);
+ const l=hormoneLevels(s,'insulin'),r=hormoneLevels(rest,'insulin');
+ assert.ok(l.portal>2*l.arterial,`portal ${l.portal} arterial ${l.arterial}`);assert.ok(l.portal>2*r.portal);
+ assert.ok(l.bed.kidneys<l.arterial,'the kidneys clear insulin');
+});
+
+test('exercise and stress drive the adrenals and the heart; water quiets ADH; the pineal works at night',()=>{
+ const run=createBody();applyAction(run,{kind:'environment',values:{exercise:.6}});advance(run,600);
+ assert.ok(glandDrive(run,'epinephrine')>.6);assert.ok(targetDrive(run,'epinephrine')>.8);
+ assert.ok(hormoneLevels(run,'epinephrine').bed.kidneys>hormoneLevels(run,'epinephrine').arterial,'adrenaline leaves through the veins beside the kidneys');
+ const water=createBody();applyAction(water,{kind:'meal',meal:{carbs:0,protein:0,fat:0,water:750,sodium:0}});advance(water,3600);
+ assert.ok(water.hormones.adh<.5);assert.ok(water.urineRate>3);
+ const night=createBody();advance(night,16*3600);applyAction(night,{kind:'environment',values:{sleep:1}});advance(night,3*3600);
+ assert.ok(glandDrive(night,'melatonin')>.8);assert.ok(night.hormones.cortisol<.7,'cortisol is low in the night');
+});
+
+test('dots: a share per hormone that follows its level, fixed per dot, and never all of the blood',()=>{
+ const levels=[new Float32Array([1,400,0]),new Float32Array([1,400,2])],shares=dotShares(levels,3),r=DOTS_AT_REST.all;
+ assert.ok(Math.abs(shares[1]-2*r)<1e-6);assert.ok(shares[3]<=.85+1e-6);assert.equal(shares[4],0);assert.ok(Math.abs(shares[5]-2*r)<1e-6);
+ assert.equal(dotHormone(r/2,shares,0,2),0);assert.equal(dotHormone(r*1.5,shares,0,2),1);assert.equal(dotHormone(.9,shares,1,2),-1);
+ // Followed alone, a hormone gets more dots.
+ assert.ok(Math.abs(dotShares([levels[0]],3)[0]-DOTS_AT_REST.one)<1e-6);
+ assert.equal(dotRandom(7,3),dotRandom(7,3));const u=Array.from({length:2000},(_,i)=>dotRandom(i,5));assert.ok(u.every(x=>x>=0&&x<1));
+ assert.ok(Math.abs(u.reduce((a,b)=>a+b,0)/u.length-.5)<.05);
 });

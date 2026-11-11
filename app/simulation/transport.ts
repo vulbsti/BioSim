@@ -36,6 +36,7 @@ export const MARK_FATES = [
   "stomach",
   "intestinal lumen",
   "hepatic glycogen",
+  "muscle glycogen",
   "fat reserve",
   "protein reserve",
   "oxidized substrate",
@@ -123,6 +124,8 @@ export function createTransport(): TransportState {
   return {
     compartments,
     fluxes: [],
+    fluxSeconds: 1,
+    absorbing: [],
     cumulativeFluxes: [],
     mark: createMark(Object.keys(compartments)),
     metabolism: Object.fromEntries(
@@ -140,7 +143,9 @@ export function createTransport(): TransportState {
   };
 }
 export function totalSubstance(s: BodyState, species: Substance) {
-  return Object.values(s.transport.compartments).reduce((a, c) => a + c.amounts[species], 0);
+  let total = 0;
+  for (const id in s.transport.compartments) total += s.transport.compartments[id].amounts[species];
+  return total;
 }
 /** Labelled grams of each nutrient over every pool; equals what the marked meal contained. */
 export function markedTotal(s: BodyState) {
@@ -161,6 +166,33 @@ export function gasResiduals(s: BodyState) {
   };
 }
 const fluxIndexes = new WeakMap<TransportFlux[], Map<string, TransportFlux>>();
+/** Route ids, built once per route: from → to → substance → mechanism → id. */
+const routeIds = new Map<string, Map<string, Map<string, Map<string, string>>>>();
+function routeId(from: string, to: string, substance: Substance, mechanism: TransportFlux["mechanism"]) {
+  let a = routeIds.get(from);
+  if (!a) routeIds.set(from, (a = new Map()));
+  let b = a.get(to);
+  if (!b) a.set(to, (b = new Map()));
+  let c = b.get(substance);
+  if (!c) b.set(substance, (c = new Map()));
+  let id = c.get(mechanism);
+  if (!id) c.set(mechanism, (id = `${from}:${to}:${substance}:${mechanism}`));
+  return id;
+}
+function addFlux(list: TransportFlux[], id: string, from: string, to: string, substance: Substance, amount: number, mechanism: TransportFlux["mechanism"]) {
+  let index = fluxIndexes.get(list);
+  if (!index) {
+    index = new Map(list.map((f) => [f.id, f]));
+    fluxIndexes.set(list, index);
+  }
+  const existing = index.get(id);
+  if (existing) existing.amount += amount;
+  else {
+    const f = { id, from, to, substance, amount, mechanism };
+    list.push(f);
+    index.set(id, f);
+  }
+}
 export function logFlux(
   s: BodyState,
   from: string,
@@ -170,21 +202,9 @@ export function logFlux(
   mechanism: TransportFlux["mechanism"],
 ) {
   if (Math.abs(amount) < 1e-14) return;
-  const id = `${from}:${to}:${substance}:${mechanism}`;
-  for (const list of [s.transport.fluxes, s.transport.cumulativeFluxes]) {
-    let index = fluxIndexes.get(list);
-    if (!index) {
-      index = new Map(list.map((f) => [f.id, f]));
-      fluxIndexes.set(list, index);
-    }
-    const existing = index.get(id);
-    if (existing) existing.amount += amount;
-    else {
-      const f = { id, from, to, substance, amount, mechanism };
-      list.push(f);
-      index.set(id, f);
-    }
-  }
+  const id = routeId(from, to, substance, mechanism);
+  addFlux(s.transport.fluxes, id, from, to, substance, amount, mechanism);
+  addFlux(s.transport.cumulativeFluxes, id, from, to, substance, amount, mechanism);
 }
 /**
  * Transfers never create material; null source/sink is an explicitly recorded system boundary.
@@ -234,9 +254,16 @@ export function distributeWaterVolumes(s: BodyState) {
   }
 }
 
-export function transportSubstances(s: BodyState, dt: number) {
-  const c = s.transport.compartments;
-  distributeWaterVolumes(s);
+/** The blood compartments, in the order the circulation visits them from the veins. */
+export const BLOOD_COMPARTMENTS = [
+  "venous",
+  "lungs-blood",
+  "arterial",
+  ...beds.map((b) => `${b.id}-blood`),
+  "portal",
+];
+/** Whole-blood flows between blood compartments, mL/min. */
+export function bloodEdges(s: BodyState) {
   const q = (id: Organ) => (s.flows.find((f) => f.id === id)?.flow ?? 0) * 1000;
   const edges: { from: string; to: string; flow: number }[] = [
     { from: "venous", to: "lungs-blood", flow: s.cardiacOutput * 1000 },
@@ -251,6 +278,15 @@ export function transportSubstances(s: BodyState, dt: number) {
       flow: q(b.id) + (b.id === "liver" ? q("gut") : 0),
     });
   }
+  return edges;
+}
+
+const EXCHANGED = ["glucose", "aminoAcids", "lipids"] as const;
+export function transportSubstances(s: BodyState, dt: number) {
+  const c = s.transport.compartments;
+  distributeWaterVolumes(s);
+  const q = (id: Organ) => (s.flows.find((f) => f.id === id)?.flow ?? 0) * 1000;
+  const edges = bloodEdges(s);
   const outgoing: Record<string, number> = {};
   for (const e of edges) outgoing[e.from] = (outgoing[e.from] ?? 0) + e.flow;
   const maxFraction = Math.max(
@@ -258,66 +294,80 @@ export function transportSubstances(s: BodyState, dt: number) {
   );
   const steps = Math.max(1, Math.ceil(maxFraction / 0.25)),
     subdt = dt / steps;
+  // Compartments and their meal labels, looked up once per call.
+  const pools = s.transport.mark.pools,
+    marked = s.transport.mark.at >= 0;
+  const route = edges.map((e) => ({from: c[e.from], to: c[e.to], flow: e.flow, fromPool: pools[e.from], toPool: pools[e.to]}));
+  // Each bed exchanges with its tissue in proportion to the blood passing through it.
+  const bedPairs = beds.map((b) => ({
+      blood: c[`${b.id}-blood`],
+      tissue: c[`${b.id}-tissue`],
+      flow: q(b.id) + (b.id === "liver" ? q("gut") : 0),
+      bloodPool: pools[`${b.id}-blood`],
+      tissuePool: pools[`${b.id}-tissue`],
+    })),
+    exchanged = new Float64Array(beds.length * EXCHANGED.length);
+  const moveAmount = new Float64Array(edges.length * SUBSTANCES.length),
+    moveLabel = new Float64Array(edges.length * SUBSTANCES.length);
   if (steps > 128) throw new Error("Circulating volume is outside the transport solver domain.");
   for (let step = 0; step < steps; step++) {
     // Compute from the same old concentrations, then apply together: iteration order cannot bias transport.
-    const moves = edges.flatMap((e) =>
-      SUBSTANCES.map((species) => ({
-        from: e.from,
-        to: e.to,
-        species,
-        amount: concentration(c[e.from], species) * e.flow * (isGas(species) ? 1 : 0.6) * subdt,
-        size: c[e.from].amounts[species],
-      })),
-    );
-    // Labels are read from the same old state as the amounts, then applied with them.
-    const marks = moves.map((m) => m.size > 0 ? (s.transport.mark.pools[m.from][m.species as Nutrient] ?? 0) / m.size : 0);
-    moves.forEach((move, i) => {
-      if (marks[i] <= 0 || s.transport.mark.at < 0) return;
-      const pools = s.transport.mark.pools, key = move.species as Nutrient;
-      pools[move.from][key] -= move.amount * marks[i];
-      pools[move.to][key] += move.amount * marks[i];
-    });
-    for (const move of moves) {
-      c[move.from].amounts[move.species] -= move.amount;
-      c[move.to].amounts[move.species] += move.amount;
-      logFlux(s, move.from, move.to, move.species, move.amount, "advection");
+    // The meal label moves with its share of each source, read from the same old state. Blood-to-blood
+    // movement is not logged; the per-route ledger keeps exchange, absorption and reactions.
+    let n = 0;
+    for (const e of route) {
+      for (const species of SUBSTANCES) {
+        const amount = concentration(e.from, species) * e.flow * (isGas(species) ? 1 : 0.6) * subdt;
+        moveAmount[n] = amount;
+        moveLabel[n++] =
+          marked && !isGas(species) && e.from.amounts[species] > 0
+            ? (amount * e.fromPool[species as Nutrient]) / e.from.amounts[species]
+            : 0;
+      }
     }
+    n = 0;
+    for (const e of route)
+      for (const species of SUBSTANCES) {
+        const amount = moveAmount[n],
+          label = moveLabel[n++];
+        e.from.amounts[species] -= amount;
+        e.to.amounts[species] += amount;
+        if (label > 0) {
+          e.fromPool[species as Nutrient] -= label;
+          e.toPool[species as Nutrient] += label;
+        }
+      }
     // Finite permeability exchange. This represents capillary / interstitial transport, without cellular detail.
-    for (const b of beds)
-      for (const species of ["glucose", "aminoAcids", "lipids"] as const) {
-        const blood = c[`${b.id}-blood`],
-          tissue = c[`${b.id}-tissue`];
-        const ps =
-          (q(b.id) + (b.id === "liver" ? q("gut") : 0)) * 0.6 * (species === "lipids" ? 0.3 : 1.5);
+    let k = 0;
+    for (const {blood, tissue, flow, bloodPool, tissuePool} of bedPairs)
+      for (const species of EXCHANGED) {
+        const ps = flow * 0.6 * (species === "lipids" ? 0.3 : 3);
         const gradient = concentration(blood, species) - concentration(tissue, species);
-        const rate = gradient * ps;
         // Exact two-pool exchange prevents overshoot when permeability exceeds compartment turnover.
         const lambda =
           ps * (1 / distributionVolume(blood, species) + 1 / distributionVolume(tissue, species));
         const span = lambda ? -Math.expm1(-lambda * subdt) / lambda : subdt,
-          amount = Math.abs(rate) * span;
+          source = gradient >= 0 ? blood : tissue,
+          amount = Math.min(source.amounts[species], Math.abs(gradient * ps) * span),
+          net = gradient >= 0 ? amount : -amount;
         // The label crosses in both directions and settles on its own gradient, as a tracer does
         // even when the net movement is zero. It is read before the amounts move.
-        const pools = s.transport.mark.pools,
-          labelled =
-            s.transport.mark.at < 0
-              ? 0
-              : (pools[blood.id][species] / distributionVolume(blood, species) -
-                  pools[tissue.id][species] / distributionVolume(tissue, species)) *
-                ps *
-                span;
-        move(
-          s,
-          rate >= 0 ? blood.id : tissue.id,
-          rate >= 0 ? tissue.id : blood.id,
-          species,
-          amount,
-          "exchange",
-        );
-        pools[blood.id][species] -= labelled;
-        pools[tissue.id][species] += labelled;
+        const labelled = !marked
+          ? 0
+          : (bloodPool[species] / distributionVolume(blood, species) -
+              tissuePool[species] / distributionVolume(tissue, species)) *
+            ps *
+            span;
+        blood.amounts[species] -= net;
+        tissue.amounts[species] += net;
+        exchanged[k++] += net;
+        bloodPool[species] -= labelled;
+        tissuePool[species] += labelled;
       }
+    for (const a of s.transport.absorbing) {
+      const part = a.amount / steps;
+      transfer(s, "intestinal lumen", a.to, a.species, part, "absorption", a.lumen - part * step);
+    }
     transfer(
       s,
       "lymph",
@@ -367,6 +417,15 @@ export function transportSubstances(s: BodyState, dt: number) {
         "exchange",
       );
   }
+  s.transport.absorbing = [];
+  // One ledger entry per bed and nutrient for the whole step: its net blood-to-tissue exchange.
+  let k = 0;
+  for (const b of beds)
+    for (const species of EXCHANGED) {
+      const net = exchanged[k++];
+      if (net >= 0) logFlux(s, `${b.id}-blood`, `${b.id}-tissue`, species, net, "exchange");
+      else logFlux(s, `${b.id}-tissue`, `${b.id}-blood`, species, -net, "exchange");
+    }
   syncNutrientTotals(s);
 }
 export function updateBloodMeasurements(s: BodyState) {

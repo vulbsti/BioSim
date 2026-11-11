@@ -5,6 +5,7 @@
  * A row with `pending` names the missing piece; it shows as a gap in the report, never as a pass.
  */
 import {advance,applyAction,createBody,glucose} from '../app/simulation/engine';
+import {hormoneIn} from '../app/simulation/endocrine';
 import type {Action,BodyState} from '../app/simulation/types';
 
 export type Direction = {
@@ -34,6 +35,7 @@ const meal75: Action = {kind: 'meal', meal: {carbs: 75, protein: 25, fat: 20, wa
 const water750: Action = {kind: 'meal', meal: {carbs: 0, protein: 0, fat: 0, water: 750, sodium: 0}};
 const jog: Action = {kind: 'environment', values: {exercise: 0.6}};
 const thinAir: Action = {kind: 'environment', values: {oxygen: 0.12}};
+const fright: Action = {kind: 'environment', values: {stress: 0.8}};
 const flow = (id: string) => (s: BodyState) => s.flows.find((f) => f.id === id)!.flow;
 const muscleSugarUse = (s: BodyState) => s.transport.metabolism.muscle?.glucose ?? 0;
 const min = 60, hour = 3600;
@@ -57,7 +59,16 @@ export const directions: Direction[] = [
   {id: 'low-oxygen-saturation', chain: 'Low oxygen → faster breathing', claim: 'Thin air (12% oxygen) lowers blood oxygen within 5 minutes', cause: [thinAir], read: (s) => s.saturation, unit: '%', expect: 'down', by: 5 * min},
   {id: 'low-oxygen-breathing', chain: 'Low oxygen → faster breathing', claim: 'Thin air makes breathing faster within 5 minutes', cause: [thinAir], read: (s) => s.respiratoryRate, unit: 'breaths/min', expect: 'up', by: 5 * min, min: 0.05},
 
-  {id: 'short-sleep-cortisol', chain: 'Short sleep → morning cortisol → morning glucose', claim: 'A short night raises morning cortisol, then morning blood sugar a little', pending: 'Needs a night-and-day clock and sleep from a fitness band (plan step 5). The engine only has an "asleep now" slider.'},
+  {id: 'meal-glucagon-down', chain: 'Glucose up → insulin up → glucose back down', claim: 'Glucagon, which tells the liver to release sugar, falls within 30 minutes of the meal', cause: [meal75], read: (s) => s.hormones.glucagon, unit: '× rest', expect: 'down', by: 30 * min, min: 0.2},
+  {id: 'meal-portal-insulin', chain: 'Glucose up → insulin up → glucose back down', claim: 'Insulin is released into the portal vein, so it is higher there than in the arteries, and more so after the meal', cause: [meal75], read: (s) => hormoneIn(s, 'insulin', 'portal') - s.hormones.insulin, unit: '× rest', expect: 'up', by: 20 * min, min: 0.2},
+  {id: 'meal-muscle-store', chain: 'Glucose up → insulin up → glucose back down', claim: 'Insulin makes the muscles store sugar as glycogen within 2 hours', cause: [meal75], read: (s) => s.muscleGlycogen, unit: 'g', expect: 'up', by: 2 * hour, min: 0.01},
+
+  {id: 'stress-adrenaline', chain: 'Stress → adrenaline → faster heart, sugar released', claim: 'A fright raises adrenaline within 2 minutes', cause: [fright], read: (s) => s.hormones.epinephrine, unit: '× rest', expect: 'up', by: 2 * min, min: 0.5},
+  {id: 'stress-heart', chain: 'Stress → adrenaline → faster heart, sugar released', claim: 'A fright speeds the heart within 2 minutes', cause: [fright], read: (s) => s.heartRate, unit: 'beats/min', expect: 'up', by: 2 * min, min: 0.1},
+  {id: 'stress-cortisol', chain: 'Stress → adrenaline → faster heart, sugar released', claim: 'Lasting stress raises cortisol within 30 minutes', cause: [fright], read: (s) => s.hormones.cortisol, unit: '× rest', expect: 'up', by: 30 * min, min: 0.15},
+  {id: 'exercise-glucose-held', chain: 'Exercise → heart, muscle flow and sugar uptake up', claim: 'Blood sugar holds within about 10% through 20 minutes of jogging: muscles burn their own glycogen and the liver releases more', cause: [jog], read: glucose, unit: 'mg/dL', expect: 'settles', by: 20 * min, min: 0.1},
+
+  {id: 'short-sleep-cortisol', chain: 'Short sleep → morning cortisol → morning glucose', claim: 'A short night raises morning cortisol, then morning blood sugar a little', pending: 'The engine now has a clock (cortisol peaks at 08:00, melatonin at night) and an asleep input, but no effect of lost sleep yet; needs sleep from a fitness band (plan step 5).'},
   {id: 'hrv-heart', chain: 'High HRV → lower resting heart rate', claim: 'A person with high heart rate variability has a lower resting heart rate', pending: 'Needs HRV from a fitness band to set vagal tone (plan step 5).'},
 ];
 
