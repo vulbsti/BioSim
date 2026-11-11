@@ -5,7 +5,8 @@
  * example bone). A vertex counts as inside a mesh when rays along all three axes agree it is (odd crossings),
  * so small holes in a source mesh cannot flip the answer.
  *
- * CLI:  npx tsx verify/containment.ts --parts "nerve|cord" [--inside Skin] [--clear-of system:skeletal] [--allow 0.002]
+ * CLI:  npx tsx verify/containment.ts --parts "nerve|cord" [--inside Skin] [--clear-of system:skeletal] [--except "subscapularis"] [--allow 0.002]
+ * `--except` drops obstacles by name: the atlas files a few muscles (tibialis anterior, subscapularis...) under skeletal.
  * Selectors match a part's name or id (case-insensitive regex), or `system:<id>`.
  */
 import {readFileSync,mkdirSync,writeFileSync} from 'node:fs';
@@ -19,8 +20,8 @@ type Mesh = {name: string; positions: Float32Array; indices: Uint32Array};
 
 export function loadAtlas(): Atlas {
   const read = (f: string) => JSON.parse(readFileSync(new URL(f, MODELS), 'utf8')) as Atlas;
-  const [base, addition, lungs, reconstructed, calibrated, registered, conduction] = ['atlas', 'expansion', 'lung-surfaces', 'reconstructed-vessels', 'calibrated-vessels', 'registered-vessels', 'heart-conduction'].map((f) => read(`${f}.json`));
-  return combineAtlases(applyReplacements(applyReplacements(combineAtlases(combineAtlases(combineAtlases(base, addition), lungs), reconstructed), calibrated), registered), conduction);
+  const [base, addition, lungs, reconstructed, calibrated, registered, conduction, nerves] = ['atlas', 'expansion', 'lung-surfaces', 'reconstructed-vessels', 'calibrated-vessels', 'registered-vessels', 'heart-conduction', 'nerves'].map((f) => read(`${f}.json`));
+  return combineAtlases(combineAtlases(applyReplacements(applyReplacements(combineAtlases(combineAtlases(combineAtlases(base, addition), lungs), reconstructed), calibrated), registered), conduction), nerves);
 }
 
 const chunks = new Map<string, ArrayBuffer>();
@@ -107,14 +108,17 @@ export class Solid {
 }
 
 export type ContainmentResult = {
-  parts: string; inside: string; clearOf?: string; allow: number; pass: boolean;
+  parts: string; inside: string; clearOf?: string; except?: string; allow: number; pass: boolean;
   checked: number;
   rows: {name: string; vertices: number; outside: number; touching: number; worst?: number[]}[];
 };
 
-export function checkContainment(atlas: Atlas, {parts, inside = '^Skin$', clearOf, allow = 0}: {parts: string; inside?: string; clearOf?: string; allow?: number}): ContainmentResult {
+export function checkContainment(atlas: Atlas, {parts, inside = '^Skin$', clearOf, except, allow = 0}: {parts: string; inside?: string; clearOf?: string; except?: string; allow?: number}): ContainmentResult {
   const container = new Solid(select(atlas, inside).map((p) => mesh(atlas, p)));
-  const obstacle = clearOf ? new Solid(select(atlas, clearOf).map((p) => mesh(atlas, p))) : null;
+  // Obstacles are tested one mesh at a time: bones overlap (a disc pressed into a vertebra), and one
+  // parity count across overlapping meshes reports points in the gaps between them as inside.
+  const obstacles = clearOf ? select(atlas, clearOf).filter((p) => !except || !new RegExp(except, 'i').test(p.name)).map((p) => ({box: p.bounds, solid: new Solid([mesh(atlas, p)])})) : [];
+  const obstacle = clearOf ? {contains: (v: ArrayLike<number>) => obstacles.some(({box, solid}) => [0, 1, 2].every((k) => v[k] >= box[0][k] && v[k] <= box[1][k]) && solid.contains(v))} : null;
   const rows = select(atlas, parts).map((p) => {
     const m = mesh(atlas, p);
     let outside = 0, touching = 0, worst: number[] | undefined;
@@ -126,13 +130,13 @@ export function checkContainment(atlas: Atlas, {parts, inside = '^Skin$', clearO
     return {name: p.name, vertices: m.positions.length / 3, outside, touching, worst};
   });
   const checked = rows.reduce((a, r) => a + r.vertices, 0), bad = rows.reduce((a, r) => a + r.outside + r.touching, 0);
-  return {parts, inside, clearOf, allow, checked, pass: rows.length > 0 && bad <= allow * checked, rows};
+  return {parts, inside, clearOf, except, allow, checked, pass: rows.length > 0 && bad <= allow * checked, rows};
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const arg = (k: string) => {const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : undefined;};
   const parts = arg('--parts') ?? 'system:nervous';
-  const r = checkContainment(loadAtlas(), {parts, inside: arg('--inside'), clearOf: arg('--clear-of'), allow: Number(arg('--allow') ?? 0)});
+  const r = checkContainment(loadAtlas(), {parts, inside: arg('--inside'), clearOf: arg('--clear-of'), except: arg('--except'), allow: Number(arg('--allow') ?? 0)});
   mkdirSync(OUT, {recursive: true});
   writeFileSync(`${OUT}/containment-${parts.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.json`, JSON.stringify(r, null, 1));
   for (const row of r.rows.filter((x) => x.outside || x.touching)) console.log(`${row.name}: ${row.outside} of ${row.vertices} outside${row.touching ? `, ${row.touching} inside ${r.clearOf}` : ''}`);
