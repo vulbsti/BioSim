@@ -13,6 +13,7 @@ import {
   RotateCcw,
   Sparkles,
   X,
+  Zap,
 } from "lucide-react";
 import { useSimulation } from "./use-simulation";
 import { glucose, sample } from "./engine";
@@ -140,7 +141,8 @@ export default function Simulator() {
     [exercise, setExercise] = useState(s.inputs.exercise),
     [notice, setNotice] = useState(""),
     [atlas, setAtlas] = useState<Atlas | null>(null),
-    [atlasError, setAtlasError] = useState("");
+    [atlasError, setAtlasError] = useState(""),
+    [reflex, setReflex] = useState(0);
   useEffect(() => setExercise(s.inputs.exercise), [s.inputs.exercise]);
   // A slider sends one change once it settles, not one per pixel dragged.
   useEffect(() => {
@@ -194,6 +196,7 @@ export default function Simulator() {
         running={running}
         atlas={atlas}
         catalogueError={atlasError}
+        reflex={reflex}
         organCard={
           <>
             <p className="organ-what">{organInfo[organ].what}</p>
@@ -364,6 +367,10 @@ export default function Simulator() {
               onChange={(e) => setExercise(Number(e.target.value))}
             />
           </label>
+          <h3>Nerves</h3>
+          <button className="bio-secondary" onClick={() => setReflex((n) => n + 1)}>
+            <Zap size={14} /> Tap below the kneecap
+          </button>
         </aside>
       ) : (
         <button className="bio-try-open" onClick={() => setTryOpen(true)}>
