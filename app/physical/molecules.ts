@@ -15,6 +15,7 @@ export function validateMoleculeManifest(value:unknown):asserts value is Molecul
  const m=value as MoleculeManifest;
  if(!m||m.id!=='blood-molecules'||m.unit!=='nm'||m.url!=='/models/molecules/molecules.glb'||!Array.isArray(m.molecules)||!Number.isInteger(m.bytes)||m.bytes<1000||m.bytes>8_000_000||!/^[a-f0-9]{64}$/.test(m.sha256))throw new Error('Unsupported molecule package.');
  const ids=new Set(m.molecules.map(e=>e.id));
- if(ids.size!==m.molecules.length||SPECIES.some(id=>!ids.has(id))||m.molecules.some(e=>!SPECIES.includes(e.id)))throw new Error('The molecule package does not match the species the body model carries.');
+ // The package may still hold molecules the model no longer carries; those are not drawn.
+ if(ids.size!==m.molecules.length||SPECIES.some(id=>!ids.has(id)))throw new Error('The molecule package does not match the species the body model carries.');
  for(const e of m.molecules)if(!e.name||!e.source||!(e.radiusNm>0)||!Number.isInteger(e.triangles)||e.triangles<=0||e.triangles>6500||(e.standIn&&!e.note))throw new Error('Invalid molecule entry.');
 }

@@ -3,11 +3,13 @@
  * meals found in that curve (or logged with it), sleep and activity from the band, all as a Scenario
  * the simulator already knows how to play.
  */
-import type { Action, Scenario } from "../simulation/types";
+import type { Action, PersonalBaseline, Scenario } from "../simulation/types";
 import { DAY, readings, type Interval, type PersonalData, type Point } from "./data";
 
 /** Simulated time 0 is this hour of the day (see endocrine.ts); the replay starts there. */
 export const CLOCK_START_HOUR = 8;
+/** The largest meal the engine accepts at once (validateAction in engine.ts). */
+const MEAL_MAX = { carbs: 300, protein: 200, fat: 150 };
 const HOUR = 3_600_000,
   MIN = 60_000;
 
@@ -26,6 +28,8 @@ export type FoundMeal = {
 };
 export type DayReplay = {
   scenario: Scenario;
+  /** The person's baseline, for the body the replay starts from. */
+  params?: Partial<PersonalBaseline>;
   /** The measured curves in simulated seconds, for drawing over the model's. */
   measured: { glucose: { time: number; value: number }[]; heartRate: { time: number; value: number }[] };
   meals: FoundMeal[];
@@ -141,11 +145,17 @@ export function dayReplay(data: PersonalData, day: number, { insulinSensitivity 
   const clock = (t: number) => new Date(t).toISOString().slice(11, 16);
   for (const m of meals) {
     // Logged protein and fat are used as given; otherwise the proportions of the "After a meal" scenario.
-    const c = m.carbs;
-    at(m.at, `${m.how === "logged" ? "Meal" : "Meal found"} at ${clock(m.at)}, about ${c} g carbs${m.label ? ` (${m.label})` : ""}`, {
-      kind: "meal",
-      meal: { carbs: c, protein: m.protein ?? Math.round(c / 3), fat: m.fat ?? Math.round(c * 0.27), water: 300, sodium: 600 },
-    });
+    // A logged meal past what the model takes at once (some logs hold 600 g of carbs) is drawn at that most.
+    const want = { carbs: m.carbs, protein: m.protein ?? Math.round(m.carbs / 3), fat: m.fat ?? Math.round(m.carbs * 0.27) };
+    const meal = { carbs: Math.min(MEAL_MAX.carbs, want.carbs), protein: Math.min(MEAL_MAX.protein, want.protein), fat: Math.min(MEAL_MAX.fat, want.fat) };
+    const capped = meal.carbs < want.carbs || meal.protein < want.protein || meal.fat < want.fat;
+    at(
+      m.at,
+      `${m.how === "logged" ? "Meal" : "Meal found"} at ${clock(m.at)}, about ${m.carbs} g carbs${m.label ? ` (${m.label})` : ""}${
+        capped ? `; drawn as ${meal.carbs} g carbs, ${meal.protein} g protein, ${meal.fat} g fat, the most the model takes at once` : ""
+      }`,
+      { kind: "meal", meal: { ...meal, water: 300, sodium: 600 } },
+    );
   }
   for (const b of sleepBlocks(data.intervals)) {
     if (b.end <= start || b.start >= end) continue;

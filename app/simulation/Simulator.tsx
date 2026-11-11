@@ -332,7 +332,7 @@ export default function Simulator() {
             onReplay={(r) => {
               setScenario(r.scenario.id);
               setReplay({ description: r.scenario.description, measured: r.measured, clock: CLOCK_START_HOUR * 3600 });
-              send({ type: "scenario", scenario: r.scenario });
+              send({ type: "scenario", scenario: r.scenario, params: r.params });
               send({ type: "run", running: true });
               setChartOpen(true);
             }}

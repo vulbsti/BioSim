@@ -114,7 +114,9 @@ test('the baseline leans the way the numbers lean, and says why',()=>{
  data=merge(data,parseAppleHealth(fixture('apple-export.xml')));
  const b=personalBaseline(data,{age:36,sex:'female'});
  // HOMA-IR 97.3*14/405 = 3.4 against a typical 2: insulin works at about three quarters of typical; the pancreas works harder.
- near(b.params.insulinSensitivity,0.73,0.01);assert.ok(b.params.betaCellResponse>1.3);
+ near(b.params.insulinSensitivity,0.73,0.01);
+ // The pancreas making extra insulin is the engine's own response, so only a shortfall is passed on; the reason still says it.
+ assert.equal(b.params.betaCellResponse,1);assert.match(b.reasons.betaCellResponse!.why,/about 1\d\d% of the typical insulin/);
  assert.match(b.reasons.insulinSensitivity!.why,/slow to take up sugar/);assert.deepEqual(b.reasons.insulinSensitivity!.from,['Fasting glucose','Fasting insulin']);
  near(b.params.metabolicRate,0.97,0.03);near(b.params.kidneyClearance,0.9,1e-9);near(b.params.oxygenCarrying,0.91,0.01);
  assert.equal(b.params.restingHeartRate,56);assert.ok(b.params.autonomicTone<0,'HRV above typical leans calm');

@@ -6,29 +6,13 @@
  * BodyState.params. These are rough, deliberately: the aim is the right direction and size, so that
  * the picture of the body leans the way the person's numbers lean.
  */
-import type { Organ } from "../simulation/types";
+import { PARAM_BOUNDS, TYPICAL } from "../simulation/engine";
+import type { Organ, PersonalBaseline } from "../simulation/types";
 import { DAY, readings, type PersonalData, type Point } from "./data";
 import { ANALYTES, egfrFromCreatinine, latest, position, type AnalyteId } from "./panel";
 
-/** Keep in step with PersonalBaseline in app/simulation/types.ts (engine thread). */
-export type PersonalBaseline = {
-  insulinSensitivity: number;
-  betaCellResponse: number;
-  metabolicRate: number;
-  kidneyClearance: number;
-  oxygenCarrying: number;
-  restingHeartRate: number;
-  autonomicTone: number;
-};
-export const TYPICAL: PersonalBaseline = {
-  insulinSensitivity: 1,
-  betaCellResponse: 1,
-  metabolicRate: 1,
-  kidneyClearance: 1,
-  oxygenCarrying: 1,
-  restingHeartRate: 72,
-  autonomicTone: 0,
-};
+export type { PersonalBaseline };
+export { TYPICAL };
 /** Middle HOMA-IR of adults with normal HbA1c (NHANES 2017-18 fasting sample). */
 export const TYPICAL_HOMA_IR = 2;
 /** Middle HOMA-B (%) of the same adults. */
@@ -85,7 +69,11 @@ export function personalBaseline(data: PersonalData, profile: Profile = {}): Bas
     // half the sugar), hence the 0.6 power.
     params.insulinSensitivity = round(clamp((homaIR / TYPICAL_HOMA_IR) ** -0.6, 0.25, 2.5));
     // HOMA-B, likewise read against adults with normal HbA1c (middle about 80%, not the model's 100%).
-    params.betaCellResponse = round(clamp(homaB / TYPICAL_HOMA_B, 0.2, 3));
+    // Only a shortfall is passed on: a pancreas working harder to make up for slow muscles is the
+    // engine's own response to higher sugar, and passing HOMA-B above typical counts it twice (replays
+    // of CGMacros 004 and 043 drifted further from their measured curves with it).
+    const homaBShare = homaB / TYPICAL_HOMA_B;
+    params.betaCellResponse = round(clamp(homaBShare, 0.2, 1));
     reasons.insulinSensitivity = {
       why: params.insulinSensitivity < 0.8
         ? "Your fasting insulin is high for your fasting sugar, so muscles and fat are drawn as slow to take up sugar."
@@ -96,7 +84,7 @@ export function personalBaseline(data: PersonalData, profile: Profile = {}): Bas
       confidence: "good",
     };
     reasons.betaCellResponse = {
-      why: `Your pancreas makes about ${Math.round(params.betaCellResponse * 100)}% of the typical insulin for your fasting sugar.`,
+      why: `Your pancreas makes about ${Math.round(homaBShare * 100)}% of the typical insulin for your fasting sugar.`,
       from: [name("glucose"), name("insulin")],
       confidence: "good",
     };
@@ -227,6 +215,8 @@ export function personalBaseline(data: PersonalData, profile: Profile = {}): Bas
   if (data.series.some((s) => s.kind === "spo2" || s.kind === "respiratoryRate")) spoken.add("lungs");
   if (data.series.some((s) => s.kind === "steps")) spoken.add("muscle");
   const ORGANS: Organ[] = ["heart", "lungs", "brain", "liver", "gut", "kidneys", "muscle", "skin", "adipose", "endocrine"];
+  // Within what the engine accepts.
+  for (const k of Object.keys(params) as (keyof PersonalBaseline)[]) params[k] = clamp(params[k], ...PARAM_BOUNDS[k]);
   return { params, reasons, tints, missing: ORGANS.filter((o) => !spoken.has(o)) };
 }
 

@@ -87,28 +87,33 @@ test('the meal route runs from stomach to thigh muscle along real vessels, with 
  await expect(scene.locator('.physical-callouts')).toBeHidden();
  // An hour on, the meal has moved down the route: less in the stomach, some in the liver and the muscle.
  await page.getByRole('button',{name:'Advance one hour'}).click();
- await expect.poll(()=>number('data-route-stomach'),{timeout:60000}).toBeLessThan(30);expect(await number('data-route-liver')).toBeGreaterThan(10);expect(await number('data-route-muscle')).toBeGreaterThan(1);
+ await expect.poll(()=>number('data-route-stomach'),{timeout:60000}).toBeLessThan(30);expect(await number('data-route-liver')).toBeGreaterThan(5);expect(await number('data-route-muscle')).toBeGreaterThan(3);
  await scene.getByRole('button',{name:'Hide route to muscle'}).click();await expect(scene).toHaveAttribute('data-route','off',{timeout:30000});
  await expect.poll(()=>number('data-blood-tracers'),{timeout:30000}).toBeGreaterThan(everywhere/2);await expect(scene.locator('.physical-callouts')).toBeVisible();
 });
-test('hormones colour the structures that release them by family, and one can be followed to where it acts',async({page})=>{
+test('hormones: quiet at rest; after a meal the pancreas pulses, insulin dots crowd the portal vein, and muscle and liver light up',async({page})=>{
  test.setTimeout(240000);await page.goto('/');const scene=page.getByTestId('physical-scene');await expect(scene).toHaveAttribute('data-ready','true',{timeout:90000});
- await page.getByLabel('Colour the body by').selectOption('hormones');await expect(scene).toHaveAttribute('data-lens','hormones');
- const panel=scene.locator('.physical-hormones');await expect(panel).toBeVisible();await expect(panel.locator('button')).toHaveCount(32);await expect(panel.locator('section')).toHaveCount(8);
- // At rest nothing has left baseline far enough to be labelled.
- await expect(scene.locator('.physical-hormone-tags > div:not([hidden])')).toHaveCount(0);
- await page.getByRole('button',{name:'Eat it',exact:true}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();await page.getByRole('button',{name:'Advance five minutes'}).click();
+ const number=async(name:string)=>Number(await scene.getAttribute(name));
  await page.getByRole('button',{name:'Organs',exact:true}).click();await page.getByRole('button',{name:'Belly',exact:true}).click();
- // After a meal the pancreas shows insulin and the gut its own hormones, each named on the structure.
- await expect(scene).toHaveAttribute('data-site-pancreas','insulin',{timeout:60000});await expect(scene).toHaveAttribute('data-site-stomach','gastrin');
- expect(['cck','glp1','secretin']).toContain(await scene.getAttribute('data-site-intestine'));
- await expect(scene.locator('.physical-hormone-tags')).toContainText(/PANCREAS\s*Insulin [\d.]+×/);await expect(panel.locator('button[data-hormone="insulin"] em')).toHaveText(/[\d.]+×/);
+ await page.getByLabel('Colour the body by').selectOption('hormones');await expect(scene).toHaveAttribute('data-lens','hormones');
+ const panel=scene.locator('.physical-hormones');await expect(panel).toBeVisible();await expect(panel.locator('button')).toHaveCount(10);await expect(panel).toContainText('Not to scale');
+ // At rest no gland is labelled and only a few dots of each hormone ride the blood.
+ await expect(scene.locator('.physical-hormone-tags > div:not([hidden])')).toHaveCount(0);
+ await expect.poll(()=>number('data-dots-insulin'),{timeout:20000}).toBeGreaterThan(0);
+ await page.waitForTimeout(1500);const restDots=await number('data-dots-insulin');await scene.locator('canvas').screenshot({path:'test-results/hormones-rest.png'});
+ await page.getByRole('button',{name:'Eat it',exact:true}).click();for(let i=0;i<4;i++)await page.getByRole('button',{name:'Advance five minutes'}).click();
+ await expect.poll(async()=>(await scene.getAttribute('data-site-pancreas'))??'',{timeout:60000}).toMatch(/^insulin:gland/);
+ await expect(scene.locator('.physical-hormone-tags')).toContainText(/PANCREAS\s*releasing Insulin [\d.]+×/);
+ await expect.poll(()=>number('data-dots-insulin'),{timeout:20000}).toBeGreaterThan(restDots*1.5);
+ expect(await number('data-portal-insulin')).toBeGreaterThan(5);
+ await expect(scene).toHaveAttribute('data-site-liver',/^insulin:target/);await expect(scene).toHaveAttribute('data-site-muscle',/^insulin:target/);
+ await page.waitForTimeout(1500);await scene.locator('canvas').screenshot({path:'test-results/hormones-meal.png'});
  await expect(scene.locator('.physical-callouts')).toBeHidden();
- // Choosing insulin leaves only its source and its target coloured, and says which is which.
- await panel.locator('button[data-hormone="insulin"]').click();await expect(scene).toHaveAttribute('data-hormone-chosen','insulin',{timeout:30000});
- await expect(scene).toHaveAttribute('data-site-liver','insulin');expect(await scene.getAttribute('data-site-stomach')).toBeNull();
- await expect(scene.locator('.physical-hormone-tags')).toContainText(/LIVER\s*acts here · Insulin/);await expect(panel.locator('button[data-hormone="insulin"]')).toHaveAttribute('aria-pressed','true');
- await panel.locator('button[data-hormone=""]').click();await expect(scene).toHaveAttribute('data-site-stomach','gastrin',{timeout:30000});
+ // Following glucagon: it has fallen, so its gland is named but does not pulse, and no organ lights for it.
+ await panel.locator('button[data-hormone="glucagon"]').click();await expect(scene).toHaveAttribute('data-hormone-chosen','glucagon',{timeout:30000});
+ await expect(scene).toHaveAttribute('data-site-pancreas',/^glucagon:gland:0\.000/);await expect(panel).toContainText('breaks down its stored sugar');
+ expect(await number('data-dots-insulin')).toBe(0);
+ await panel.locator('button[data-hormone=""]').click();await expect(scene).toHaveAttribute('data-hormone-chosen','',{timeout:30000});
  // Another colour option puts the store labels back.
  await page.getByLabel('Colour the body by').selectOption('flow');await expect(panel).toBeHidden();await expect(scene.locator('.physical-callouts')).toBeVisible();
 });

@@ -4,9 +4,10 @@ import {
   type BodyState,
   type Inputs,
   type Organ,
+  type PersonalBaseline,
   type Sample,
 } from "./types";
-import { clamp, relax, updateHormones } from "./endocrine";
+import { arousal, clamp, relax, reninDrive, restingSympathetic, startHormones, updateHormones } from "./endocrine";
 import {
   concentration,
   createTransport,
@@ -20,18 +21,32 @@ import {
   updateBloodMeasurements,
 } from "./transport";
 
-export const MODEL_VERSION = "atlas-physiology-0.4.0-m1-experimental";
+export const MODEL_VERSION = "atlas-physiology-0.5.0";
 export const INPUT_BOUNDS: Record<keyof Inputs, [number, number]> = {
   exercise: [0, 1],
   oxygen: [0.1, 0.3],
-  airCO2: [0.0004, 0.03],
   temperature: [5, 40],
-  light: [0, 1],
-  sound: [0, 1],
-  touch: [0, 1],
-  pain: [0, 1],
-  smell: [0, 1],
   sleep: [0, 1],
+  stress: [0, 1],
+};
+/** A typical adult. Measurements replace these. */
+export const TYPICAL: PersonalBaseline = {
+  insulinSensitivity: 1,
+  betaCellResponse: 1,
+  metabolicRate: 1,
+  kidneyClearance: 1,
+  oxygenCarrying: 1,
+  restingHeartRate: 72,
+  autonomicTone: 0,
+};
+export const PARAM_BOUNDS: Record<keyof PersonalBaseline, [number, number]> = {
+  insulinSensitivity: [0.2, 3],
+  betaCellResponse: [0.2, 3],
+  metabolicRate: [0.5, 2],
+  kidneyClearance: [0.2, 1.5],
+  oxygenCarrying: [0.5, 1.3],
+  restingHeartRate: [35, 110],
+  autonomicTone: [-1, 1],
 };
 export const glucose = (s: BodyState) =>
   concentration(s.transport.compartments.arterial, "glucose") * 100000;
@@ -44,9 +59,10 @@ export const carbohydrateResidual = (s: BodyState) =>
   s.gut.carbs +
   s.glucoseMass +
   s.glycogen +
+  s.muscleGlycogen +
   s.glucoseUsed +
   s.glucoseExcreted -
-  122.6 -
+  522.6 -
   s.carbIn -
   s.glucoseSynthesized;
 export const proteinResidual = (s: BodyState) =>
@@ -60,25 +76,30 @@ export const proteinResidual = (s: BodyState) =>
 export const fatResidual = (s: BodyState) =>
   s.stomach.fat + s.gut.fat + s.lipids + s.fatStore + s.fatUsed - 12015 - s.fatIn;
 
-export function createBody(): BodyState {
+/** A new body at rest at 08:00, typical unless measurements say otherwise. */
+export function createBody(params: Partial<PersonalBaseline> = {}): BodyState {
+  for (const [k, v] of Object.entries(params)) {
+    const b = PARAM_BOUNDS[k as keyof PersonalBaseline];
+    if (!b || typeof v !== "number" || !Number.isFinite(v) || v < b[0] || v > b[1])
+      throw new Error(`Invalid personal baseline value: ${k}.`);
+  }
+  const p = { ...TYPICAL, ...params };
   const s: BodyState = {
-    version: 2,
+    version: 3,
     transport: createTransport(),
     time: 0,
     inputs: {
       exercise: 0,
       oxygen: 0.2095,
-      airCO2: 0.0004,
       temperature: 22,
-      light: 0.7,
-      sound: 0,
-      touch: 0,
-      pain: 0,
-      smell: 0,
       sleep: 0,
+      stress: 0,
     },
+    params: p,
     hormones: Object.fromEntries(HORMONES.map((k) => [k, 1])) as BodyState["hormones"],
-    hormoneFlux: {} as BodyState["hormoneFlux"],
+    hormoneAmount: {} as BodyState["hormoneAmount"],
+    hormoneRate: {} as BodyState["hormoneRate"],
+    secretion: Object.fromEntries(HORMONES.map((k) => [k, 1])) as BodyState["secretion"],
     enzymes: { amylase: 1, protease: 1, lipase: 1, pepsin: 1 },
     digestionRates: { carbs: 0, protein: 0, fat: 0 },
     stomach: { carbs: 0, protein: 0, fat: 0, water: 0 },
@@ -87,6 +108,8 @@ export function createBody(): BodyState {
     aminoAcids: 30,
     lipids: 15,
     glycogen: 110,
+    muscleGlycogen: 400,
+    lastFood: -1,
     fatStore: 12000,
     proteinStore: 10000,
     plasma: 3000,
@@ -94,7 +117,6 @@ export function createBody(): BodyState {
     intracellular: 28000,
     sodium: 1960,
     urea: 300,
-    calcium: 2.4,
     bladder: 0,
     urineTotal: 0,
     sodiumExcreted: 0,
@@ -109,7 +131,7 @@ export function createBody(): BodyState {
     glucoseExcreted: 0,
     proteinUsed: 0,
     fatUsed: 0,
-    heartRate: 72,
+    heartRate: p.restingHeartRate,
     strokeVolume: 70,
     cardiacOutput: 5.04,
     map: 93,
@@ -127,8 +149,8 @@ export function createBody(): BodyState {
     inhaledOxygen: 0,
     exhaledCO2: 0,
     coreTemperature: 37,
-    sympathetic: 0.15,
-    parasympathetic: 0.7,
+    sympathetic: 0.15 + 0.12 * p.autonomicTone,
+    parasympathetic: 0.7 - 0.2 * p.autonomicTone,
     fatigue: 0,
     osmolarity: 285,
     gfr: 120,
@@ -143,9 +165,10 @@ export function createBody(): BodyState {
     history: [],
     lastSample: 0,
   };
+  s.cardiacOutput = (s.heartRate * s.strokeVolume) / 1000;
   syncNutrientTotals(s);
-  updateHormones(s, 0);
   updateFlows(s);
+  startHormones(s);
   s.history.push(sample(s));
   return s;
 }
@@ -209,6 +232,7 @@ export function applyAction(s: BodyState, action: Action, label?: string) {
   if (action.kind === "meal") {
     const m = action.meal;
     for (const k of ["carbs", "protein", "fat", "water"] as const) s.stomach[k] += m[k];
+    if (m.carbs + m.protein + m.fat > 0) s.lastFood = s.time;
     markMeal(s, m);
     // Sodium is a rapidly mixed extracellular pool; gut sodium transit is not resolved.
     s.sodium += m.sodium / 22.99;
@@ -251,13 +275,18 @@ const NUTRIENT_OF = { carbs: "glucose", protein: "aminoAcids", fat: "lipids" } a
 function digest(s: BodyState, dt: number) {
   const h = s.hormones,
     vagal = clamp(s.parasympathetic / 0.7, 0.25, 1.4);
-  s.enzymes.pepsin = relax(s.enzymes.pepsin, h.gastrin * vagal, dt, 4);
-  s.enzymes.amylase = relax(s.enzymes.amylase, (1 + 0.25 * (h.secretin - 1)) * vagal, dt, 5);
-  s.enzymes.protease = relax(s.enzymes.protease, (1 + 0.35 * (h.cck - 1)) * vagal, dt, 6);
-  s.enzymes.lipase = relax(s.enzymes.lipase, (1 + 0.5 * (h.cck - 1)) * vagal, dt, 8);
-  const tau = (35 * (1 + 0.14 * (h.cck - 1) + 0.1 * (h.glp1 - 1))) / vagal;
+  // The gut's own local signals (gastrin, secretin, CCK) follow the food in it directly.
+  const gastric = s.stomach.carbs + s.stomach.protein + s.stomach.fat,
+    fatAndProtein = (s.gut.fat + s.gut.protein) / 12;
+  s.enzymes.pepsin = relax(s.enzymes.pepsin, (1 + gastric / 30) * vagal, dt, 4);
+  s.enzymes.amylase = relax(s.enzymes.amylase, (1 + gastric / 300) * vagal, dt, 5);
+  s.enzymes.protease = relax(s.enzymes.protease, (1 + 0.35 * fatAndProtein) * vagal, dt, 6);
+  s.enzymes.lipase = relax(s.enzymes.lipase, (1 + 0.5 * fatAndProtein) * vagal, dt, 8);
+  const tau = (35 * (1 + 0.14 * fatAndProtein + 0.1 * (h.glp1 - 1))) / vagal;
+  // Solid food is churned for the first quarter hour before the stomach empties it at full pace.
+  const mixing = s.lastFood < 0 ? 1 : clamp((s.time - s.lastFood) / 900, 0.15, 1);
   for (const k of ["carbs", "protein", "fat", "water"] as const) {
-    const amount = s.stomach[k] * -Math.expm1(-dt / (k === "water" ? 12 : tau));
+    const amount = s.stomach[k] * -Math.expm1(-dt / (k === "water" ? 12 : tau / mixing));
     if (k !== "water") carryMark(s, "stomach", "intestinal lumen", NUTRIENT_OF[k], amount, s.stomach[k]);
     s.stomach[k] -= amount;
     s.gut[k] += amount;
@@ -273,15 +302,8 @@ function digest(s: BodyState, dt: number) {
       amount = Math.min(s.gut[k], ((p.v * p.e * s.gut[k]) / (p.km + s.gut[k])) * dt);
     s.gut[k] -= amount;
     s.digestionRates[k] = amount / dt;
-    transfer(
-      s,
-      "intestinal lumen",
-      k === "fat" ? "lymph" : "portal",
-      NUTRIENT_OF[k],
-      amount,
-      "absorption",
-      lumen,
-    );
+    // Absorbed food enters the blood evenly through the step, as transport carries it on.
+    s.transport.absorbing.push({ to: k === "fat" ? "lymph" : "portal", species: NUTRIENT_OF[k], amount, lumen });
   }
   const water = s.gut.water * -Math.expm1(-dt / 15);
   s.gut.water -= water;
@@ -292,10 +314,14 @@ function metabolize(s: BodyState, dt: number) {
   const h = s.hormones,
     g = glucose(s),
     exercise = s.inputs.exercise,
-    c = s.transport.compartments;
+    c = s.transport.compartments,
+    // Insulin's effect on muscle, fat and liver, scaled by how sensitive this person is to it.
+    insulin = Math.max(0.05, 1 + (h.insulin - 1) * s.params.insulinSensitivity);
+  // Glucagon and adrenaline make the liver break down glycogen; insulin holds it back.
   const release = Math.min(
     s.glycogen,
-    ((dt * 0.12 * h.glucagon) / Math.sqrt(h.insulin)) * clamp((120 - g) / 30, 0, 4),
+    ((dt * 0.12 * h.glucagon * (1 + 0.15 * (h.epinephrine - 1))) / Math.sqrt(insulin)) *
+      clamp((120 - g) / 30, 0, 4),
   );
   s.glycogen -= release;
   transfer(s, "hepatic glycogen", "liver-tissue", "glucose", release, "reaction", s.glycogen + release);
@@ -320,11 +346,24 @@ function metabolize(s: BodyState, dt: number) {
     "glucose",
     Math.min(
       Math.max(0, 500 - s.glycogen),
-      dt * 0.2 * Math.max(0, h.insulin - 1) * clamp((g - 85) / 25, 0, 3),
+      dt * 0.08 * Math.max(0, insulin - 1) * clamp((g - 85) / 25, 0, 3),
     ),
     "reaction",
   );
   s.glycogen += store;
+  // Insulin opens muscle to sugar (GLUT4), which it stores as glycogen: most of a meal's sugar ends here.
+  const muscleStore = transfer(
+    s,
+    "muscle-tissue",
+    "muscle glycogen",
+    "glucose",
+    Math.min(
+      Math.max(0, 700 - s.muscleGlycogen),
+      dt * 0.05 * Math.max(0, insulin - 1) * clamp((g - 60) / 40, 0, 2),
+    ),
+    "reaction",
+  );
+  s.muscleGlycogen += muscleStore;
   const aminoStore = transfer(
     s,
     "muscle-tissue",
@@ -349,7 +388,8 @@ function metabolize(s: BodyState, dt: number) {
   s.fatStore += lipidStore;
   const lipidRelease = Math.min(
     s.fatStore,
-    (((0.08 + 0.24 * exercise) * dt) / Math.sqrt(h.insulin)) * clamp(1 + (15 - s.lipids) / 5, 0, 3),
+    (((0.08 + 0.24 * exercise) * dt * (1 + 0.1 * (h.epinephrine - 1))) / Math.sqrt(insulin)) *
+      clamp(1 + (15 - s.lipids) / 5, 0, 3),
   );
   s.fatStore -= lipidRelease;
   transfer(s, "fat reserve", "adipose-tissue", "lipids", lipidRelease, "reaction", s.fatStore + lipidRelease);
@@ -371,7 +411,7 @@ function metabolize(s: BodyState, dt: number) {
     const demand = (s.oxygenDemand * weight) / sum,
       blood = c[`${id}-blood`],
       tissue = c[`${id}-tissue`];
-    const insulinShare = 0.05 * (h.insulin - 1);
+    const insulinShare = 0.05 * (insulin - 1);
     const carbShare =
       id === "brain"
         ? 1
@@ -380,16 +420,23 @@ function metabolize(s: BodyState, dt: number) {
             0.08,
             0.9,
           );
-    const pools = [{ id: tissue.id, share: 1, c: tissue }];
-    const wanted = pools.map((p) => Math.min(p.c.amounts.glucose, ((demand * carbShare * p.share) / 746) * dt));
-    let carb = wanted.reduce((a, b) => a + b, 0),
+    // Working muscle burns mostly its own glycogen, so exercise does not drain blood sugar at once.
+    const carbNeed = ((demand * carbShare) / 746) * dt,
+      fromGlycogen = id === "muscle" ? Math.min(s.muscleGlycogen, carbNeed * clamp(exercise * 1.2, 0, 0.8)) : 0,
+      fromTissue = Math.min(tissue.amounts.glucose, carbNeed - fromGlycogen);
+    let carb = fromGlycogen + fromTissue,
       lipid = Math.min(tissue.amounts.lipids, ((demand * (1 - carbShare)) / 2010) * dt);
     // The brain bed has no fatty-acid oxidation; ketone support remains future work.
     const needed = carb * 746 + lipid * 2010,
       oxygenScale = needed > 0 ? Math.min(1, blood.amounts.oxygen / needed) : 1;
     carb *= oxygenScale;
     lipid *= oxygenScale;
-    pools.forEach((p, i) => transfer(s, p.id, "oxidized substrate", "glucose", wanted[i] * oxygenScale, "reaction"));
+    transfer(s, tissue.id, "oxidized substrate", "glucose", fromTissue * oxygenScale, "reaction");
+    if (fromGlycogen > 0) {
+      const burned = fromGlycogen * oxygenScale;
+      transfer(s, "muscle glycogen", "oxidized substrate", "glucose", burned, "reaction", s.muscleGlycogen);
+      s.muscleGlycogen -= burned;
+    }
     transfer(s, tissue.id, "oxidized substrate", "lipids", lipid, "reaction");
     const usedOxygen = transfer(
       s,
@@ -427,33 +474,41 @@ function circulationAndBreathing(s: BodyState, dt: number) {
     volume = clamp(s.plasma / 3000, 0.4, 1.5);
   const lowO2 = Math.max(0, 94 - s.saturation) / 25,
     baro = clamp((93 - s.map) / 75, -0.15, 0.4);
-  const sensory = i.sound * 0.2 + i.touch * 0.08 + i.pain * 0.6;
+  const p = s.params,
+    rest = restingSympathetic(s);
   s.sympathetic = relax(
     s.sympathetic,
-    clamp(0.15 + i.exercise * 0.65 + sensory + lowO2 + baro - i.sleep * 0.1, 0, 1.5),
+    clamp(rest + i.exercise * 0.65 + i.stress * 0.6 + lowO2 + baro - i.sleep * 0.1, 0, 1.5),
     dt,
     0.15,
   );
   s.parasympathetic = relax(
     s.parasympathetic,
-    clamp(0.7 + i.sleep * 0.25 - (s.sympathetic - 0.15) * 0.6 + i.smell * 0.1, 0.1, 1),
+    clamp(0.7 - 0.2 * p.autonomicTone + i.sleep * 0.25 - (s.sympathetic - rest) * 0.6, 0.1, 1),
     dt,
     0.3,
   );
+  // Sympathetic nerves (noradrenaline) act at once; adrenaline and thyroid hormone add through the blood.
+  const nerves = arousal(s);
   const hrTarget = clamp(
-    72 + 68 * i.exercise + 9 * (h.epinephrine - 1) + 6 * (h.norepinephrine - 1) - 12 * i.sleep,
-    40,
+    p.restingHeartRate +
+      68 * i.exercise +
+      9 * (h.epinephrine - 1) +
+      30 * nerves +
+      8 * (h.thyroid - 1) -
+      12 * i.sleep,
+    35,
     200,
   );
   s.heartRate = relax(s.heartRate, hrTarget, dt, 0.5);
   s.strokeVolume = relax(s.strokeVolume, clamp((70 + 35 * i.exercise) * volume, 30, 130), dt, 0.8);
   s.cardiacOutput = (s.heartRate * s.strokeVolume) / 1000;
   const resistance =
-    (17.46 * (1 + 0.065 * (h.norepinephrine - 1) + 0.045 * (h.angiotensin - 1))) /
+    (17.46 * (1 + 0.325 * nerves + 0.045 * (reninDrive(s) - 1))) /
     (1 + 2.2 * i.exercise);
   s.map = relax(s.map, 5 + s.cardiacOutput * resistance, dt, 0.25);
   s.oxygenDemand =
-    250 * (1 + 6 * i.exercise + 0.06 * (h.thyroid - 1) + 0.1 * Math.max(0, s.coreTemperature - 37));
+    250 * (1 + 6 * i.exercise + 0.25 * (h.thyroid - 1) + 0.1 * Math.max(0, s.coreTemperature - 37));
   const ventilationDrive = clamp(1 + 6 * i.exercise + (s.paCO2 - 40) * 0.04 + lowO2, 0.3, 9);
   s.respiratoryRate = relax(
     s.respiratoryRate,
@@ -468,10 +523,10 @@ function circulationAndBreathing(s: BodyState, dt: number) {
     0.3,
   );
   const alveolarVent = s.respiratoryRate * (s.tidalVolume - 150);
-  const co2Target = (40 * (s.oxygenDemand / 250) * 4200) / alveolarVent + (i.airCO2 - 0.0004) * 713;
+  const co2Target = (40 * (s.oxygenDemand / 250) * 4200) / alveolarVent;
   s.lungCO2Target = Math.max(0.1, 0.48 + (clamp(co2Target, 12, 100) - 40) * 0.006);
   const alveolarO2 = i.oxygen * 713 - clamp(co2Target, 12, 100) / 0.8;
-  s.lungOxygenTarget = oxygenContent(clamp(alveolarO2 - 2, 10, 210));
+  s.lungOxygenTarget = oxygenContent(clamp(alveolarO2 - 2, 10, 210)) * p.oxygenCarrying;
   s.inhaledOxygen += s.respiratoryRate * s.tidalVolume * i.oxygen * dt;
   updateFlows(s);
 }
@@ -541,8 +596,10 @@ function fluidsAndHeat(s: BodyState, dt: number) {
   const h = s.hormones,
     exercise = s.inputs.exercise;
   s.osmolarity = (2 * s.sodium) / ((s.plasma + s.interstitial) / 1000) + 5;
-  s.gfr = 120 * clamp(s.map / 93, 0.2, 1.3) * clamp(s.plasma / 3000, 0.4, 1.3);
-  s.urineRate = clamp((s.gfr / 120) * (1 / h.adh + 0.35 * Math.max(0, h.anp - 1)), 0.12, 15);
+  s.gfr = 120 * s.params.kidneyClearance * clamp(s.map / 93, 0.2, 1.3) * clamp(s.plasma / 3000, 0.4, 1.3);
+  // A stretched heart (ANP) and full vessels add a little urine beyond what ADH allows.
+  const stretch = Math.max(0, (s.plasma / 3000 - 1) * 15);
+  s.urineRate = clamp((s.gfr / 120) * (1 / h.adh + 0.35 * stretch), 0.12, 15);
   s.sweatRate =
     0.3 +
     exercise * 12 +
@@ -594,17 +651,18 @@ function fluidsAndHeat(s: BodyState, dt: number) {
   const heatTarget =
     37 + exercise * 0.75 + (s.inputs.temperature - 22) * 0.015 - 0.05 * (s.sweatRate - 0.3);
   s.coreTemperature = relax(s.coreTemperature, heatTarget, dt, 20);
-  s.calcium = relax(s.calcium, 2.4 + 0.025 * (h.pth - 1) + 0.015 * (h.calcitriol - 1), dt, 90);
   s.fatigue = clamp(s.fatigue + dt * (0.0008 + 0.015 * exercise - 0.02 * s.inputs.sleep), 0, 1);
 }
 
-function step(s: BodyState) {
-  const dt = 1 / 60,
+/** Longest step, s. Every process uses exact exponentials or bounded transfers, so five seconds is stable. */
+export const STEP = 5;
+function step(s: BodyState, seconds: number) {
+  const dt = seconds / 60,
     previousG = glucose(s),
     previousO2 = s.saturation;
   s.transport.fluxes = [];
+  s.transport.fluxSeconds = seconds;
   digest(s, dt);
-  syncNutrientTotals(s);
   updateHormones(s, dt);
   circulationAndBreathing(s, dt);
   transportSubstances(s, dt);
@@ -613,7 +671,7 @@ function step(s: BodyState) {
   distributeWaterVolumes(s);
   syncNutrientTotals(s);
   updateBloodMeasurements(s);
-  s.time++;
+  s.time += seconds;
   if (previousG <= 140 && glucose(s) > 140)
     receipt(
       s,
@@ -642,7 +700,11 @@ function step(s: BodyState) {
   }
 }
 
-/** Mutates only the supplied state. All advancing uses fixed one-second steps. */
+/**
+ * Mutates only the supplied state. Steps run on a fixed five-second grid of simulated time, cut
+ * short at queued events and at the end of the advance, so events apply at their exact second and
+ * any split of an advance into multiples of five seconds gives the same result.
+ */
 export function advance(s: BodyState, seconds: number) {
   if (!Number.isInteger(seconds) || seconds < 0 || seconds > 86400)
     throw new Error("Advance by an integer number of seconds between 0 and 86400.");
@@ -657,7 +719,8 @@ export function advance(s: BodyState, seconds: number) {
   };
   due();
   while (s.time < target) {
-    step(s);
+    const next = Math.min(target, (Math.floor(s.time / STEP) + 1) * STEP, s.queue[0]?.at ?? Infinity);
+    step(s, next - s.time);
     due();
   }
   return s;

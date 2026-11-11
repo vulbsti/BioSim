@@ -187,7 +187,7 @@ export default function YourData({
           </select>
           <button
             className="bio-primary"
-            onClick={() => onReplay(dayReplay(data, chosen, { insulinSensitivity: baseline.params.insulinSensitivity }))}
+            onClick={() => onReplay({ ...dayReplay(data, chosen, { insulinSensitivity: baseline.params.insulinSensitivity }), params: baseline.params })}
           >
             Replay this day
           </button>

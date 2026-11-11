@@ -77,7 +77,8 @@ self.onmessage = (e: MessageEvent) => {
         if (!scenario) throw new Error("Unknown scenario.");
         running = false;
         fraction = 0;
-        state = createBody();
+        // A replay starts from the person's own baseline.
+        state = createBody(m.params ?? {});
         for (const event of scenario.events) schedule(state, event.at, event.action, event.label);
         advance(state, 0);
         restart();

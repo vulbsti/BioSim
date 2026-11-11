@@ -31,6 +31,8 @@ Open http://localhost:3016.
 
 ## Check
 
+The verification gates (screenshots, direction checks, anatomy containment, screen budget) are in [verify/](verify/README.md): `npm run verify`.
+
 ```sh
 npm run check
 npm run test:physiology
