@@ -185,6 +185,16 @@ export const ANALYTES = {
     organs: ["liver"],
     says: "The body's iron store, which red blood cells are made from.",
   },
+  cpeptide: {
+    name: "Fasting C-peptide",
+    aliases: ["c-peptide", "c peptide", "fasting c-peptide", "c-peptide fasting"],
+    loinc: ["1986-9"],
+    unit: "ng/mL",
+    units: { "nmol/l": 3.02, "pmol/l": 0.00302, "µg/l": 1 },
+    typical: [0.8, 3.1],
+    organs: ["endocrine"],
+    says: "How much insulin your own pancreas makes. Injected insulin does not raise it, so it still speaks for the pancreas when someone takes insulin.",
+  },
 } satisfies Record<string, Analyte>;
 export type AnalyteId = keyof typeof ANALYTES;
 const IDS = Object.keys(ANALYTES) as AnalyteId[];

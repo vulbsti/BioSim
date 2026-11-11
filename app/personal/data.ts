@@ -27,7 +27,18 @@ export type SleepStage = "awake" | "light" | "deep" | "rem" | "asleep";
 export type Interval =
   | { kind: "sleep"; stage: SleepStage; start: number; end: number; source: string }
   | { kind: "workout"; activity: string; start: number; end: number; source: string }
-  | { kind: "meal"; start: number; end: number; source: string; carbs?: number };
+  | {
+      kind: "meal";
+      start: number;
+      end: number;
+      source: string;
+      /** Grams, when the person logged them. */
+      carbs?: number;
+      protein?: number;
+      fat?: number;
+      /** What was eaten, as logged ("Rice 150 g, Pork 50 g"). */
+      label?: string;
+    };
 
 /** One blood test result, already converted to the analyte's standard unit (see panel.ts). */
 export type LabResult = {

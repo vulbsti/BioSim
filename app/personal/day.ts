@@ -19,6 +19,10 @@ export type FoundMeal = {
   how: "logged" | "found";
   /** The rise in mg/dL that gave it away (found meals). */
   rise?: number;
+  /** Logged with the meal, when the person wrote them down. */
+  protein?: number;
+  fat?: number;
+  label?: string;
 };
 export type DayReplay = {
   scenario: Scenario;
@@ -119,20 +123,28 @@ export function dayReplay(data: PersonalData, day: number, { insulinSensitivity 
   const sim = (t: number) => Math.round((t - start) / 1000);
   const inDay = (t: number) => t >= start && t < end;
   const glucose = readings(data, "glucose", start - 2 * HOUR, end);
-  const logged = data.intervals.filter((i) => i.kind === "meal" && inDay(i.start));
+  const logged = data.intervals.filter((i): i is Extract<Interval, { kind: "meal" }> => i.kind === "meal" && inDay(i.start));
+  const found = findMeals(resample(glucose, start - 2 * HOUR, end), { insulinSensitivity }).filter((m) => inDay(m.at));
+  // A meal logged without a carb count (written down as "rice 150 g") takes its size from the rise
+  // the curve shows within 45 minutes of it; with neither, a typical 50 g.
+  const sized = (i: Extract<Interval, { kind: "meal" }>) => {
+    if (i.carbs !== undefined) return i.carbs;
+    const near = found.filter((m) => Math.abs(m.at - i.start) <= 45 * MIN).sort((a, b) => Math.abs(a.at - i.start) - Math.abs(b.at - i.start))[0];
+    return near?.carbs ?? 50;
+  };
   const meals: FoundMeal[] = logged.length
-    ? logged.map((i) => ({ at: i.start, carbs: (i.kind === "meal" && i.carbs) || 50, how: "logged" as const }))
-    : findMeals(resample(glucose, start - 2 * HOUR, end), { insulinSensitivity }).filter((m) => inDay(m.at));
+    ? logged.map((i) => ({ at: i.start, carbs: sized(i), how: "logged" as const, ...(i.protein !== undefined ? { protein: i.protein } : {}), ...(i.fat !== undefined ? { fat: i.fat } : {}), ...(i.label ? { label: i.label } : {}) }))
+    : found;
 
   const events: Scenario["events"] = [];
   const at = (t: number, label: string, action: Action) => events.push({ at: Math.max(0, sim(t)), label, action });
   const clock = (t: number) => new Date(t).toISOString().slice(11, 16);
   for (const m of meals) {
-    // A mixed meal in the same proportions as the "After a meal" scenario.
+    // Logged protein and fat are used as given; otherwise the proportions of the "After a meal" scenario.
     const c = m.carbs;
-    at(m.at, `${m.how === "logged" ? "Meal" : "Meal found"} at ${clock(m.at)}, about ${c} g carbs`, {
+    at(m.at, `${m.how === "logged" ? "Meal" : "Meal found"} at ${clock(m.at)}, about ${c} g carbs${m.label ? ` (${m.label})` : ""}`, {
       kind: "meal",
-      meal: { carbs: c, protein: Math.round(c / 3), fat: Math.round(c * 0.27), water: 300, sodium: 600 },
+      meal: { carbs: c, protein: m.protein ?? Math.round(c / 3), fat: m.fat ?? Math.round(c * 0.27), water: 300, sodium: 600 },
     });
   }
   for (const b of sleepBlocks(data.intervals)) {

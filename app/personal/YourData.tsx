@@ -1,9 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ClipboardList, Upload } from "lucide-react";
 import { days, merge, type PersonalData } from "./data";
 import { importFile, parseText } from "./import";
 import { personalBaseline } from "./baseline";
 import { dayReplay, type DayReplay } from "./day";
+import { unpack, type PersonFile, type PersonSummary } from "./people";
+
+const PEOPLE = "/samples/people/";
 
 const dayName = (t: number) =>
   new Date(t).toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
@@ -23,7 +26,30 @@ export default function YourData({
     [busy, setBusy] = useState(false),
     [pasting, setPasting] = useState(false),
     [paste, setPaste] = useState(""),
-    [day, setDay] = useState<number | null>(null);
+    [day, setDay] = useState<number | null>(null),
+    [people, setPeople] = useState<PersonSummary[]>([]),
+    [sample, setSample] = useState<PersonSummary | null>(null);
+  useEffect(() => {
+    fetch(`${PEOPLE}index.json`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then(setPeople)
+      .catch(() => setPeople([]));
+  }, []);
+  /** A real person's published data replaces whatever is loaded. */
+  const pick = async (id: string) => {
+    const s = people.find((p) => p.id === id) ?? null;
+    setDay(null);
+    setWarnings([]);
+    setSample(s);
+    if (!s) return onData({ series: [], intervals: [], labs: [] });
+    setBusy(true);
+    try {
+      onData(unpack((await (await fetch(`${PEOPLE}${s.id}.json`)).json()) as PersonFile));
+    } catch {
+      setWarnings([`${s.name} could not be loaded.`]);
+    }
+    setBusy(false);
+  };
   const add = async (files: FileList | null) => {
     if (!files?.length) return;
     setBusy(true);
@@ -48,10 +74,12 @@ export default function YourData({
     onData(merge(data, r));
     if (r.labs.length) (setPaste(""), setPasting(false));
   };
+  // Days to replay: glucose days, or for a band alone the days its heart rate covers.
   const glucoseDays = days(data, "glucose", 5 * 60_000).filter((d) => d.coverage > 0.3);
+  const replayDays = glucoseDays.length ? glucoseDays : days(data, "heartRate", 5 * 60_000).filter((d) => d.coverage > 0.3);
   // The latest well-covered day, unless one was picked.
-  const chosen = day ?? [...glucoseDays].reverse().find((d) => d.coverage > 0.8)?.day ?? glucoseDays.at(-1)?.day ?? null;
-  const baseline = personalBaseline(data);
+  const chosen = day ?? [...replayDays].reverse().find((d) => d.coverage > 0.8)?.day ?? replayDays.at(-1)?.day ?? null;
+  const baseline = personalBaseline(data, sample?.profile);
   const kinds = new Set(data.series.map((s) => s.kind));
   const band = [
     kinds.has("heartRate") || kinds.has("restingHeartRate") ? "heart rate" : "",
@@ -70,6 +98,33 @@ export default function YourData({
   return (
     <>
       <h3>Your data</h3>
+      {people.length > 0 && (
+        <div className="bio-row">
+          <select aria-label="Sample person" value={sample?.id ?? ""} disabled={busy} onChange={(e) => pick(e.target.value)}>
+            <option value="">Try a real person's published data…</option>
+            {[...new Set(people.map((p) => p.group))].map((g) => (
+              <optgroup key={g} label={g}>
+                {people
+                  .filter((p) => p.group === g)
+                  .map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+              </optgroup>
+            ))}
+          </select>
+        </div>
+      )}
+      {sample && (
+        <p className="bio-note bio-credit">
+          {sample.about}{" "}
+          <a href={sample.credit.url} target="_blank" rel="noreferrer">
+            {sample.credit.dataset}
+          </a>
+          , {sample.credit.licence}.
+        </p>
+      )}
       <div className="bio-row">
         <button className="bio-primary" disabled={busy} onClick={() => input.current?.click()}>
           <Upload size={14} /> {busy ? "Reading…" : "Add a file"}
@@ -121,10 +176,10 @@ export default function YourData({
           {w}
         </p>
       ))}
-      {glucoseDays.length > 0 && chosen !== null && (
+      {replayDays.length > 0 && chosen !== null && (
         <div className="bio-row">
           <select aria-label="Day to replay" value={chosen} onChange={(e) => setDay(Number(e.target.value))}>
-            {glucoseDays.map((d) => (
+            {replayDays.map((d) => (
               <option key={d.day} value={d.day}>
                 {dayName(d.day)}
               </option>

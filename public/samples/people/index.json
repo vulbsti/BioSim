@@ -1,0 +1,378 @@
+[
+ {
+  "id": "bigideas-001",
+  "name": "BIG IDEAs participant 1",
+  "group": "Healthy",
+  "about": "Woman. Wore a Dexcom G6 and a research wristband for about ten days and logged food in an app.",
+  "profile": {
+   "sex": "female"
+  },
+  "has": [
+   "glucose sensor",
+   "heart rate",
+   "logged meals",
+   "blood tests"
+  ],
+  "days": 10,
+  "credit": {
+   "dataset": "BIG IDEAs Lab Glycemic Variability and Wearable Device Data 1.1.3 (PhysioNet)",
+   "licence": "ODC-By 1.0",
+   "url": "https://doi.org/10.13026/aw6y-fc44",
+   "cite": "Cho P, Kim J, Bent B, Dunn J. BIG IDEAs Lab Glycemic Variability and Wearable Device Data (v1.1.3). PhysioNet, 2026. Bent B et al. npj Digital Medicine 4, 89 (2021)."
+  }
+ },
+ {
+  "id": "cgmacros-004",
+  "name": "CGMacros participant 4",
+  "group": "Healthy",
+  "about": "Woman, 33, BMI 42. Wore two glucose sensors and a Fitbit for about ten days and photographed every meal; carbs, protein and fat were estimated from the photos.",
+  "profile": {
+   "age": 33,
+   "sex": "female"
+  },
+  "has": [
+   "glucose sensor",
+   "heart rate",
+   "logged meals",
+   "activity",
+   "blood tests"
+  ],
+  "days": 11,
+  "credit": {
+   "dataset": "CGMacros 1.0.0 (PhysioNet)",
+   "licence": "CC BY-NC-SA 4.0",
+   "url": "https://doi.org/10.13026/3z8q-x658",
+   "cite": "Gutierrez-Osuna R, Kerr D, Mortazavi B, Das A. CGMacros: a scientific dataset for personalized nutrition and diet monitoring (v1.0.0). PhysioNet, 2025."
+  }
+ },
+ {
+  "id": "cgmacros-031",
+  "name": "CGMacros participant 31",
+  "group": "Healthy",
+  "about": "Woman, 46, BMI 23. Wore two glucose sensors and a Fitbit for about ten days and photographed every meal; carbs, protein and fat were estimated from the photos.",
+  "profile": {
+   "age": 46,
+   "sex": "female"
+  },
+  "has": [
+   "glucose sensor",
+   "heart rate",
+   "logged meals",
+   "blood tests"
+  ],
+  "days": 11,
+  "credit": {
+   "dataset": "CGMacros 1.0.0 (PhysioNet)",
+   "licence": "CC BY-NC-SA 4.0",
+   "url": "https://doi.org/10.13026/3z8q-x658",
+   "cite": "Gutierrez-Osuna R, Kerr D, Mortazavi B, Das A. CGMacros: a scientific dataset for personalized nutrition and diet monitoring (v1.0.0). PhysioNet, 2025."
+  }
+ },
+ {
+  "id": "bigideas-003",
+  "name": "BIG IDEAs participant 3",
+  "group": "Prediabetes",
+  "about": "Woman. Wore a Dexcom G6 and a research wristband for about ten days and logged food in an app.",
+  "profile": {
+   "sex": "female"
+  },
+  "has": [
+   "glucose sensor",
+   "heart rate",
+   "logged meals",
+   "blood tests"
+  ],
+  "days": 9,
+  "credit": {
+   "dataset": "BIG IDEAs Lab Glycemic Variability and Wearable Device Data 1.1.3 (PhysioNet)",
+   "licence": "ODC-By 1.0",
+   "url": "https://doi.org/10.13026/aw6y-fc44",
+   "cite": "Cho P, Kim J, Bent B, Dunn J. BIG IDEAs Lab Glycemic Variability and Wearable Device Data (v1.1.3). PhysioNet, 2026. Bent B et al. npj Digital Medicine 4, 89 (2021)."
+  }
+ },
+ {
+  "id": "cgmacros-041",
+  "name": "CGMacros participant 41",
+  "group": "Prediabetes",
+  "about": "Woman, 58, BMI 28. Wore two glucose sensors and a Fitbit for about ten days and photographed every meal; carbs, protein and fat were estimated from the photos.",
+  "profile": {
+   "age": 58,
+   "sex": "female"
+  },
+  "has": [
+   "glucose sensor",
+   "heart rate",
+   "logged meals",
+   "activity",
+   "blood tests"
+  ],
+  "days": 11,
+  "credit": {
+   "dataset": "CGMacros 1.0.0 (PhysioNet)",
+   "licence": "CC BY-NC-SA 4.0",
+   "url": "https://doi.org/10.13026/3z8q-x658",
+   "cite": "Gutierrez-Osuna R, Kerr D, Mortazavi B, Das A. CGMacros: a scientific dataset for personalized nutrition and diet monitoring (v1.0.0). PhysioNet, 2025."
+  }
+ },
+ {
+  "id": "cgmacros-043",
+  "name": "CGMacros participant 43",
+  "group": "Prediabetes",
+  "about": "Woman, 45, BMI 49. Wore two glucose sensors and a Fitbit for about ten days and photographed every meal; carbs, protein and fat were estimated from the photos.",
+  "profile": {
+   "age": 45,
+   "sex": "female"
+  },
+  "has": [
+   "glucose sensor",
+   "heart rate",
+   "logged meals",
+   "activity",
+   "blood tests"
+  ],
+  "days": 11,
+  "credit": {
+   "dataset": "CGMacros 1.0.0 (PhysioNet)",
+   "licence": "CC BY-NC-SA 4.0",
+   "url": "https://doi.org/10.13026/3z8q-x658",
+   "cite": "Gutierrez-Osuna R, Kerr D, Mortazavi B, Das A. CGMacros: a scientific dataset for personalized nutrition and diet monitoring (v1.0.0). PhysioNet, 2025."
+  }
+ },
+ {
+  "id": "cgmacros-005",
+  "name": "CGMacros participant 5",
+  "group": "Type 2 diabetes",
+  "about": "Woman, 51, BMI 31. Wore two glucose sensors and a Fitbit for about ten days and photographed every meal; carbs, protein and fat were estimated from the photos.",
+  "profile": {
+   "age": 51,
+   "sex": "female"
+  },
+  "has": [
+   "glucose sensor",
+   "heart rate",
+   "logged meals",
+   "activity",
+   "blood tests"
+  ],
+  "days": 11,
+  "credit": {
+   "dataset": "CGMacros 1.0.0 (PhysioNet)",
+   "licence": "CC BY-NC-SA 4.0",
+   "url": "https://doi.org/10.13026/3z8q-x658",
+   "cite": "Gutierrez-Osuna R, Kerr D, Mortazavi B, Das A. CGMacros: a scientific dataset for personalized nutrition and diet monitoring (v1.0.0). PhysioNet, 2025."
+  }
+ },
+ {
+  "id": "cgmacros-014",
+  "name": "CGMacros participant 14",
+  "group": "Type 2 diabetes",
+  "about": "Man, 53, BMI 28. Wore two glucose sensors and a Fitbit for about ten days and photographed every meal; carbs, protein and fat were estimated from the photos.",
+  "profile": {
+   "age": 53,
+   "sex": "male"
+  },
+  "has": [
+   "glucose sensor",
+   "heart rate",
+   "logged meals",
+   "activity",
+   "blood tests"
+  ],
+  "days": 11,
+  "credit": {
+   "dataset": "CGMacros 1.0.0 (PhysioNet)",
+   "licence": "CC BY-NC-SA 4.0",
+   "url": "https://doi.org/10.13026/3z8q-x658",
+   "cite": "Gutierrez-Osuna R, Kerr D, Mortazavi B, Das A. CGMacros: a scientific dataset for personalized nutrition and diet monitoring (v1.0.0). PhysioNet, 2025."
+  }
+ },
+ {
+  "id": "shanghai-2000",
+  "name": "Shanghai patient 2000",
+  "group": "Type 2 diabetes",
+  "about": "Man, 57, type 2 diabetes for 25.0 years, on insulin. Wore a glucose sensor (15-minute readings) for two weeks; meals were written down without carb counts.",
+  "profile": {
+   "age": 57,
+   "sex": "male"
+  },
+  "has": [
+   "glucose sensor",
+   "logged meals",
+   "blood tests"
+  ],
+  "days": 15,
+  "credit": {
+   "dataset": "Shanghai T1DM and T2DM datasets (figshare 21600933 v5)",
+   "licence": "CC BY 4.0",
+   "url": "https://doi.org/10.1038/s41597-023-01940-7",
+   "cite": "Zhao Q, Zhu J, Shen X, et al. Chinese diabetes datasets for data-driven machine learning. Scientific Data 10, 35 (2023)."
+  }
+ },
+ {
+  "id": "shanghai-2015",
+  "name": "Shanghai patient 2015",
+  "group": "Type 2 diabetes",
+  "about": "Man, 55, type 2 diabetes for 4.0 years, on insulin. Wore a glucose sensor (15-minute readings) for two weeks; meals were written down without carb counts.",
+  "profile": {
+   "age": 55,
+   "sex": "male"
+  },
+  "has": [
+   "glucose sensor",
+   "logged meals",
+   "blood tests"
+  ],
+  "days": 15,
+  "credit": {
+   "dataset": "Shanghai T1DM and T2DM datasets (figshare 21600933 v5)",
+   "licence": "CC BY 4.0",
+   "url": "https://doi.org/10.1038/s41597-023-01940-7",
+   "cite": "Zhao Q, Zhu J, Shen X, et al. Chinese diabetes datasets for data-driven machine learning. Scientific Data 10, 35 (2023)."
+  }
+ },
+ {
+  "id": "shanghai-2016",
+  "name": "Shanghai patient 2016",
+  "group": "Type 2 diabetes",
+  "about": "Woman, 56, type 2 diabetes for 1.0 years. Wore a glucose sensor (15-minute readings) for two weeks; meals were written down without carb counts.",
+  "profile": {
+   "age": 56,
+   "sex": "female"
+  },
+  "has": [
+   "glucose sensor",
+   "logged meals",
+   "blood tests"
+  ],
+  "days": 15,
+  "credit": {
+   "dataset": "Shanghai T1DM and T2DM datasets (figshare 21600933 v5)",
+   "licence": "CC BY 4.0",
+   "url": "https://doi.org/10.1038/s41597-023-01940-7",
+   "cite": "Zhao Q, Zhu J, Shen X, et al. Chinese diabetes datasets for data-driven machine learning. Scientific Data 10, 35 (2023)."
+  }
+ },
+ {
+  "id": "shanghai-1003",
+  "name": "Shanghai patient 1003",
+  "group": "Type 1 diabetes",
+  "about": "Man, 37, type 1 diabetes for 0.08333333333333333 years, on insulin. Wore a glucose sensor (15-minute readings) for two weeks; meals were written down without carb counts.",
+  "profile": {
+   "age": 37,
+   "sex": "male"
+  },
+  "has": [
+   "glucose sensor",
+   "logged meals",
+   "blood tests"
+  ],
+  "days": 15,
+  "credit": {
+   "dataset": "Shanghai T1DM and T2DM datasets (figshare 21600933 v5)",
+   "licence": "CC BY 4.0",
+   "url": "https://doi.org/10.1038/s41597-023-01940-7",
+   "cite": "Zhao Q, Zhu J, Shen X, et al. Chinese diabetes datasets for data-driven machine learning. Scientific Data 10, 35 (2023)."
+  }
+ },
+ {
+  "id": "shanghai-1007",
+  "name": "Shanghai patient 1007",
+  "group": "Type 1 diabetes",
+  "about": "Man, 40, type 1 diabetes for 3.0 years, on insulin. Wore a glucose sensor (15-minute readings) for two weeks; meals were written down without carb counts.",
+  "profile": {
+   "age": 40,
+   "sex": "male"
+  },
+  "has": [
+   "glucose sensor",
+   "logged meals",
+   "blood tests"
+  ],
+  "days": 15,
+  "credit": {
+   "dataset": "Shanghai T1DM and T2DM datasets (figshare 21600933 v5)",
+   "licence": "CC BY 4.0",
+   "url": "https://doi.org/10.1038/s41597-023-01940-7",
+   "cite": "Zhao Q, Zhu J, Shen X, et al. Chinese diabetes datasets for data-driven machine learning. Scientific Data 10, 35 (2023)."
+  }
+ },
+ {
+  "id": "shanghai-1012",
+  "name": "Shanghai patient 1012",
+  "group": "Type 1 diabetes",
+  "about": "Woman, 53, type 1 diabetes for 0.038356164383561646 years, on insulin. Wore a glucose sensor (15-minute readings) for two weeks; meals were written down without carb counts.",
+  "profile": {
+   "age": 53,
+   "sex": "female"
+  },
+  "has": [
+   "glucose sensor",
+   "logged meals",
+   "blood tests"
+  ],
+  "days": 14,
+  "credit": {
+   "dataset": "Shanghai T1DM and T2DM datasets (figshare 21600933 v5)",
+   "licence": "CC BY 4.0",
+   "url": "https://doi.org/10.1038/s41597-023-01940-7",
+   "cite": "Zhao Q, Zhu J, Shen X, et al. Chinese diabetes datasets for data-driven machine learning. Scientific Data 10, 35 (2023)."
+  }
+ },
+ {
+  "id": "fitbit-1",
+  "name": "Fitbit user 1",
+  "group": "Band only",
+  "about": "Shared a month of Fitbit data in a 2016 survey: heart rate, steps and sleep, but no glucose or blood tests.",
+  "profile": {},
+  "has": [
+   "heart rate",
+   "steps",
+   "sleep"
+  ],
+  "days": 30,
+  "credit": {
+   "dataset": "Crowd-sourced Fitbit datasets 03.12.2016-05.12.2016 (Zenodo 53894)",
+   "licence": "CC BY 4.0",
+   "url": "https://doi.org/10.5281/zenodo.53894",
+   "cite": "Furberg R, Brinton J, Keating M, Ortiz A. Crowd-sourced Fitbit datasets 03.12.2016-05.12.2016. Zenodo, 2016."
+  }
+ },
+ {
+  "id": "fitbit-2",
+  "name": "Fitbit user 2",
+  "group": "Band only",
+  "about": "Shared a month of Fitbit data in a 2016 survey: heart rate, steps and sleep, but no glucose or blood tests.",
+  "profile": {},
+  "has": [
+   "heart rate",
+   "steps",
+   "sleep"
+  ],
+  "days": 31,
+  "credit": {
+   "dataset": "Crowd-sourced Fitbit datasets 03.12.2016-05.12.2016 (Zenodo 53894)",
+   "licence": "CC BY 4.0",
+   "url": "https://doi.org/10.5281/zenodo.53894",
+   "cite": "Furberg R, Brinton J, Keating M, Ortiz A. Crowd-sourced Fitbit datasets 03.12.2016-05.12.2016. Zenodo, 2016."
+  }
+ },
+ {
+  "id": "fitbit-3",
+  "name": "Fitbit user 3",
+  "group": "Band only",
+  "about": "Shared a month of Fitbit data in a 2016 survey: heart rate, steps and sleep, but no glucose or blood tests.",
+  "profile": {},
+  "has": [
+   "heart rate",
+   "steps",
+   "sleep"
+  ],
+  "days": 31,
+  "credit": {
+   "dataset": "Crowd-sourced Fitbit datasets 03.12.2016-05.12.2016 (Zenodo 53894)",
+   "licence": "CC BY 4.0",
+   "url": "https://doi.org/10.5281/zenodo.53894",
+   "cite": "Furberg R, Brinton J, Keating M, Ortiz A. Crowd-sourced Fitbit datasets 03.12.2016-05.12.2016. Zenodo, 2016."
+  }
+ }
+]

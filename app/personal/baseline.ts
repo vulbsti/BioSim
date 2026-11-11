@@ -29,6 +29,10 @@ export const TYPICAL: PersonalBaseline = {
   restingHeartRate: 72,
   autonomicTone: 0,
 };
+/** Middle HOMA-IR of adults with normal HbA1c (NHANES 2017-18 fasting sample). */
+export const TYPICAL_HOMA_IR = 2;
+/** Middle HOMA-B (%) of the same adults. */
+export const TYPICAL_HOMA_B = 80;
 export type Profile = { age?: number; sex?: "female" | "male" };
 
 /** Why a parameter has the value it has, in words a person can read, and what it came from. */
@@ -75,8 +79,13 @@ export function personalBaseline(data: PersonalData, profile: Profile = {}): Bas
   if (glucose !== undefined && insulin !== undefined) {
     const homaIR = (glucose * insulin) / 405;
     const homaB = (20 * insulin) / Math.max(0.5, glucose / 18.016 - 3.5);
-    params.insulinSensitivity = round(clamp(1 / homaIR, 0.2, 2.5));
-    params.betaCellResponse = round(clamp(homaB / 100, 0.2, 3));
+    // HOMA-IR 1 is a lean young adult; the middle of adults with normal HbA1c is about 2 (NHANES
+    // 2017-18, checked in tests/published.test.ts), so 2 reads as typical. Clamp studies find
+    // measured sensitivity falls more gently than HOMA-IR rises (people with type 2 take up about
+    // half the sugar), hence the 0.6 power.
+    params.insulinSensitivity = round(clamp((homaIR / TYPICAL_HOMA_IR) ** -0.6, 0.25, 2.5));
+    // HOMA-B, likewise read against adults with normal HbA1c (middle about 80%, not the model's 100%).
+    params.betaCellResponse = round(clamp(homaB / TYPICAL_HOMA_B, 0.2, 3));
     reasons.insulinSensitivity = {
       why: params.insulinSensitivity < 0.8
         ? "Your fasting insulin is high for your fasting sugar, so muscles and fat are drawn as slow to take up sugar."
@@ -87,12 +96,28 @@ export function personalBaseline(data: PersonalData, profile: Profile = {}): Bas
       confidence: "good",
     };
     reasons.betaCellResponse = {
-      why: `Your pancreas makes about ${Math.round(homaB)}% of the typical insulin for your fasting sugar.`,
+      why: `Your pancreas makes about ${Math.round(params.betaCellResponse * 100)}% of the typical insulin for your fasting sugar.`,
       from: [name("glucose"), name("insulin")],
       confidence: "good",
     };
-  } else if (a1c !== undefined) {
-    params.insulinSensitivity = round(clamp(1 - (a1c - 5.3) * 0.35, 0.3, 1.3));
+  } else {
+    // C-peptide speaks for the pancreas when insulin was not measured, or is injected.
+    const cp = v("cpeptide");
+    if (cp !== undefined) {
+      params.betaCellResponse = round(clamp(cp / 1.8, 0.2, 3));
+      reasons.betaCellResponse = {
+        why: params.betaCellResponse < 0.5
+          ? "Your C-peptide is low: your pancreas makes little insulin of its own, so sugar stays high after meals unless insulin is given."
+          : `Your pancreas makes about ${Math.round(params.betaCellResponse * 100)}% of the typical insulin.`,
+        from: [name("cpeptide")],
+        confidence: "rough",
+      };
+    }
+    // With a pancreas that makes little insulin, a high HbA1c is explained by that, not by slow muscles.
+    if (a1c !== undefined && !(cp !== undefined && params.betaCellResponse < 0.5)) sugarFromA1c(a1c);
+  }
+  function sugarFromA1c(a1c: number) {
+    params.insulinSensitivity = round(clamp(1 - (a1c - 5.3) * 0.25, 0.4, 1.2));
     reasons.insulinSensitivity = {
       why: a1c > 5.6
         ? "Your average sugar over recent months is above typical, so sugar is drawn as clearing a little slowly. A fasting insulin test would make this firmer."

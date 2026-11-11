@@ -113,8 +113,8 @@ test('the baseline leans the way the numbers lean, and says why',()=>{
  let data=merge(emptyData(),parsePanelText(fixture('panel.txt')));
  data=merge(data,parseAppleHealth(fixture('apple-export.xml')));
  const b=personalBaseline(data,{age:36,sex:'female'});
- // HOMA-IR 97.3*14/405 = 3.4: insulin works at about a third of typical; the pancreas works harder.
- near(b.params.insulinSensitivity,0.3,0.01);assert.ok(b.params.betaCellResponse>1.3);
+ // HOMA-IR 97.3*14/405 = 3.4 against a typical 2: insulin works at about three quarters of typical; the pancreas works harder.
+ near(b.params.insulinSensitivity,0.73,0.01);assert.ok(b.params.betaCellResponse>1.3);
  assert.match(b.reasons.insulinSensitivity!.why,/slow to take up sugar/);assert.deepEqual(b.reasons.insulinSensitivity!.from,['Fasting glucose','Fasting insulin']);
  near(b.params.metabolicRate,0.97,0.03);near(b.params.kidneyClearance,0.9,1e-9);near(b.params.oxygenCarrying,0.91,0.01);
  assert.equal(b.params.restingHeartRate,56);assert.ok(b.params.autonomicTone<0,'HRV above typical leans calm');
@@ -123,7 +123,10 @@ test('the baseline leans the way the numbers lean, and says why',()=>{
  assert.ok(!b.missing.includes('liver')&&b.missing.includes('skin'));
  // Without insulin, HbA1c alone gives a rough answer.
  const rough=personalBaseline(merge(emptyData(),parsePanelText('HbA1c 6.4 %')));
- assert.ok(rough.params.insulinSensitivity<0.7);assert.equal(rough.reasons.insulinSensitivity!.confidence,'rough');
+ assert.ok(rough.params.insulinSensitivity<0.8);assert.equal(rough.reasons.insulinSensitivity!.confidence,'rough');
+ // C-peptide speaks for the pancreas when insulin is injected; then a high HbA1c is not put on the muscles.
+ const t1=personalBaseline(merge(emptyData(),parsePanelText('HbA1c 8.1 %\nC-peptide 0.10 nmol/L')));
+ assert.equal(t1.params.betaCellResponse,0.2);assert.equal(t1.params.insulinSensitivity,1);assert.match(t1.reasons.betaCellResponse!.why,/little insulin of its own/);
  // Resting heart rate comes from the lowest night heart rates when the band gives no resting value.
  const hr=Array.from({length:60},(_,i)=>({t:Date.UTC(2026,9,1,0,i*5),v:50+(i%7)}));
  assert.equal(personalBaseline({series:[{kind:'heartRate',source:'x',points:hr}],intervals:[],labs:[]}).params.restingHeartRate,50);
