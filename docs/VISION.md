@@ -1,60 +1,8 @@
-# BioSim reset: review, vision, plan and verification
+# BioSim vision and verification gates
 
-20 October 2026. Reviewed against `simulate` at 032b4de (PR 8 merged). The local knee-jerk commit 50838d3 is not on GitHub and was judged from your screenshots only.
+> **Direction changed on 2026-11-19.** BioSim is becoming the *visualiser*: it draws a validated "body state" document (written by a separate analyser, not in this repo) on the 3D body, with dials. Sections 4 and 5 below describe the October plan (measurements in, simulation out) and are kept until the visualiser spec replaces them. Section 6, the verification gates, still applies to every change.
 
----
-
-## 1. The short answer: why it feels like slop
-
-You are right. The reasons are concrete, and five of them explain almost everything.
-
-1. **There is no "you" in it.** Nothing accepts a blood test, a CGM trace, a fitness band export, EEG or a microbiome report. The only inputs are a hand-typed meal, gas and temperature sliders, and six "senses" sliders (light, sound, touch, pain, aroma, sleep). The body is an abstract reference adult, so nothing on screen can be about the person looking at it.
-2. **Most of the screen is the engine's debugger, not the body.** About 60% of the visible UI is engineering scaffolding: conservation residuals ("Water residual 1.1e-10 mL"), a compartment table, a log of your own clicks, an update-rule equation, a vessel-mesh audit. These were built so the code could prove its bookkeeping. A person cannot read them, and none of them touch the 3D body.
-3. **The hormones are numbers that do not move.** All 31 hormones are one body-wide number each ("1.01×" of an invented baseline). At rest they sit at about 1.0. Thirteen of them (the whole reproductive axis, CRH, ACTH, TRH, TSH, GH, IGF-1, ghrelin, melatonin) affect nothing else in the model. So the Hormones tab is a wall of 1.0s.
-4. **Zooming in cannot show a hormone, by construction.** The vessel "Dive" draws molecules at their true count. Insulin is about one molecule per 3 µm cube of blood, and a molecule is only drawn once it is 6 pixels wide, which needs a view under 0.7 µm across. Expected insulin molecules on screen at that zoom: about 0.01. Epinephrine: 0.0002. The dive is physically honest and therefore useless for showing hormone action. The hormone colour lens is a static tint on a few glands with a minimum strength, so it looks the same at rest and after a meal.
-5. **Islands that look connected but are not.** There are four separate apps behind the main one (molecular lab, tissue explorer, circulation pilot, 3D atlas), two blood networks, two insulin models, two muscle glucose paths, and a brain "map" that is a flat node diagram whose flows are just the body's brain share redistributed by invented resistances. The atlas has no spinal cord and no peripheral nerves, so the "Nerves" view promised things that did not exist, and the knee reflex nerves were drawn from landmarks on top of the body.
-
-What is genuinely good and worth keeping: the 3D body itself, the substance colour lenses (glucose, oxygen and so on, which really follow the simulation), the "This meal" tracer, the heart chambers and valves (driven by a real four-chamber solver), breathing and gut motion scaled by the model, blood beads that follow organ flows, and the mass-conserving transport core underneath.
-
----
-
-## 2. What those tabs actually were
-
-You asked what Hormones, Transport and Event ledger do. Plainly:
-
-| Tab or panel | What it really is | Verdict |
-|---|---|---|
-| **Hormones** | 31 cards, each a number "× baseline". Clicking one shows its secretion and clearance rate and the equation `dH/dt = secretion − H/τ`. Values are relative activities invented for the model, not lab concentrations. | Delete. Hormones come back as things you see moving on the body (section 5.4). |
-| **Transport** | A table of the 23 internal pools (arterial blood, portal blood, liver tissue, ...) with grams and mg/dL of one substance, plus a mass-balance residual. It is the engine's accounting sheet. | Delete. The same numbers already colour the body through the lenses. |
-| **Event ledger** | A timestamped list of the buttons you pressed ("Custom meal at 00:12"). | Delete. |
-| **Brain vessels** | A flat Circle of Willis diagram: 34 nodes, 55 vessels, pressures from a resistance network with made-up resistances, scaled to whatever brain flow the body already chose. Plus a "source vessel coverage" audit of mesh names. | Delete. Replaced by a real 3D brain (section 5.3). |
-| Experimental physical meal pathway | A developer switch for an insulin transport plus receptor-signalling chain (Sedaghat model, GLUT4), with "Sensitivity: Off · legacy behaviour" and "Refine 1% as radial shells". Off by default. | Delete. |
-| Fork a comparison | Copies the body at this moment and runs the copy without your later inputs, drawn as a dashed line on the chart. | Delete. |
-| Apply input now / in 5 min / 15 / 60, Upcoming inputs | A scheduling queue for inputs. Meaningless once inputs are your real data. | Delete. |
-| Senses tab | Light, sound, touch, pain, aroma, sleep sliders. The note under it admits perception is not simulated. | Delete. |
-| Transport accounting badge, model dialog residuals, footer "0.3 experimental pathway" | Proof that the bookkeeping balances. Reads as fake reassurance to a user. | Delete. |
-| Load run / Export run | Save and reload the engine's JSON. Developer feature. | Delete for now. |
-| Live organ readouts under the body | Ten buttons, each with one number, the hormone ones invented ("CCK 1.10×"). | Delete; the selected-organ card replaces them. |
-| Molecular lab, Explore tissue in 3D, Trace hormone circulation, 3D anatomy (separate pages) | Separate apps: receptor binding sliders, a sarcomere explorer, a 10-compartment insulin circuit, and the old atlas viewer. None of them read your body's state except the tissue page in a narrow way. | Delete all four. Zooming into tissue returns later inside the body view. |
-
----
-
-## 3. What I deleted and what I kept (draft PR, nothing merged)
-
-Branch `claude/project-thread-iyxw9i`, draft PR against `simulate`. See section 8 for how to look at it.
-
-**Deleted**
-- Pages: molecular lab, tissue explorer, circulation pilot, separate atlas page (`app/molecular`, `app/tissue`, `app/circulation`, `app/page.tsx`, `app/scene.tsx`).
-- Panels: Brain vessels, Hormones, Transport, Event ledger, the senses tab, experimental pathway, fork, schedule queue, residual badges, export and load.
-- Engine islands: the opt-in meal pathway (`multiscale-meal.ts`), the placeholder beta cell, Sedaghat signalling, the 34-node brain solver, the generic chemical kernel (`core/`), recording import and export.
-- Repo weight: the docs for the old multiscale plan and pilots, `validation/` (12 MB of receipts), pilot scripts and tests, unused UI components and npm packages.
-
-**Kept**
-- The 3D body and everything on it that follows the simulation (lenses, meal tracer, meal route, heart, breathing, gut, bladder, blood beads, vessel dive).
-- The transport and physiology engine, timeline look-back, and three plain starting situations: after a meal, exercise and recovery, drinking water.
-- The body is now the whole screen. Controls float over it: a top bar with time, play and skip-ahead, the vital signs just under it (click one to watch that system), a small "Try something" panel on the left, a plain-language card for whichever organ you click on the right, and a chart you can open at the bottom. A full-screen button hides the browser chrome too.
-
-Hormones are still computed by the engine for now, because insulin, glucagon, cortisol, adrenaline, ADH and aldosterone drive real things in it. Pruning the 13 dead ones is step 1 of the plan.
+The October review that led to this plan (why the old app felt like slop, what was deleted in PR #9, the decisions it asked for) is in git history; those decisions have been made.
 
 ---
 
@@ -205,19 +153,3 @@ Standing budgets, checked on every PR:
 - **No developer tooling in the product UI** (residuals, ledgers, exports, solver switches).
 - **Every PR lists what it deleted.** A PR that adds a feature should look for one to remove.
 - **Docs are short and current.** One README, this vision, one model note. Old plans are deleted, not archived; git keeps history.
-
----
-
-## 7. Decisions for you
-
-1. **Which data first.** My default: CGM + blood panel + fitness band (steps 3 to 5) before EEG and microbiome, because the engine can already carry glucose, insulin and the heart, and these are the inputs most people have.
-2. **Nerves and cord source.** My default: build the brain view from the atlas meshes now (step 6), and use Z-Anatomy for cord and nerves if CC BY-SA is acceptable to you. Otherwise I author registered centrelines, which is slower.
-3. **The knee-jerk reflex.** It is being reworked in its own thread (nerves now routed inside psoas and iliacus into the quadriceps, still only on your machine). It is not part of this cleanup branch. Before it merges it should pass both gates in section 6, in particular A5 (anatomy sits inside, checked automatically and from four angles) and B1 (a reflex tap is not a measured input, so it needs a clear reason to be on the main screen, for example as the first nerve-signal view of step 7).
-
----
-
-## 8. How to look at the cleanup
-
-Branch `claude/project-thread-iyxw9i`, draft PR against `simulate`, served from its own worktree on uxserver at http://192.168.88.8:3017 (port 3016 is showing the knee-jerk work). Nothing is merged into `simulate` until you say so.
-
-The cleanup removes about 171,000 lines across 340 files (mostly validation receipts, pilot code, docs and unused components) and adds about 1,800.

@@ -32,7 +32,7 @@ scripts/molecules/build-remote.sh uxserver --preview      # Blender build on the
 python3 scripts/molecules/reference.py                    # regenerate app/physical/dive/reference.ts
 ```
 
-`fetch.py`, `package.py` and `reference.py` use only the Python standard library. `build.py` runs inside Blender (built with 5.2.2 LTS). Outputs: `public/models/molecules/molecules.glb` and `manifest.json` (hash-checked by the app on load) and `previews/contact-sheet.png`.
+`fetch.py`, `package.py` and `reference.py` use only the Python standard library. `build.py` runs inside Blender (built with 5.2.2 LTS). Outputs: `public/models/molecules/molecules.glb` and `manifest.json` (hash-checked by the app on load) and `previews/contact-sheet.png` (a check render, not committed).
 
 To add or change a species, edit `spec.json`, add it to `SPECIES` in `app/physical/molecules.ts` and give it an amount in `composition.ts`. The app refuses a package whose species do not match.
 

@@ -11,7 +11,7 @@ and the atrioventricular leaflet meshes include their chordae. Writes:
     public/models/heart-conduction.{json,bin}   new meshes: nodes, bundle, branches, Purkinje fibres
     docs/heart-package-provenance.json          landmarks, parameters and measurements
     assets/heart/blender/heart.blend            leaflets with an "open" shape key, and the new meshes
-    assets/heart/previews/*.png                 closed and open valves, conduction system
+    assets/heart/previews/*.png                 check renders of valves and conduction (git-ignored)
 
 The open shapes are constructed (a hinge at the annulus, or flattening against the vessel wall) and
 the conduction system follows landmarks on the source meshes. Neither comes from imaging.
