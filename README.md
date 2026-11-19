@@ -2,9 +2,9 @@
 
 A rough, moving picture of what is happening inside a body: blood, oxygen, food and a few hormones flowing between organs, and the organs responding. The 3D body is the whole screen; you try something (a meal, a glass of water, exercise) and watch it travel.
 
-The goal is to start the body from what a person can measure about themselves (blood tests, a glucose sensor, a fitness band, later EEG and gut microbiome reports), so they can see and understand what is probably happening inside them. It is an illustration, not a diagnosis.
+Direction (2026-11-19): BioSim is the *visualiser*. A separate analyser (not in this repo) reads a person's raw data and writes a validated "body state" document; BioSim draws that state on the body (for example narrowed arteries, smoker's airways, sugar-heavy blood) and lets the person turn dials to see effects. It is an illustration, not a diagnosis.
 
-Read [the vision, plan and verification gates](docs/VISION.md) before adding anything. Every change must pass both gates there: it visibly works as intended, and it serves the goal with nothing extra.
+Read [the vision and verification gates](docs/VISION.md) before adding anything. Every change must pass both gates there: it visibly works as intended, and it serves the goal with nothing extra.
 
 ## What is on screen
 
